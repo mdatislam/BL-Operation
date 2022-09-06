@@ -1,10 +1,17 @@
 import React from 'react';
+import Employee from './Employee';
+import HomeBanner from './HomeBanner';
+import OutstandingTask from './OutstandingTask';
 
 const Home = () => {
     return (
-        <div>
-            This is home page
-        </div>
+        <>
+        <HomeBanner/>
+        <Employee/>
+        <OutstandingTask/>
+        
+        </>
+ 
     );
 };
 
