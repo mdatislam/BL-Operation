@@ -1,9 +1,10 @@
 import React from "react";
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import auth from './../../firebase.init';
 import Loading from './../SharedPage/Loading';
+import useToken from './../Hook/useToken';
 
 const Login = () => {
   const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
@@ -15,9 +16,21 @@ const Login = () => {
     handleSubmit,
   } = useForm();
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const [token] =useToken(user || gUser)
 
   if (gLoading || loading) {
     return <Loading/>;
+  }
+
+  let signInError;
+  if (error || gError) {
+    signInError = (
+      <p className=" text-red-500">
+        <small>{error?.message || gError?.message}</small>
+      </p>
+    );
   }
   const onSubmit = (data) => {
     //console.log(data)
@@ -26,8 +39,9 @@ const Login = () => {
     signInWithEmailAndPassword(email, password);
   };
 
-  if (user || gUser) {
-    navigate('/Home')
+  let from = location.state?.from?.pathname || "/Home"
+  if (token) {
+    navigate(from,{replace:true})
   }
   return (
     <div className="hero h-screen bg-base-200 mt-[-30px]">
@@ -68,7 +82,6 @@ const Login = () => {
                 )}
               </label>
             </div>
-
             {/*  password field */}
             <div className="form-control">
               <label className="label">
@@ -108,6 +121,7 @@ const Login = () => {
                 </Link>
               </label>
             </div>
+      {signInError}
             <div className="form-control mt-2">
               <input type="submit" className="btn btn-primary" value="Login" />
             </div>

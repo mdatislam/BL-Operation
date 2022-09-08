@@ -1,16 +1,18 @@
 import { signOut } from "firebase/auth";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import auth from "./../../firebase.init";
 
 const NavBar = ({ children }) => {
+const {pathname}=useLocation()
   const [user] = useAuthState(auth);
   //console.log(user)
   const navigate = useNavigate();
   const logout = () => {
     signOut(auth);
-    navigate("/About");
+    localStorage.removeItem("token")
+    navigate("/Home");
   };
   const menuItem = (
     <>
@@ -24,6 +26,7 @@ const NavBar = ({ children }) => {
           Data-Update
         </NavLink>
       </li>
+      
       <li>
         <NavLink className="rounded-lg" to="/About">
           About
@@ -52,6 +55,27 @@ const NavBar = ({ children }) => {
         <div class="drawer-content flex flex-col">
           {/*  <!-- Navbar --> */}
           <div class="w-full navbar fixed z-20 bg-[#ffcb24] lg:px-20">
+            {pathname.includes("Dashboard") && (
+              <label
+                htmlFor="dashboard-drawer"
+                className="drawer-button btn btn-primary"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25"
+                  />
+                </svg>
+              </label>
+            )}
             <div class="flex-1 px-2 mx-2 font-bold text-2xl text-white">
               Rangpur O&amp;M
             </div>

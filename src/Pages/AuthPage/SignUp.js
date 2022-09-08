@@ -1,25 +1,41 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useCreateUserWithEmailAndPassword, useUpdateProfile } from "react-firebase-hooks/auth";
 import auth from './../../firebase.init';
 import Loading from "../SharedPage/Loading";
 import { toast } from "react-toastify";
+import useToken from './../Hook/useToken';
 
 const SignUp = () => {
 
     const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
-   const [updateProfile, updating, UError] = useUpdateProfile(auth);
+   const [updateProfile, updating, uError] = useUpdateProfile(auth);
   const {
     register,
     formState: { errors },
     handleSubmit,reset
-    } = useForm();
+  } = useForm();
+  const navigate=useNavigate()
+  
+const [token] = useToken(user)
     
-    if (loading) {
+    if (loading || updating) {
       return <Loading />;
-    }
+  }
+  
+   let signInError;
+   if (error || uError) {
+     signInError = (
+       <p className=" text-red-500">
+         <small>
+           {error?.message || uError?.message}
+         </small>
+       </p>
+     );
+   }
+
     const onSubmit =async (data) => {
         console.log(data);
         const name = data.name
@@ -30,7 +46,11 @@ const SignUp = () => {
       toast.success(`user ${name} successfully done`);
       reset()
       
-    };
+  };
+  
+  if (token) {
+    navigate('/Home')
+  }
     
     
   return (
@@ -98,7 +118,6 @@ const SignUp = () => {
                 )}
               </label>
             </div>
-
             {/*  password field */}
             <div className="form-control">
               <label className="label">
@@ -141,6 +160,7 @@ const SignUp = () => {
                 </p>
               </label>
             </div>
+            {signInError}
             <div className="form-control mt-2">
               <input
                 type="submit"
