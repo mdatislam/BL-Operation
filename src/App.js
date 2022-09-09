@@ -20,21 +20,18 @@ function App() {
     <>
       <NavBar>
         <Routes>
+         {/*  Public Route */}
           <Route path="/Home" element={<Home />}></Route>
-          {/* <Route path="/About" element={<About />}></Route> */}
+          <Route path="/About" element={<About />}></Route>
           <Route path="/Login" element={<Login />}></Route>
           <Route path="/Signup" element={<SignUp />}></Route>
           <Route path="*" element={<NotFound />}></Route>
 
-          {/*  <Route path="/Dashboard" element={<RequireAuth>
-            <DashBoard/>
-          </RequireAuth>}></Route> */}
-
+         {/*  private Route */}
           <Route element={<RequireAuth />}>
             <Route path="/Dashboard" element={<DashBoard />}>
-              <Route index element={<PgRunList />}>
-                <Route path="PgRunUpdate" element={<PgRunUpdate/>}/>
-              </Route>
+              <Route index element={<PgRunList />} />
+              <Route path="PgRunUpdate" element={<PgRunUpdate />} />
             </Route>
           </Route>
         </Routes>
