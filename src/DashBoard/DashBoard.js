@@ -4,7 +4,7 @@ import {Link, NavLink, Outlet } from 'react-router-dom';
 
 const DashBoard = () => {
     return (
-      <div className="drawer drawer-mobile bg-slate-400 ">
+      <div className="drawer drawer-mobile bg-slate-100 ">
         <input
           id="dashboard-drawer"
           type="checkbox"
