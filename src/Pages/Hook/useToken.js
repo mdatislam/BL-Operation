@@ -8,7 +8,7 @@ const useToken = (user) => {
           console.log(user);
             const email = user?.user?.email;
             const name = user?.user?.displayName;
-            console.log(email)
+            //console.log(email)
             const userInfo = { 
               name:name,
             email: email 
@@ -25,7 +25,7 @@ const useToken = (user) => {
                 const accessToken = data.accessToken
                 localStorage.setItem("token",accessToken)
                 setToken(accessToken)
-              console.log(data.accessToken);
+              //console.log(data.accessToken);
             });
         
         }

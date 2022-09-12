@@ -12,7 +12,7 @@ const DashBoard = () => {
         />
         <div className="drawer-content">
           {/*    <!-- Page content here --> */}
-          <Outlet/>
+          <Outlet />
         </div>
         <div className="drawer-side">
           <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
@@ -20,6 +20,9 @@ const DashBoard = () => {
             {/*  <!-- Sidebar content here --> */}
             <li>
               <Link to="/Dashboard">PG Run Data</Link>
+            </li>
+            <li>
+              <Link to="/Dashboard/ApprovalPending">Approval Pending List</Link>
             </li>
             <li>
               <Link to="/Dashboard/PgRunUpdate">PG Run DataUpdate</Link>

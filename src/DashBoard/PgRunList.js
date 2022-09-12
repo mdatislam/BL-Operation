@@ -48,19 +48,31 @@ const PgRunList = () => {
     
     return (
       <div>
-        <div className="text-center text-primary text-2xl">
+        <div className="text-center text-primary text-2xl mt-4 mb-8">
           <h2>Your PG Run Record</h2>
         </div>
         <div className="overflow-x-auto">
-          <table className="table table-compact w-full">
+          <table className="table table-compact w-full border-2 border-cyan-200">
             <thead>
               <tr>
                 <th>SN</th>
+                <th>
+                  <div>Approval</div>
+                  <div>Status</div>
+                </th>
                 <th>Date</th>
                 <th>Site ID</th>
                 <th>PG No</th>
-                <th>PG Start Time</th>
-                <th>PG Stop Time</th>
+                <th>
+                  <div>PG Start</div>
+                  <div>Time</div>
+                </th>
+                <th>
+                  <div>PG Stop</div>
+                  <div>Time</div>
+                </th>
+                <th>Duration</th>
+                <th>Consumption</th>
                 <th>
                   {" "}
                   <div>Approval</div>
@@ -70,17 +82,14 @@ const PgRunList = () => {
               </tr>
             </thead>
             <tbody>
-              
-             {
-                            pgRunData.map((pgRun, index) => <PgRunRows
-                                key={pgRun._id}
-                                pgRun={pgRun}
-                                index={index}
-                                pgRunner={user.displayName}
-                            ></PgRunRows>)
-              }   
-                       
-                        
+              {pgRunData.map((pgRun, index) => (
+                <PgRunRows
+                  key={pgRun._id}
+                  pgRun={pgRun}
+                  index={index}
+                  pgRunner={user.displayName}
+                ></PgRunRows>
+              ))}
             </tbody>
           </table>
         </div>

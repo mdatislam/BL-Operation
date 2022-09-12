@@ -14,23 +14,25 @@ import RequireAuth from './Pages/AuthPage/RequireAuth';
 import { privateRoute } from "./Route/privateRoute";
 import PgRunList from "./DashBoard/PgRunList";
 import PgRunUpdate from "./DashBoard/PgRunUpdate";
+import ApprovalPending from "./DashBoard/ApprovalPending";
 
 function App() {
   return (
     <>
       <NavBar>
         <Routes>
-         {/*  Public Route */}
+          {/*  Public Route */}
           <Route path="/Home" element={<Home />}></Route>
           <Route path="/About" element={<About />}></Route>
           <Route path="/Login" element={<Login />}></Route>
           <Route path="/Signup" element={<SignUp />}></Route>
           <Route path="*" element={<NotFound />}></Route>
 
-         {/*  private Route */}
+          {/*  private Route */}
           <Route element={<RequireAuth />}>
             <Route path="/Dashboard" element={<DashBoard />}>
               <Route index element={<PgRunList />} />
+              <Route path="ApprovalPending" element={<ApprovalPending />} />
               <Route path="PgRunUpdate" element={<PgRunUpdate />} />
             </Route>
           </Route>
