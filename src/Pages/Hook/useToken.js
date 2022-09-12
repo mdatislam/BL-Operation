@@ -5,7 +5,7 @@ const useToken = (user) => {
     const [token, setToken] = useState(" ");
     useEffect(() => {
         if (user) {
-          console.log(user);
+          //console.log(user);
             const email = user?.user?.email;
             const name = user?.user?.displayName;
             //console.log(email)

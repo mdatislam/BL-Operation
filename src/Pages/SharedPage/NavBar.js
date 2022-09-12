@@ -58,7 +58,7 @@ const {pathname}=useLocation()
             {pathname.includes("Dashboard") && (
               <label
                 htmlFor="dashboard-drawer"
-                className="drawer-button btn btn-primary"
+                className="drawer-button lg:hidden btn btn-primary"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

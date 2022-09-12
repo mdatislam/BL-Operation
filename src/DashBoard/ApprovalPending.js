@@ -8,12 +8,15 @@ import PgRunRows from "./PgRunRows";
 import PgRunUpdate from "./PgRunUpdate";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import ApprovalPendingRow from "./ApprovalPendingRow";
+import RejectApproval from "./RejectApproval";
 
 const ApprovalPending = () => {
-  const [user] = useAuthState(auth);
+    const [user] = useAuthState(auth);
+    const [reject,setReject]= useState(" ")
   const navigate = useNavigate();
   
-  const { data: pgRunData, isLoading } = useQuery(["list", user], () =>
+  const { data: pgRunData, isLoading,refetch } = useQuery(["list", user], () =>
     fetch(`http://localhost:5000/ApprovalList?email=${user.email}`, {
       method: "GET",
       headers: {
@@ -35,7 +38,7 @@ const ApprovalPending = () => {
   return (
     <div>
       <div className="text-center text-primary text-2xl mt-4 mb-8">
-        <h2>Your PG Run Record</h2>
+        <h2>Approval Pending List</h2>
       </div>
       <div className="overflow-x-auto">
         <table className="table table-compact w-full border-2 border-cyan-200">
@@ -65,20 +68,31 @@ const ApprovalPending = () => {
                 <div>Responsible</div>
               </th>
               <th>PG Runner</th>
+              <th>Verify Status</th>
+             
             </tr>
           </thead>
           <tbody>
             {pgRunData.map((pgRun, index) => (
-              <PgRunRows
+              <ApprovalPendingRow
                 key={pgRun._id}
                 pgRun={pgRun}
                 index={index}
+                setReject={setReject}
+                refetch={refetch}
                 pgRunner={user.displayName}
-              ></PgRunRows>
+              ></ApprovalPendingRow>
             ))}
           </tbody>
         </table>
       </div>
+      {reject && (
+        <RejectApproval
+          reject={reject}
+          refetch={refetch}
+          setReject={setReject}
+        ></RejectApproval>
+      )}
     </div>
   );
 };

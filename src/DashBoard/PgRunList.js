@@ -12,21 +12,21 @@ import { useNavigate } from 'react-router-dom';
 const PgRunList = () => {
     const [user] = useAuthState(auth)
     const navigate= useNavigate()
-    /* const [pgRunData, setPgRunData] = useState([])
+   /*   const [pgRunData, setPgRunData] = useState([])
     useEffect(() => {
         
-            const url = `http://localhost:5000/pgRunList?email=${user.email}`
+            const url = `http://localhost:5000/pgRunAllList?email=${user.email}`
             console.log(url)
             fetch(url)
                 .then(res => res.json())
             .then(data=> setPgRunData(data))
 
-    }, [user])
- */
-    const { data:pgRunData, isLoading } = useQuery(
+    }, [user]) */
+ 
+     const { data:pgRunData, isLoading } = useQuery(
       ["list", user],
       () =>
-        fetch(`http://localhost:5000/pgRunList?email=${user.email}`, {
+        fetch(`http://localhost:5000/pgRunAllList?email=${user.email}`, {
           method: "GET",
           headers: {
             authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -43,7 +43,7 @@ const PgRunList = () => {
 
     if (isLoading) {
       return <Loading />;
-    }
+    } 
    
     
     return (
@@ -56,10 +56,7 @@ const PgRunList = () => {
             <thead>
               <tr>
                 <th>SN</th>
-                <th>
-                  <div>Approval</div>
-                  <div>Status</div>
-                </th>
+
                 <th>Date</th>
                 <th>Site ID</th>
                 <th>PG No</th>
@@ -79,6 +76,11 @@ const PgRunList = () => {
                   <div>Responsible</div>
                 </th>
                 <th>PG Runner</th>
+                <th>
+                  <div>Approval</div>
+                  <div>Status</div>
+                </th>
+                <th>Remarks</th>
               </tr>
             </thead>
             <tbody>

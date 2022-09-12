@@ -1,7 +1,7 @@
 import React from 'react';
 
 const PgRunRows = ({ pgRun,index,pgRunner }) => {
-    const { date, site, pgNo, pgStartTime, pgStoptTime, onCallName, status,pgRunnerName } = pgRun;
+    const { date, site, pgNo, pgStartTime, pgStoptTime, onCallName, status,pgRunnerName,remark } = pgRun;
     
     let start = pgStartTime.split(":")
   let stop = pgStoptTime.split(":")
@@ -28,9 +28,9 @@ const PgRunRows = ({ pgRun,index,pgRunner }) => {
   const timeValue = (parseInt((time[0]), 10) + parseInt((time[1]), 10) / 60)
   const consump = (timeValue * 3).toFixed(2);
   return (
-    <tr className='border-2 border-green-300'>
+    <tr className="border-2 border-green-300">
       <th>{index + 1}</th>
-      <th>{status}</th>
+
       <td>{date}</td>
       <td>{site}</td>
       <td>{pgNo}</td>
@@ -40,6 +40,8 @@ const PgRunRows = ({ pgRun,index,pgRunner }) => {
       <td>{consump}</td>
       <td>{onCallName}</td>
       <td>{pgRunnerName}</td>
+      <td>{status}</td>
+      <td className="text-bold">{remark}</td>
     </tr>
   );
 };
