@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, NavLink, Outlet } from 'react-router-dom';
+import {Link, Outlet } from 'react-router-dom';
 
 
 const DashBoard = () => {
@@ -16,16 +16,22 @@ const DashBoard = () => {
         </div>
         <div className="drawer-side">
           <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
-          <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
+          <ul className="menu p-4 overflow-y-auto w-70 bg-pink-400 text-white">
             {/*  <!-- Sidebar content here --> */}
             <li>
               <Link to="/Dashboard">PG Run Data</Link>
+            </li>
+            <li>
+              <Link to="/Dashboard/FuelData">Received Fuel Record</Link>
             </li>
             <li>
               <Link to="/Dashboard/ApprovalPending">Approval Pending List</Link>
             </li>
             <li>
               <Link to="/Dashboard/PgRunUpdate">PG Run DataUpdate</Link>
+            </li>
+            <li>
+              <Link to="/Dashboard/FuelUpdate">Received Fuel Update</Link>
             </li>
           </ul>
         </div>

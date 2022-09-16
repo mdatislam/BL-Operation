@@ -15,6 +15,8 @@ import { privateRoute } from "./Route/privateRoute";
 import PgRunList from "./DashBoard/PgRunList";
 import PgRunUpdate from "./DashBoard/PgRunUpdate";
 import ApprovalPending from "./DashBoard/ApprovalPending";
+import FuelUpdate from "./DashBoard/FuelUpdate";
+import FuelDataList from "./DashBoard/FuelDataList";
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
               <Route index element={<PgRunList />} />
               <Route path="ApprovalPending" element={<ApprovalPending />} />
               <Route path="PgRunUpdate" element={<PgRunUpdate />} />
+              <Route path="FuelUpdate" element={<FuelUpdate />} />
+              <Route path="FuelData" element={<FuelDataList />} />
             </Route>
           </Route>
         </Routes>

@@ -15,8 +15,8 @@ const ApprovalPendingRow = ({ pgRun, index, setReject,refetch }) => {
     
   } = pgRun;
 
-  let start = pgStartTime.split(":");
-  let stop = pgStoptTime.split(":");
+  let start = pgStartTime?.split(":");
+  let stop = pgStoptTime?.split(":");
   let startTime = new Date(0, 0, 0, start[0], start[1], 0);
   let stopTime = new Date(0, 0, 0, stop[0], stop[1], 0);
   let diff = stopTime.getTime() - startTime.getTime();
@@ -29,7 +29,7 @@ const ApprovalPendingRow = ({ pgRun, index, setReject,refetch }) => {
   const duration = `${hours}:${minutes}`;
   const time = duration.split(":");
   const timeValue = parseInt(time[0], 10) + parseInt(time[1], 10) / 60;
-  const consump = (timeValue * 3).toFixed(2);
+  const consumption = (timeValue * 3).toFixed(2);
 
   const handleApprove = id => {
      fetch(`http://localhost:5000/pgRunList/${id}`, {
@@ -62,7 +62,7 @@ const ApprovalPendingRow = ({ pgRun, index, setReject,refetch }) => {
       <td>{pgStartTime}</td>
       <td>{pgStoptTime}</td>
       <td>{duration}</td>
-      <td>{consump}</td>
+      <td>{consumption}</td>
       <td>{onCallName}</td>
       <td>{pgRunnerName}</td>
 
