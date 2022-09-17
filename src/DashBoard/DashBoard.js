@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link, Outlet } from 'react-router-dom';
+import FuelBalance from './FuelBalance';
 
 
 const DashBoard = () => {
@@ -12,6 +13,7 @@ const DashBoard = () => {
         />
         <div className="drawer-content">
           {/*    <!-- Page content here --> */}
+          
           <Outlet />
         </div>
         <div className="drawer-side">

@@ -1,6 +1,7 @@
 import React from 'react';
 
-const FuelDataListRow = ({ fuel, index }) => {
+
+const FuelDataListRow = ({ fuel, index}) => {
     const {date,siteId,pgNo,slipNo,fuelQuantity,fuelIssuer,fuelReceiverName}= fuel
     return (
       <>
@@ -15,6 +16,7 @@ const FuelDataListRow = ({ fuel, index }) => {
           <td>{fuelReceiverName}</td>
           <td>{fuelIssuer}</td>
         </tr>
+        
       </>
     );
 };

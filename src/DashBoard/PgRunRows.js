@@ -14,24 +14,29 @@ const PgRunRows = ({ pgRun, index,refetch }) => {
   } = pgRun;
  // console.log(fuelConsume);
  // console.log(pgStartTime);
- 
-  let start = pgStartTime?.split(":");
-  let stop = pgStoptTime?.split(":");
-  let startTime = new Date(0, 0, 0, start[0], start[1], 0);
-  let stopTime = new Date(0, 0, 0, stop[0], stop[1], 0);
-  let diff = stopTime.getTime() - startTime.getTime();
-  // console.log(diff)
-  const hours = Math.floor(diff / 3600000);
-  //console.log(hours);
-  diff = diff - hours * 1000 * 3600;
-  const minutes = Math.floor(diff / 60000);
-  //console.log(minutes);
-  const duration = `${hours}:${minutes}`;
+  let consume
+  let duration
+  if (pgStartTime && pgStoptTime) {
+    let start = pgStartTime.split(":");
+    let stop = pgStoptTime.split(":");
+    let startTime = new Date(0, 0, 0, start[0], start[1], 0);
+    let stopTime = new Date(0, 0, 0, stop[0], stop[1], 0);
+    let diff = stopTime.getTime() - startTime.getTime();
+    // console.log(diff)
+    const hours = Math.floor(diff / 3600000);
+    //console.log(hours);
+    diff = diff - hours * 1000 * 3600;
+    const minutes = Math.floor(diff / 60000);
+    //console.log(minutes);
+     duration = `${hours}:${minutes}`;
 
-  const time = duration.split(":");
-  const timeValue = parseInt(time[0], 10) + parseInt(time[1], 10) / 60;
-  const consume = (timeValue * 3).toFixed(2);
- refetch();
+    const time = duration.split(":");
+    const timeValue = parseInt(time[0], 10) + parseInt(time[1], 10) / 60;
+     consume = (timeValue * 3).toFixed(2);
+   
+  }
+ 
+  /*  */
   return (
     <>
       <tr className="border-2 border-green-300">
@@ -42,7 +47,7 @@ const PgRunRows = ({ pgRun, index,refetch }) => {
         <td>{pgNo}</td>
         <td>{pgStartTime}</td>
         <td>{pgStoptTime}</td>
-        <td>{duration}</td>
+       <td>{duration}</td>
         <td>{consume}</td>
         <td>{onCallName}</td>
         <td>{pgRunnerName}</td>

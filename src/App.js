@@ -18,6 +18,9 @@ import ApprovalPending from "./DashBoard/ApprovalPending";
 import FuelUpdate from "./DashBoard/FuelUpdate";
 import FuelDataList from "./DashBoard/FuelDataList";
 
+
+
+
 function App() {
   return (
     <>
@@ -33,7 +36,7 @@ function App() {
           {/*  private Route */}
           <Route element={<RequireAuth />}>
             <Route path="/Dashboard" element={<DashBoard />}>
-              <Route index element={<PgRunList />} />
+              <Route index element={<PgRunList/> }/>
               <Route path="ApprovalPending" element={<ApprovalPending />} />
               <Route path="PgRunUpdate" element={<PgRunUpdate />} />
               <Route path="FuelUpdate" element={<FuelUpdate />} />
