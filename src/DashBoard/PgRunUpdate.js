@@ -15,20 +15,22 @@ const PgRunUpdate = () => {
     handleSubmit,
   } = useForm();
 
-   const { data: users, isLoading } = useQuery(["userList", user], () =>
-     fetch("http://localhost:5000/userList").then((res) => res.json())
-   );
-   // console.log(services)
-   if (isLoading) {
-     return <Loading />;
-   }
+  const { data: users, isLoading } = useQuery(["userList", user], () =>
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList").then((res) =>
+      res.json()
+    )
+  );
+  // console.log(services)
+  if (isLoading) {
+    return <Loading />;
+  }
 
-   const availableUser = users.filter((u) => u.name !== user.displayName);
+  const availableUser = users.filter((u) => u.name !== user.displayName);
 
   const onSubmit = (data) => {
     const pgStart = data.startTime;
     const pgStop = data.stopTime;
-     let start = pgStart.split(":");
+    let start = pgStart.split(":");
     let stop = pgStop.split(":");
     let startTime = new Date(0, 0, 0, start[0], start[1], 0);
     let stopTime = new Date(0, 0, 0, stop[0], stop[1], 0);
@@ -39,30 +41,31 @@ const PgRunUpdate = () => {
     diff = diff - hours * 1000 * 3600;
     const minutes = Math.floor(diff / 60000);
     //console.log(minutes);
-   const  duration = `${hours}:${minutes}`;
+    const duration = `${hours}:${minutes}`;
 
     const time = duration.split(":");
     const timeValue = parseInt(time[0], 10) + parseInt(time[1], 10) / 60;
     const consume = (timeValue * 3).toFixed(2);
-    const onCallerEmail = availableUser.filter(x => x.name === data.onCallName);
-    
-    
+    const onCallerEmail = availableUser.filter(
+      (x) => x.name === data.onCallName
+    );
+
     const PgRunData = {
       site: data.siteName,
       date: data.date,
-      pgStartTime:pgStart ,
+      pgStartTime: pgStart,
       pgStoptTime: pgStop,
-      pgRunDuration:duration,
-      fuelConsume:consume,
+      pgRunDuration: duration,
+      fuelConsume: consume,
       pgNo: data.pgNo,
       onCallName: data.onCallName,
       onCallEmail: onCallerEmail[0].email,
-      pgRunnerName:user.displayName,
+      pgRunnerName: user.displayName,
       pgRunnerEmail: user.email,
       status: "Pending",
     };
     //console.log(PgRunData);
-    fetch("http://localhost:5000/pgRunData", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/pgRunData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -79,13 +82,13 @@ const PgRunUpdate = () => {
       });
   };
 
- 
-  
   return (
     <div className="flex  justify-center justify-items-center mt-8">
       <div class="card w-96 bg-base-100 shadow-xl">
         <div class="card-body">
-          <h2 class="text-center text-2xl font-bold mb-3">Update PG Run Data!</h2>
+          <h2 class="text-center text-2xl font-bold mb-3">
+            Update PG Run Data!
+          </h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Date input field */}
 
@@ -220,10 +223,9 @@ const PgRunUpdate = () => {
                   },
                 })}
               >
-                {
-                  availableUser.map(user=>  ( <option value={user.name}>{user.name} </option>))
-                
-                }
+                {availableUser.map((user) => (
+                  <option value={user.name}>{user.name} </option>
+                ))}
               </select>
               <label class="label">
                 {errors.onCallName?.type === "required" && (

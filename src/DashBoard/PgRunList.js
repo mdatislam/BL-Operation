@@ -5,39 +5,36 @@ import Loading from "../Pages/SharedPage/Loading";
 import PgRunRows from "./PgRunRows";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { useState ,useEffect} from "react";
-
+import { useState, useEffect } from "react";
 
 const PgRunList = () => {
   /* const [loading, setLoading] = useState(false); */
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
 
-   const [receiveFuel, setReceiveFuel] = useState([])
-    useEffect(() => {
-        
-            const url = `http://localhost:5000/fuelList?email=${user.email}`
-            //console.log(url)
-            fetch(url)
-                .then(res => res.json())
-            .then(data=> setReceiveFuel(data))
-
-    }, [user])  
+  const [receiveFuel, setReceiveFuel] = useState([]);
+  useEffect(() => {
+    const url = `https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`;
+    //console.log(url)
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setReceiveFuel(data));
+  }, [user]);
 
   const { data: pgRunData, isLoading } = useQuery(["list", user], () =>
-    fetch(`http://localhost:5000/pgRunAllList?email=${user.email}`).then(
-      (res) => res.json()
-    )
+    fetch(
+      `https://enigmatic-eyrie-94440.herokuapp.com/pgRunAllList?email=${user.email}`
+    ).then((res) => res.json())
   );
 
   //setLoading(true);
   /* const { data: receiveFuel, isLoading1 } = useQuery(["list2", user], () =>
-    fetch(`http://localhost:5000/fuelList?email=${user.email}`).then((res) =>
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`).then((res) =>
       res.json()
     )
   ); */
 
-  if (isLoading ) {
+  if (isLoading) {
     return <Loading />;
   }
 

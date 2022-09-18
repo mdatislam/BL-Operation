@@ -11,20 +11,20 @@ import FuelBalance from "./FuelBalance";
 import PgRunList from "./PgRunList";
 import { useState } from "react";
 
-
 const FuelDataList = () => {
-   
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
-  
 
   const { data: fuelData, isLoading } = useQuery(["list", user], () =>
-    fetch(`http://localhost:5000/fuelList?email=${user.email}`, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
+    fetch(
+      `https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         signOut(auth);
         localStorage.removeItem("accessToken");
@@ -39,16 +39,16 @@ const FuelDataList = () => {
   }
 
   const totalFuel = fuelData.map((fuelValue, index) => {
-    const x = parseFloat(fuelValue.fuelQuantity)
-    return x
-  })
-   const receivedFuel = totalFuel.reduce(
-     (previous, current) => previous + parseFloat(current),
-     0
+    const x = parseFloat(fuelValue.fuelQuantity);
+    return x;
+  });
+  const receivedFuel = totalFuel.reduce(
+    (previous, current) => previous + parseFloat(current),
+    0
   );
- 
+
   //setFuel(receivedFuel)
-//console.log(fuel)
+  //console.log(fuel)
   return (
     <div>
       <div className="text-center text-primary text-2xl mt-4 mb-8">
@@ -92,7 +92,6 @@ const FuelDataList = () => {
           </tbody>
         </table>
       </div>
-      
     </div>
   );
 };

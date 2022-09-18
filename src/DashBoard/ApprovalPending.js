@@ -12,17 +12,24 @@ import ApprovalPendingRow from "./ApprovalPendingRow";
 import RejectApproval from "./RejectApproval";
 
 const ApprovalPending = () => {
-    const [user] = useAuthState(auth);
-    const [reject,setReject]= useState(" ")
+  const [user] = useAuthState(auth);
+  const [reject, setReject] = useState(" ");
   const navigate = useNavigate();
-  
-  const { data: pgRunData, isLoading,refetch } = useQuery(["list", user], () =>
-    fetch(`http://localhost:5000/ApprovalList?email=${user.email}`, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
+
+  const {
+    data: pgRunData,
+    isLoading,
+    refetch,
+  } = useQuery(["list", user], () =>
+    fetch(
+      `https://enigmatic-eyrie-94440.herokuapp.com/ApprovalList?email=${user.email}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         signOut(auth);
         localStorage.removeItem("accessToken");
@@ -69,7 +76,6 @@ const ApprovalPending = () => {
               </th>
               <th>PG Runner</th>
               <th>Verify Status</th>
-             
             </tr>
           </thead>
           <tbody>

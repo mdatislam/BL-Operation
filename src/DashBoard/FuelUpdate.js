@@ -16,7 +16,9 @@ const FuelUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("http://localhost:5000/userList").then((res) => res.json())
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList").then((res) =>
+      res.json()
+    )
   );
   // console.log(services)
   if (isLoading) {
@@ -26,9 +28,7 @@ const FuelUpdate = () => {
   const availableUser = users.filter((u) => u.name !== user.displayName);
 
   const onSubmit = (data) => {
-    const fuelIssuer = availableUser.filter(
-      (x) => x.name === data.fuelIssuer
-    );
+    const fuelIssuer = availableUser.filter((x) => x.name === data.fuelIssuer);
     const fuelData = {
       siteId: data.siteId,
       date: data.date,
@@ -41,7 +41,7 @@ const FuelUpdate = () => {
       fuelReceiverEmail: user.email,
     };
     //console.log(PgRunData);
-    fetch("http://localhost:5000/fuelData", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -62,7 +62,7 @@ const FuelUpdate = () => {
       <div class="card w-96 bg-base-100 shadow-2xl">
         <div class="card-body">
           <h2 class="text-center text-secondary-focus text-2xl font-bold mb-3">
-           Update Receive Fuel Info!
+            Update Receive Fuel Info!
           </h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Date input field */}

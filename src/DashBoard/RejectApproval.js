@@ -12,7 +12,7 @@ const RejectApproval = ({ reject, setReject, refetch }) => {
   } = useForm();
 
   const onSubmit = (data, id) => {
-    fetch(`http://localhost:5000/pgRunList/${_id}`, {
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/pgRunList/${_id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -24,7 +24,7 @@ const RejectApproval = ({ reject, setReject, refetch }) => {
     })
       .then((res) => res.json())
       .then((approveData) => {
-        console.log(approveData)
+        console.log(approveData);
         if (approveData.modifiedCount > 0) {
           toast.error(" Data has been Rejected");
         }

@@ -1,7 +1,7 @@
 import React from "react";
 import { toast } from "react-toastify";
 
-const ApprovalPendingRow = ({ pgRun, index, setReject,refetch }) => {
+const ApprovalPendingRow = ({ pgRun, index, setReject, refetch }) => {
   const {
     _id,
     date,
@@ -14,30 +14,28 @@ const ApprovalPendingRow = ({ pgRun, index, setReject,refetch }) => {
     onCallName,
     status,
     pgRunnerName,
-    
   } = pgRun;
-   
 
-  const handleApprove = id => {
-     fetch(`http://localhost:5000/pgRunList/${id}`, {
-       method: "PUT",
-       headers: {
-         "content-type": "application/json",
-       },
-       body: JSON.stringify({
-         status: "Approved",
-         remark: "OK",
-       }),
-     })
-      .then(res => res.json())
-       .then(approveData => {
-         if (approveData.modifiedCount> 0) { 
-           toast.success('Approved successfully done')
-         } 
-         refetch()
+  const handleApprove = (id) => {
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/pgRunList/${id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        status: "Approved",
+        remark: "OK",
+      }),
     })
-  //console.log(id)
-}
+      .then((res) => res.json())
+      .then((approveData) => {
+        if (approveData.modifiedCount > 0) {
+          toast.success("Approved successfully done");
+        }
+        refetch();
+      });
+    //console.log(id)
+  };
 
   return (
     <tr className="border-2 border-green-300">
@@ -49,15 +47,14 @@ const ApprovalPendingRow = ({ pgRun, index, setReject,refetch }) => {
       <td>{pgStartTime}</td>
       <td>{pgStoptTime}</td>
       <td>{pgRunDuration}</td>
-      <td>{fuelConsume}</td> 
+      <td>{fuelConsume}</td>
       <td>{onCallName}</td>
       <td>{pgRunnerName}</td>
 
       <td>
         <label
-          
           className="btn btn-secondary text-white btn-xs mx-2"
-          onClick={()=> handleApprove(_id)}
+          onClick={() => handleApprove(_id)}
         >
           Approve
         </label>
@@ -65,7 +62,7 @@ const ApprovalPendingRow = ({ pgRun, index, setReject,refetch }) => {
         <label
           htmlFor="rejectApproval"
           className="btn btn-warning btn-xs"
-         onClick={() => setReject(pgRun)}
+          onClick={() => setReject(pgRun)}
         >
           Reject
         </label>
