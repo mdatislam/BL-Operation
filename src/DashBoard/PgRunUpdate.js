@@ -26,12 +26,34 @@ const PgRunUpdate = () => {
    const availableUser = users.filter((u) => u.name !== user.displayName);
 
   const onSubmit = (data) => {
-    const onCallerEmail = availableUser.filter(x => x.name === data.onCallName)
+    const pgStart = data.startTime;
+    const pgStop = data.stopTime;
+     let start = pgStart.split(":");
+    let stop = pgStop.split(":");
+    let startTime = new Date(0, 0, 0, start[0], start[1], 0);
+    let stopTime = new Date(0, 0, 0, stop[0], stop[1], 0);
+    let diff = stopTime.getTime() - startTime.getTime();
+    // console.log(diff)
+    const hours = Math.floor(diff / 3600000);
+    //console.log(hours);
+    diff = diff - hours * 1000 * 3600;
+    const minutes = Math.floor(diff / 60000);
+    //console.log(minutes);
+   const  duration = `${hours}:${minutes}`;
+
+    const time = duration.split(":");
+    const timeValue = parseInt(time[0], 10) + parseInt(time[1], 10) / 60;
+    const consume = (timeValue * 3).toFixed(2);
+    const onCallerEmail = availableUser.filter(x => x.name === data.onCallName);
+    
+    
     const PgRunData = {
       site: data.siteName,
       date: data.date,
-      pgStartTime: data.startTime,
-      pgStoptTime: data.stopTime,
+      pgStartTime:pgStart ,
+      pgStoptTime: pgStop,
+      pgRunDuration:duration,
+      fuelConsume:consume,
       pgNo: data.pgNo,
       onCallName: data.onCallName,
       onCallEmail: onCallerEmail[0].email,
@@ -63,7 +85,7 @@ const PgRunUpdate = () => {
     <div className="flex  justify-center justify-items-center mt-8">
       <div class="card w-96 bg-base-100 shadow-xl">
         <div class="card-body">
-          <h2 class="text-center text-2xl font-bold mb-3">ADD PG Run Data!</h2>
+          <h2 class="text-center text-2xl font-bold mb-3">Update PG Run Data!</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Date input field */}
 
@@ -215,7 +237,7 @@ const PgRunUpdate = () => {
             <input
               type="submit"
               class="btn btn-accent w-full max-w-xs m-2"
-              value="ADD-Data"
+              value="Submit-Data"
               /*   <button class="btn btn-success">Success</button> */
             />
           </form>

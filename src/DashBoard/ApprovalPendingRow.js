@@ -9,32 +9,14 @@ const ApprovalPendingRow = ({ pgRun, index, setReject,refetch }) => {
     pgNo,
     pgStartTime,
     pgStoptTime,
+    pgRunDuration,
+    fuelConsume,
     onCallName,
     status,
     pgRunnerName,
     
   } = pgRun;
-   let consumption;
-   let duration;
- 
-  if (pgStartTime && pgStoptTime) {
-    let start = pgStartTime.split(":");
-    let stop = pgStoptTime.split(":");
-    let startTime = new Date(0, 0, 0, start[0], start[1], 0);
-    let stopTime = new Date(0, 0, 0, stop[0], stop[1], 0);
-    let diff = stopTime.getTime() - startTime.getTime();
-    // console.log(diff)
-    const hours = Math.floor(diff / 3600000);
-    //console.log(hours);
-    diff = diff - hours * 1000 * 3600;
-    const minutes = Math.floor(diff / 60000);
-    //console.log(minutes);
-    duration = `${hours}:${minutes}`;
-    const time = duration.split(":");
-    const timeValue = parseInt(time[0], 10) + parseInt(time[1], 10) / 60;
-    consumption = (timeValue * 3).toFixed(2); 
-  }
-  
+   
 
   const handleApprove = id => {
      fetch(`http://localhost:5000/pgRunList/${id}`, {
@@ -66,8 +48,8 @@ const ApprovalPendingRow = ({ pgRun, index, setReject,refetch }) => {
       <td>{pgNo}</td>
       <td>{pgStartTime}</td>
       <td>{pgStoptTime}</td>
-      <td>{duration}</td>
-      <td>{consumption}</td> 
+      <td>{pgRunDuration}</td>
+      <td>{fuelConsume}</td> 
       <td>{onCallName}</td>
       <td>{pgRunnerName}</td>
 

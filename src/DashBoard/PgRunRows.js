@@ -7,6 +7,8 @@ const PgRunRows = ({ pgRun, index,refetch }) => {
     pgNo,
     pgStartTime,
     pgStoptTime,
+    pgRunDuration,
+    fuelConsume,
     onCallName,
     status,
     pgRunnerName,
@@ -14,7 +16,7 @@ const PgRunRows = ({ pgRun, index,refetch }) => {
   } = pgRun;
  // console.log(fuelConsume);
  // console.log(pgStartTime);
-  let consume
+  /* let consume
   let duration
   if (pgStartTime && pgStoptTime) {
     let start = pgStartTime.split(":");
@@ -35,7 +37,7 @@ const PgRunRows = ({ pgRun, index,refetch }) => {
      consume = (timeValue * 3).toFixed(2);
    
   }
- 
+  */
   /*  */
   return (
     <>
@@ -47,8 +49,8 @@ const PgRunRows = ({ pgRun, index,refetch }) => {
         <td>{pgNo}</td>
         <td>{pgStartTime}</td>
         <td>{pgStoptTime}</td>
-       <td>{duration}</td>
-        <td>{consume}</td>
+       <td>{pgRunDuration}</td>
+        <td>{fuelConsume}</td>
         <td>{onCallName}</td>
         <td>{pgRunnerName}</td>
         <td>{status}</td>

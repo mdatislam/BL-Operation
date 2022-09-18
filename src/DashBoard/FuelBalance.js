@@ -29,7 +29,7 @@ const FuelBalance = () => {
   if (isLoading) {
     return <Loading />;
   }
-let arr=[]
+/* let arr=[]
   const totalFuel =receiveFuel.map((fuelValue, index) => {
       const x = parseFloat(fuelValue.fuelQuantity);
       arr.push(x)
@@ -39,12 +39,12 @@ let arr=[]
   const receivedFuel = totalFuel.reduce(
     (previous, current) => previous + parseFloat(current),
     0
-  );
+  ); */
 
   
   return (
     <div>
-      <h2 className="text-center">Total fuel:{parseFloat(receivedFuel)}</h2>
+      <h2 className="text-center">Total fuel:{parseFloat()}</h2>
     </div>
   );
 };

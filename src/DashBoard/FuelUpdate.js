@@ -62,7 +62,7 @@ const FuelUpdate = () => {
       <div class="card w-96 bg-base-100 shadow-2xl">
         <div class="card-body">
           <h2 class="text-center text-secondary-focus text-2xl font-bold mb-3">
-            Receive Fuel Info!
+           Update Receive Fuel Info!
           </h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Date input field */}
@@ -178,6 +178,9 @@ const FuelUpdate = () => {
             </div>
             {/*  On Call Engineer  Name */}
             <div class="form-control w-full max-w-xs">
+              <label className="label">
+                <span className="label-text">Fuel Issuer:</span>
+              </label>
               <select
                 type="text"
                 placeholder=" Fuel Issuer Name"
