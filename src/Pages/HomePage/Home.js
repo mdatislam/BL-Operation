@@ -8,7 +8,7 @@ const Home = () => {
     return (
         <>
             <HomeBanner />
-            <FuelBalance/>
+            
         <Employee/>
         <OutstandingTask/>
         

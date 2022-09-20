@@ -5,7 +5,7 @@ const FuelDataListRow = ({ fuel, index}) => {
     const {date,siteId,pgNo,slipNo,fuelQuantity,fuelIssuer,fuelReceiverName}= fuel
     return (
       <>
-        <tr className="hover border border-3">
+        <tr className="border-2 border-[#F0D786]">
           <th>{index + 1}</th>
 
           <td>{date}</td>
@@ -16,7 +16,6 @@ const FuelDataListRow = ({ fuel, index}) => {
           <td>{fuelReceiverName}</td>
           <td>{fuelIssuer}</td>
         </tr>
-        
       </>
     );
 };

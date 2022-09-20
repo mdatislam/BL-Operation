@@ -41,7 +41,7 @@ const PgRunRows = ({ pgRun, index,refetch }) => {
   /*  */
   return (
     <>
-      <tr className="border-2 border-green-300">
+      <tr className="border-2 border-[#F0D786]">
         <th>{index + 1}</th>
 
         <td>{date}</td>

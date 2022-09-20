@@ -16,15 +16,12 @@ const FuelDataList = () => {
   const navigate = useNavigate();
 
   const { data: fuelData, isLoading } = useQuery(["list", user], () =>
-    fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`,
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch(` http://localhost:5000/fuelList?email=${user.email}`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         signOut(auth);
         localStorage.removeItem("accessToken");
@@ -56,10 +53,10 @@ const FuelDataList = () => {
           Total Received Fuel: {receivedFuel} Liter
         </h2>
       </div>
-      <div className="overflow-x-auto ">
-        <table className=" table table-compact w-3/4 border-1 border-blue-200 mx-auto">
-          <thead>
-            <tr className="bg-green-300">
+      <div className="overflow-x-auto">
+        <table className="  table-auto table-compact w-full">
+          <thead className="  border-4  text-[#FFcb24]">
+            <tr className=" border-4 bg-[#555555]">
               <th>SN</th>
 
               <th>Date</th>

@@ -1,13 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
+import { signOut } from "firebase/auth";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import Loading from "../Pages/SharedPage/Loading";
 
 const FuelUpdate = () => {
   const [user] = useAuthState(auth);
+   const navigate = useNavigate();
   const {
     register,
     reset,
@@ -16,9 +19,7 @@ const FuelUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList").then((res) =>
-      res.json()
-    )
+    fetch(" http://localhost:5000/userList").then((res) => res.json())
   );
   // console.log(services)
   if (isLoading) {
@@ -41,14 +42,23 @@ const FuelUpdate = () => {
       fuelReceiverEmail: user.email,
     };
     //console.log(PgRunData);
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelData", {
+    fetch(" http://localhost:5000/fuelData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify(fuelData),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 401 || res.status === 403) {
+          toast.error("Unauthorize access");
+          signOut(auth);
+          localStorage.removeItem("accessToken");
+          navigate("/Login");
+        }
+        return res.json();
+      })
       .then((fuelData) => {
         if (fuelData.insertedId) {
           toast.success("Fuel Data Successfully Update");

@@ -4,6 +4,24 @@ import FuelBalance from './FuelBalance';
 
 
 const DashBoard = () => {
+  const subMenu = (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-6 h-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+        />
+      </svg>
+    </>
+  );
     return (
       <div className="drawer drawer-mobile bg-slate-100 ">
         <input
@@ -13,27 +31,42 @@ const DashBoard = () => {
         />
         <div className="drawer-content">
           {/*    <!-- Page content here --> */}
-          
+
           <Outlet />
         </div>
         <div className="drawer-side">
           <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
-          <ul className="menu p-4 overflow-y-auto w-70 bg-pink-400 text-white">
+          <ul className="menu p-4 overflow-y-auto lg:w-70 sm:w-50 bg-[#020203] text-[#FFCB24]">
             {/*  <!-- Sidebar content here --> */}
             <li>
-              <Link to="/Dashboard">PG Run Data</Link>
+              <Link to="/Dashboard">
+                {subMenu}
+                PG Run Data
+              </Link>
             </li>
             <li>
-              <Link to="/Dashboard/FuelData">Received Fuel Record</Link>
+              <Link to="/Dashboard/FuelData">
+                {" "}
+                {subMenu} Received Fuel Record
+              </Link>
             </li>
             <li>
-              <Link to="/Dashboard/ApprovalPending">Approval Pending List</Link>
+              <Link to="/Dashboard/ApprovalPending">
+                {" "}
+                {subMenu}Approval Pending List
+              </Link>
             </li>
             <li>
-              <Link to="/Dashboard/PgRunUpdate">PG Run DataUpdate</Link>
+              <Link to="/Dashboard/PgRunUpdate">
+                {" "}
+                {subMenu}PG Run DataUpdate
+              </Link>
             </li>
             <li>
-              <Link to="/Dashboard/FuelUpdate">Received Fuel Update</Link>
+              <Link to="/Dashboard/FuelUpdate">
+                {" "}
+                {subMenu}Received Fuel Update
+              </Link>
             </li>
           </ul>
         </div>

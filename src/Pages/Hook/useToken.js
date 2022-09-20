@@ -12,7 +12,7 @@ const useToken = (user) => {
         name: name,
         email: email,
       };
-      fetch(`https://enigmatic-eyrie-94440.herokuapp.com/user/${email}`, {
+      fetch(` http://localhost:5000/user/${email}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json",
@@ -22,7 +22,7 @@ const useToken = (user) => {
         .then((res) => res.json())
         .then((data) => {
           const accessToken = data.accessToken;
-          localStorage.setItem("token", accessToken);
+          localStorage.setItem("accessToken", accessToken);
           setToken(accessToken);
           //console.log(data.accessToken);
         });

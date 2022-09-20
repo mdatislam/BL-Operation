@@ -10,6 +10,7 @@ import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import ApprovalPendingRow from "./ApprovalPendingRow";
 import RejectApproval from "./RejectApproval";
+import { toast } from "react-toastify";
 
 const ApprovalPending = () => {
   const [user] = useAuthState(auth);
@@ -21,19 +22,17 @@ const ApprovalPending = () => {
     isLoading,
     refetch,
   } = useQuery(["list", user], () =>
-    fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/ApprovalList?email=${user.email}`,
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch(` http://localhost:5000/ApprovalList?email=${user.email}`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
+        toast.error("Unauthorize Access")
         signOut(auth);
         localStorage.removeItem("accessToken");
-        navigate("/Home");
+        navigate("/Login");
       }
       return res.json();
     })
@@ -48,9 +47,9 @@ const ApprovalPending = () => {
         <h2>Approval Pending List</h2>
       </div>
       <div className="overflow-x-auto">
-        <table className="table table-compact w-full border-2 border-cyan-200">
-          <thead>
-            <tr>
+        <table className=" table table-compact w-full">
+          <thead className="border-4  text-[#828282]  bg-[#555555] ! important">
+            <tr className="">
               <th>SN</th>
               <th>
                 <div>Approval</div>

@@ -1,8 +1,6 @@
 import NavBar from "./Pages/SharedPage/NavBar";
 import { Route, Routes } from "react-router-dom";
 import Home from "./Pages/HomePage/Home";
-import Nav1 from "./Nav1";
-import About from "./Pages/HomePage/About";
 import Footer from "./Pages/SharedPage/Footer";
 import Login from "./Pages/AuthPage/Login";
 import DashBoard from "./DashBoard/DashBoard";
@@ -17,6 +15,7 @@ import PgRunUpdate from "./DashBoard/PgRunUpdate";
 import ApprovalPending from "./DashBoard/ApprovalPending";
 import FuelUpdate from "./DashBoard/FuelUpdate";
 import FuelDataList from "./DashBoard/FuelDataList";
+import DG from "./Pages/DG-Info/DG";
 
 
 
@@ -28,7 +27,7 @@ function App() {
         <Routes>
           {/*  Public Route */}
           <Route path="/Home" element={<Home />}></Route>
-          <Route path="/About" element={<About />}></Route>
+          <Route path="/DgInfo" element={<DG />}></Route>
           <Route path="/Login" element={<Login />}></Route>
           <Route path="/Signup" element={<SignUp />}></Route>
           <Route path="*" element={<NotFound />}></Route>

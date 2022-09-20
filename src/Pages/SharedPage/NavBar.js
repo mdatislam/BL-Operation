@@ -11,7 +11,7 @@ const {pathname}=useLocation()
   const navigate = useNavigate();
   const logout = () => {
     signOut(auth);
-    localStorage.removeItem("token")
+    localStorage.removeItem("accessToken")
     navigate("/Home");
   };
   const menuItem = (
@@ -26,10 +26,10 @@ const {pathname}=useLocation()
           Data-Update
         </NavLink>
       </li>
-      
+
       <li>
-        <NavLink className="rounded-lg" to="/About">
-          About
+        <NavLink className="rounded-lg" to="/DgInfo">
+          DG-Info
         </NavLink>
       </li>
       <li>
@@ -39,10 +39,10 @@ const {pathname}=useLocation()
           </NavLink>
         ) : (
           <>
-            <button onClick={logout} className="btn rounded-lg btn-outline">
+            <small>{user.displayName}</small>
+            <button onClick={logout} className=" rounded-lg btn-outline">
               LogOut
             </button>
-            <small>{user.displayName}</small>
           </>
         )}
       </li>

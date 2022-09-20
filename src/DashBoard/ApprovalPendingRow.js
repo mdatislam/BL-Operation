@@ -1,7 +1,11 @@
+import { signOut } from "firebase/auth";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import auth from "../firebase.init";
 
 const ApprovalPendingRow = ({ pgRun, index, setReject, refetch }) => {
+  const navigate = useNavigate();
   const {
     _id,
     date,
@@ -17,17 +21,27 @@ const ApprovalPendingRow = ({ pgRun, index, setReject, refetch }) => {
   } = pgRun;
 
   const handleApprove = (id) => {
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/pgRunList/${id}`, {
+     
+    fetch(` http://localhost:5000/pgRunList/${id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({
         status: "Approved",
         remark: "OK",
       }),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 401 || res.status === 403) {
+          toast.error("Unauthorize access");
+          signOut(auth);
+          localStorage.removeItem("accessToken");
+          navigate("/Login");
+        }
+        return res.json();
+      })
       .then((approveData) => {
         if (approveData.modifiedCount > 0) {
           toast.success("Approved successfully done");
@@ -38,7 +52,7 @@ const ApprovalPendingRow = ({ pgRun, index, setReject, refetch }) => {
   };
 
   return (
-    <tr className="border-2 border-green-300">
+    <tr className="border-2 border-[#F0D786]">
       <th>{index + 1}</th>
       <th>{status}</th>
       <td>{date}</td>
@@ -51,22 +65,23 @@ const ApprovalPendingRow = ({ pgRun, index, setReject, refetch }) => {
       <td>{onCallName}</td>
       <td>{pgRunnerName}</td>
 
-      <td>
-        <label
-          className="btn btn-secondary text-white btn-xs mx-2"
-          onClick={() => handleApprove(_id)}
-        >
-          Approve
-        </label>
+        <td>
+          <label
+            className="btn btn-secondary text-white btn-xs mx-2"
+            onClick={() => handleApprove(_id)}
+          >
+            Approve
+          </label>
 
-        <label
-          htmlFor="rejectApproval"
-          className="btn btn-warning btn-xs"
-          onClick={() => setReject(pgRun)}
-        >
-          Reject
-        </label>
-      </td>
+          <label
+            htmlFor="rejectApproval"
+            className="btn btn-warning btn-xs"
+            onClick={() => setReject(pgRun)}
+          >
+            Reject
+          </label>
+        </td>
+     
     </tr>
   );
 };

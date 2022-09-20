@@ -1,8 +1,12 @@
+import { signOut } from "firebase/auth";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import auth from "../firebase.init";
 
 const RejectApproval = ({ reject, setReject, refetch }) => {
+    const navigate = useNavigate();
   const { _id } = reject;
   const {
     register,
@@ -12,21 +16,30 @@ const RejectApproval = ({ reject, setReject, refetch }) => {
   } = useForm();
 
   const onSubmit = (data, id) => {
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/pgRunList/${_id}`, {
+    fetch(` http://localhost:5000/pgRunList/${_id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({
         status: "Reject",
         remark: data.rejectMsg,
       }),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 401 || res.status === 403) {
+          toast.error("Unauthorize access");
+          signOut(auth);
+          localStorage.removeItem("accessToken");
+          navigate("/Login");
+        }
+        return res.json();
+      })
       .then((approveData) => {
         console.log(approveData);
         if (approveData.modifiedCount > 0) {
-          toast.error(" Data has been Rejected");
+          toast.info(" Data has been Rejected");
         }
       });
 
