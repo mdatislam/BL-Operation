@@ -21,8 +21,7 @@ const ApprovalPendingRow = ({ pgRun, index, setReject, refetch }) => {
   } = pgRun;
 
   const handleApprove = (id) => {
-     
-    fetch(` http://localhost:5000/pgRunList/${id}`, {
+    fetch(`  https://enigmatic-eyrie-94440.herokuapp.com/pgRunList/${id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -65,23 +64,22 @@ const ApprovalPendingRow = ({ pgRun, index, setReject, refetch }) => {
       <td>{onCallName}</td>
       <td>{pgRunnerName}</td>
 
-        <td>
-          <label
-            className="btn btn-secondary text-white btn-xs mx-2"
-            onClick={() => handleApprove(_id)}
-          >
-            Approve
-          </label>
+      <td>
+        <label
+          className="btn btn-secondary text-white btn-xs mx-2"
+          onClick={() => handleApprove(_id)}
+        >
+          Approve
+        </label>
 
-          <label
-            htmlFor="rejectApproval"
-            className="btn btn-warning btn-xs"
-            onClick={() => setReject(pgRun)}
-          >
-            Reject
-          </label>
-        </td>
-     
+        <label
+          htmlFor="rejectApproval"
+          className="btn btn-warning btn-xs"
+          onClick={() => setReject(pgRun)}
+        >
+          Reject
+        </label>
+      </td>
     </tr>
   );
 };

@@ -12,9 +12,9 @@ const FuelBalance = () => {
   const navigate = useNavigate();
 
   const { data: receiveFuel, isLoading } = useQuery(["list", user], () =>
-    fetch(` http://localhost:5000/fuelList?email=${user.email}`).then((res) =>
-      res.json()
-    )
+    fetch(
+      `  https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`
+    ).then((res) => res.json())
   );
 
   if (isLoading) {

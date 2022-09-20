@@ -10,7 +10,7 @@ import Loading from "../Pages/SharedPage/Loading";
 
 const FuelUpdate = () => {
   const [user] = useAuthState(auth);
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const {
     register,
     reset,
@@ -19,7 +19,9 @@ const FuelUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch(" http://localhost:5000/userList").then((res) => res.json())
+    fetch("  https://enigmatic-eyrie-94440.herokuapp.com/userList").then(
+      (res) => res.json()
+    )
   );
   // console.log(services)
   if (isLoading) {
@@ -42,7 +44,7 @@ const FuelUpdate = () => {
       fuelReceiverEmail: user.email,
     };
     //console.log(PgRunData);
-    fetch(" http://localhost:5000/fuelData", {
+    fetch("  https://enigmatic-eyrie-94440.herokuapp.com/fuelData", {
       method: "POST",
       headers: {
         "content-type": "application/json",

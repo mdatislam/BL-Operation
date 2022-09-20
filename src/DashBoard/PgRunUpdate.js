@@ -10,7 +10,7 @@ import Loading from "../Pages/SharedPage/Loading";
 
 const PgRunUpdate = () => {
   const [user] = useAuthState(auth);
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const {
     register,
     reset,
@@ -19,7 +19,9 @@ const PgRunUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch(" http://localhost:5000/userList").then((res) => res.json())
+    fetch("  https://enigmatic-eyrie-94440.herokuapp.com/userList").then(
+      (res) => res.json()
+    )
   );
   // console.log(services)
   if (isLoading) {
@@ -66,7 +68,7 @@ const PgRunUpdate = () => {
       status: "Pending",
     };
     //console.log(PgRunData);
-    fetch(" http://localhost:5000/pgRunData", {
+    fetch("  https://enigmatic-eyrie-94440.herokuapp.com/pgRunData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -76,13 +78,13 @@ const PgRunUpdate = () => {
     })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access")
+          toast.error("Unauthorize access");
           signOut(auth);
           localStorage.removeItem("accessToken");
           navigate("/Login");
         }
         return res.json();
-      } )
+      })
       .then((pgData) => {
         if (pgData.insertedId) {
           toast.success("Data Successfully Update");

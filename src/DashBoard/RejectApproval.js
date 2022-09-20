@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import auth from "../firebase.init";
 
 const RejectApproval = ({ reject, setReject, refetch }) => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const { _id } = reject;
   const {
     register,
@@ -16,7 +16,7 @@ const RejectApproval = ({ reject, setReject, refetch }) => {
   } = useForm();
 
   const onSubmit = (data, id) => {
-    fetch(` http://localhost:5000/pgRunList/${_id}`, {
+    fetch(`  https://enigmatic-eyrie-94440.herokuapp.com/pgRunList/${_id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
