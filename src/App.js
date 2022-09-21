@@ -16,6 +16,9 @@ import ApprovalPending from "./DashBoard/ApprovalPending";
 import FuelUpdate from "./DashBoard/FuelUpdate";
 import FuelDataList from "./DashBoard/FuelDataList";
 import DG from "./Pages/DG-Info/DG";
+import PgFuel from "./PgRunInfo/PgFuel";
+import AllPgRunList from "./PgRunInfo/AllPgRunList";
+import AllFuelList from "./PgRunInfo/AllFuelList";
 
 
 
@@ -26,7 +29,10 @@ function App() {
       <NavBar>
         <Routes>
           {/*  Public Route */}
+          <Route path="/" element={<Home />}></Route>
           <Route path="/Home" element={<Home />}></Route>
+          <Route path="/AllPgRunList" element={<AllPgRunList/>}></Route>
+          <Route path="/AllFuelList" element={<AllFuelList/>}></Route>
           <Route path="/DgInfo" element={<DG />}></Route>
           <Route path="/Login" element={<Login />}></Route>
           <Route path="/Signup" element={<SignUp />}></Route>
@@ -41,6 +47,10 @@ function App() {
               <Route path="FuelUpdate" element={<FuelUpdate />} />
               <Route path="FuelData" element={<FuelDataList />} />
             </Route>
+          </Route>
+
+          <Route element={<RequireAuth />}>
+            <Route path ="/PgFuel" element={<PgFuel/>}/>
           </Route>
         </Routes>
         <Footer />

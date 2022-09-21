@@ -16,19 +16,16 @@ const FuelDataList = () => {
   const navigate = useNavigate();
 
   const { data: fuelData, isLoading } = useQuery(["list", user], () =>
-    fetch(
-      `  https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`,
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch(`  http://localhost:5000/fuelList?email=${user.email}`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         signOut(auth);
         localStorage.removeItem("accessToken");
-        navigate("/Home");
+        navigate("/Login");
       }
       return res.json();
     })
@@ -38,11 +35,11 @@ const FuelDataList = () => {
     return <Loading />;
   }
 
-  const totalFuel = fuelData.map((fuelValue, index) => {
+  const totalFuel = fuelData?.map((fuelValue, index) => {
     const x = parseFloat(fuelValue.fuelQuantity);
     return x;
   });
-  const receivedFuel = totalFuel.reduce(
+  const receivedFuel = totalFuel?.reduce(
     (previous, current) => previous + parseFloat(current),
     0
   );

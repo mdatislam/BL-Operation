@@ -19,9 +19,12 @@ const PgRunUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("  https://enigmatic-eyrie-94440.herokuapp.com/userList").then(
-      (res) => res.json()
-    )
+    fetch("  http://localhost:5000/userList", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => res.json())
   );
   // console.log(services)
   if (isLoading) {
@@ -68,7 +71,7 @@ const PgRunUpdate = () => {
       status: "Pending",
     };
     //console.log(PgRunData);
-    fetch("  https://enigmatic-eyrie-94440.herokuapp.com/pgRunData", {
+    fetch("  http://localhost:5000/pgRunData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -111,6 +114,7 @@ const PgRunUpdate = () => {
               <input
                 type="date"
                 placeholder="Date"
+                defaultValue="9/21/22"
                 class="input input-bordered w-full max-w-xs"
                 {...register("date", {
                   required: {

@@ -14,33 +14,36 @@ const PgRunList = () => {
 
   const [receiveFuel, setReceiveFuel] = useState([]);
   useEffect(() => {
-    const url = `  https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`;
+    const url = `http://localhost:5000/fuelList?email=${user.email}`;
     //console.log(url)
-    fetch(url)
+    fetch(url, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setReceiveFuel(data));
   }, [user]);
 
   const { data: pgRunData, isLoading } = useQuery(["list", user], () =>
-    fetch(
-      `  https://enigmatic-eyrie-94440.herokuapp.com/pgRunAllList?email=${user.email}`
-    ).then((res) => res.json())
+    fetch(`  http://localhost:5000/pgRunAllList?email=${user.email}`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => res.json())
   );
 
-  //setLoading(true);
-  /* const { data: receiveFuel, isLoading1 } = useQuery(["list2", user], () =>
-    fetch(`  https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`).then((res) =>
-      res.json()
-    )
-  ); */
+
 
   if (isLoading) {
     return <Loading />;
   }
 
-  const approveConsume = pgRunData.filter((ap) => ap.status === "Approved");
+  const approveConsume = pgRunData?.filter((ap) => ap.status === "Approved");
 
-  const totalFuel = approveConsume.map((C) => {
+  const totalFuel = approveConsume?.map((C) => {
     const consume = C.fuelConsume;
     return consume;
   });
@@ -49,23 +52,23 @@ const PgRunList = () => {
   /* if (receiveFuel) {
    setLoading(false);
  } */
-  const totalConsume = totalFuel.reduce(
+  const totalConsume = totalFuel?.reduce(
     (previous, current) => previous + parseFloat(current),
     0
   );
 
-  const Fuel = receiveFuel.map((C) => {
+  const Fuel = receiveFuel?.map((C) => {
     const fuelReceive = C.fuelQuantity;
     return fuelReceive;
   });
 
   //console.log(Fuel);
-  const receivedFuel = Fuel.reduce(
+  const receivedFuel = Fuel?.reduce(
     (previous, current) => previous + parseFloat(current),
     0
   );
 
-  const balance = receivedFuel - totalConsume;
+  const balance = (receivedFuel - totalConsume).toFixed(2);
 
   return (
     <div>
@@ -94,9 +97,9 @@ const PgRunList = () => {
         </div>
       </div>
       <div className="overflow-x-auto">
-        <table className=" table-compact w-full">
+        <table className="table table-compact w-full">
           <thead className="border-3  text-[#FFcb24]">
-            <tr className="border-3 bg-[#555555]">
+            <tr className=" border-3 bg-[#555555]">
               <th>SN</th>
 
               <th>Date</th>

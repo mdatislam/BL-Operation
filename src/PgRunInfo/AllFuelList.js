@@ -1,0 +1,66 @@
+import { useQuery } from '@tanstack/react-query';
+import React from 'react';
+import Loading from '../Pages/SharedPage/Loading';
+import AllFuelListRow from './AllFuelListRow';
+
+const AllFuelList = () => {
+
+    const { data: receiveFuel, isLoading } = useQuery(["fuel"], () =>
+    fetch("http://localhost:5000/fuelListAll", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => res.json())
+  );
+
+  if (isLoading) {
+    return <Loading />;
+  }
+    return (
+      <div className="px-16 mt-12 mb-8">
+        <div className="grid h-12 card bg-[#6495ED] rounded-box place-items-center mb-4">
+          <h2 className="text-[#006400] card-title font-bold ">
+            Issued All Fuel Record
+          </h2>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="  table table-compact w-full">
+            <thead className="  border-4  text-[#FFcb24]">
+              <tr className=" border-4 bg-[#555555]">
+                <th>SN</th>
+
+                <th>Date</th>
+                <th>Slip No</th>
+                <th>PG No</th>
+                <th>Site ID</th>
+                <th>
+                  <div>Fuel</div>
+                  <div>Quantity</div>
+                </th>
+                <th>
+                  <div>Fuel</div>
+                  <div>Receiver</div>
+                </th>
+                <th>
+                  <div>Fuel</div>
+                  <div>Issuer</div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {receiveFuel?.map((fuel, index) => (
+                <AllFuelListRow
+                  key={fuel._id}
+                  fuel={fuel}
+                  index={index}
+                ></AllFuelListRow>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+};
+
+export default AllFuelList;

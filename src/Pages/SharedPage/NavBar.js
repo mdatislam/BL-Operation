@@ -22,6 +22,11 @@ const {pathname}=useLocation()
         </NavLink>
       </li>
       <li>
+        <NavLink className="rounded-lg" to="/PgFuel">
+          PG-Fuel-Info
+        </NavLink>
+      </li>
+      <li>
         <NavLink className="rounded-lg" to="/Dashboard">
           Data-Update
         </NavLink>
