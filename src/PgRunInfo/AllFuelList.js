@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Loading from '../Pages/SharedPage/Loading';
 import AllFuelListRow from './AllFuelListRow';
 
@@ -19,10 +20,16 @@ const AllFuelList = () => {
   }
     return (
       <div className="px-16 mt-12 mb-8">
-        <div className="grid h-12 card bg-[#6495ED] rounded-box place-items-center mb-4">
-          <h2 className="text-[#006400] card-title font-bold ">
-            Issued All Fuel Record
+        <div className="grid grid-cols-4 lg:grid-cols-8 h-12 card bg-[#DDA0DD] rounded-lg justify-self-start mb-8">
+          <Link to="/PgFuel" className="btn btn-outline">
+            Go BACK
+          </Link>
+          <h2 className="text-[#006400] stat-title lg:card-title font-bold col-start-2 col-span-2 lg:col-span-6 justify-self-center self-center">
+            All Issued Fuel Record
           </h2>
+          <Link to="/Dashboard/FuelUpdate" className="btn btn-outline">
+            GO FUEL UPDATE
+          </Link>
         </div>
         <div className="overflow-x-auto">
           <table className="  table table-compact w-full">

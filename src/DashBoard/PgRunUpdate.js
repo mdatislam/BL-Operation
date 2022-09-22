@@ -19,7 +19,7 @@ const PgRunUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("  http://localhost:5000/userList", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -71,7 +71,7 @@ const PgRunUpdate = () => {
       status: "Pending",
     };
     //console.log(PgRunData);
-    fetch("  http://localhost:5000/pgRunData", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/pgRunData", {
       method: "POST",
       headers: {
         "content-type": "application/json",

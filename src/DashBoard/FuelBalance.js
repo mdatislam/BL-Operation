@@ -9,7 +9,7 @@ const FuelBalance = () => {
   const [user] = useAuthState(auth);
  
 
-  const { data: users, isLoading } = useQuery(["userList", user], () =>
+  const { data: users, isLoading } = useQuery(["userList"], () =>
     fetch("http://localhost:5000/userList", {
       method: "GET",
       headers: {
@@ -77,6 +77,8 @@ const FuelBalance = () => {
       user.fuelQuantity = totalFuel;
     });
   }
+
+  // Total issued fuel calculation
 const FF = receiveFuel?.map(f=> f.fuelQuantity)
   const total = FF?.reduce(
     (previous, current) => previous + parseFloat(current),
@@ -104,7 +106,7 @@ const FF = receiveFuel?.map(f=> f.fuelQuantity)
           <tfoot>
             <tr className="border-collapse border-2 border-[#F0D786]">
               <th></th>
-              <th className="  text-[#008080]">Total Fuel=</th>
+              <th className=" font-bold text-[#008080]">Total Fuel Issued = </th>
               <th className="text-[#008080] text-xl font-bold">
                 {total}
                 <span className="stat-desc"> &nbsp;liter</span>

@@ -28,8 +28,7 @@ const AllPgRunRows = ({pgRun,index}) => {
           <td>{fuelConsume}</td>
           <td>{onCallName}</td>
           <td>{pgRunnerName}</td>
-          <td>{status}</td>
-          <td className="font-bold">{remark}</td>
+          
         </tr>
       </>
     );

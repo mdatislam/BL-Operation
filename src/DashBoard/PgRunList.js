@@ -27,15 +27,16 @@ const PgRunList = () => {
   }, [user]);
 
   const { data: pgRunData, isLoading } = useQuery(["list", user], () =>
-    fetch(`  http://localhost:5000/pgRunAllList?email=${user.email}`, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => res.json())
+    fetch(
+      ` https://enigmatic-eyrie-94440.herokuapp.com/pgRunAllList?email=${user.email}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => res.json())
   );
-
-
 
   if (isLoading) {
     return <Loading />;
