@@ -58,7 +58,7 @@ const AllPgRunList = () => {
               </tr>
             </thead>
             <tbody>
-              {pgRunData.map((pgRun, index) => (
+              {pgRunData?.map((pgRun, index) => (
                 <AllPgRunRows
                   key={pgRun._id}
                   pgRun={pgRun}

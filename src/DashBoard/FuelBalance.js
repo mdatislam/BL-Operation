@@ -99,7 +99,7 @@ const FF = receiveFuel?.map(f=> f.fuelQuantity)
             </tr>
           </thead>
           <tbody>
-            {users.map((u, index) => (
+            {users?.map((u, index) => (
               <FuelBalanceRow key={u._id} index={index} u={u}></FuelBalanceRow>
             ))}
           </tbody>
