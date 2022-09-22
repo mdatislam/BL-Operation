@@ -7,31 +7,27 @@ import FuelBalanceRow from "./FuelBalanceRow";
 
 const FuelBalance = () => {
   const [user] = useAuthState(auth);
- 
 
   const { data: users, isLoading } = useQuery(["userList"], () =>
-    fetch("http://localhost:5000/userList", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     }).then((res) => res.json())
   );
-   
 
   const { data: pgRunData, isLoading2 } = useQuery(["list"], () =>
-    fetch("http://localhost:5000/pgRunAll", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/pgRunAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     }).then((res) => res.json())
   );
-  
- 
 
   const { data: receiveFuel, isLoading3 } = useQuery(["fuel"], () =>
-    fetch("http://localhost:5000/fuelListAll", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -43,17 +39,17 @@ const FuelBalance = () => {
     return <Loading />;
   }
 
-   if (isLoading2) {
-     return <Loading />;
+  if (isLoading2) {
+    return <Loading />;
   }
-   if (isLoading3) {
-     return <Loading />;
-   }
+  if (isLoading3) {
+    return <Loading />;
+  }
   //console.log(users);
   //console.log(pgRunData);
   //console.log(receiveFuel);
-    
-  if(users){
+
+  if (users) {
     users?.forEach((user) => {
       // per user total fuel consumption calculation
 
@@ -79,12 +75,12 @@ const FuelBalance = () => {
   }
 
   // Total issued fuel calculation
-const FF = receiveFuel?.map(f=> f.fuelQuantity)
+  const FF = receiveFuel?.map((f) => f.fuelQuantity);
   const total = FF?.reduce(
     (previous, current) => previous + parseFloat(current),
     0
   );
-  
+
   return (
     <div>
       <div className="overflow-x-auto">
@@ -106,7 +102,9 @@ const FF = receiveFuel?.map(f=> f.fuelQuantity)
           <tfoot>
             <tr className="border-collapse border-2 border-[#F0D786]">
               <th></th>
-              <th className=" font-bold text-[#008080]">Total Fuel Issued = </th>
+              <th className=" font-bold text-[#008080]">
+                Total Fuel Issued ={" "}
+              </th>
               <th className="text-[#008080] text-xl font-bold">
                 {total}
                 <span className="stat-desc"> &nbsp;liter</span>
