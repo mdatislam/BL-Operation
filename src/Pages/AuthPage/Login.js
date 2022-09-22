@@ -125,22 +125,22 @@ const Login = () => {
             <div className="form-control mt-2">
               <input type="submit" className="btn btn-primary" value="Login" />
             </div>
-            <label className="label">
+           {/*  <label className="label">
               <p className="label-text-alt text-primary font-bold">
                 New here ?
                 <Link to="/Signup" className="label-text-alt link link-hover">
                   &nbsp; Please Register
                 </Link>
               </p>
-            </label>
+            </label> */}
           </div>
         </form>
-        <div class="divider mt-[-20px]">OR</div>
+       {/*  <div class="divider mt-[-20px]">OR</div>
         <div className="hero w-full max-w-sm mb-3">
           <button onClick={() => signInWithGoogle()} class="btn btn-outline">
             Sign with Google
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
