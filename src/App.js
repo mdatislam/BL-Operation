@@ -19,6 +19,9 @@ import DG from "./Pages/DG-Info/DG";
 import PgFuel from "./PgRunInfo/PgFuel";
 import AllPgRunList from "./PgRunInfo/AllPgRunList";
 import AllFuelList from "./PgRunInfo/AllFuelList";
+import EMDataUpdate from "./DashBoard/EMDataUpdate";
+import RequireAdmin from "./Pages/AuthPage/RequireAdmin";
+import UserList from "./Pages/Admin/UserList";
 
 
 
@@ -31,8 +34,8 @@ function App() {
           {/*  Public Route */}
           <Route path="/" element={<Home />}></Route>
           <Route path="/Home" element={<Home />}></Route>
-          <Route path="/AllPgRunList" element={<AllPgRunList/>}></Route>
-          <Route path="/AllFuelList" element={<AllFuelList/>}></Route>
+          <Route path="/AllPgRunList" element={<AllPgRunList />}></Route>
+          <Route path="/AllFuelList" element={<AllFuelList />}></Route>
           <Route path="/DgInfo" element={<DG />}></Route>
           <Route path="/Login" element={<Login />}></Route>
           <Route path="/Signup" element={<SignUp />}></Route>
@@ -41,16 +44,24 @@ function App() {
           {/*  private Route */}
           <Route element={<RequireAuth />}>
             <Route path="/Dashboard" element={<DashBoard />}>
-              <Route index element={<PgRunList/> }/>
+              <Route index element={<PgRunList />} />
               <Route path="ApprovalPending" element={<ApprovalPending />} />
               <Route path="PgRunUpdate" element={<PgRunUpdate />} />
               <Route path="FuelUpdate" element={<FuelUpdate />} />
               <Route path="FuelData" element={<FuelDataList />} />
+              <Route path="EMDataUpdate" element={<EMDataUpdate />} />
+              {/*  <Route path="UserList" element={<RequireAdmin>
+                <UserList/></RequireAdmin>}>
+              </Route> */}
+
+              <Route element={<RequireAdmin />}>
+                <Route path="UserList" element={<UserList />} />
+              </Route>
             </Route>
           </Route>
 
           <Route element={<RequireAuth />}>
-            <Route path ="/PgFuel" element={<PgFuel/>}/>
+            <Route path="/PgFuel" element={<PgFuel />} />
           </Route>
         </Routes>
         <Footer />

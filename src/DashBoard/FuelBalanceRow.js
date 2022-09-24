@@ -5,11 +5,15 @@ const FuelBalanceRow = ({ u,index }) => {
     const Balance = (fuelQuantity-fuelConsume).toFixed(2)
   return (
     <tr className="border-2 border-[#F0D786] hover">
-      <td>{index+1}</td>
+      <th>
+        <label>
+          <input type="checkbox" className="checkbox" />
+        </label>
+      </th>
       <td>{name}</td>
       <td>{fuelQuantity} </td>
       <td>{fuelConsume} </td>
-      <td className="card-title font-bold">{Balance}</td>
+      <td className="text-[#3d6ae8] font-bold">{Balance}</td>
     </tr>
   );
 };

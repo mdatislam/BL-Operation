@@ -7,19 +7,26 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import Loading from "../Pages/SharedPage/Loading";
+import EnergyMeter from "./EnergyMeter";
 
-const FuelUpdate = () => {
+const EMDataUpdate = () => {
   const [user] = useAuthState(auth);
-  const navigate = useNavigate();
-  const {
+    const navigate = useNavigate();
+    
+     const date = new Date();
+     date.setDate(date.getDate());
+     const default1 = date.toLocaleDateString("en-CA");
+     //console.log(default1);
+  
+    const {
     register,
     reset,
     formState: { errors },
     handleSubmit,
   } = useForm();
 
-  const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch(" http://localhost:5000/userList", {
+ /*  const { data:sites, isLoading } = useQuery(["siteList"], () =>
+    fetch(" http://localhost:5000/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -30,30 +37,38 @@ const FuelUpdate = () => {
   if (isLoading) {
     return <Loading />;
   }
+    let siteNo 
+    let EmpreSnNo;
+    let EmPreRead;
+    
+    sites.map(site => {
+        let siteNo = site.siteId
+        let EmpreSnNo = site.EmSerialNo
+        let EmPreRead = site.EmReading;
+})
+ */
+  
 
-  const availableUser = users.filter((u) => u.name !== user.displayName);
-
-  const onSubmit = (data) => {
-    const fuelIssuer = availableUser.filter((x) => x.name === data.fuelIssuer);
-    const fuelData = {
+    const onSubmit = (data) => {
+       console.log('click')
+    const EMData = {
       siteId: data.siteId,
-      date: data.date,
-      slipNo: data.slipNo,
-      pgNo: data.pgNo,
-      fuelQuantity: data.fuel,
-      fuelIssuer: data.fuelIssuer,
-      fuelIssuerEmail: fuelIssuer[0].email,
-      fuelReceiverName: user.displayName,
-      fuelReceiverEmail: user.email,
+      date: data.date2,
+      EmSerialNo: data.emNo,
+      EmReading: data.emReading,
+      //EmPreSerialNo: EmpreSnNo,
+      //EmPreReading: EmPreRead,
+      updaterName: user.displayName,
+      updaterEmail: user.email,
     };
     //console.log(PgRunData);
-    fetch(" http://localhost:5000/fuelData", {
-      method: "POST",
+     fetch(`http://localhost:5000/emInfo/RAJ_X0244`, {
+      method: "PUT",
       headers: {
         "content-type": "application/json",
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-      body: JSON.stringify(fuelData),
+      body: JSON.stringify(EMData),
     })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
@@ -64,20 +79,21 @@ const FuelUpdate = () => {
         }
         return res.json();
       })
-      .then((fuelData) => {
-        if (fuelData.insertedId) {
-          toast.success("Fuel Data Successfully Update");
+      .then((emData) => {
+        if (emData.insertedId) {
+          toast.success("EM Data Successfully Update");
         }
-        reset();
+        //reset();
         //console.log(pgData)
       });
-  };
+    };
+    
   return (
     <div className="flex  justify-center justify-items-center mt-8">
       <div class="card w-96 bg-base-100 shadow-2xl">
         <div class="card-body">
           <h2 class="text-center text-secondary-focus text-2xl font-bold mb-3">
-            Update Receive Fuel Info!
+            Update Energy Meter Info
           </h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Date input field */}
@@ -88,9 +104,10 @@ const FuelUpdate = () => {
               </label>
               <input
                 type="date"
-                placeholder="Date"
+                disabled
+                defaultValue={default1}
                 class="input input-bordered w-full max-w-xs"
-                {...register("date", {
+                {...register("date2", {
                   required: {
                     value: true,
                     message: " Date is required",
@@ -105,45 +122,45 @@ const FuelUpdate = () => {
                 )}
               </label>
             </div>
-            {/*  Slip Name */}
+            {/*  EM serial No */}
             <div class="form-control w-full max-w-xs">
               <input
-                type="number"
-                placeholder=" Fuel Slip No"
+                type="text"
+                placeholder=" Energy Meter Serial No"
                 class="input input-bordered w-full max-w-xs"
-                {...register("slipNo", {
+                {...register("emNo", {
                   required: {
                     value: true,
-                    message: " Slip No is required",
+                    message: " Energy Meter Serial No required",
                   },
                 })}
               />
               <label class="label">
-                {errors.slipNo?.type === "required" && (
+                {errors.emNo?.type === "required" && (
                   <span class="label-text-alt text-red-500">
-                    {errors.slipNo.message}
+                    {errors.emNo.message}
                   </span>
                 )}
               </label>
             </div>
 
-            {/*  PG No */}
+            {/*  Energy Meter Reading*/}
             <div class="form-control w-full max-w-xs">
               <input
-                type="text"
-                placeholder=" PG Number "
+                type="number"
+                placeholder=" Energy Meter Reading "
                 class="input input-bordered w-full max-w-xs"
-                {...register("pgNo", {
+                {...register("emReading", {
                   required: {
                     value: true,
-                    message: " PG No Required",
+                    message: " Energy Meter Reading Required",
                   },
                 })}
               />
               <label class="label">
-                {errors.pgNo?.type === "required" && (
+                {errors.emReading?.type === "required" && (
                   <span class="label-text-alt text-red-500">
-                    {errors.pgNo.message}
+                    {errors.emReading.message}
                   </span>
                 )}
               </label>
@@ -170,55 +187,40 @@ const FuelUpdate = () => {
                 )}
               </label>
             </div>
-            {/*  Fuel Quantity*/}
+            {/*  Previous EM no */}
+            <div class="form-control w-full max-w-xs">
+              <input
+                type="text"
+                placeholder="Previous EM No"
+                defaultValue="123"
+                class="input input-bordered w-full max-w-xs"
+                {...register("preEmNo")}
+              />
+              <label class="label"></label>
+            </div>
+
+            {/*  Previous EM Reading */}
             <div class="form-control w-full max-w-xs">
               <input
                 type="number"
-                placeholder="Fuel Quantity"
+                defaultValue="123"
+                placeholder="Previous EM Reading"
                 class="input input-bordered w-full max-w-xs"
-                {...register("fuel", {
-                  required: {
-                    value: true,
-                    message: " Fuel Quantity required",
-                  },
-                })}
+                {...register("preEmReading")}
               />
-              <label class="label">
-                {errors.fuel?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
-                    {errors.fuel.message}
-                  </span>
-                )}
-              </label>
             </div>
-            {/*  On Call Engineer  Name */}
-            <div class="form-control w-full max-w-xs">
+            {/*  Remarks */}
+            {/* <div class="form-control w-full max-w-xs">
               <label className="label">
-                <span className="label-text">Fuel Issuer:</span>
+                <span className="label-text">Remarks:</span>
               </label>
-              <select
+              <textarea
                 type="text"
-                placeholder=" Fuel Issuer Name"
+                placeholder="If one More Reading found"
                 class="input input-bordered w-full max-w-xs"
-                {...register("fuelIssuer", {
-                  required: {
-                    value: true,
-                    message: " Fuel Issuer Name required",
-                  },
-                })}
-              >
-                {availableUser.map((user) => (
-                  <option value={user.name}>{user.name} </option>
-                ))}
-              </select>
-              <label class="label">
-                {errors.fuelIssuer?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
-                    {errors.fuelIssuer.message}
-                  </span>
-                )}
-              </label>
-            </div>
+                {...register("remark")}
+              ></textarea>
+            </div> */}
 
             <input
               type="submit"
@@ -233,4 +235,4 @@ const FuelUpdate = () => {
   );
 };
 
-export default FuelUpdate;
+export default EMDataUpdate;

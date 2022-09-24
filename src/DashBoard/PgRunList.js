@@ -6,15 +6,16 @@ import PgRunRows from "./PgRunRows";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import DeletePgRun from "./DeletePgRun";
 
 const PgRunList = () => {
-  /* const [loading, setLoading] = useState(false); */
+const [delPg,setDelPg] = useState("");
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
 
   const [receiveFuel, setReceiveFuel] = useState([]);
   useEffect(() => {
-    const url = `https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`;
+    const url = `http://localhost:5000/fuelList?email=${user.email}`;
     //console.log(url)
     fetch(url, {
       method: "GET",
@@ -26,16 +27,13 @@ const PgRunList = () => {
       .then((data) => setReceiveFuel(data));
   }, [user]);
 
-  const { data: pgRunData, isLoading } = useQuery(["list", user], () =>
-    fetch(
-      ` https://enigmatic-eyrie-94440.herokuapp.com/pgRunAllList?email=${user.email}`,
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => res.json())
+  const { data: pgRunData, isLoading,refetch } = useQuery(["list", user], () =>
+    fetch(` http://localhost:5000/pgRunAllList?email=${user.email}`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => res.json())
   );
 
   if (isLoading) {
@@ -102,9 +100,13 @@ const PgRunList = () => {
           <thead className="border-3  text-[#FFcb24]">
             <tr className=" border-3 bg-[#555555]">
               <th>SN</th>
-
+              <th>Action</th>
               <th>Date</th>
               <th>Site ID</th>
+              <th>
+                <div>Rectifier</div>
+                <div>Module Capacity</div>
+              </th>
               <th>PG No</th>
               <th>
                 <div>PG Start</div>
@@ -135,13 +137,20 @@ const PgRunList = () => {
                 key={pgRun._id}
                 pgRun={pgRun}
                 index={index}
-
+                setDelPg={setDelPg}
                 //fuelConsume={fuelConsume}
               ></PgRunRows>
             ))}
           </tbody>
         </table>
       </div>
+      {delPg && (
+        <DeletePgRun
+          delPg={delPg}
+          setDelPg={setDelPg}
+          refetch={refetch}
+        ></DeletePgRun>
+      )}
     </div>
   );
 };

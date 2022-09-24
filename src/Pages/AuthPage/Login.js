@@ -1,15 +1,22 @@
-import React from "react";
-import { useSignInWithEmailAndPassword, useSignInWithGoogle } from "react-firebase-hooks/auth";
+import React, { useState } from "react";
+import {  useAuthState, useSignInWithEmailAndPassword, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import auth from './../../firebase.init';
 import Loading from './../SharedPage/Loading';
 import useToken from './../Hook/useToken';
+import PasswordReset from "./PasswordReset";
+import useAdmin from "../Hook/useAdmin";
+
 
 const Login = () => {
+  //const [user]=useAuthState(auth)
+  const admin=true
+  const [password,setPassword]=useState(" ")
   const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
-  const [signInWithEmailAndPassword, user, loading, error] =
+  const [signInWithEmailAndPassword, Euser, loading, error] =
     useSignInWithEmailAndPassword(auth);
+   /* const [admin] = useAdmin(Euser); */
   const {
     register,
     formState: { errors },
@@ -18,10 +25,10 @@ const Login = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const [token] =useToken(user || gUser)
+  const [token] =useToken(Euser || gUser)
 
   if (gLoading || loading) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   let signInError;
@@ -43,10 +50,14 @@ const Login = () => {
   if (token) {
     navigate(from,{replace:true})
   }
+ 
   return (
     <div className="hero h-screen bg-base-200 mt-[-30px]">
       <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-        <h1 className="text-2xl font-bold text-center py-2 mt-2">Login now!</h1>
+        <h1 className="text-2xl font-bold text-center py-2 mt-2">
+          {" "}
+          Welcome to Rangpur O&amp;M!
+        </h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="card-body mt-[-25px]">
             <div className="form-control">
@@ -115,33 +126,40 @@ const Login = () => {
                   </span>
                 )}
               </label>
-              <label className="label mt-[-15px]">
-                <Link to="xx" className="label-text-alt  link-hover">
-                  Forgot password?
-                </Link>
-              </label>
+
+              <div className="flex flex-cols">
+                <div>
+                  <label
+                    htmlFor="reset"
+                    className=" btn-link label-text-alt link-hover"
+                    onClick={() => setPassword(Euser.email)}
+                  >
+                    Reset Password ?
+                  </label>
+                </div>
+                
+              </div>
             </div>
-      {signInError}
+            {signInError}
             <div className="form-control mt-2">
               <input type="submit" className="btn btn-primary" value="Login" />
             </div>
-           {/*  <label className="label">
-              <p className="label-text-alt text-primary font-bold">
-                New here ?
-                <Link to="/Signup" className="label-text-alt link link-hover">
-                  &nbsp; Please Register
-                </Link>
-              </p>
-            </label> */}
+
+          
           </div>
         </form>
-       {/*  <div class="divider mt-[-20px]">OR</div>
-        <div className="hero w-full max-w-sm mb-3">
-          <button onClick={() => signInWithGoogle()} class="btn btn-outline">
-            Sign with Google
-          </button>
-        </div> */}
-      </div>
+
+         {/* <div class="divider mt-[-20px]">OR</div>
+
+        {admin && (
+          <div className="hero w-full max-w-sm mb-3">
+            <button onClick={() => signInWithGoogle()} class="btn btn-outline">
+              Sign with Google
+            </button>
+          </div>
+        )}  */}
+      </div> 
+      {password && <PasswordReset password={password}></PasswordReset>}
     </div>
   );
 };

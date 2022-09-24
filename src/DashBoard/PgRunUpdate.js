@@ -19,7 +19,7 @@ const PgRunUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/userList", {
+    fetch(" http://localhost:5000/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -31,7 +31,7 @@ const PgRunUpdate = () => {
     return <Loading />;
   }
 
-  const availableUser = users.filter((u) => u.name !== user.displayName);
+  const availableUser = users?.filter((u) => u.name !== user.displayName);
 
   const onSubmit = (data) => {
     const pgStart = data.startTime;
@@ -51,7 +51,7 @@ const PgRunUpdate = () => {
 
     const time = duration.split(":");
     const timeValue = parseInt(time[0], 10) + parseInt(time[1], 10) / 60;
-    const consume = (timeValue * 3).toFixed(2);
+    const consume = parseFloat((timeValue * 2.3)).toFixed(2);
     const onCallerEmail = availableUser.filter(
       (x) => x.name === data.onCallName
     );
@@ -59,6 +59,7 @@ const PgRunUpdate = () => {
     const PgRunData = {
       site: data.siteName,
       date: data.date,
+      moduleCapacity:data.capacity,
       pgStartTime: pgStart,
       pgStoptTime: pgStop,
       pgRunDuration: duration,
@@ -71,7 +72,7 @@ const PgRunUpdate = () => {
       status: "Pending",
     };
     //console.log(PgRunData);
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/pgRunData", {
+    fetch(" http://localhost:5000/pgRunData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -114,7 +115,7 @@ const PgRunUpdate = () => {
               <input
                 type="date"
                 placeholder="Date"
-                defaultValue="9/21/22"
+                //defaultValue="9/21/22"
                 class="input input-bordered w-full max-w-xs"
                 {...register("date", {
                   required: {
@@ -148,6 +149,36 @@ const PgRunUpdate = () => {
                 {errors.siteName?.type === "required" && (
                   <span class="label-text-alt text-red-500">
                     {errors.siteName.message}
+                  </span>
+                )}
+              </label>
+            </div>
+            {/* Rectifier Module Capacity */}
+            <div class="form-control w-full max-w-xs">
+              <label className="label">
+                <span className="label-text">Rectifier Module Capacity:</span>
+              </label>
+              <select
+                type="text"
+                defaultValue="kw3"
+                class="input input-bordered w-full max-w-xs"
+                {...register("capacity", {
+                  required: {
+                    value: true,
+                    message: " Module capacity is required",
+                  },
+                })}
+              >
+                <option>kw4</option>
+                <option>kw3</option>
+                <option>kw2</option>
+                <option>kw18</option>
+                
+              </select>
+              <label class="label">
+                {errors.onCallName?.type === "required" && (
+                  <span class="label-text-alt text-red-500">
+                    {errors.onCallName.message}
                   </span>
                 )}
               </label>

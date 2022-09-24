@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 
 const PgFuel = () => {
   return (
-    <div className="px-8 my-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16">
+    <div className="px-2 lg:px-16 my-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
         <div>
-          <div className="card w-full bg-base-200 shadow-2xl">
-            <div className="card-body">
+          <div className="lg:card w-full bg-base-100 shadow-xl">
+            <div className="lg:card-body">
               {/*  <h2 className="card-title">Card title!</h2> */}
               <div className="grid h-12 card bg-[#6495ED] rounded-box place-items-center mb-4">
                 <h2 className="text-[#006400] card-title font-bold ">

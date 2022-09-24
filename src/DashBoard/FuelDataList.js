@@ -16,15 +16,12 @@ const FuelDataList = () => {
   const navigate = useNavigate();
 
   const { data: fuelData, isLoading } = useQuery(["list", user], () =>
-    fetch(
-      ` https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`,
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch(` http://localhost:5000/fuelList?email=${user.email}`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         signOut(auth);
         localStorage.removeItem("accessToken");
