@@ -5,6 +5,7 @@ import Loading from "../SharedPage/Loading";
 import newUser from "../../images/NewUser.jpg";
 import { Link } from "react-router-dom";
 import RectifierInfo from "./RectifierInfo";
+import RectifierInfoUpdate from "./RectifierInfoUpdate";
 
 const UserList = () => {
 
@@ -26,7 +27,7 @@ const UserList = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
         <div className="overflow-x-auto mt-16 px-2">
           <div className="grid h-12 card bg-[#6495ED] rounded-box place-items-center mb-4">
-            <h2 className="text-[#006400] card-title font-bold ">
+            <h2 className="text-[#FFFFFF] card-title font-bold ">
               All User List
             </h2>
           </div>
@@ -57,13 +58,13 @@ const UserList = () => {
               <img src={newUser} alt="PG Pic" className="rounded-xl" />
             </figure>
             <div className="card-body">
-              <div className="stats bg-[#6495ED] text-primary-content">
+              <div className="stats stats-vertical lg:stats-horizontal shadow bg-[#6495ED] text-primary-content">
                 <div className="stat">
                   <div className="stat-title">To create</div>
                   <div className="stat-value">New user </div>
 
                   <div className="stat-actions">
-                    <Link to="/Signup" className="btn btn-wide btn-warning">
+                    <Link to="/Signup" className="btn  btn-warning">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -82,12 +83,21 @@ const UserList = () => {
                     </Link>
                   </div>
                 </div>
+
+                <div className="stat">
+                  <div className="stat-title">To Change Rate of</div>
+                  <div className="stat-value">Consume</div>
+                  <div className="stat-actions">
+                    <Link to="/RectifierUpdate" className="btn btn-secondary">
+                      Change-Rate
+                    </Link>
+                  </div>
+                </div>
               </div>
+              <RectifierInfo />
             </div>
-            <RectifierInfo />
           </div>
         </div>
-        <div></div>
       </div>
     </div>
   );

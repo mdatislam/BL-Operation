@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import { useQuery } from "@tanstack/react-query";
 import { signOut } from "firebase/auth";
 import React from "react";
@@ -26,14 +27,32 @@ const PgRunUpdate = () => {
       },
     }).then((res) => res.json())
   );
+  const { data:rectifiers, isLoading3 } = useQuery(["rectifierList"], () =>
+    fetch(" http://localhost:5000/rectifier", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => res.json())
+  );
+
+  
   // console.log(services)
-  if (isLoading) {
+  if (isLoading || isLoading3) {
     return <Loading />;
   }
-
+ 
+  
+  
   const availableUser = users?.filter((u) => u.name !== user.displayName);
 
-  const onSubmit = (data) => {
+
+  const onSubmit = async (data) => {
+    let mod = data.capacity;
+    let consumeFuel = rectifiers?.filter(rec => rec.capacity === mod); 
+    const consumePerModule = consumeFuel.map(ff => ff.consumeFuel);
+   // console.log(consumePerModule)
+   
     const pgStart = data.startTime;
     const pgStop = data.stopTime;
     let start = pgStart.split(":");
@@ -51,7 +70,12 @@ const PgRunUpdate = () => {
 
     const time = duration.split(":");
     const timeValue = parseInt(time[0], 10) + parseInt(time[1], 10) / 60;
-    const consume = parseFloat((timeValue * 2.3)).toFixed(2);
+  /*   let xx = y.module2
+    console.log(xx) */
+    /* const perModuleConsume = parseFloat(await moduleConsume?.map(m=>m.moduleKw));
+    console.log(perModuleConsume);  */
+    const consume = parseFloat(timeValue * consumePerModule[0]).toFixed(2);
+
     const onCallerEmail = availableUser.filter(
       (x) => x.name === data.onCallName
     );
@@ -93,7 +117,7 @@ const PgRunUpdate = () => {
         if (pgData.insertedId) {
           toast.success("Data Successfully Update");
         }
-        reset();
+       // reset();
         //console.log(pgData)
       });
   };
@@ -169,16 +193,16 @@ const PgRunUpdate = () => {
                   },
                 })}
               >
-                <option>kw4</option>
-                <option>kw3</option>
-                <option>kw2</option>
-                <option>kw18</option>
-                
+               {rectifiers?.map((recti) => (
+                  <option value={recti.capacity}>{recti.capacity} </option>
+                ))}
+               
+               
               </select>
               <label class="label">
-                {errors.onCallName?.type === "required" && (
+                {errors.capacity?.type === "required" && (
                   <span class="label-text-alt text-red-500">
-                    {errors.onCallName.message}
+                    {errors.capacity.message}
                   </span>
                 )}
               </label>

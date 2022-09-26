@@ -22,6 +22,7 @@ import AllFuelList from "./PgRunInfo/AllFuelList";
 import EMDataUpdate from "./DashBoard/EMDataUpdate";
 import RequireAdmin from "./Pages/AuthPage/RequireAdmin";
 import UserList from "./Pages/Admin/UserList";
+import RectifierInfoUpdate from "./Pages/Admin/RectifierInfoUpdate";
 
 
 
@@ -62,6 +63,10 @@ function App() {
 
           <Route element={<RequireAuth />}>
             <Route path="/PgFuel" element={<PgFuel />} />
+          </Route>
+
+          <Route element={<RequireAdmin />}>
+            <Route path="/RectifierUpdate" element={<RectifierInfoUpdate />} />
           </Route>
         </Routes>
         <Footer />
