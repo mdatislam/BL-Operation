@@ -20,15 +20,15 @@ const PgRunUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch(" http://localhost:5000/userList", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     }).then((res) => res.json())
   );
-  const { data:rectifiers, isLoading3 } = useQuery(["rectifierList"], () =>
-    fetch(" http://localhost:5000/rectifier", {
+  const { data: rectifiers, isLoading3 } = useQuery(["rectifierList"], () =>
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/rectifier", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -36,23 +36,19 @@ const PgRunUpdate = () => {
     }).then((res) => res.json())
   );
 
-  
   // console.log(services)
   if (isLoading || isLoading3) {
     return <Loading />;
   }
- 
-  
-  
-  const availableUser = users?.filter((u) => u.name !== user.displayName);
 
+  const availableUser = users?.filter((u) => u.name !== user.displayName);
 
   const onSubmit = async (data) => {
     let mod = data.capacity;
-    let consumeFuel = rectifiers?.filter(rec => rec.capacity === mod); 
-    const consumePerModule = consumeFuel.map(ff => ff.consumeFuel);
-   // console.log(consumePerModule)
-   
+    let consumeFuel = rectifiers?.filter((rec) => rec.capacity === mod);
+    const consumePerModule = consumeFuel.map((ff) => ff.consumeFuel);
+    // console.log(consumePerModule)
+
     const pgStart = data.startTime;
     const pgStop = data.stopTime;
     let start = pgStart.split(":");
@@ -70,7 +66,7 @@ const PgRunUpdate = () => {
 
     const time = duration.split(":");
     const timeValue = parseInt(time[0], 10) + parseInt(time[1], 10) / 60;
-  /*   let xx = y.module2
+    /*   let xx = y.module2
     console.log(xx) */
     /* const perModuleConsume = parseFloat(await moduleConsume?.map(m=>m.moduleKw));
     console.log(perModuleConsume);  */
@@ -83,7 +79,7 @@ const PgRunUpdate = () => {
     const PgRunData = {
       site: data.siteName,
       date: data.date,
-      moduleCapacity:data.capacity,
+      moduleCapacity: data.capacity,
       pgStartTime: pgStart,
       pgStoptTime: pgStop,
       pgRunDuration: duration,
@@ -96,7 +92,7 @@ const PgRunUpdate = () => {
       status: "Pending",
     };
     //console.log(PgRunData);
-    fetch(" http://localhost:5000/pgRunData", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/pgRunData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -117,7 +113,7 @@ const PgRunUpdate = () => {
         if (pgData.insertedId) {
           toast.success("Data Successfully Update");
         }
-       // reset();
+        // reset();
         //console.log(pgData)
       });
   };
@@ -193,11 +189,9 @@ const PgRunUpdate = () => {
                   },
                 })}
               >
-               {rectifiers?.map((recti) => (
+                {rectifiers?.map((recti) => (
                   <option value={recti.capacity}>{recti.capacity} </option>
                 ))}
-               
-               
               </select>
               <label class="label">
                 {errors.capacity?.type === "required" && (

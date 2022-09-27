@@ -11,22 +11,22 @@ import EnergyMeter from "./EnergyMeter";
 
 const EMDataUpdate = () => {
   const [user] = useAuthState(auth);
-    const navigate = useNavigate();
-    
-     const date = new Date();
-     date.setDate(date.getDate());
-     const default1 = date.toLocaleDateString("en-CA");
-     //console.log(default1);
-  
-    const {
+  const navigate = useNavigate();
+
+  const date = new Date();
+  date.setDate(date.getDate());
+  const default1 = date.toLocaleDateString("en-CA");
+  //console.log(default1);
+
+  const {
     register,
     reset,
     formState: { errors },
     handleSubmit,
   } = useForm();
 
- /*  const { data:sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" http://localhost:5000/emInfo", {
+  /*  const { data:sites, isLoading } = useQuery(["siteList"], () =>
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -47,10 +47,9 @@ const EMDataUpdate = () => {
         let EmPreRead = site.EmReading;
 })
  */
-  
 
-    const onSubmit = (data) => {
-       console.log('click')
+  const onSubmit = (data) => {
+    console.log("click");
     const EMData = {
       siteId: data.siteId,
       date: data.date2,
@@ -62,7 +61,7 @@ const EMDataUpdate = () => {
       updaterEmail: user.email,
     };
     //console.log(PgRunData);
-     fetch(`http://localhost:5000/emInfo/RAJ_X0244`, {
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/emInfo/RAJ_X0244`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -86,8 +85,8 @@ const EMDataUpdate = () => {
         //reset();
         //console.log(pgData)
       });
-    };
-    
+  };
+
   return (
     <div className="flex  justify-center justify-items-center mt-8">
       <div class="card w-96 bg-base-100 shadow-2xl">

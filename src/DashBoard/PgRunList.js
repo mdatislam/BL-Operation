@@ -9,13 +9,13 @@ import { useState, useEffect } from "react";
 import DeletePgRun from "./DeletePgRun";
 
 const PgRunList = () => {
-const [delPg,setDelPg] = useState("");
+  const [delPg, setDelPg] = useState("");
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
 
   const [receiveFuel, setReceiveFuel] = useState([]);
   useEffect(() => {
-    const url = `http://localhost:5000/fuelList?email=${user.email}`;
+    const url = `https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`;
     //console.log(url)
     fetch(url, {
       method: "GET",
@@ -27,13 +27,20 @@ const [delPg,setDelPg] = useState("");
       .then((data) => setReceiveFuel(data));
   }, [user]);
 
-  const { data: pgRunData, isLoading,refetch } = useQuery(["list", user], () =>
-    fetch(` http://localhost:5000/pgRunAllList?email=${user.email}`, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => res.json())
+  const {
+    data: pgRunData,
+    isLoading,
+    refetch,
+  } = useQuery(["list", user], () =>
+    fetch(
+      ` https://enigmatic-eyrie-94440.herokuapp.com/pgRunAllList?email=${user.email}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => res.json())
   );
 
   if (isLoading) {

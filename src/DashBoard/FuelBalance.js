@@ -9,7 +9,7 @@ const FuelBalance = () => {
   const [user] = useAuthState(auth);
 
   const { data: users, isLoading } = useQuery(["userList"], () =>
-    fetch("http://localhost:5000/userList", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -18,7 +18,7 @@ const FuelBalance = () => {
   );
 
   const { data: pgRunData, isLoading2 } = useQuery(["list"], () =>
-    fetch("http://localhost:5000/pgRunAll", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/pgRunAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -27,7 +27,7 @@ const FuelBalance = () => {
   );
 
   const { data: receiveFuel, isLoading3 } = useQuery(["fuel"], () =>
-    fetch("http://localhost:5000/fuelListAll", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -39,34 +39,33 @@ const FuelBalance = () => {
     return <Loading />;
   }
 
- 
   //console.log(users);
   //console.log(pgRunData);
   //console.log(receiveFuel);
 
-/*   if (users) { */
-   const u=  users?.forEach((user) => {
-      // per user total fuel consumption calculation
+  /*   if (users) { */
+  const u = users?.forEach((user) => {
+    // per user total fuel consumption calculation
 
-      const pgRun = pgRunData?.filter((p) => p.pgRunnerEmail === user.email);
-      const consume = pgRun?.map((c) => c.fuelConsume);
-      const totalConsume = consume?.reduce(
-        (previous, current) => previous + parseFloat(current),
-        0
-      );
-      user.fuelConsume = totalConsume;
+    const pgRun = pgRunData?.filter((p) => p.pgRunnerEmail === user.email);
+    const consume = pgRun?.map((c) => c.fuelConsume);
+    const totalConsume = consume?.reduce(
+      (previous, current) => previous + parseFloat(current),
+      0
+    );
+    user.fuelConsume = totalConsume;
 
-      // per user total fuel receive calculation
-      const fuelTaker = receiveFuel?.filter(
-        (f) => f.fuelReceiverEmail === user.email
-      );
-      const fuelTaken = fuelTaker?.map((d) => d.fuelQuantity);
-      const totalFuel = fuelTaken?.reduce(
-        (previous, current) => previous + parseFloat(current),
-        0
-      );
-      user.fuelQuantity = totalFuel;
-    });
+    // per user total fuel receive calculation
+    const fuelTaker = receiveFuel?.filter(
+      (f) => f.fuelReceiverEmail === user.email
+    );
+    const fuelTaken = fuelTaker?.map((d) => d.fuelQuantity);
+    const totalFuel = fuelTaken?.reduce(
+      (previous, current) => previous + parseFloat(current),
+      0
+    );
+    user.fuelQuantity = totalFuel;
+  });
   /* } */
 
   // Total issued fuel calculation

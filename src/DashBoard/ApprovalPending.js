@@ -22,12 +22,15 @@ const ApprovalPending = () => {
     isLoading,
     refetch,
   } = useQuery(["list", user], () =>
-    fetch(` http://localhost:5000/ApprovalList?email=${user.email}`, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
+    fetch(
+      ` https://enigmatic-eyrie-94440.herokuapp.com/ApprovalList?email=${user.email}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         toast.error("Unauthorize Access");
         signOut(auth);
