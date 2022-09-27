@@ -38,6 +38,11 @@ const {pathname}=useLocation()
         </NavLink>
       </li>
       <li>
+        <NavLink className="rounded-lg" to="/EmInfo">
+          EM-Info
+        </NavLink>
+      </li>
+      <li>
         {!user ? (
           <NavLink className="rounded-lg" to="/Login">
             Login

@@ -31,7 +31,7 @@ const FuelUpdate = () => {
     return <Loading />;
   }
 
-  const availableUser = users.filter((u) => u.name !== user.displayName);
+  const availableUser = users?.filter((u) => u.name !== user.displayName);
 
   const onSubmit = (data) => {
     const fuelIssuer = availableUser.filter((x) => x.name === data.fuelIssuer);

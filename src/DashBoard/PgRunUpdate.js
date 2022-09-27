@@ -113,7 +113,7 @@ const PgRunUpdate = () => {
         if (pgData.insertedId) {
           toast.success("Data Successfully Update");
         }
-        // reset();
+        reset();
         //console.log(pgData)
       });
   };

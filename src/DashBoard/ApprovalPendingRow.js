@@ -51,7 +51,7 @@ const ApprovalPendingRow = ({ pgRun, index, setReject, refetch }) => {
   };
 
   return (
-    <tr className="border-2 border-[#F0D786]">
+    <tr className="border-2 border-[#F0D786] hover">
       <th>{index + 1}</th>
       <th>{status}</th>
       <td>{date}</td>

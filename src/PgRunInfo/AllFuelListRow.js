@@ -11,7 +11,7 @@ const AllFuelListRow = ({ fuel, index }) => {
        fuelReceiverName,
      } = fuel;
     return (
-      <tr className="border-2 border-[#F0D786]">
+      <tr className="border-2 border-[#F0D786] hover">
         <th>{index + 1}</th>
 
         <td>{date}</td>

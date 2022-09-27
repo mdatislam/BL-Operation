@@ -10,12 +10,18 @@ import FuelDataListRow from "./FuelDataListRow";
 import FuelBalance from "./FuelBalance";
 import PgRunList from "./PgRunList";
 import { useState } from "react";
+import DeleteReceiveFuel from "./DeleteReceiveFuel";
 
 const FuelDataList = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
+  const [delFuel, setDelFuel] = useState("");
 
-  const { data: fuelData, isLoading } = useQuery(["list", user], () =>
+  const {
+    data: fuelData,
+    isLoading,
+    refetch,
+  } = useQuery(["list", user], () =>
     fetch(
       ` https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`,
       {
@@ -61,7 +67,6 @@ const FuelDataList = () => {
           <thead className="  border-4  text-[#FFcb24]">
             <tr className=" border-4 bg-[#555555]">
               <th>SN</th>
-
               <th>Date</th>
               <th>Slip No</th>
               <th>PG No</th>
@@ -78,20 +83,29 @@ const FuelDataList = () => {
                 <div>Fuel</div>
                 <div>Issuer</div>
               </th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {fuelData.map((fuel, index) => (
+            {fuelData?.map((fuel, index) => (
               <FuelDataListRow
                 key={fuel._id}
                 fuel={fuel}
                 index={index}
                 F={receivedFuel}
+                setDelFuel={setDelFuel}
               ></FuelDataListRow>
             ))}
           </tbody>
         </table>
       </div>
+      {delFuel && (
+        <DeleteReceiveFuel
+          delFuel={delFuel}
+          setDelFuel={setDelFuel}
+          refetch={refetch}
+        />
+      )}
     </div>
   );
 };

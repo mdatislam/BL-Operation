@@ -4,7 +4,7 @@ const UserListRows = ({ use}) => {
   const { name, email, role } = use;
 
   return (
-    <tr className="border-2 border-[#ffcb24]">
+    <tr className="border-2 border-[#ffcb24] hover">
       <th>
         <label>
           <input type="checkbox" className="checkbox" />

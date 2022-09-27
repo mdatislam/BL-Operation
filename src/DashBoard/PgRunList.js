@@ -107,7 +107,6 @@ const PgRunList = () => {
           <thead className="border-3  text-[#FFcb24]">
             <tr className=" border-3 bg-[#555555]">
               <th>SN</th>
-              <th>Action</th>
               <th>Date</th>
               <th>Site ID</th>
               <th>
@@ -135,6 +134,7 @@ const PgRunList = () => {
                 <div>Approval</div>
                 <div>Status</div>
               </th>
+              <th>Action</th>
               <th>Remarks</th>
             </tr>
           </thead>

@@ -1,23 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { signOut } from "firebase/auth";
-import React from "react";
+import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import Loading from "../Pages/SharedPage/Loading";
-import EnergyMeter from "./EnergyMeter";
 
 const EMDataUpdate = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
-
-  const date = new Date();
-  date.setDate(date.getDate());
-  const default1 = date.toLocaleDateString("en-CA");
-  //console.log(default1);
-
+  /*  const [preEmNo, setPreEmNo]= useState("")
+  const [preReading, setPreReading]= useState("")
+    */
   const {
     register,
     reset,
@@ -25,7 +21,7 @@ const EMDataUpdate = () => {
     handleSubmit,
   } = useForm();
 
-  /*  const { data:sites, isLoading } = useQuery(["siteList"], () =>
+  const { data: sites, isLoading } = useQuery(["siteList"], () =>
     fetch(" https://enigmatic-eyrie-94440.herokuapp.com/emInfo", {
       method: "GET",
       headers: {
@@ -37,31 +33,36 @@ const EMDataUpdate = () => {
   if (isLoading) {
     return <Loading />;
   }
-    let siteNo 
-    let EmpreSnNo;
-    let EmPreRead;
-    
-    sites.map(site => {
-        let siteNo = site.siteId
-        let EmpreSnNo = site.EmSerialNo
-        let EmPreRead = site.EmReading;
-})
- */
+  //console.log(preEmNo)
 
   const onSubmit = (data) => {
-    console.log("click");
+    console.log(" click me");
+    const siteID = data.siteId;
+    const presentSite = sites.filter((site) => site.siteId === siteID);
+    //console.log(presentSite)
+
+    const EmPreReading = presentSite.map((s) => s.EmReading);
+    const EmPreSerialNo = presentSite.map((s) => s.EmSerialNo);
+    const PreDate = presentSite.map((s) => s.date);
+    // console.log(EmPreReading[0])
+
+    /* const date = new Date();
+    date.setDate(date.getDate());
+    const default1 = date.toLocaleDateString("en-CA");  */
+
     const EMData = {
-      siteId: data.siteId,
+      siteId: siteID,
       date: data.date2,
       EmSerialNo: data.emNo,
       EmReading: data.emReading,
-      //EmPreSerialNo: EmpreSnNo,
-      //EmPreReading: EmPreRead,
+      preDate: PreDate[0],
+      EmPreSerialNo: EmPreSerialNo[0],
+      EmPreReading: EmPreReading[0],
       updaterName: user.displayName,
       updaterEmail: user.email,
     };
-    //console.log(PgRunData);
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/emInfo/RAJ_X0244`, {
+
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/emInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -79,17 +80,18 @@ const EMDataUpdate = () => {
         return res.json();
       })
       .then((emData) => {
-        if (emData.insertedId) {
-          toast.success("EM Data Successfully Update");
+        console.log(emData);
+        if (emData.upsertedCount || emData.modifiedCount) {
+          toast.success("Data Successfully Update");
         }
-        //reset();
+        reset();
         //console.log(pgData)
       });
   };
 
   return (
-    <div className="flex  justify-center justify-items-center mt-8">
-      <div class="card w-96 bg-base-100 shadow-2xl">
+    <div className="flex justify-center justify-items-center mt-8">
+      <div class="card  lg:w-96 bg-base-100 shadow-2xl">
         <div class="card-body">
           <h2 class="text-center text-secondary-focus text-2xl font-bold mb-3">
             Update Energy Meter Info
@@ -103,8 +105,8 @@ const EMDataUpdate = () => {
               </label>
               <input
                 type="date"
-                disabled
-                defaultValue={default1}
+                //defaultValue={default1}
+                // disabled
                 class="input input-bordered w-full max-w-xs"
                 {...register("date2", {
                   required: {
@@ -117,6 +119,28 @@ const EMDataUpdate = () => {
                 {errors.date?.type === "required" && (
                   <span class="label-text-alt text-red-500">
                     {errors.date.message}
+                  </span>
+                )}
+              </label>
+            </div>
+
+            {/*  Site ID */}
+            <div class="form-control w-full max-w-xs">
+              <input
+                type="text"
+                placeholder="Site ID"
+                class="input input-bordered w-full max-w-xs"
+                {...register("siteId", {
+                  required: {
+                    value: true,
+                    message: " Site ID Required",
+                  },
+                })}
+              />
+              <label class="label">
+                {errors.siteId?.type === "required" && (
+                  <span class="label-text-alt text-red-500">
+                    {errors.siteId.message}
                   </span>
                 )}
               </label>
@@ -164,62 +188,6 @@ const EMDataUpdate = () => {
                 )}
               </label>
             </div>
-
-            {/*  Site ID */}
-            <div class="form-control w-full max-w-xs">
-              <input
-                type="text"
-                placeholder="Site ID"
-                class="input input-bordered w-full max-w-xs"
-                {...register("siteId", {
-                  required: {
-                    value: true,
-                    message: " Site ID Required",
-                  },
-                })}
-              />
-              <label class="label">
-                {errors.siteId?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
-                    {errors.siteId.message}
-                  </span>
-                )}
-              </label>
-            </div>
-            {/*  Previous EM no */}
-            <div class="form-control w-full max-w-xs">
-              <input
-                type="text"
-                placeholder="Previous EM No"
-                defaultValue="123"
-                class="input input-bordered w-full max-w-xs"
-                {...register("preEmNo")}
-              />
-              <label class="label"></label>
-            </div>
-
-            {/*  Previous EM Reading */}
-            <div class="form-control w-full max-w-xs">
-              <input
-                type="number"
-                defaultValue="123"
-                placeholder="Previous EM Reading"
-                class="input input-bordered w-full max-w-xs"
-                {...register("preEmReading")}
-              />
-            </div>
-            {/*  Remarks */}
-            {/* <div class="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="label-text">Remarks:</span>
-              </label>
-              <textarea
-                type="text"
-                placeholder="If one More Reading found"
-                class="input input-bordered w-full max-w-xs"
-                {...register("remark")}
-              ></textarea>
-            </div> */}
 
             <input
               type="submit"

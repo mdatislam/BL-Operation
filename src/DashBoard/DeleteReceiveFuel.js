@@ -1,12 +1,12 @@
 import React from "react";
 import { toast } from "react-toastify";
 
-const DeletePgRun = ({ delPg, refetch, setDelPg }) => {
-  const { _id } = delPg;
+const DeleteReceiveFuel = ({ delFuel, refetch, setDelFuel }) => {
+  const { _id } = delFuel;
 
   const handleDelete = (id) => {
     console.log(id);
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/pgRun/${id}`, {
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/receivedFuel/${id}`, {
       method: "DELETE",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -15,25 +15,28 @@ const DeletePgRun = ({ delPg, refetch, setDelPg }) => {
       .then((res) => res.json())
       .then((data) => {
         if (data.deletedCount > 0) {
-          toast.success(" Delete done ");
+          toast.success(" Delete successfully done ");
         }
         refetch();
-        setDelPg(null);
+        setDelFuel(null);
+
         // console.log(data)
       });
   };
   return (
     <div>
-      <input type="checkbox" id="deletePgRun" className="modal-toggle" />
+      <input type="checkbox" id="deleteFuel" className="modal-toggle" />
       <div className="modal modal-bottom sm:modal-middle">
         <div className="modal-box relative">
           <label
-            htmlFor="deletePgRun"
+            htmlFor="deleteFuel"
             className="btn btn-sm btn-circle absolute right-2 top-2"
           >
             ✕
           </label>
-          <h3 className="font-bold text-warning text-lg">Warning!</h3>
+          <h3 className="font-bold text-warning text-lg  text-center">
+            Warning!
+          </h3>
           <p className="py-4 font-bold text-2xl text-red-500">
             Are You Sure to Delete it ?
           </p>
@@ -48,4 +51,4 @@ const DeletePgRun = ({ delPg, refetch, setDelPg }) => {
   );
 };
 
-export default DeletePgRun;
+export default DeleteReceiveFuel;

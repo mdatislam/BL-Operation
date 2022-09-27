@@ -42,11 +42,26 @@ const PgRunRows = ({ pgRun, index,refetch,setDelPg }) => {
   /*  */
   return (
     <>
-      <tr className="border-2 border-[#F0D786]">
+      <tr className="border-2 border-[#F0D786] hover">
         <th>{index + 1}</th>
+
+        <td>{date}</td>
+        <td>{site}</td>
+        <td>{moduleCapacity}</td>
+        <td>{pgNo}</td>
+        <td>{pgStartTime}</td>
+        <td>{pgStoptTime}</td>
+        <td>{pgRunDuration}</td>
+        <td>{fuelConsume}</td>
+        <td>{onCallName}</td>
+        <td>{pgRunnerName}</td>
+        <td>{status}</td>
         <th>
-          <label htmlFor="deletePgRun" className="btn btn-link"
-          onClick={()=>setDelPg(pgRun)}>
+          <label
+            htmlFor="deletePgRun"
+            className="btn btn-link text-red-500"
+            onClick={() => setDelPg(pgRun)}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -80,18 +95,6 @@ const PgRunRows = ({ pgRun, index,refetch,setDelPg }) => {
             </svg>
           </label> */}
         </th>
-
-        <td>{date}</td>
-        <td>{site}</td>
-        <td>{moduleCapacity}</td>
-        <td>{pgNo}</td>
-        <td>{pgStartTime}</td>
-        <td>{pgStoptTime}</td>
-        <td>{pgRunDuration}</td>
-        <td>{fuelConsume}</td>
-        <td>{onCallName}</td>
-        <td>{pgRunnerName}</td>
-        <td>{status}</td>
         <td className="font-bold">{remark}</td>
       </tr>
     </>

@@ -23,6 +23,7 @@ import EMDataUpdate from "./DashBoard/EMDataUpdate";
 import RequireAdmin from "./Pages/AuthPage/RequireAdmin";
 import UserList from "./Pages/Admin/UserList";
 import RectifierInfoUpdate from "./Pages/Admin/RectifierInfoUpdate";
+import EminfoList from "./EnergyMeter/EminfoList";
 
 
 
@@ -35,10 +36,7 @@ function App() {
           {/*  Public Route */}
           <Route path="/" element={<Home />}></Route>
           <Route path="/Home" element={<Home />}></Route>
-          <Route path="/AllPgRunList" element={<AllPgRunList />}></Route>
-          <Route path="/AllFuelList" element={<AllFuelList />}></Route>
-          <Route path="/DgInfo" element={<DG />}></Route>
-          <Route path="/Login" element={<Login />}></Route>
+
           {/*     <Route path="/Signup" element={<SignUp />}></Route> */}
           <Route path="*" element={<NotFound />}></Route>
 
@@ -63,6 +61,11 @@ function App() {
 
           <Route element={<RequireAuth />}>
             <Route path="/PgFuel" element={<PgFuel />} />
+            <Route path="/AllPgRunList" element={<AllPgRunList />}></Route>
+            <Route path="/AllFuelList" element={<AllFuelList />}></Route>
+            <Route path="/DgInfo" element={<DG />}></Route>
+            <Route path="/Login" element={<Login />}></Route>
+            <Route path="/EmInfo" element={<EminfoList />}></Route>
           </Route>
 
           <Route element={<RequireAdmin />}>
