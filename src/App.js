@@ -39,7 +39,7 @@ function App() {
           <Route path="/AllFuelList" element={<AllFuelList />}></Route>
           <Route path="/DgInfo" element={<DG />}></Route>
           <Route path="/Login" element={<Login />}></Route>
-          <Route path="/Signup" element={<SignUp />}></Route>
+          {/*     <Route path="/Signup" element={<SignUp />}></Route> */}
           <Route path="*" element={<NotFound />}></Route>
 
           {/*  private Route */}
@@ -67,6 +67,7 @@ function App() {
 
           <Route element={<RequireAdmin />}>
             <Route path="/RectifierUpdate" element={<RectifierInfoUpdate />} />
+            <Route path="/Signup" element={<SignUp />}></Route>
           </Route>
         </Routes>
         <Footer />

@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../../firebase.init";
 import Loading from "../SharedPage/Loading";
+import ZTE from "../../images/ZTE.png" 
+import huawei from "../../images/Huawei.png" 
 
 
 
@@ -61,10 +63,9 @@ const RectifierInfoUpdate = () => {
     return (
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row-reverse">
-          <img
-            className="max-w-lg rounded-lg shadow-2xl"
-            src="https://placeimg.com/260/400/arch"
-          />
+          <figure className="px-10 pt-10">
+            <img src={huawei} alt="PG Pic" className="rounded-xl" />
+          </figure>
           <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
             <div className="card-body">
               <h2 class="text-center text-2xl font-bold mb-3">

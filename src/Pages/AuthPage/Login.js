@@ -7,6 +7,7 @@ import Loading from './../SharedPage/Loading';
 import useToken from './../Hook/useToken';
 import PasswordReset from "./PasswordReset";
 import useAdmin from "../Hook/useAdmin";
+import loginBack from "../../images/login.png"
 
 
 const Login = () => {
@@ -52,11 +53,14 @@ const Login = () => {
   }
  
   return (
-    <div className="hero h-screen bg-base-200 mt-[-30px]">
+    <div
+      className="hero h-screen bg-base-200 mt-[-30px]"
+      style={{ backgroundImage: `url(${loginBack})` }}
+    >
       <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
         <h1 className="text-2xl font-bold text-center py-2 mt-2">
           {" "}
-          Welcome to Rangpur O&amp;M!
+          Welcome Back !!
         </h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="card-body mt-[-25px]">
@@ -137,19 +141,16 @@ const Login = () => {
                     Reset Password ?
                   </label>
                 </div>
-                
               </div>
             </div>
             {signInError}
             <div className="form-control mt-2">
               <input type="submit" className="btn btn-primary" value="Login" />
             </div>
-
-          
           </div>
         </form>
 
-         {/* <div class="divider mt-[-20px]">OR</div>
+        {/* <div class="divider mt-[-20px]">OR</div>
 
         {admin && (
           <div className="hero w-full max-w-sm mb-3">
@@ -158,7 +159,7 @@ const Login = () => {
             </button>
           </div>
         )}  */}
-      </div> 
+      </div>
       {password && <PasswordReset password={password}></PasswordReset>}
     </div>
   );
