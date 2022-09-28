@@ -36,7 +36,7 @@ function App() {
           {/*  Public Route */}
           <Route path="/" element={<Home />}></Route>
           <Route path="/Home" element={<Home />}></Route>
-
+          <Route path="/Login" element={<Login />}></Route>
           {/*     <Route path="/Signup" element={<SignUp />}></Route> */}
           <Route path="*" element={<NotFound />}></Route>
 
@@ -64,7 +64,7 @@ function App() {
             <Route path="/AllPgRunList" element={<AllPgRunList />}></Route>
             <Route path="/AllFuelList" element={<AllFuelList />}></Route>
             <Route path="/DgInfo" element={<DG />}></Route>
-            <Route path="/Login" element={<Login />}></Route>
+
             <Route path="/EmInfo" element={<EminfoList />}></Route>
           </Route>
 
