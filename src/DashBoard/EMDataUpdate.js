@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import Loading from "../Pages/SharedPage/Loading";
+import background from "../../src/images/bb.jpg"
 
 const EMDataUpdate = () => {
   const [user] = useAuthState(auth);
@@ -14,6 +15,8 @@ const EMDataUpdate = () => {
   /*  const [preEmNo, setPreEmNo]= useState("")
   const [preReading, setPreReading]= useState("")
     */
+  const [imgUrl, setImageUrl] = useState("");
+  const [loading, setLoading] = useState(false);
   const {
     register,
     reset,
@@ -22,7 +25,7 @@ const EMDataUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/emInfo", {
+    fetch(" http://localhost:5000/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -35,8 +38,42 @@ const EMDataUpdate = () => {
   }
   //console.log(preEmNo)
 
+  const handleImageUpload = (event) => {
+    setLoading(true);
+    const imageFile = event.target.files[0];
+    const formData = new FormData();
+    formData.set("image", imageFile);
+    fetch(
+      "https://api.imgbb.com/1/upload?key=f84c57341c651748792aeb7c4d477c29",
+      {
+        method: "POST",
+
+        body: formData,
+      }
+    )
+      .then((res) => res.json())
+      .then((data1) => {
+        // console.log(data);
+        setImageUrl(data1.data.display_url);
+      });
+    setLoading(false);
+  };
+  //console.log(imgUrl)
+
+  /*  const image = data.image[0];
+        const formData = new FormData();
+        formData.append('image', image);
+        const url = `https://api.imgbb.com/1/upload?key=${imageStorageKey}`;
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+        .then(res=>res.json())
+        .then(result =>{
+            if(result.success){
+                const img = result.data.url; */
   const onSubmit = (data) => {
-    console.log(" click me");
+    //console.log(" click me");
     const siteID = data.siteId;
     const presentSite = sites.filter((site) => site.siteId === siteID);
     //console.log(presentSite)
@@ -46,9 +83,9 @@ const EMDataUpdate = () => {
     const PreDate = presentSite.map((s) => s.date);
     // console.log(EmPreReading[0])
 
-    /* const date = new Date();
+    /*   let date = new Date();
     date.setDate(date.getDate());
-    const default1 = date.toLocaleDateString("en-CA");  */
+    let vv = date.toLocaleDateString("en-CA");   */
 
     const EMData = {
       siteId: siteID,
@@ -58,11 +95,16 @@ const EMDataUpdate = () => {
       preDate: PreDate[0],
       EmPreSerialNo: EmPreSerialNo[0],
       EmPreReading: EmPreReading[0],
+      peakReading: data.peak,
+      offPeakReading: data.offPeak,
+      loadCurrent: data.loadCurrent,
       updaterName: user.displayName,
       updaterEmail: user.email,
+      url: imgUrl,
+      remark: data.remark,
     };
 
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/emInfo/${siteID}`, {
+    fetch(`http://localhost:5000/emInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -84,17 +126,21 @@ const EMDataUpdate = () => {
         if (emData.upsertedCount || emData.modifiedCount) {
           toast.success("Data Successfully Update");
         }
+        setImageUrl("")
         reset();
         //console.log(pgData)
       });
   };
 
   return (
-    <div className="flex justify-center justify-items-center mt-8">
-      <div class="card  lg:w-96 bg-base-100 shadow-2xl">
+    <div
+      className="flex justify-center justify-items-center bg-no-repeat bg-bottom bg-fixed"
+      style={{ backgroundImage: `url(${background})` }}
+    >
+      <div class="card  lg:w-96 bg-base-100 shadow-2xl my-8">
         <div class="card-body">
           <h2 class="text-center text-secondary-focus text-2xl font-bold mb-3">
-            Update Energy Meter Info
+            Update Energy Meter Info !!
           </h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Date input field */}
@@ -105,7 +151,6 @@ const EMDataUpdate = () => {
               </label>
               <input
                 type="date"
-                //defaultValue={default1}
                 // disabled
                 class="input input-bordered w-full max-w-xs"
                 {...register("date2", {
@@ -114,6 +159,7 @@ const EMDataUpdate = () => {
                     message: " Date is required",
                   },
                 })}
+                //defaultValue={vv}
               />
               <label class="label">
                 {errors.date?.type === "required" && (
@@ -145,6 +191,29 @@ const EMDataUpdate = () => {
                 )}
               </label>
             </div>
+
+            {/* Load Current */}
+            <div class="form-control w-full max-w-xs">
+              <input
+                type="number"
+                placeholder="Site's DC Load Current"
+                class="input input-bordered w-full max-w-xs"
+                {...register("loadCurrent", {
+                  required: {
+                    value: true,
+                    message: " Load Current is required",
+                  },
+                })}
+              />
+              <label class="label">
+                {errors.date?.type === "required" && (
+                  <span class="label-text-alt text-red-500">
+                    {errors.date.message}
+                  </span>
+                )}
+              </label>
+            </div>
+
             {/*  EM serial No */}
             <div class="form-control w-full max-w-xs">
               <input
@@ -171,12 +240,12 @@ const EMDataUpdate = () => {
             <div class="form-control w-full max-w-xs">
               <input
                 type="number"
-                placeholder=" Energy Meter Reading "
+                placeholder=" Put Total Meter Reading "
                 class="input input-bordered w-full max-w-xs"
                 {...register("emReading", {
                   required: {
                     value: true,
-                    message: " Energy Meter Reading Required",
+                    message: " Energy Meter Total Reading Required",
                   },
                 })}
               />
@@ -188,10 +257,59 @@ const EMDataUpdate = () => {
                 )}
               </label>
             </div>
+            {/*  Energy Meter Peak Reading*/}
+            <div class="form-control w-full max-w-xs">
+              <input
+                type="number"
+                placeholder=" Put Peak Reading if have "
+                class="input input-bordered w-full max-w-xs"
+                {...register("peak")}
+              />
+              <label className="label"></label>
+            </div>
+            {/*  Energy Meter offPeak Reading*/}
+            <div class="form-control w-full max-w-xs">
+              <input
+                type="number"
+                placeholder="Put OffPeak Reading if have"
+                class="input input-bordered w-full max-w-xs"
+                {...register("offPeak")}
+              />
+              <label className="label"></label>
+            </div>
+            {/* Pic of EM Reading */}
+            <div class="form-control w-full max-w-xs">
+              <label
+                htmlFor="image"
+                className={loading ? "btn  loading  mt-5" : "btn  mt-5"}
+              >
+                Upload-Photo
+              </label>
+              <input
+                id="image"
+                type="file"
+                class="input input-bordered w-full max-w-xs hidden"
+                onChange={handleImageUpload}
+              />
+            </div>
+
+            {/* Remarks */}
+            <div class="form-control w-full max-w-xs">
+              <label className="label">
+                <span className="label-text">Remark:</span>
+              </label>
+              <textarea
+                type="text"
+                placeholder="Write  findings, if found "
+                class="input input-bordered w-full max-w-xs"
+                {...register("remark")}
+              />
+            </div>
 
             <input
               type="submit"
               class="btn btn-accent w-full max-w-xs m-2"
+              disabled={!imgUrl ? true : false}
               value="Submit-Data"
               /*   <button class="btn btn-success">Success</button> */
             />

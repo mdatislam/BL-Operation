@@ -19,7 +19,7 @@ const FuelUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/userList", {
+    fetch(" http://localhost:5000/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -47,7 +47,7 @@ const FuelUpdate = () => {
       fuelReceiverEmail: user.email,
     };
     //console.log(PgRunData);
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/fuelData", {
+    fetch(" http://localhost:5000/fuelData", {
       method: "POST",
       headers: {
         "content-type": "application/json",

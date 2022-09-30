@@ -60,7 +60,7 @@ const Login = () => {
       <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
         <h1 className="text-2xl font-bold text-center py-2 mt-2">
           {" "}
-          Welcome Back !!
+          Please Login !!
         </h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="card-body mt-[-25px]">
@@ -143,13 +143,13 @@ const Login = () => {
                 </div>
               </div>
             </div>
-            {signInError}
+
             <div className="form-control mt-2">
               <input type="submit" className="btn btn-primary" value="Login" />
             </div>
           </div>
         </form>
-
+        {signInError}
         {/* <div class="divider mt-[-20px]">OR</div>
 
         {admin && (
