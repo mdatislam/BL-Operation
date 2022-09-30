@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import Loading from "../Pages/SharedPage/Loading";
-import background from "../../src/images/bb.jpg"
+import background from "../../src/images/bb.jpg";
 
 const EMDataUpdate = () => {
   const [user] = useAuthState(auth);
@@ -25,7 +25,7 @@ const EMDataUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" http://localhost:5000/emInfo", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -104,7 +104,7 @@ const EMDataUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`http://localhost:5000/emInfo/${siteID}`, {
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/emInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -126,7 +126,7 @@ const EMDataUpdate = () => {
         if (emData.upsertedCount || emData.modifiedCount) {
           toast.success("Data Successfully Update");
         }
-        setImageUrl("")
+        setImageUrl("");
         reset();
         //console.log(pgData)
       });
