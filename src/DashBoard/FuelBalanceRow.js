@@ -11,9 +11,9 @@ const FuelBalanceRow = ({ u,index }) => {
         </label>
       </th>
       <td>{name}</td>
-      <td>{fuelQuantity.toFixed(2)} </td>
-      <td>{fuelConsume.toFixed(2)} </td>
-      <td className="text-[#3d6ae8] font-bold">{Balance.toFixed(2)}</td>
+      <td>{fuelQuantity} </td>
+      <td>{fuelConsume} </td>
+      <td className="text-[#3d6ae8] font-bold">{Balance}</td>
     </tr>
   );
 };
