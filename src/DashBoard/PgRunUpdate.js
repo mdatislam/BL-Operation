@@ -70,7 +70,7 @@ const PgRunUpdate = () => {
     console.log(xx) */
     /* const perModuleConsume = parseFloat(await moduleConsume?.map(m=>m.moduleKw));
     console.log(perModuleConsume);  */
-    const consume = parseFloat(timeValue * consumePerModule[0]).toFixed(2);
+    const consume = (parseFloat(timeValue * consumePerModule[0])).toFixed(2);
 
     const onCallerEmail = availableUser.filter(
       (x) => x.name === data.onCallName
