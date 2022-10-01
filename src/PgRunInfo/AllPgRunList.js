@@ -6,7 +6,7 @@ import AllPgRunRows from "./AllPgRunRows";
 
 const AllPgRunList = () => {
   const { data: pgRunData, isLoading } = useQuery(["list"], () =>
-    fetch("http://localhost:5000/pgRunAll", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/pgRunAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

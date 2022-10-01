@@ -9,7 +9,7 @@ const FuelBalance = () => {
   const [user] = useAuthState(auth);
 
   const { data: users, isLoading } = useQuery(["userList"], () =>
-    fetch("http://localhost:5000/userList", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -18,7 +18,7 @@ const FuelBalance = () => {
   );
 
   const { data: pgRunData, isLoading2 } = useQuery(["list"], () =>
-    fetch("http://localhost:5000/pgRunAll", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/pgRunAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -27,7 +27,7 @@ const FuelBalance = () => {
   );
 
   const { data: receiveFuel, isLoading3 } = useQuery(["fuel"], () =>
-    fetch("http://localhost:5000/fuelListAll", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

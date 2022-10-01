@@ -25,7 +25,7 @@ const EMDataUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" http://localhost:5000/emInfo", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -55,9 +55,8 @@ const EMDataUpdate = () => {
       .then((data1) => {
         // console.log(data);
         setImageUrl(data1.data.display_url);
-         setLoading(false);
+        setLoading(false);
       });
-   
   };
   //console.log(imgUrl)
 
@@ -105,7 +104,7 @@ const EMDataUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`http://localhost:5000/emInfo/${siteID}`, {
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/emInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
