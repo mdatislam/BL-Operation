@@ -24,6 +24,8 @@ import RequireAdmin from "./Pages/AuthPage/RequireAdmin";
 import UserList from "./Pages/Admin/UserList";
 import RectifierInfoUpdate from "./Pages/Admin/RectifierInfoUpdate";
 import EminfoList from "./EnergyMeter/EminfoList";
+import DGServicingUpdate from "./DashBoard/DGServicingUpdate";
+import DgServicingInfo from "./Pages/DG-Info/DgServicingInfo";
 
 
 
@@ -49,6 +51,7 @@ function App() {
               <Route path="FuelUpdate" element={<FuelUpdate />} />
               <Route path="FuelData" element={<FuelDataList />} />
               <Route path="EMDataUpdate" element={<EMDataUpdate />} />
+              <Route path="DgServicingUpdate" element={<DGServicingUpdate />} />
               {/*  <Route path="UserList" element={<RequireAdmin>
                 <UserList/></RequireAdmin>}>
               </Route> */}
@@ -61,11 +64,12 @@ function App() {
 
           <Route element={<RequireAuth />}>
             <Route path="/PgFuel" element={<PgFuel />} />
-            <Route path="/AllPgRunList" element={<AllPgRunList />}></Route>
-            <Route path="/AllFuelList" element={<AllFuelList />}></Route>
-            <Route path="/DgInfo" element={<DG />}></Route>
+            <Route path="/AllPgRunList" element={<AllPgRunList />}/>
+            <Route path="/AllFuelList" element={<AllFuelList />}/>
+            <Route path="/DgInfo" element={<DG />}/>
+           
 
-            <Route path="/EmInfo" element={<EminfoList />}></Route>
+            <Route path="/EmInfo" element={<EminfoList />}/>
           </Route>
 
           <Route element={<RequireAdmin />}>

@@ -68,6 +68,12 @@ const DashBoard = () => {
               {subMenu}Energy Meter Update
             </Link>
           </li>
+          <li>
+            <Link to="/Dashboard/DgServicingUpdate">
+              {" "}
+              {subMenu}DG Servicing Update
+            </Link>
+          </li>
           {admin && (
             <li>
               <Link to="/Dashboard/UserList">
