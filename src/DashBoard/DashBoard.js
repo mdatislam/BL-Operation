@@ -3,11 +3,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, Outlet } from "react-router-dom";
 import auth from "../firebase.init";
 import FuelBalance from "./FuelBalance";
-import useAdmin from './../Pages/Hook/useAdmin';
+import useAdmin from "./../Pages/Hook/useAdmin";
 
 const DashBoard = () => {
-  const [user, loading] = useAuthState(auth)
-  const [admin,adminLoading] = useAdmin(user)
+  const [user, loading] = useAuthState(auth);
+  const [admin, adminLoading] = useAdmin(user);
   const subMenu = (
     <>
       <svg
@@ -16,7 +16,7 @@ const DashBoard = () => {
         viewBox="0 0 24 24"
         stroke-width="1.5"
         stroke="currentColor"
-        class="w-6 h-6"
+        className="w-6 h-6"
       >
         <path
           stroke-linecap="round"
@@ -27,7 +27,7 @@ const DashBoard = () => {
     </>
   );
   return (
-    <div className="drawer drawer-mobile bg-slate-100 ">
+    <div className="drawer drawer-mobile  bg-slate-100 ">
       <input id="dashboard-drawer" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
         {/*    <!-- Page content here --> */}
@@ -84,7 +84,7 @@ const DashBoard = () => {
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
                   stroke="currentColor"
-                  class="w-6 h-6"
+                  className="w-6 h-6"
                 >
                   <path
                     stroke-linecap="round"

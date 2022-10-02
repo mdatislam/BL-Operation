@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const PgRunRows = ({ pgRun, index,refetch,setDelPg }) => {
+const PgRunRows = ({ pgRun, index, refetch, setDelPg }) => {
   const {
     date,
     site,
@@ -15,8 +15,8 @@ const PgRunRows = ({ pgRun, index,refetch,setDelPg }) => {
     pgRunnerName,
     remark,
   } = pgRun;
- // console.log(fuelConsume);
- // console.log(pgStartTime);
+  // console.log(fuelConsume);
+  // console.log(pgStartTime);
   /* let consume
   let duration
   if (pgStartTime && pgStoptTime) {
@@ -68,7 +68,7 @@ const PgRunRows = ({ pgRun, index,refetch,setDelPg }) => {
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="w-6 h-6"
+              className="w-6 h-6"
             >
               <path
                 stroke-linecap="round"

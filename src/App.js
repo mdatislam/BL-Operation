@@ -26,6 +26,7 @@ import RectifierInfoUpdate from "./Pages/Admin/RectifierInfoUpdate";
 import EminfoList from "./EnergyMeter/EminfoList";
 import DGServicingUpdate from "./DashBoard/DGServicingUpdate";
 import DgServicingInfo from "./Pages/DG-Info/DgServicingInfo";
+import Navbar2 from "./Pages/SharedPage/Navbar2";
 
 
 
@@ -33,7 +34,8 @@ import DgServicingInfo from "./Pages/DG-Info/DgServicingInfo";
 function App() {
   return (
     <>
-      <NavBar>
+     {/*  <NavBar> */}
+        <Navbar2/>
         <Routes>
           {/*  Public Route */}
           <Route path="/" element={<Home />}></Route>
@@ -67,6 +69,7 @@ function App() {
             <Route path="/AllPgRunList" element={<AllPgRunList />}/>
             <Route path="/AllFuelList" element={<AllFuelList />}/>
             <Route path="/DgInfo" element={<DG />}/>
+            <Route path="/DgServicing" element={<DgServicingInfo />}/>
            
 
             <Route path="/EmInfo" element={<EminfoList />}/>
@@ -78,7 +81,7 @@ function App() {
           </Route>
         </Routes>
         <Footer />
-      </NavBar>
+      {/* </NavBar> */}
       <ToastContainer />
     </>
   );

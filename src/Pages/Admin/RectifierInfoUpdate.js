@@ -30,17 +30,14 @@ const RectifierInfoUpdate = () => {
       consumeFuel: data.consume,
     };
     //console.log(PgRunData);
-    fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/rectifier?brand=${brand}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(RectifierInfo),
-      }
-    )
+    fetch(`http://localhost:5000/rectifier?brand=${brand}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(RectifierInfo),
+    })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");
@@ -67,20 +64,20 @@ const RectifierInfoUpdate = () => {
         </figure>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <div className="card-body">
-            <h2 class="text-center text-2xl font-bold mb-3">
+            <h2 className="text-center text-2xl font-bold mb-3">
               Add Rectifier Info !
             </h2>
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* Brand input field */}
 
-              <div class="form-control w-full max-w-xs">
+              <div className="form-control w-full max-w-xs">
                 <label className="label">
                   <span className="label-text">Brand:</span>
                 </label>
                 <input
                   type="text"
                   placeholder="Put Rectifier Brand"
-                  class="input input-bordered w-full max-w-xs"
+                  className="input input-bordered w-full max-w-xs"
                   {...register("brand", {
                     required: {
                       value: true,
@@ -88,9 +85,9 @@ const RectifierInfoUpdate = () => {
                     },
                   })}
                 />
-                <label class="label">
+                <label className="label">
                   {errors.brand?.type === "required" && (
-                    <span class="label-text-alt text-red-500">
+                    <span className="label-text-alt text-red-500">
                       {errors.date.message}
                     </span>
                   )}
@@ -98,14 +95,14 @@ const RectifierInfoUpdate = () => {
               </div>
 
               {/* Rectifier Module Capacity */}
-              <div class="form-control w-full max-w-xs">
+              <div className="form-control w-full max-w-xs">
                 <label className="label">
                   <span className="label-text">Module Capacity:</span>
                 </label>
                 <input
                   type="text"
                   placeholder="Put Module capacity"
-                  class="input input-bordered w-full max-w-xs"
+                  className="input input-bordered w-full max-w-xs"
                   {...register("capacity", {
                     required: {
                       value: true,
@@ -117,9 +114,9 @@ const RectifierInfoUpdate = () => {
                   <option value={user.name}>{user.name} </option>
                 ))} */}
                 </input>
-                <label class="label">
+                <label className="label">
                   {errors.capacity?.type === "required" && (
-                    <span class="label-text-alt text-red-500">
+                    <span className="label-text-alt text-red-500">
                       {errors.capacity.message}
                     </span>
                   )}
@@ -127,7 +124,7 @@ const RectifierInfoUpdate = () => {
               </div>
               {/* Consumption  */}
 
-              <div class="form-control w-full max-w-xs">
+              <div className="form-control w-full max-w-xs">
                 <label className="label">
                   <span className="label-text">Consumption:</span>
                 </label>
@@ -137,7 +134,7 @@ const RectifierInfoUpdate = () => {
                   max="10"
                   step="any"
                   placeholder="Consumption per Module"
-                  class="input input-bordered w-full max-w-xs"
+                  className="input input-bordered w-full max-w-xs"
                   {...register("consume", {
                     required: {
                       value: true,
@@ -145,9 +142,9 @@ const RectifierInfoUpdate = () => {
                     },
                   })}
                 />
-                <label class="label">
+                <label className="label">
                   {errors.consume?.type === "required" && (
-                    <span class="label-text-alt text-red-500">
+                    <span className="label-text-alt text-red-500">
                       {errors.date.message}
                     </span>
                   )}
@@ -156,9 +153,9 @@ const RectifierInfoUpdate = () => {
 
               <input
                 type="submit"
-                class="btn btn-accent w-full max-w-xs m-2"
+                className="btn btn-accent w-full max-w-xs m-2"
                 value="Submit-Info"
-                /*   <button class="btn btn-success">Success</button> */
+                /*   <button className="btn btn-success">Success</button> */
               />
             </form>
           </div>

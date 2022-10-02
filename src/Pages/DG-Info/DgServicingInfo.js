@@ -7,7 +7,7 @@ import DgServicingInfoRow from "./DgServicingInfoRow";
 
 const DgServicingInfo = () => {
   const { data: dgServiceInfo, isLoading } = useQuery(["DgInfoList"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo", {
+    fetch("http://localhost:5000/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -34,8 +34,8 @@ const DgServicingInfo = () => {
 
       <div className="overflow-x-auto  mt-4">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
-          <thead className="border-3">
-            <tr className="">
+          <thead className="border-2 border-[#FFCB24]">
+            <tr className="divide-x divide-blue-400">
               <th>SN</th>
               <th>Site ID</th>
 

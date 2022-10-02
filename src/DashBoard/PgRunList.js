@@ -15,7 +15,7 @@ const PgRunList = () => {
 
   const [receiveFuel, setReceiveFuel] = useState([]);
   useEffect(() => {
-    const url = `https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`;
+    const url = `http://localhost:5000/fuelList?email=${user.email}`;
     //console.log(url)
     fetch(url, {
       method: "GET",
@@ -32,15 +32,12 @@ const PgRunList = () => {
     isLoading,
     refetch,
   } = useQuery(["list", user], () =>
-    fetch(
-      ` https://enigmatic-eyrie-94440.herokuapp.com/pgRunAllList?email=${user.email}`,
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => res.json())
+    fetch(` http://localhost:5000/pgRunAllList?email=${user.email}`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => res.json())
   );
 
   if (isLoading) {
@@ -104,8 +101,8 @@ const PgRunList = () => {
       </div>
       <div className="overflow-x-auto">
         <table className="table table-compact w-full">
-          <thead className="border-3  text-[#FFcb24]">
-            <tr className=" border-3 bg-[#555555]">
+          <thead className="border-2 border-[#FFCB24]">
+            <tr className="divide-x divide-blue-400">
               <th>SN</th>
               <th>Date</th>
               <th>Site ID</th>

@@ -6,7 +6,7 @@ import EmInfoListRow from "./EmInfoListRow";
 
 const EminfoList = () => {
   const { data: EmInfo, isLoading } = useQuery(["EmInfoList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/emInfo", {
+    fetch(" http://localhost:5000/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -32,9 +32,9 @@ const EminfoList = () => {
       </div>
 
       <div className="overflow-x-auto  mt-4">
-        <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
-          <thead className="border-3">
-            <tr className="">
+        <table className="table table-compact w-full  ">
+          <thead className="border-2 border-[#FFCB24] ">
+            <tr className="divide-x divide-sky-400">
               <th>SN</th>
               <th>Site ID</th>
 

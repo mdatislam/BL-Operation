@@ -22,7 +22,7 @@ const DGServicingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo", {
+    fetch(" http://localhost:5000/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -86,17 +86,14 @@ const DGServicingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo/${siteID}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(dgServicingData),
-      }
-    )
+    fetch(`http://localhost:5000/dgServiceInfo/${siteID}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(dgServicingData),
+    })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");
@@ -121,22 +118,22 @@ const DGServicingUpdate = () => {
       className="flex justify-center justify-items-center bg-no-repeat bg-bottom bg-fixed"
       style={{ backgroundImage: `url(${background})` }}
     >
-      <div class="card  lg:w-96 bg-base-100 shadow-2xl my-8">
-        <div class="card-body">
-          <h2 class="text-center text-secondary-focus text-2xl font-bold mb-3">
+      <div className="card  lg:w-96 bg-base-100 shadow-2xl my-8">
+        <div className="card-body">
+          <h2 className="text-center text-secondary-focus text-2xl font-bold mb-3">
             Update DG Servicing Info !!
           </h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Date input field */}
 
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Date:</span>
               </label>
               <input
                 type="date"
                 // disabled
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("date2", {
                   required: {
                     value: true,
@@ -145,9 +142,9 @@ const DGServicingUpdate = () => {
                 })}
                 //defaultValue={vv}
               />
-              <label class="label">
+              <label className="label">
                 {errors.date?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.date.message}
                   </span>
                 )}
@@ -155,11 +152,11 @@ const DGServicingUpdate = () => {
             </div>
 
             {/*  Site ID */}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <input
                 type="text"
                 placeholder="Site ID"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("siteId", {
                   required: {
                     value: true,
@@ -167,9 +164,9 @@ const DGServicingUpdate = () => {
                   },
                 })}
               />
-              <label class="label">
+              <label className="label">
                 {errors.siteId?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.siteId.message}
                   </span>
                 )}
@@ -177,11 +174,11 @@ const DGServicingUpdate = () => {
             </div>
 
             {/*  DG Battery serial No */}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <input
                 type="text"
                 placeholder=" DG Battery Serial No"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("dgBatteryNo", {
                   required: {
                     value: true,
@@ -189,9 +186,9 @@ const DGServicingUpdate = () => {
                   },
                 })}
               />
-              <label class="label">
+              <label className="label">
                 {errors.dgBatteryNo?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.dgBatteryNo.message}
                   </span>
                 )}
@@ -199,11 +196,11 @@ const DGServicingUpdate = () => {
             </div>
 
             {/*  DG RH Reading*/}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <input
                 type="number"
                 placeholder=" Put Servicing DG RunHour "
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("rhReading", {
                   required: {
                     value: true,
@@ -211,9 +208,9 @@ const DGServicingUpdate = () => {
                   },
                 })}
               />
-              <label class="label">
+              <label className="label">
                 {errors.rhReading?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.rhReading.message}
                   </span>
                 )}
@@ -221,13 +218,13 @@ const DGServicingUpdate = () => {
             </div>
 
             {/* Air filter use */}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Air Filter:</span>
               </label>
               <select
                 type="text"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("airFilter", {
                   required: {
                     value: true,
@@ -238,9 +235,9 @@ const DGServicingUpdate = () => {
                 <option value="No"> No</option>
                 <option value="Yes">Yes</option>
               </select>
-              <label class="label">
+              <label className="label">
                 {errors.airFilter?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.airFilter.message}
                   </span>
                 )}
@@ -248,7 +245,7 @@ const DGServicingUpdate = () => {
             </div>
 
             {/* Pic of RH Reading */}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <label
                 htmlFor="image"
                 className={loading ? "btn loading mt-5" : "btn mt-5"}
@@ -258,27 +255,27 @@ const DGServicingUpdate = () => {
               <input
                 id="image"
                 type="file"
-                class="input input-bordered w-full max-w-xs hidden"
+                className="input input-bordered w-full max-w-xs hidden"
                 onChange={handleImageUpload}
               />
             </div>
 
             {/* Remarks */}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Remark:</span>
               </label>
               <textarea
                 type="text"
                 placeholder="Write  findings, if found "
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("remark")}
               />
             </div>
 
             <input
               type="submit"
-              class="btn btn-accent w-full max-w-xs m-2"
+              className="btn btn-accent w-full max-w-xs m-2"
               disabled={!imgUrl ? true : false}
               value="Submit-Data"
             />

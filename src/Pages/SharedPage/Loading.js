@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
 const Loading = () => {
-    return (
-      <div class="flex items-center justify-center h-screen">
-        <div class="w-24 h-24 border-l-2 border-red-900 rounded-full animate-spin"></div>
-      </div>
-    );
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <div className="w-24 h-24 border-l-2 border-red-900 rounded-full animate-spin"></div>
+    </div>
+  );
 };
 
 export default Loading;

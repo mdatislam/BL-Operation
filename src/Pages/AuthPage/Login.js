@@ -1,32 +1,35 @@
 import React, { useState } from "react";
-import {  useAuthState, useSignInWithEmailAndPassword, useSignInWithGoogle } from "react-firebase-hooks/auth";
+import {
+ 
+  useSignInWithEmailAndPassword,
+  useSignInWithGoogle,
+} from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import auth from './../../firebase.init';
-import Loading from './../SharedPage/Loading';
-import useToken from './../Hook/useToken';
+import { useLocation, useNavigate } from "react-router-dom";
+import auth from "./../../firebase.init";
+import Loading from "./../SharedPage/Loading";
+import useToken from "./../Hook/useToken";
 import PasswordReset from "./PasswordReset";
-import useAdmin from "../Hook/useAdmin";
-import loginBack from "../../images/login.png"
-
+//import useAdmin from "../Hook/useAdmin";
+import loginBack from "../../images/login.png";
 
 const Login = () => {
   //const [user]=useAuthState(auth)
-  const admin=true
-  const [password,setPassword]=useState(" ")
+ // const admin = true;
+  const [password, setPassword] = useState(" ");
   const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
   const [signInWithEmailAndPassword, Euser, loading, error] =
     useSignInWithEmailAndPassword(auth);
-   /* const [admin] = useAdmin(Euser); */
+ 
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const navigate = useNavigate()
-  const location = useLocation()
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const [token] =useToken(Euser || gUser)
+  const [token] = useToken(Euser || gUser);
 
   if (gLoading || loading) {
     return <Loading />;
@@ -47,11 +50,11 @@ const Login = () => {
     signInWithEmailAndPassword(email, password);
   };
 
-  let from = location.state?.from?.pathname || "/Home"
+  let from = location.state?.from?.pathname || "/Home";
   if (token) {
-    navigate(from,{replace:true})
+    navigate(from, { replace: true });
   }
- 
+
   return (
     <div
       className="hero h-screen bg-base-200 mt-[-30px]"
@@ -150,11 +153,11 @@ const Login = () => {
           </div>
         </form>
         {signInError}
-        {/* <div class="divider mt-[-20px]">OR</div>
+        {/* <div className="divider mt-[-20px]">OR</div>
 
         {admin && (
           <div className="hero w-full max-w-sm mb-3">
-            <button onClick={() => signInWithGoogle()} class="btn btn-outline">
+            <button onClick={() => signInWithGoogle()} className="btn btn-outline">
               Sign with Google
             </button>
           </div>

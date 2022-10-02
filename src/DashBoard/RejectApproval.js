@@ -16,7 +16,7 @@ const RejectApproval = ({ reject, setReject, refetch }) => {
   } = useForm();
 
   const onSubmit = (data, id) => {
-    fetch(` https://enigmatic-eyrie-94440.herokuapp.com/pgRunList/${_id}`, {
+    fetch(` http://localhost:5000/pgRunList/${_id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -72,9 +72,9 @@ const RejectApproval = ({ reject, setReject, refetch }) => {
                   },
                 })}
               />
-              <label class="label">
+              <label className="label">
                 {errors.rejectMsg?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.rejectMsg.message}
                   </span>
                 )}

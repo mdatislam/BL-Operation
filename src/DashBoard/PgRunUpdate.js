@@ -20,7 +20,7 @@ const PgRunUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/userList", {
+    fetch(" http://localhost:5000/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -28,7 +28,7 @@ const PgRunUpdate = () => {
     }).then((res) => res.json())
   );
   const { data: rectifiers, isLoading3 } = useQuery(["rectifierList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/rectifier", {
+    fetch(" http://localhost:5000/rectifier", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -92,7 +92,7 @@ const PgRunUpdate = () => {
       status: "Pending",
     };
     //console.log(PgRunData);
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/pgRunData", {
+    fetch(" http://localhost:5000/pgRunData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -120,15 +120,15 @@ const PgRunUpdate = () => {
 
   return (
     <div className="flex  justify-center justify-items-center mt-8">
-      <div class="card w-96 bg-base-100 shadow-xl">
-        <div class="card-body">
-          <h2 class="text-center text-2xl font-bold mb-3">
+      <div className="card w-96 bg-base-100 shadow-xl">
+        <div className="card-body">
+          <h2 className="text-center text-2xl font-bold mb-3">
             Update PG Run Data!
           </h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Date input field */}
 
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Date:</span>
               </label>
@@ -136,7 +136,7 @@ const PgRunUpdate = () => {
                 type="date"
                 placeholder="Date"
                 //defaultValue="9/21/22"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("date", {
                   required: {
                     value: true,
@@ -144,20 +144,20 @@ const PgRunUpdate = () => {
                   },
                 })}
               />
-              <label class="label">
+              <label className="label">
                 {errors.date?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.date.message}
                   </span>
                 )}
               </label>
             </div>
             {/*  Site Name */}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <input
                 type="text"
                 placeholder=" Site Name"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("siteName", {
                   required: {
                     value: true,
@@ -165,23 +165,23 @@ const PgRunUpdate = () => {
                   },
                 })}
               />
-              <label class="label">
+              <label className="label">
                 {errors.siteName?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.siteName.message}
                   </span>
                 )}
               </label>
             </div>
             {/* Rectifier Module Capacity */}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Rectifier Module Capacity:</span>
               </label>
               <select
                 type="text"
                 defaultValue="kw3"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("capacity", {
                   required: {
                     value: true,
@@ -193,9 +193,9 @@ const PgRunUpdate = () => {
                   <option value={recti.capacity}>{recti.capacity} </option>
                 ))}
               </select>
-              <label class="label">
+              <label className="label">
                 {errors.capacity?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.capacity.message}
                   </span>
                 )}
@@ -203,14 +203,14 @@ const PgRunUpdate = () => {
             </div>
 
             {/*  PG Start Time */}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">PG Start Time:</span>
               </label>
               <input
                 type="time"
                 placeholder="startTime"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("startTime", {
                   required: {
                     value: true,
@@ -218,9 +218,9 @@ const PgRunUpdate = () => {
                   },
                 })}
               />
-              <label class="label">
+              <label className="label">
                 {errors.startTime?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.startTime.message}
                   </span>
                 )}
@@ -228,14 +228,14 @@ const PgRunUpdate = () => {
             </div>
 
             {/*  PG Stop Time */}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">PG Stop Time:</span>
               </label>
               <input
                 type="time"
                 placeholder="stopTime"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("stopTime", {
                   required: {
                     value: true,
@@ -243,44 +243,58 @@ const PgRunUpdate = () => {
                   },
                 })}
               />
-              <label class="label">
+              <label className="label">
                 {errors.stopTime?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.stopTime.message}
                   </span>
                 )}
               </label>
             </div>
             {/*  PG NO*/}
-            <div class="form-control w-full max-w-xs">
-              <input
+            <div className="form-control w-full max-w-xs">
+              <label className="label">
+                <span className="label-text">PG No:</span>
+              </label>
+              <select
                 type="text"
                 placeholder="PG Number"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("pgNo", {
                   required: {
                     value: true,
                     message: " PG Number is required",
                   },
                 })}
-              />
-              <label class="label">
+              >
+                <option value="PG_09">PG_09</option>
+                <option value="PG_17">PG_17</option>
+                <option value="PG_40">PG_40</option>
+                <option value="PG_48">PG_48</option>
+                <option value="PG_57">PG_57</option>
+                <option value="PG_61">PG_61</option>
+                <option value="PG_70">PG_70</option>
+                <option value="PG_72">PG_72</option>
+                <option value="PG_89">PG_89</option>
+                <option value="PG_98">PG_98</option>
+              </select>
+              <label className="label">
                 {errors.pgNo?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.pgNo.message}
                   </span>
                 )}
               </label>
             </div>
             {/*  On Call Engineer  Name */}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">On Call Name:</span>
               </label>
               <select
                 type="text"
                 placeholder=" On Caller  Name"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("onCallName", {
                   required: {
                     value: true,
@@ -292,9 +306,9 @@ const PgRunUpdate = () => {
                   <option value={user.name}>{user.name} </option>
                 ))}
               </select>
-              <label class="label">
+              <label className="label">
                 {errors.onCallName?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.onCallName.message}
                   </span>
                 )}
@@ -303,9 +317,9 @@ const PgRunUpdate = () => {
 
             <input
               type="submit"
-              class="btn btn-accent w-full max-w-xs m-2"
+              className="btn btn-accent w-full max-w-xs m-2"
               value="Submit-Data"
-              /*   <button class="btn btn-success">Success</button> */
+              /*   <button className="btn btn-success">Success</button> */
             />
           </form>
         </div>

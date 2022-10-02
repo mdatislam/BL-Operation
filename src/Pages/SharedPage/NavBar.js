@@ -5,14 +5,14 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import auth from "./../../firebase.init";
 
 const NavBar = ({ children }) => {
-const {pathname}=useLocation()
+  const { pathname } = useLocation();
   const [user] = useAuthState(auth);
   //console.log(user)
   const navigate = useNavigate();
   const logout = () => {
     signOut(auth);
-    localStorage.removeItem("accessToken")
-    navigate("/Home");
+    localStorage.removeItem("accessToken");
+    navigate("/Login");
   };
   const menuItem = (
     <>
@@ -31,12 +31,12 @@ const {pathname}=useLocation()
           PG-Fuel-Info
         </NavLink>
       </li>
-
       <li>
         <NavLink className="rounded-lg" to="/DgInfo">
           DG-Info
         </NavLink>
       </li>
+
       <li>
         <NavLink className="rounded-lg" to="/EmInfo">
           EM-Info
@@ -60,11 +60,11 @@ const {pathname}=useLocation()
   );
   return (
     <>
-      <div class="drawer drawer-end">
-        <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content flex flex-col">
+      <div className="drawer drawer-end">
+        <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
+        <div className="drawer-content flex flex-col">
           {/*  <!-- Navbar --> */}
-          <div class="w-full navbar fixed z-20 bg-[#ffcb24] lg:px-20">
+          <div className="w-full navbar fixed z-20 bg-[#ffcb24] lg:px-20">
             {pathname.includes("Dashboard") && (
               <label
                 htmlFor="dashboard-drawer"
@@ -76,7 +76,7 @@ const {pathname}=useLocation()
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
                   stroke="currentColor"
-                  class="w-6 h-6"
+                  className="w-6 h-6"
                 >
                   <path
                     stroke-linecap="round"
@@ -86,23 +86,24 @@ const {pathname}=useLocation()
                 </svg>
               </label>
             )}
-            <div class="flex-1 px-2 mx-2 font-bold text-2xl text-white">
+            <div className="flex-1 px-2 mx-2 font-bold text-2xl text-white">
               Rangpur O&amp;M
             </div>
-            <div class="flex-none hidden lg:block">
-              <ul class="menu menu-horizontal px-5 gap-x-4">
+            <div className="flex-none hidden lg:block">
+          <ul className="menu menu-horizontal px-5 gap-x-4"> 
+          
                 {/*  <!-- Navbar menu content here --> */}
 
                 {menuItem}
               </ul>
             </div>
-            <div class="flex-none lg:hidden">
-              <label for="my-drawer-3" class="btn btn-square btn-ghost">
+            <div className="flex-none lg:hidden">
+              <label for="my-drawer-3" className="btn btn-square btn-ghost">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  class="inline-block w-6 h-6 stroke-current"
+                  className="inline-block w-6 h-6 stroke-current"
                 >
                   <path
                     stroke-linecap="round"
@@ -117,9 +118,10 @@ const {pathname}=useLocation()
           {/*  <!-- Page content here --> */}
           <div className="mt-16">{children}</div>
         </div>
-        <div class="drawer-side">
-          <label for="my-drawer-3" class="drawer-overlay"></label>
-          <ul class="menu p-4 overflow-y-auto w-80 bg-base-100">
+         <div className="drawer-side">
+          <label for="my-drawer-3" className="drawer-overlay"></label>
+         <ul className="menu p-4 overflow-y-auto w-80 bg-base-100">
+        
             {/* <!-- Sidebar content here --> */}
             {menuItem}
           </ul>

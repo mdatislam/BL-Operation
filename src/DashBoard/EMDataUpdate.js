@@ -25,7 +25,7 @@ const EMDataUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/emInfo", {
+    fetch(" http://localhost:5000/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -104,7 +104,7 @@ const EMDataUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/emInfo/${siteID}`, {
+    fetch(`http://localhost:5000/emInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -137,22 +137,22 @@ const EMDataUpdate = () => {
       className="flex justify-center justify-items-center bg-no-repeat bg-bottom bg-fixed"
       style={{ backgroundImage: `url(${background})` }}
     >
-      <div class="card  lg:w-96 bg-base-100 shadow-2xl my-8">
-        <div class="card-body">
-          <h2 class="text-center text-secondary-focus text-2xl font-bold mb-3">
+      <div className="card  lg:w-96 bg-base-100 shadow-2xl my-8">
+        <div className="card-body">
+          <h2 className="text-center text-secondary-focus text-2xl font-bold mb-3">
             Update Energy Meter Info !!
           </h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Date input field */}
 
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Date:</span>
               </label>
               <input
                 type="date"
                 // disabled
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("date2", {
                   required: {
                     value: true,
@@ -161,9 +161,9 @@ const EMDataUpdate = () => {
                 })}
                 //defaultValue={vv}
               />
-              <label class="label">
+              <label className="label">
                 {errors.date?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.date.message}
                   </span>
                 )}
@@ -171,11 +171,11 @@ const EMDataUpdate = () => {
             </div>
 
             {/*  Site ID */}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <input
                 type="text"
                 placeholder="Site ID"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("siteId", {
                   required: {
                     value: true,
@@ -183,9 +183,9 @@ const EMDataUpdate = () => {
                   },
                 })}
               />
-              <label class="label">
+              <label className="label">
                 {errors.siteId?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.siteId.message}
                   </span>
                 )}
@@ -193,11 +193,11 @@ const EMDataUpdate = () => {
             </div>
 
             {/* Load Current */}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <input
                 type="number"
                 placeholder="Site's DC Load Current"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("loadCurrent", {
                   required: {
                     value: true,
@@ -205,9 +205,9 @@ const EMDataUpdate = () => {
                   },
                 })}
               />
-              <label class="label">
+              <label className="label">
                 {errors.date?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.date.message}
                   </span>
                 )}
@@ -215,11 +215,11 @@ const EMDataUpdate = () => {
             </div>
 
             {/*  EM serial No */}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <input
                 type="text"
                 placeholder=" Energy Meter Serial No"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("emNo", {
                   required: {
                     value: true,
@@ -227,9 +227,9 @@ const EMDataUpdate = () => {
                   },
                 })}
               />
-              <label class="label">
+              <label className="label">
                 {errors.emNo?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.emNo.message}
                   </span>
                 )}
@@ -237,11 +237,11 @@ const EMDataUpdate = () => {
             </div>
 
             {/*  Energy Meter Reading*/}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <input
                 type="number"
                 placeholder=" Put Total Meter Reading "
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("emReading", {
                   required: {
                     value: true,
@@ -249,36 +249,36 @@ const EMDataUpdate = () => {
                   },
                 })}
               />
-              <label class="label">
+              <label className="label">
                 {errors.emReading?.type === "required" && (
-                  <span class="label-text-alt text-red-500">
+                  <span className="label-text-alt text-red-500">
                     {errors.emReading.message}
                   </span>
                 )}
               </label>
             </div>
             {/*  Energy Meter Peak Reading*/}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <input
                 type="number"
                 placeholder=" Put Peak Reading if have "
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("peak")}
               />
               <label className="label"></label>
             </div>
             {/*  Energy Meter offPeak Reading*/}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <input
                 type="number"
                 placeholder="Put OffPeak Reading if have"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("offPeak")}
               />
               <label className="label"></label>
             </div>
             {/* Pic of EM Reading */}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <label
                 htmlFor="image"
                 className={loading ? "btn  loading  mt-5" : "btn  mt-5"}
@@ -288,30 +288,30 @@ const EMDataUpdate = () => {
               <input
                 id="image"
                 type="file"
-                class="input input-bordered w-full max-w-xs hidden"
+                className="input input-bordered w-full max-w-xs hidden"
                 onChange={handleImageUpload}
               />
             </div>
 
             {/* Remarks */}
-            <div class="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Remark:</span>
               </label>
               <textarea
                 type="text"
                 placeholder="Write  findings, if found "
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("remark")}
               />
             </div>
 
             <input
               type="submit"
-              class="btn btn-accent w-full max-w-xs m-2"
+              className="btn btn-accent w-full max-w-xs m-2"
               disabled={!imgUrl ? true : false}
               value="Submit-Data"
-              /*   <button class="btn btn-success">Success</button> */
+              /*   <button className="btn btn-success">Success</button> */
             />
           </form>
         </div>
