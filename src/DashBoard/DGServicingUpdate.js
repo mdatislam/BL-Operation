@@ -59,7 +59,7 @@ const DGServicingUpdate = () => {
   const onSubmit = (data) => {
     //console.log(" click me");
     const siteID = data.siteId;
-    const presentSite = sites.filter((site) => site.siteId === siteID);
+    const presentSite = sites?.filter((site) => site.siteId === siteID);
     //console.log(presentSite)
 
     const preRhReading = presentSite.map((s) => s.rhReading);

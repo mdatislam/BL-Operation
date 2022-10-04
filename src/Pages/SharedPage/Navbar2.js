@@ -94,7 +94,7 @@ const Navbar2 = () => {
   );
   return (
     <div className=" navbar sticky top-0  z-20 bg-[#ffcb24]  lg:px-20">
-      <div className="navbar-start">
+      <div className="navbar-end">
         {pathname.includes("Dashboard") && (
           <label
             htmlFor="dashboard-drawer"

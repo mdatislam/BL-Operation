@@ -71,7 +71,13 @@ const DashBoard = () => {
           <li>
             <Link to="/Dashboard/DgServicingUpdate">
               {" "}
-              {subMenu}DG Servicing Update
+              {subMenu}DG Servicing Update 
+            </Link>
+          </li>
+          <li>
+            <Link to="/Dashboard/DgRefuelingUpdate">
+              {" "}
+              {subMenu}DG Refueling Update
             </Link>
           </li>
           {admin && (

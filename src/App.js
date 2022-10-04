@@ -27,6 +27,8 @@ import EminfoList from "./EnergyMeter/EminfoList";
 import DGServicingUpdate from "./DashBoard/DGServicingUpdate";
 import DgServicingInfo from "./Pages/DG-Info/DgServicingInfo";
 import Navbar2 from "./Pages/SharedPage/Navbar2";
+import DgRefuelingList from "./Pages/DG-Info/DgRefuelingList";
+import DgRefuelingUpdate from "./DashBoard/DgRefuelingUpdate";
 
 
 
@@ -34,53 +36,54 @@ import Navbar2 from "./Pages/SharedPage/Navbar2";
 function App() {
   return (
     <>
-     {/*  <NavBar> */}
-        <Navbar2/>
-        <Routes>
-          {/*  Public Route */}
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/Home" element={<Home />}></Route>
-          <Route path="/Login" element={<Login />}></Route>
-          {/*     <Route path="/Signup" element={<SignUp />}></Route> */}
-          <Route path="*" element={<NotFound />}></Route>
+      {/*  <NavBar> */}
+      <Navbar2 />
+      <Routes>
+        {/*  Public Route */}
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/Home" element={<Home />}></Route>
+        <Route path="/Login" element={<Login />}></Route>
+        {/*     <Route path="/Signup" element={<SignUp />}></Route> */}
+        <Route path="*" element={<NotFound />}></Route>
 
-          {/*  private Route */}
-          <Route element={<RequireAuth />}>
-            <Route path="/Dashboard" element={<DashBoard />}>
-              <Route index element={<PgRunList />} />
-              <Route path="ApprovalPending" element={<ApprovalPending />} />
-              <Route path="PgRunUpdate" element={<PgRunUpdate />} />
-              <Route path="FuelUpdate" element={<FuelUpdate />} />
-              <Route path="FuelData" element={<FuelDataList />} />
-              <Route path="EMDataUpdate" element={<EMDataUpdate />} />
-              <Route path="DgServicingUpdate" element={<DGServicingUpdate />} />
-              {/*  <Route path="UserList" element={<RequireAdmin>
+        {/*  private Route */}
+        <Route element={<RequireAuth />}>
+          <Route path="/Dashboard" element={<DashBoard />}>
+            <Route index element={<PgRunList />} />
+            <Route path="ApprovalPending" element={<ApprovalPending />} />
+            <Route path="PgRunUpdate" element={<PgRunUpdate />} />
+            <Route path="FuelUpdate" element={<FuelUpdate />} />
+            <Route path="FuelData" element={<FuelDataList />} />
+            <Route path="EMDataUpdate" element={<EMDataUpdate />} />
+            <Route path="DgServicingUpdate" element={<DGServicingUpdate />} />
+            <Route path="DgRefuelingUpdate" element={<DgRefuelingUpdate/>} />
+            {/*  <Route path="UserList" element={<RequireAdmin>
                 <UserList/></RequireAdmin>}>
               </Route> */}
 
-              <Route element={<RequireAdmin />}>
-                <Route path="UserList" element={<UserList />} />
-              </Route>
+            <Route element={<RequireAdmin />}>
+              <Route path="UserList" element={<UserList />} />
             </Route>
           </Route>
+        </Route>
 
-          <Route element={<RequireAuth />}>
-            <Route path="/PgFuel" element={<PgFuel />} />
-            <Route path="/AllPgRunList" element={<AllPgRunList />}/>
-            <Route path="/AllFuelList" element={<AllFuelList />}/>
-            <Route path="/DgInfo" element={<DG />}/>
-            <Route path="/DgServicing" element={<DgServicingInfo />}/>
-           
+        <Route element={<RequireAuth />}>
+          <Route path="/PgFuel" element={<PgFuel />} />
+          <Route path="/AllPgRunList" element={<AllPgRunList />} />
+          <Route path="/AllFuelList" element={<AllFuelList />} />
+          <Route path="/DgInfo" element={<DG />} />
+          <Route path="/DgServicing" element={<DgServicingInfo />} />
+          <Route path="/DgRefueling" element={<DgRefuelingList />} />
 
-            <Route path="/EmInfo" element={<EminfoList />}/>
-          </Route>
+          <Route path="/EmInfo" element={<EminfoList />} />
+        </Route>
 
-          <Route element={<RequireAdmin />}>
-            <Route path="/RectifierUpdate" element={<RectifierInfoUpdate />} />
-            <Route path="/Signup" element={<SignUp />}></Route>
-          </Route>
-        </Routes>
-        <Footer />
+        <Route element={<RequireAdmin />}>
+          <Route path="/RectifierUpdate" element={<RectifierInfoUpdate />} />
+          <Route path="/Signup" element={<SignUp />}></Route>
+        </Route>
+      </Routes>
+      <Footer />
       {/* </NavBar> */}
       <ToastContainer />
     </>

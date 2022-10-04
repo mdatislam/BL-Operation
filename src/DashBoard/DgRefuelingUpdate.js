@@ -1,22 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
-import { signOut } from "firebase/auth";
 import React, { useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import auth from "../firebase.init";
 import Loading from "../Pages/SharedPage/Loading";
 import background from "../../src/images/bb.jpg";
+import { signOut } from "firebase/auth";
+import auth from "../firebase.init";
+import { useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-const EMDataUpdate = () => {
+const DgRefuelingUpdate = () => {
   const [user] = useAuthState(auth);
-  const navigate = useNavigate();
-  /*  const [preEmNo, setPreEmNo]= useState("")
-  const [preReading, setPreReading]= useState("")
-    */
   const [imgUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const {
     register,
     reset,
@@ -25,18 +22,17 @@ const EMDataUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" http://localhost:5000/emInfo", {
+    fetch(" http://localhost:5000/dgRefuelingInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     }).then((res) => res.json())
   );
-  // console.log(services)
+  // console.log(sites)
   if (isLoading) {
     return <Loading />;
   }
-  //console.log(preEmNo)
 
   const handleImageUpload = (event) => {
     setLoading(true);
@@ -44,7 +40,7 @@ const EMDataUpdate = () => {
     const formData = new FormData();
     formData.set("image", imageFile);
     fetch(
-      "https://api.imgbb.com/1/upload?key=f84c57341c651748792aeb7c4d477c29",
+      "https://api.imgbb.com/1/upload?key=1b570ca2c45d58b767860a466c63580e",
       {
         method: "POST",
 
@@ -60,57 +56,48 @@ const EMDataUpdate = () => {
   };
   //console.log(imgUrl)
 
-  /*  const image = data.image[0];
-        const formData = new FormData();
-        formData.append('image', image);
-        const url = `https://api.imgbb.com/1/upload?key=${imageStorageKey}`;
-        fetch(url, {
-            method: 'POST',
-            body: formData
-        })
-        .then(res=>res.json())
-        .then(result =>{
-            if(result.success){
-                const img = result.data.url; */
   const onSubmit = (data) => {
     //console.log(" click me");
     const siteID = data.siteId;
-    const presentSite = sites.filter((site) => site.siteId === siteID);
+    const presentSite = sites?.filter((site) => site.siteId === siteID);
     //console.log(presentSite)
 
-    const EmPreReading = presentSite.map((s) => s.EmReading);
-    const EmPreSerialNo = presentSite.map((s) => s.EmSerialNo);
-    const PreDate = presentSite.map((s) => s.date);
+    const preRhReading = presentSite?.map((s) => s.rhReading);
+   const previousFuel = presentSite.map((s) => s.previousQuantity); 
+      const previousReFuel = presentSite.map((s) => s.reFuelQuantity); 
+      const preTotal =
+        parseFloat(previousFuel[0]) + parseFloat(previousReFuel[0]);
+    const PreDate = presentSite?.map((s) => s.date);
     // console.log(EmPreReading[0])
 
     /*   let date = new Date();
     date.setDate(date.getDate());
     let vv = date.toLocaleDateString("en-CA");   */
 
-    const EMData = {
+    const dgRefuelingData = {
       siteId: siteID,
       date: data.date2,
-      EmSerialNo: data.emNo,
-      EmReading: data.emReading,
-      preDate: PreDate[0],
-      EmPreSerialNo: EmPreSerialNo[0],
-      EmPreReading: EmPreReading[0],
-      peakReading: data.peak,
-      offPeakReading: data.offPeak,
-      loadCurrent: data.loadCurrent,
+     /*  batterySerialNo: data.dgBatteryNo, */
+        rhReading: data.rhReading,
+      reFuelQuantity:data.reFuel,
+      previousQuantity:data.preFuel,
+      previousDate: PreDate[0],
+    /*   batteryPreSerialNo: batteryPreSerialNo[0], */
+        preRhReading: preRhReading[0],
+      preTotalFuel:preTotal,
       updaterName: user.displayName,
       updaterEmail: user.email,
       url: imgUrl,
       remark: data.remark,
     };
 
-    fetch(`http://localhost:5000/emInfo/${siteID}`, {
+    fetch(`http://localhost:5000/dgRefuelingInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-      body: JSON.stringify(EMData),
+      body: JSON.stringify(dgRefuelingData),
     })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
@@ -121,17 +108,44 @@ const EMDataUpdate = () => {
         }
         return res.json();
       })
-      .then((emData) => {
-        console.log(emData);
-        if (emData.upsertedCount || emData.modifiedCount) {
+      .then((refuelData) => {
+        console.log(refuelData);
+        if (refuelData.upsertedCount || refuelData.modifiedCount) {
           toast.success("Data Successfully Update");
         }
-        setImageUrl("");
-        reset();
-        //console.log(pgData)
+       
       });
-  };
 
+/* for posting all refueling data */
+       fetch(`http://localhost:5000/dgAllRefueling`, {
+         method: "POST",
+         headers: {
+           "content-type": "application/json",
+           authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+         },
+         body: JSON.stringify(dgRefuelingData),
+       })
+         .then((res) => {
+           if (res.status === 401 || res.status === 403) {
+             toast.error("Unauthorize access");
+             signOut(auth);
+             localStorage.removeItem("accessToken");
+             navigate("/Login");
+           }
+           return res.json();
+         })
+         .then((refuelData) => {
+           console.log(refuelData);
+           if (refuelData.insertedId) {
+               toast.success(" 2nd Data Successfully Update", {
+                 position:"top-center",
+             });
+           }
+           setImageUrl("");
+           reset();
+           //console.log(pgData)
+         });
+  };
   return (
     <div
       className="flex justify-center justify-items-center bg-no-repeat bg-bottom bg-fixed"
@@ -139,8 +153,8 @@ const EMDataUpdate = () => {
     >
       <div className="card  lg:w-96 bg-base-100 shadow-2xl my-8">
         <div className="card-body">
-          <h2 className="text-center text-secondary-focus text-2xl font-bold mb-3">
-            Update Energy Meter Info !!
+          <h2 className="text-center text-[#db51f3] text-2xl font-bold mb-3">
+            Update DG Refueling Info !!
           </h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Date input field */}
@@ -192,99 +206,79 @@ const EMDataUpdate = () => {
               </label>
             </div>
 
-            {/* Load Current */}
+            {/*  DG RH Reading*/}
             <div className="form-control w-full max-w-xs">
               <input
                 type="number"
-                placeholder="Site's DC Load Current"
+                placeholder=" Put Servicing DG RunHour "
                 className="input input-bordered w-full max-w-xs"
-                {...register("loadCurrent", {
+                {...register("rhReading", {
                   required: {
                     value: true,
-                    message: " Load Current is required",
+                    message: " DG servicing RH Required",
                   },
                 })}
               />
               <label className="label">
-                {errors.date?.type === "required" && (
+                {errors.rhReading?.type === "required" && (
                   <span className="label-text-alt text-red-500">
-                    {errors.date.message}
+                    {errors.rhReading.message}
                   </span>
                 )}
               </label>
             </div>
-
-            {/*  EM serial No */}
-            <div className="form-control w-full max-w-xs">
-              <input
-                type="text"
-                placeholder=" Energy Meter Serial No"
-                className="input input-bordered w-full max-w-xs"
-                {...register("emNo", {
-                  required: {
-                    value: true,
-                    message: " Energy Meter Serial No required",
-                  },
-                })}
-              />
-              <label className="label">
-                {errors.emNo?.type === "required" && (
-                  <span className="label-text-alt text-red-500">
-                    {errors.emNo.message}
-                  </span>
-                )}
-              </label>
-            </div>
-
-            {/*  Energy Meter Reading*/}
+            {/*  previous Quantity*/}
             <div className="form-control w-full max-w-xs">
               <input
                 type="number"
                 step=".001"
-                placeholder=" Put Total Meter Reading "
+                placeholder="Previous Fuel Quantity"
                 className="input input-bordered w-full max-w-xs"
-                {...register("emReading", {
+                {...register("preFuel", {
                   required: {
                     value: true,
-                    message: " Energy Meter Total Reading Required",
+                    message: " Previous Fuel Quantity required",
                   },
                 })}
               />
               <label className="label">
-                {errors.emReading?.type === "required" && (
+                {errors.preFuel?.type === "required" && (
                   <span className="label-text-alt text-red-500">
-                    {errors.emReading.message}
+                    {errors.preFuel.message}
                   </span>
                 )}
               </label>
             </div>
-            {/*  Energy Meter Peak Reading*/}
+            {/*  ReFuel Quantity*/}
             <div className="form-control w-full max-w-xs">
               <input
                 type="number"
-                placeholder=" Put Peak Reading if have "
+                step=".001"
+                placeholder="ReFuel Quantity"
                 className="input input-bordered w-full max-w-xs"
-                {...register("peak")}
+                {...register("reFuel", {
+                  required: {
+                    value: true,
+                    message: " reFuel Quantity required",
+                  },
+                })}
               />
-              <label className="label"></label>
+              <label className="label">
+                {errors.reFuel?.type === "required" && (
+                  <span className="label-text-alt text-red-500">
+                    {errors.reFuel.message}
+                  </span>
+                )}
+              </label>
             </div>
-            {/*  Energy Meter offPeak Reading*/}
-            <div className="form-control w-full max-w-xs">
-              <input
-                type="number"
-                placeholder="Put OffPeak Reading if have"
-                className="input input-bordered w-full max-w-xs"
-                {...register("offPeak")}
-              />
-              <label className="label"></label>
-            </div>
-            {/* Pic of EM Reading */}
+
+            {/* Pic of RH Reading */}
             <div className="form-control w-full max-w-xs">
               <label
                 htmlFor="image"
-                className={loading ? "btn  loading  mt-5" : "btn  mt-5"}
+                className={loading ? "btn loading mt-5" : "btn mt-5"}
               >
-                Upload-Photo
+                Upload-RH-Photo
               </label>
               <input
                 id="image"
@@ -312,7 +306,6 @@ const EMDataUpdate = () => {
               className="btn btn-accent w-full max-w-xs m-2"
               disabled={!imgUrl ? true : false}
               value="Submit-Data"
-              /*   <button className="btn btn-success">Success</button> */
             />
           </form>
         </div>
@@ -321,4 +314,4 @@ const EMDataUpdate = () => {
   );
 };
 
-export default EMDataUpdate;
+export default DgRefuelingUpdate;
