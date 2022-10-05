@@ -6,7 +6,7 @@ import AllFuelListRow from "./AllFuelListRow";
 
 const AllFuelList = () => {
   const { data: receiveFuel, isLoading } = useQuery(["fuel"], () =>
-    fetch("http://localhost:5000/fuelListAll", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -30,10 +30,10 @@ const AllFuelList = () => {
           GO FUEL UPDATE
         </Link>
       </div>
-      <div className="overflow-x-auto">
-        <table className="  table table-compact w-full">
-          <thead className="  border-4  text-[#FFcb24]">
-            <tr className=" border-4 bg-[#555555]">
+      <div className="overflow-x-auto  mt-4">
+        <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
+          <thead className="border-2 border-[#FFCB24]">
+            <tr className="divide-x divide-blue-400 text-center">
               <th>SN</th>
 
               <th>Date</th>

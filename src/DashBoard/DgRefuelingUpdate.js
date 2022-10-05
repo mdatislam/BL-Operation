@@ -22,7 +22,7 @@ const DgRefuelingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" http://localhost:5000/dgRefuelingInfo", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgRefuelingInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -63,10 +63,12 @@ const DgRefuelingUpdate = () => {
     //console.log(presentSite)
 
     const preRhReading = presentSite?.map((s) => s.rhReading);
-   const previousFuel = presentSite.map((s) => s.previousQuantity); 
-      const previousReFuel = presentSite.map((s) => s.reFuelQuantity); 
-      const preTotal =
-        parseFloat(previousFuel[0]) + parseFloat(previousReFuel[0]);
+    const previousFuel = presentSite.map((s) => s.previousQuantity);
+    const previousReFuel = presentSite.map((s) => s.reFuelQuantity);
+    const preTotal =
+      parseFloat(previousFuel[0]) + parseFloat(previousReFuel[0]);
+    const consumption =
+      (preTotal - data.preFuel) / (data.rhReading - parseFloat(preRhReading));
     const PreDate = presentSite?.map((s) => s.date);
     // console.log(EmPreReading[0])
 
@@ -77,22 +79,51 @@ const DgRefuelingUpdate = () => {
     const dgRefuelingData = {
       siteId: siteID,
       date: data.date2,
-     /*  batterySerialNo: data.dgBatteryNo, */
-        rhReading: data.rhReading,
-      reFuelQuantity:data.reFuel,
-      previousQuantity:data.preFuel,
+      /*  batterySerialNo: data.dgBatteryNo, */
+      rhReading: data.rhReading,
+      reFuelQuantity: data.reFuel,
+      previousQuantity: data.preFuel,
       previousDate: PreDate[0],
-    /*   batteryPreSerialNo: batteryPreSerialNo[0], */
-        preRhReading: preRhReading[0],
-      preTotalFuel:preTotal,
+      /*   batteryPreSerialNo: batteryPreSerialNo[0], */
+      preRhReading: preRhReading[0],
+      preTotalFuel: preTotal,
+      consumption,
       updaterName: user.displayName,
       updaterEmail: user.email,
       url: imgUrl,
       remark: data.remark,
     };
 
-    fetch(`http://localhost:5000/dgRefuelingInfo/${siteID}`, {
-      method: "PUT",
+    fetch(
+      `https://enigmatic-eyrie-94440.herokuapp.com/dgRefuelingInfo/${siteID}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(dgRefuelingData),
+      }
+    )
+      .then((res) => {
+        if (res.status === 401 || res.status === 403) {
+          toast.error("Unauthorize access");
+          signOut(auth);
+          localStorage.removeItem("accessToken");
+          navigate("/Login");
+        }
+        return res.json();
+      })
+      .then((refuelData) => {
+        console.log(refuelData);
+        if (refuelData.upsertedCount || refuelData.modifiedCount) {
+          toast.success("Data Successfully Update");
+        }
+      });
+
+    /* for posting all refueling data */
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/dgAllRefueling`, {
+      method: "POST",
       headers: {
         "content-type": "application/json",
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -110,41 +141,15 @@ const DgRefuelingUpdate = () => {
       })
       .then((refuelData) => {
         console.log(refuelData);
-        if (refuelData.upsertedCount || refuelData.modifiedCount) {
-          toast.success("Data Successfully Update");
+        if (refuelData.insertedId) {
+          toast.success(" 2nd Data Successfully Update", {
+            position: "top-center",
+          });
         }
-       
+        setImageUrl("");
+        reset();
+        //console.log(pgData)
       });
-
-/* for posting all refueling data */
-       fetch(`http://localhost:5000/dgAllRefueling`, {
-         method: "POST",
-         headers: {
-           "content-type": "application/json",
-           authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-         },
-         body: JSON.stringify(dgRefuelingData),
-       })
-         .then((res) => {
-           if (res.status === 401 || res.status === 403) {
-             toast.error("Unauthorize access");
-             signOut(auth);
-             localStorage.removeItem("accessToken");
-             navigate("/Login");
-           }
-           return res.json();
-         })
-         .then((refuelData) => {
-           console.log(refuelData);
-           if (refuelData.insertedId) {
-               toast.success(" 2nd Data Successfully Update", {
-                 position:"top-center",
-             });
-           }
-           setImageUrl("");
-           reset();
-           //console.log(pgData)
-         });
   };
   return (
     <div

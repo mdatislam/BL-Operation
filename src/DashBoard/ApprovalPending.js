@@ -22,12 +22,15 @@ const ApprovalPending = () => {
     isLoading,
     refetch,
   } = useQuery(["list", user], () =>
-    fetch(` http://localhost:5000/ApprovalList?email=${user.email}`, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
+    fetch(
+      ` https://enigmatic-eyrie-94440.herokuapp.com/ApprovalList?email=${user.email}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         toast.error("Unauthorize Access");
         signOut(auth);
@@ -46,10 +49,10 @@ const ApprovalPending = () => {
       <div className="text-center text-primary text-2xl mt-4 mb-8">
         <h2>Approval Pending List</h2>
       </div>
-      <div className="overflow-x-auto">
-        <table className=" table table-compact w-full">
-          <thead className="border-4  text-[#828282]  bg-[#555555] ! important">
-            <tr className="">
+      <div className="overflow-x-auto  mt-4">
+        <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
+          <thead className="border-2 border-[#FFCB24]">
+            <tr className="divide-x divide-blue-400 text-center">
               <th>SN</th>
               <th>
                 <div>Approval</div>

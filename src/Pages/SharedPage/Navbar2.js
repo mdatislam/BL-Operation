@@ -24,7 +24,7 @@ const Navbar2 = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="">DG Refueling</NavLink>
+          <NavLink to="DgRefueling">DG Refueling</NavLink>
         </li>
       </ul>
     </>

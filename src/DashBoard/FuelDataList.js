@@ -22,12 +22,15 @@ const FuelDataList = () => {
     isLoading,
     refetch,
   } = useQuery(["list", user], () =>
-    fetch(` http://localhost:5000/fuelList?email=${user.email}`, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
+    fetch(
+      ` https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         signOut(auth);
         localStorage.removeItem("accessToken");
@@ -59,10 +62,10 @@ const FuelDataList = () => {
           Total Received Fuel: {receivedFuel} Liter
         </h2>
       </div>
-      <div className="overflow-x-auto">
-        <table className="  table-auto table-compact w-full">
-          <thead className="  border-4  text-[#FFcb24]">
-            <tr className=" border-4 bg-[#555555]">
+      <div className="overflow-x-auto  mt-4">
+        <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
+          <thead className="border-2 border-[#FFCB24]">
+            <tr className="divide-x divide-blue-400 text-center">
               <th>SN</th>
               <th>Date</th>
               <th>Slip No</th>

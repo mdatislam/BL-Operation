@@ -9,7 +9,7 @@ import RectifierInfoUpdate from "./RectifierInfoUpdate";
 
 const UserList = () => {
   const { data: users, isLoading } = useQuery(["list"], () =>
-    fetch("http://localhost:5000/userList", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

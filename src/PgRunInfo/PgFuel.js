@@ -12,7 +12,7 @@ const PgFuel = () => {
             <div className="lg:card-body">
               {/*  <h2 className="card-title">Card title!</h2> */}
               <div className="grid h-12 card bg-[#6495ED] rounded-box place-items-center mb-4">
-                <h2 className="text-[#006400] card-title font-bold ">
+                <h2 className=" card-title font-bold text-white">
                   Fuel Balance Summary
                 </h2>
               </div>

@@ -2,12 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Link } from "react-router-dom";
 import Loading from "../SharedPage/Loading";
+import AllRefuelingRows from "./AllRefuelingRows";
 
-import DgServicingInfoRow from "./DgServicingInfoRow";
-
-const DgServicingInfo = () => {
-  const { data: dgServiceInfo, isLoading } = useQuery(["DgInfoList"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo", {
+const AllRefuelingList = () => {
+  const { data: dgRefueling, isLoading } = useQuery(["DgRefueling"], () =>
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/dgAllRefueling", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -20,15 +19,15 @@ const DgServicingInfo = () => {
   }
   return (
     <div className="mt-8 px-4 mb-4">
-      <div className="grid grid-cols-4 lg:grid-cols-8 h-12 card bg-[#008282] rounded-lg justify-self-start mb-8 gap-x-16">
+      <div className="grid grid-cols-4 lg:grid-cols-8 h-12 card bg-[#099252] rounded-lg justify-self-start mb-8 gap-x-16">
         <Link to="/Home" className="btn btn-secondary">
           Go Home
         </Link>
         <h2 className="stat-title lg:card-title font-bold col-start-2 col-span-2 lg:col-span-6 justify-self-center self-center text-white">
-          DG Servicing<p>updated Record</p>
+          All DG <p>Refueling Record</p>
         </h2>
-        <Link to="/Dashboard/DgServicingUpdate" className="btn btn-secondary">
-          GO DG Service UPDATE
+        <Link to="/Dashboard/DgRefuelingUpdate" className="btn btn-secondary">
+          GO DG Refueling Update
         </Link>
       </div>
 
@@ -41,21 +40,21 @@ const DgServicingInfo = () => {
 
               <th>
                 <div>previous</div>
-                <div>DG Service Date</div>
+                <div>Refueling Date</div>
               </th>
 
               <th>
                 <div>Previous </div>
-                <div>DG RH</div>
+                <div>Refueling RH</div>
               </th>
               <th>
-                <div>Previous</div>
-                <div>Battery SN</div>
+                <div>Total Fuel</div>
+                <div>last Refueling</div>
               </th>
 
               <th>
                 <div>Latest</div>
-                <div>Service Date</div>
+                <div>Refueling Date</div>
               </th>
 
               <th>
@@ -63,30 +62,34 @@ const DgServicingInfo = () => {
                 <div>DG RH</div>
               </th>
               <th>
-                <div>Latest</div>
-                <div>Battery SN</div>
+                <div>Previous</div>
+                <div>Fuel Quantity</div>
+              </th>
+
+              <th>
+                <div>Refueling</div>
+                <div>Quantity</div>
               </th>
               <th>
-                <div>Air Filter</div>
-                <div>Use Status</div>
+                <div>Consumption</div>
               </th>
               <th>
-                <div>DG RH</div>
-                <div>Picture</div>
+                <div>Refueling</div>
+                <div>By</div>
               </th>
               <th>
-                <div>DG Service</div>
-                <div>Collector</div>
+                <div>Refueling</div>
+                <div>RH Photo</div>
               </th>
 
               <th>Remarks</th>
             </tr>
           </thead>
           <tbody>
-            {dgServiceInfo.map((dgInfo, index) => (
-              <DgServicingInfoRow
-                key={dgInfo._id}
-                dgInfo={dgInfo}
+            {dgRefueling.map((refuel, index) => (
+              <AllRefuelingRows
+                key={refuel._id}
+                refuel={refuel}
                 index={index}
               />
             ))}
@@ -97,4 +100,4 @@ const DgServicingInfo = () => {
   );
 };
 
-export default DgServicingInfo;
+export default AllRefuelingList;

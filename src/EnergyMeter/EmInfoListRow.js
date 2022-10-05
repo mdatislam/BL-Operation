@@ -18,7 +18,7 @@ const EmInfoListRow = ({ emInfo, index }) => {
     remark,
   } = emInfo;
   return (
-    <tr className="border-2 border-[#F0D786] hover divide-x divide-gray-200">
+    <tr className="border-2 border-[#F0D786] hover divide-x divide-gray-300 text-center">
       <td>{index + 1}</td>
       <td>{siteId}</td>
       <td>{preDate} </td>
