@@ -40,14 +40,16 @@ function App() {
       <Navbar2 />
       <Routes>
         {/*  Public Route */}
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/Home" element={<Home />}></Route>
+        {/*    <Route path="/" element={<Home />}></Route> */}
+
         <Route path="/Login" element={<Login />}></Route>
         {/*     <Route path="/Signup" element={<SignUp />}></Route> */}
         <Route path="*" element={<NotFound />}></Route>
 
         {/*  private Route */}
         <Route element={<RequireAuth />}>
+          <Route path="/Home" element={<Home />}></Route>
+          <Route path="/" element={<Home />}></Route>
           <Route path="/Dashboard" element={<DashBoard />}>
             <Route index element={<PgRunList />} />
             <Route path="ApprovalPending" element={<ApprovalPending />} />
@@ -56,7 +58,7 @@ function App() {
             <Route path="FuelData" element={<FuelDataList />} />
             <Route path="EMDataUpdate" element={<EMDataUpdate />} />
             <Route path="DgServicingUpdate" element={<DGServicingUpdate />} />
-            <Route path="DgRefuelingUpdate" element={<DgRefuelingUpdate/>} />
+            <Route path="DgRefuelingUpdate" element={<DgRefuelingUpdate />} />
             {/*  <Route path="UserList" element={<RequireAdmin>
                 <UserList/></RequireAdmin>}>
               </Route> */}

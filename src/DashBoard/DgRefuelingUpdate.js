@@ -215,7 +215,7 @@ const DgRefuelingUpdate = () => {
             <div className="form-control w-full max-w-xs">
               <input
                 type="number"
-                placeholder=" Put Servicing DG RunHour "
+                placeholder=" Refueling DG Run Hour "
                 className="input input-bordered w-full max-w-xs"
                 {...register("rhReading", {
                   required: {
@@ -309,7 +309,7 @@ const DgRefuelingUpdate = () => {
             <input
               type="submit"
               className="btn btn-accent w-full max-w-xs m-2"
-              disabled={!imgUrl ? true : false}
+              /* disabled={!imgUrl ? true : false} */
               value="Submit-Data"
             />
           </form>

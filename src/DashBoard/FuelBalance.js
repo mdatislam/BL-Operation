@@ -53,7 +53,8 @@ const FuelBalance = () => {
       (previous, current) => previous + parseFloat(current),
       0
     );
-    user.fuelConsume = totalConsume;
+   
+    user.fuelConsume = totalConsume.toFixed(2);
 
     // per user total fuel receive calculation
     const fuelTaker = receiveFuel?.filter(

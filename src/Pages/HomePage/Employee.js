@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import UserListRows from '../Admin/UserListRows';
+
 import EmployeeList from './EmployeeList';
 
 const Employee = () => {
@@ -22,8 +23,9 @@ const Employee = () => {
         <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-4 gap-y-4">
           {employees?.map(
             (emp) => (
-              <EmployeeList key={emp._id} emp={emp}></EmployeeList>
-            ) 
+              (<EmployeeList key={emp._id} emp={emp}></EmployeeList>)
+              
+            )
           )}
         </div>
       </div>

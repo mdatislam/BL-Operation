@@ -1,54 +1,24 @@
 import { signOut } from "firebase/auth";
-import React from "react";
+
 import { useAuthState } from "react-firebase-hooks/auth";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
+import mobileTower1 from "../../images/Mobile Tower2.jpg";
 
 const Navbar2 = () => {
   const { pathname } = useLocation();
   const [user] = useAuthState(auth);
-  //console.log(user)
+ 
+ //console.log(user)
   const navigate = useNavigate();
   const logout = () => {
     signOut(auth);
     localStorage.removeItem("accessToken");
     navigate("/Login");
   };
-  const subMenu = (
-    <>
-      <ul className=" p-2 text-white rounded-box bg-[#adbfe6]">
-        <li>
-          <NavLink to="/DgServicing">
-            DG SerVicing
-            
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="DgRefueling">DG Refueling</NavLink>
-        </li>
-      </ul>
-    </>
-  );
-  const large = (
-    <>
-      <li tabIndex={0}>
-        <NavLink to="DgInfo" className="justify-between">
-          DG-Info
-          <svg
-            className="fill-current"
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-          >
-            <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
-          </svg>
-        </NavLink>
-        {subMenu}
-      </li>
-    </>
-  );
-  
+
+   
+ 
   const menuItem = (
     <>
       <li>
@@ -74,27 +44,81 @@ const Navbar2 = () => {
       </li>
     </>
   );
-  const userStatus = (
-    <>
-      <li>
-        {!user ? (
-          <NavLink className="rounded-lg" to="/Login">
-            Login
-          </NavLink>
-        ) : (
-          <>
-            <small>{user.displayName}</small>
-            <button onClick={logout} className=" rounded-lg btn-outline">
-              LogOut
-            </button>
-          </>
-        )}
+
+  const dgSubMenu = (
+    <div className="dropdown dropdown-hover">
+      <li tabIndex={0}>
+        <p to="" className="justify-between">
+          DG-Info
+          <svg
+            className="fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+          >
+            <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
+          </svg>
+        </p>
       </li>
-    </>
+      <ul
+        tabIndex={0}
+        className=" p-2 shadow menu menu-compact dropdown-content bg-[#98b1e6] rounded-box w-52"
+      >
+        <li>
+          <NavLink to="/DgServicing">DG SerVicing</NavLink>
+        </li>
+        <li>
+          <NavLink to="DgRefueling">Latest DG Refueling</NavLink>
+        </li>
+        <li>
+          <NavLink to="DgInfo">All DG Refueling</NavLink>
+        </li>
+      </ul>
+    </div>
   );
+  /* Profile */
+  const userStatus = (
+    <div className="dropdown dropdown-end">
+      <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+        <div className="w-48 rounded-full">
+          <img src={mobileTower1} alt="tower"/>
+          Profile
+        </div>
+      </label>
+      <ul
+        tabIndex={0}
+        className="mt-3 p-2 shadow menu menu-compact dropdown-content  bg-base-100 rounded-box"
+      >
+        <li>
+          {!user ? (
+            <NavLink className="rounded-lg" to="/Login">
+              Login
+            </NavLink>
+          ) : (
+            <>
+              <li>{user.displayName}</li>
+              <li>
+                <button onClick={logout} className=" rounded-lg btn-outline">
+                  LogOut
+                </button>
+              </li>
+            </>
+          )}
+        </li>
+      </ul>
+    </div>
+  );
+
+  /*Profile end  */
+
+
+
+
+  
   return (
-    <div className=" navbar sticky top-0  z-20 bg-[#ffcb24]  lg:px-20">
-      <div className="navbar-end">
+    <div className=" navbar  sticky top-0  z-20 bg-[#ffcb24]  lg:px-20">
+      <div className="navbar-end ">
         {pathname.includes("Dashboard") && (
           <label
             htmlFor="dashboard-drawer"
@@ -120,11 +144,15 @@ const Navbar2 = () => {
           Rangpur O&amp;M
         </div>
       </div>
-      <div className="navbar-center hidden lg:flex ">
-        <ul className="menu  menu-horizontal flex p-0">
-          {menuItem} {large} {userStatus}
+      <div className="navbar-start hidden lg:flex">
+        <ul className="menu  menu-horizontal  p-0">
+          {menuItem}
+          {dgSubMenu}
         </ul>
       </div>
+
+      {userStatus}
+      {/* For mobile device */}
       <div className="navbar-end">
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className="btn btn-ghost  lg:hidden">
@@ -146,39 +174,11 @@ const Navbar2 = () => {
 
           <ul
             tabIndex={0}
-            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-300 rounded-box w-56"
+            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-200 rounded-box w-56"
           >
             {menuItem}
 
-            <div className="dropdown dropdown-left">
-              <li tabIndex={0}>
-                <NavLink to="DgInfo" className=" justify-start">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-6 h-6"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M15.75 19.5L8.25 12l7.5-7.5"
-                    />
-                  </svg>{" "}
-                  DG-Info
-                </NavLink>
-              </li>
-              <ul
-                tabIndex={0}
-                className="dropdown-content menu  p-2  rounded-box w-52"
-              >
-                {subMenu}
-              </ul>
-            </div>
-
-            {userStatus}
+            {dgSubMenu}
           </ul>
         </div>
       </div>
