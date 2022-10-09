@@ -50,11 +50,11 @@ const FuelBalance = () => {
     const pgRun = pgRunData?.filter((p) => p.pgRunnerEmail === user.email);
     const consume = pgRun?.map((c) => c.fuelConsume);
     const totalConsume = consume?.reduce(
-      (previous, current) => previous + parseFloat(current),
+      (previous, current) => previous + parseFloat(current).toFixed(2),
       0
     );
    
-    user.fuelConsume = totalConsume.toFixed(2);
+    user.fuelConsume = totalConsume;
 
     // per user total fuel receive calculation
     const fuelTaker = receiveFuel?.filter(
