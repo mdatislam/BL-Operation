@@ -6,7 +6,7 @@ import AllFuelListRow from "./AllFuelListRow";
 
 const AllFuelList = () => {
   const { data: receiveFuel, isLoading } = useQuery(["fuel"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelListAll", {
+    fetch("http://localhost:5000/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -19,14 +19,14 @@ const AllFuelList = () => {
   }
   return (
     <div className="px-2 lg:px-16 mt-12 mb-8">
-      <div className="grid grid-cols-4 lg:grid-cols-8 h-12 card bg-[#DDA0DD] rounded-lg justify-self-start mb-8">
-        <Link to="/PgFuel" className="btn btn-outline">
+      <div className="grid gap-x-2 grid-cols-4 lg:grid-cols-8 h-12 card bg-[#5a23d9] rounded-lg justify-self-start mb-8">
+        <Link to="/PgFuel" className="btn btn-secondary">
           Go BACK
         </Link>
-        <h2 className="text-[#111111] stat-title lg:card-title font-bold col-start-2 col-span-2 lg:col-span-6 justify-self-center self-center">
+        <h2 className="text-white lg:card-title font-bold col-start-2 col-span-2 lg:col-span-6 justify-self-center self-center">
           All Issued <p>Fuel Record</p>
         </h2>
-        <Link to="/Dashboard/FuelUpdate" className="btn btn-outline">
+        <Link to="/Dashboard/FuelUpdate" className="btn btn-secondary">
           GO FUEL UPDATE
         </Link>
       </div>

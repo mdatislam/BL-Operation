@@ -9,7 +9,7 @@ import RectifierInfoUpdate from "./RectifierInfoUpdate";
 
 const UserList = () => {
   const { data: users, isLoading } = useQuery(["list"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
+    fetch("http://localhost:5000/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -93,6 +93,11 @@ const UserList = () => {
                 </div>
               </div>
               <RectifierInfo />
+              <Link
+                to="/PendingPgRun"
+                className="btn btn-outline btn-primary font-semiBold text-xl mb-2"
+              >Pending PG-Run List
+              </Link>
             </div>
           </div>
         </div>

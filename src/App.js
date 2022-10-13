@@ -29,6 +29,7 @@ import DgServicingInfo from "./Pages/DG-Info/DgServicingInfo";
 import Navbar2 from "./Pages/SharedPage/Navbar2";
 import DgRefuelingList from "./Pages/DG-Info/DgRefuelingList";
 import DgRefuelingUpdate from "./DashBoard/DgRefuelingUpdate";
+import ApprovalPendingList from "./PgRunInfo/ApprovalPendingList";
 
 
 
@@ -83,6 +84,7 @@ function App() {
         <Route element={<RequireAdmin />}>
           <Route path="/RectifierUpdate" element={<RectifierInfoUpdate />} />
           <Route path="/Signup" element={<SignUp />}></Route>
+          <Route path="/PendingPgRun" element={<ApprovalPendingList />}/> 
         </Route>
       </Routes>
       <Footer />

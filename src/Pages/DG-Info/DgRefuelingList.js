@@ -6,7 +6,7 @@ import DgRefuelingRow from "./DgRefuelingRow";
 
 const DgRefuelingList = () => {
   const { data: dgRefueling, isLoading } = useQuery(["DgRefueling"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/dgRefuelingInfo", {
+    fetch("http://localhost:5000/dgRefuelingInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

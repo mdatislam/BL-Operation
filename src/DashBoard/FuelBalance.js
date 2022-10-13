@@ -9,7 +9,7 @@ const FuelBalance = () => {
   const [user] = useAuthState(auth);
 
   const { data: users, isLoading } = useQuery(["userList"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
+    fetch("http://localhost:5000/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -18,7 +18,7 @@ const FuelBalance = () => {
   );
 
   const { data: pgRunData, isLoading2 } = useQuery(["list"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/pgRunAll", {
+    fetch("http://localhost:5000/pgRunAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -27,7 +27,7 @@ const FuelBalance = () => {
   );
 
   const { data: receiveFuel, isLoading3 } = useQuery(["fuel"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelListAll", {
+    fetch("http://localhost:5000/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -49,13 +49,12 @@ const FuelBalance = () => {
 
     const pgRun = pgRunData?.filter((p) => p.pgRunnerEmail === user.email);
     const consume = pgRun?.map((c) => c.fuelConsume);
-    console.log(consume)
+    //console.log(consume)
     const totalConsume = consume?.reduce(
-      (previous, current) =>previous + parseFloat(current),
+      (previous, current) => previous + parseFloat(current),
       0
     );
-    
-   
+
     user.fuelConsume = totalConsume?.toFixed(2);
 
     // per user total fuel receive calculation

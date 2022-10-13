@@ -6,7 +6,7 @@ import Loading from "../Pages/SharedPage/Loading";
 import background from "../../src/images/bb.jpg";
 import { signOut } from "firebase/auth";
 import auth from "../firebase.init";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const DGServicingUpdate = () => {
@@ -22,7 +22,7 @@ const DGServicingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo", {
+    fetch(" http://localhost:5000/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -86,17 +86,14 @@ const DGServicingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo/${siteID}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(dgServicingData),
-      }
-    )
+    fetch(`http://localhost:5000/dgServiceInfo/${siteID}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(dgServicingData),
+    })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");
@@ -123,6 +120,24 @@ const DGServicingUpdate = () => {
     >
       <div className="card  lg:w-96 bg-base-100 shadow-2xl my-8">
         <div className="card-body">
+          <Link
+            to="/DgServicing"
+            className="btn btn-outline btn-primary font-semiBold text-xl mb-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                fillRule="evenodd"
+                d="M20.25 12a.75.75 0 01-.75.75H6.31l5.47 5.47a.75.75 0 11-1.06 1.06l-6.75-6.75a.75.75 0 010-1.06l6.75-6.75a.75.75 0 111.06 1.06l-5.47 5.47H19.5a.75.75 0 01.75.75z"
+                clipRule="evenodd"
+              />
+            </svg>{" "}
+            &nbsp;DG-Servicing List
+          </Link>
           <h2 className="text-center text-secondary-focus text-2xl font-bold mb-3">
             Update DG Servicing Info !!
           </h2>
