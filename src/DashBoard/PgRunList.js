@@ -3,10 +3,10 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
 import Loading from "../Pages/SharedPage/Loading";
 import PgRunRows from "./PgRunRows";
-import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import DeletePgRun from "./DeletePgRun";
+
 
 const PgRunList = () => {
   const [delPg, setDelPg] = useState("");
@@ -23,7 +23,13 @@ const PgRunList = () => {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 401 || res.status === 403) {
+          localStorage.removeItem("accessToken");
+          navigate("/Login");
+        }
+        return res.json();
+      })
       .then((data) => setReceiveFuel(data));
   }, [user]);
 
@@ -37,7 +43,8 @@ const PgRunList = () => {
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-    }).then((res) => res.json())
+    }).then(res=>res.json())
+      
   );
 
   if (isLoading) {

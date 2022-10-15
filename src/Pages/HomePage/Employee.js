@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import UserListRows from '../Admin/UserListRows';
-
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import EmployeeList from './EmployeeList';
 
 const Employee = () => {
-    const [employees,setEmployee]=useState([])
+  const [employees, setEmployee] = useState([])
+   const navigate = useNavigate();
     useEffect(()=>{
-        fetch('employee.json')
-        .then(res=>res.json())
-        .then(data=>{
-           //console.log(data)
-            setEmployee(data)
-        }
-            )
-    },[])
+        fetch("employee.json")
+          .then((res) => {
+            if (res.status === 401 || res.status === 403) {
+              toast.error("Unauthorize access");
+
+              localStorage.removeItem("accessToken");
+              navigate("/Login");
+            }
+            return res.json();
+          })
+          .then((data) => {
+            //console.log(data)
+            setEmployee(data);
+          });
+    })
     return (
       <div className="mt-12 bg-slate-100 px-8 mb-4">
         <h1 className="text-[#008282] text-center font-bold text-2xl  py-8">

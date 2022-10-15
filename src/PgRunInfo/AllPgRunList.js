@@ -1,17 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loading from "../Pages/SharedPage/Loading";
 import AllPgRunRows from "./AllPgRunRows";
 
 const AllPgRunList = () => {
+  const navigate = useNavigate()
   const { data: pgRunData, isLoading } = useQuery(["list"], () =>
     fetch("http://localhost:5000/ApprovedAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-    }).then((res) => res.json())
+    }).then((res) => {
+      if (res.status === 401 || res.status === 403) {
+        localStorage.removeItem("accessToken");
+        navigate("/Login");
+      }
+      return res.json();
+    })
   );
   if (isLoading) {
     return <Loading />;

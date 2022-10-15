@@ -122,21 +122,23 @@ const DGServicingUpdate = () => {
         <div className="card-body">
           <Link
             to="/DgServicing"
-            className="btn btn-outline btn-primary font-semiBold text-xl mb-2"
+            className="btn  btn-primary font-semiBold text-xl mb-2"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
+              fill="none"
               viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-6 h-6"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
             >
               <path
-                fillRule="evenodd"
-                d="M20.25 12a.75.75 0 01-.75.75H6.31l5.47 5.47a.75.75 0 11-1.06 1.06l-6.75-6.75a.75.75 0 010-1.06l6.75-6.75a.75.75 0 111.06 1.06l-5.47 5.47H19.5a.75.75 0 01.75.75z"
-                clipRule="evenodd"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
               />
-            </svg>{" "}
-            &nbsp;DG-Servicing List
+            </svg>
+            Back &nbsp;DG-Servicing List
           </Link>
           <h2 className="text-center text-secondary-focus text-2xl font-bold mb-3">
             Update DG Servicing Info !!

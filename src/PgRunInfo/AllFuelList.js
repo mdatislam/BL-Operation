@@ -1,17 +1,27 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Loading from "../Pages/SharedPage/Loading";
 import AllFuelListRow from "./AllFuelListRow";
 
 const AllFuelList = () => {
+  const navigate = useNavigate()
   const { data: receiveFuel, isLoading } = useQuery(["fuel"], () =>
     fetch("http://localhost:5000/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-    }).then((res) => res.json())
+    }).then((res) => {
+      if (res.status === 401 || res.status === 403) {
+        toast.error("Unauthorize access");
+
+        localStorage.removeItem("accessToken");
+        navigate("/Login");
+      }
+      return res.json();
+    })
   );
 
   if (isLoading) {

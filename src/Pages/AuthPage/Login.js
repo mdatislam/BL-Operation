@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import {
  
-  useSignInWithEmailAndPassword,
-  useSignInWithGoogle,
+  useSignInWithEmailAndPassword
 } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -14,11 +13,10 @@ import PasswordReset from "./PasswordReset";
 import loginBack from "../../images/login.png";
 
 const Login = () => {
-  //const [user]=useAuthState(auth)
- // const admin = true;
+ 
   const [password, setPassword] = useState(" ");
-  const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
-  const [signInWithEmailAndPassword, Euser, loading, error] =
+  
+  const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
  
   const {
@@ -29,26 +27,27 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [token] = useToken(Euser || gUser);
+   const [token] = useToken(user);
 
-  if (gLoading || loading) {
+  if (loading) {
     return <Loading />;
-  }
-
-  let signInError;
-  if (error || gError) {
-    signInError = (
-      <p className=" text-red-500">
-        <small>{error?.message || gError?.message}</small>
-      </p>
-    );
-  }
+  } 
+let signInError;
+if (error) {
+  signInError = (
+    <p className=" text-red-500">
+      <small>{error?.message}</small>
+    </p>
+  );
+}
+  
   const onSubmit = (data) => {
     //console.log(data)
     const password = data.password;
     const email = data.email;
     signInWithEmailAndPassword(email, password);
   };
+  
 
   let from = location.state?.from?.pathname || "/Home";
   if (token) {
@@ -139,7 +138,7 @@ const Login = () => {
                   <label
                     htmlFor="reset"
                     className=" btn-link label-text-alt link-hover"
-                    onClick={() => setPassword(Euser.email)}
+                    onClick={() => setPassword(user.email)}
                   >
                     Reset Password ?
                   </label>

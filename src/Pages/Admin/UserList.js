@@ -5,7 +5,7 @@ import Loading from "../SharedPage/Loading";
 import newUser from "../../images/NewUser.jpg";
 import { Link } from "react-router-dom";
 import RectifierInfo from "./RectifierInfo";
-import RectifierInfoUpdate from "./RectifierInfoUpdate";
+
 
 const UserList = () => {
   const { data: users, isLoading } = useQuery(["list"], () =>
@@ -93,11 +93,20 @@ const UserList = () => {
                 </div>
               </div>
               <RectifierInfo />
-              <Link
-                to="/PendingPgRun"
-                className="btn btn-outline btn-primary font-semiBold text-xl mb-2"
-              >Pending PG-Run List
-              </Link>
+
+              <div className="card w-96  text-white bg-[#6495ED] mt-8">
+                <div className="card-body items-center text-center">
+                  <h2 className="card-title stat-title">To Show </h2>
+                  <p>Approval Pending PG Run Record .</p>
+                  <div className="card-actions justify-end">
+                    <Link to="/PendingPgRun" className="btn btn-secondary mb-2">
+                      Go-List
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
+              
             </div>
           </div>
         </div>

@@ -72,7 +72,7 @@ const Navbar2 = () => {
           <NavLink to="DgRefueling">Latest DG Refueling</NavLink>
         </li>
         <li>
-          <NavLink to="DgInfo">All DG Refueling</NavLink>
+          <NavLink to="DgInfo">DG Materials</NavLink>
         </li>
       </ul>
     </div>

@@ -1,13 +1,9 @@
 import React from 'react';
-import AllRefuelingList from './AllRefuelingList';
-
-
-
 
 const DG = () => {
     return (
       <div>
-      <AllRefuelingList/>
+     Here update DG materials info
        
       </div>
     );

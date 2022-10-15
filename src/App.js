@@ -30,6 +30,7 @@ import Navbar2 from "./Pages/SharedPage/Navbar2";
 import DgRefuelingList from "./Pages/DG-Info/DgRefuelingList";
 import DgRefuelingUpdate from "./DashBoard/DgRefuelingUpdate";
 import ApprovalPendingList from "./PgRunInfo/ApprovalPendingList";
+import AllRefuelingList from "./Pages/DG-Info/AllRefuelingList";
 
 
 
@@ -77,6 +78,7 @@ function App() {
           <Route path="/DgInfo" element={<DG />} />
           <Route path="/DgServicing" element={<DgServicingInfo />} />
           <Route path="/DgRefueling" element={<DgRefuelingList />} />
+          <Route path="/AllRefueling" element={<AllRefuelingList />} />
 
           <Route path="/EmInfo" element={<EminfoList />} />
         </Route>

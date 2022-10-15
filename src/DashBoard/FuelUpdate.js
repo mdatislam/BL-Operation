@@ -3,7 +3,7 @@ import { signOut } from "firebase/auth";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import Loading from "../Pages/SharedPage/Loading";
@@ -76,24 +76,7 @@ const FuelUpdate = () => {
     <div className="flex  justify-center justify-items-center mt-8">
       <div className="card w-96 bg-base-100 shadow-2xl">
         <div className="card-body">
-          <Link
-            to="/AllFuelList"
-            className="btn btn-outline btn-primary font-semiBold text-xl mb-2"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                fillRule="evenodd"
-                d="M20.25 12a.75.75 0 01-.75.75H6.31l5.47 5.47a.75.75 0 11-1.06 1.06l-6.75-6.75a.75.75 0 010-1.06l6.75-6.75a.75.75 0 111.06 1.06l-5.47 5.47H19.5a.75.75 0 01.75.75z"
-                clipRule="evenodd"
-              />
-            </svg>{" "}
-            &nbsp; all Fuel List
-          </Link>
+          
           <h2 className="text-center text-secondary-focus text-2xl font-bold mb-3">
             Update Receive Fuel Info!
           </h2>

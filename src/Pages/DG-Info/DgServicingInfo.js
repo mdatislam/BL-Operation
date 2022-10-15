@@ -1,18 +1,28 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Loading from "../SharedPage/Loading";
 
 import DgServicingInfoRow from "./DgServicingInfoRow";
 
 const DgServicingInfo = () => {
+  const navigate =useNavigate()
   const { data: dgServiceInfo, isLoading } = useQuery(["DgInfoList"], () =>
     fetch("http://localhost:5000/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-    }).then((res) => res.json())
+    }).then((res) => {
+      if (res.status === 401 || res.status === 403) {
+        toast.error("Unauthorize access");
+
+        localStorage.removeItem("accessToken");
+        navigate("/Login");
+      }
+      return res.json();
+    })
   );
   // console.log(services)
   if (isLoading) {
