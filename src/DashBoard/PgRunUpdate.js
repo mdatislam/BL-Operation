@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { signOut } from "firebase/auth";
 import React from "react";
@@ -20,7 +19,7 @@ const PgRunUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch(" http://localhost:5000/userList", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -28,7 +27,7 @@ const PgRunUpdate = () => {
     }).then((res) => res.json())
   );
   const { data: rectifiers, isLoading3 } = useQuery(["rectifierList"], () =>
-    fetch(" http://localhost:5000/rectifier", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/rectifier", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -66,7 +65,7 @@ const PgRunUpdate = () => {
 
     const time = duration.split(":");
     const timeValue = parseInt(time[0], 10) + parseInt(time[1], 10) / 60;
-    
+
     const consume = parseFloat(timeValue * consumePerModule[0]).toFixed(2);
 
     const onCallerEmail = availableUser.filter(
@@ -89,7 +88,7 @@ const PgRunUpdate = () => {
       status: "Pending",
     };
     //console.log(PgRunData);
-    fetch(" http://localhost:5000/pgRunData", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/pgRunData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -119,7 +118,6 @@ const PgRunUpdate = () => {
     <div className="flex  justify-center justify-items-center mt-8">
       <div className="card w-96 bg-base-100 shadow-xl">
         <div className="card-body">
-          
           <h2 className="text-center text-2xl font-bold mb-3">
             Update PG Run Data!
           </h2>

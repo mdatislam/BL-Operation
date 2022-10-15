@@ -6,7 +6,7 @@ import ApprovalPendingRow from "./ApprovalPendingRow";
 
 const ApprovalPendingList = () => {
   const { data: pgRunData, isLoading } = useQuery(["list"], () =>
-    fetch("http://localhost:5000/PendingAllPgRun", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/PendingAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -53,8 +53,8 @@ const ApprovalPendingList = () => {
               stroke-linejoin="round"
               d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z"
             />
-          </svg> &nbsp;
-          Home
+          </svg>{" "}
+          &nbsp; Home
         </Link>
       </div>
       <div className="overflow-x-auto  mt-4">

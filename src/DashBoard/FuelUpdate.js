@@ -19,7 +19,7 @@ const FuelUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch(" http://localhost:5000/userList", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -47,7 +47,7 @@ const FuelUpdate = () => {
       fuelReceiverEmail: user.email,
     };
     //console.log(PgRunData);
-    fetch(" http://localhost:5000/fuelData", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/fuelData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -76,7 +76,6 @@ const FuelUpdate = () => {
     <div className="flex  justify-center justify-items-center mt-8">
       <div className="card w-96 bg-base-100 shadow-2xl">
         <div className="card-body">
-          
           <h2 className="text-center text-secondary-focus text-2xl font-bold mb-3">
             Update Receive Fuel Info!
           </h2>

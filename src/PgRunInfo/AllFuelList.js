@@ -6,9 +6,9 @@ import Loading from "../Pages/SharedPage/Loading";
 import AllFuelListRow from "./AllFuelListRow";
 
 const AllFuelList = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { data: receiveFuel, isLoading } = useQuery(["fuel"], () =>
-    fetch("http://localhost:5000/fuelListAll", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

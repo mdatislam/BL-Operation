@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const useToken = (user) => {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [token, setToken] = useState(" ");
   useEffect(() => {
     if (user) {
@@ -15,7 +15,7 @@ const useToken = (user) => {
         name: name,
         email: email,
       };
-      fetch(` http://localhost:5000/user/${email}`, {
+      fetch(` https://enigmatic-eyrie-94440.herokuapp.com/user/${email}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json",
@@ -25,7 +25,7 @@ const useToken = (user) => {
         .then((res) => {
           if (res.status === 401 || res.status === 403) {
             toast.error("Unauthorize access");
-          
+
             localStorage.removeItem("accessToken");
             navigate("/Login");
           }

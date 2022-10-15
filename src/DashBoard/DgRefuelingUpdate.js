@@ -22,7 +22,7 @@ const DgRefuelingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" http://localhost:5000/dgRefuelingInfo", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgRefuelingInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -57,7 +57,6 @@ const DgRefuelingUpdate = () => {
   //console.log(imgUrl)
 
   const onSubmit = (data) => {
-    
     const siteID = data.siteId;
     const presentSite = sites?.filter((site) => site.siteId === siteID);
     //console.log(presentSite)
@@ -94,14 +93,17 @@ const DgRefuelingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`http://localhost:5000/dgRefuelingInfo/${siteID}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(dgRefuelingData),
-    })
+    fetch(
+      `https://enigmatic-eyrie-94440.herokuapp.com/dgRefuelingInfo/${siteID}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(dgRefuelingData),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");
@@ -119,7 +121,7 @@ const DgRefuelingUpdate = () => {
       });
 
     /* for posting all refueling data */
-    fetch(`http://localhost:5000/dgAllRefueling`, {
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/dgAllRefueling`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -173,7 +175,7 @@ const DgRefuelingUpdate = () => {
                 d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
               />
             </svg>
-             &nbsp;DG-Refueling List
+            &nbsp;DG-Refueling List
           </Link>
           <h2 className="text-center text-[#db51f3] text-2xl font-bold mb-3">
             Update DG Refueling Info !!

@@ -5,9 +5,9 @@ import Loading from "../Pages/SharedPage/Loading";
 import AllPgRunRows from "./AllPgRunRows";
 
 const AllPgRunList = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { data: pgRunData, isLoading } = useQuery(["list"], () =>
-    fetch("http://localhost:5000/ApprovedAllPgRun", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/ApprovedAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

@@ -6,10 +6,9 @@ import newUser from "../../images/NewUser.jpg";
 import { Link } from "react-router-dom";
 import RectifierInfo from "./RectifierInfo";
 
-
 const UserList = () => {
   const { data: users, isLoading } = useQuery(["list"], () =>
-    fetch("http://localhost:5000/userList", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -105,8 +104,6 @@ const UserList = () => {
                   </div>
                 </div>
               </div>
-
-              
             </div>
           </div>
         </div>

@@ -6,10 +6,10 @@ import FuelBalanceRow from "./FuelBalanceRow";
 
 const FuelBalance = () => {
   /* const [user] = useAuthState(auth); */
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const { data: users, isLoading } = useQuery(["userList"], () =>
-    fetch("http://localhost:5000/userList", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -26,22 +26,21 @@ const FuelBalance = () => {
   );
 
   const { data: pgRunData, isLoading2 } = useQuery(["list"], () =>
-    fetch("http://localhost:5000/ApprovedAllPgRun", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/ApprovedAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-    })
-      .then((res) => res.json())
+    }).then((res) => res.json())
   );
 
   const { data: receiveFuel, isLoading3 } = useQuery(["fuel"], () =>
-    fetch("http://localhost:5000/fuelListAll", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-    }).then(res=>res.json())
+    }).then((res) => res.json())
   );
 
   if (isLoading || isLoading2 || isLoading3) {
@@ -53,7 +52,7 @@ const FuelBalance = () => {
   //console.log(receiveFuel);
 
   /*   if (users) { */
-   users?.forEach((user) => {
+  users?.forEach((user) => {
     // per user total fuel consumption calculation
 
     const pgRun = pgRunData?.filter((p) => p.pgRunnerEmail === user.email);
