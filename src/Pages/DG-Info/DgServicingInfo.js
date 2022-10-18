@@ -9,7 +9,7 @@ import DgServicingInfoRow from "./DgServicingInfoRow";
 const DgServicingInfo = () => {
   const navigate = useNavigate();
   const { data: dgServiceInfo, isLoading } = useQuery(["DgInfoList"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo", {
+    fetch("http://localhost:5000/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

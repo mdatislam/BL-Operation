@@ -19,7 +19,7 @@ const PgRunUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/userList", {
+    fetch(" http://localhost:5000/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -27,7 +27,7 @@ const PgRunUpdate = () => {
     }).then((res) => res.json())
   );
   const { data: rectifiers, isLoading3 } = useQuery(["rectifierList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/rectifier", {
+    fetch(" http://localhost:5000/rectifier", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -88,7 +88,7 @@ const PgRunUpdate = () => {
       status: "Pending",
     };
     //console.log(PgRunData);
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/pgRunData", {
+    fetch(" http://localhost:5000/pgRunData", {
       method: "POST",
       headers: {
         "content-type": "application/json",

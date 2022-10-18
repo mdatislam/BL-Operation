@@ -21,7 +21,7 @@ const Employee = () => {
             //console.log(data)
             setEmployee(data);
           });
-    })
+    } )
     return (
       <div className="mt-12 bg-slate-100 px-8 mb-4">
         <h1 className="text-[#008282] text-center font-bold text-2xl  py-8">

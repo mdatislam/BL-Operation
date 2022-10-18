@@ -7,13 +7,15 @@ import Loading from "../Pages/SharedPage/Loading";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import FuelDataListRow from "./FuelDataListRow";
-import FuelBalance from "./FuelBalance";
-import PgRunList from "./PgRunList";
+
 import { useState } from "react";
 import DeleteReceiveFuel from "./DeleteReceiveFuel";
+import useAdmin from "../Pages/Hook/useAdmin";
 
 const FuelDataList = () => {
   const [user] = useAuthState(auth);
+ 
+  const [admin] = useAdmin(user);
   const navigate = useNavigate();
   const [delFuel, setDelFuel] = useState("");
 
@@ -22,15 +24,12 @@ const FuelDataList = () => {
     isLoading,
     refetch,
   } = useQuery(["list", user], () =>
-    fetch(
-      ` https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`,
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch(` http://localhost:5000/fuelList?email=${user.email}`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         signOut(auth);
         localStorage.removeItem("accessToken");
@@ -83,7 +82,7 @@ const FuelDataList = () => {
                 <div>Fuel</div>
                 <div>Issuer</div>
               </th>
-              <th>Action</th>
+             {admin && <th>Action</th>}
             </tr>
           </thead>
           <tbody>
@@ -94,6 +93,7 @@ const FuelDataList = () => {
                 index={index}
                 F={receivedFuel}
                 setDelFuel={setDelFuel}
+                admin={admin}
               ></FuelDataListRow>
             ))}
           </tbody>

@@ -6,7 +6,7 @@ import ApprovalPendingRow from "./ApprovalPendingRow";
 
 const ApprovalPendingList = () => {
   const { data: pgRunData, isLoading } = useQuery(["list"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/PendingAllPgRun", {
+    fetch("http://localhost:5000/PendingAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

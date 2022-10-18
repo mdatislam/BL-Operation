@@ -31,6 +31,7 @@ import DgRefuelingList from "./Pages/DG-Info/DgRefuelingList";
 import DgRefuelingUpdate from "./DashBoard/DgRefuelingUpdate";
 import ApprovalPendingList from "./PgRunInfo/ApprovalPendingList";
 import AllRefuelingList from "./Pages/DG-Info/AllRefuelingList";
+import DgUseMaterial from "./DashBoard/DgUseMaterial";
 
 
 
@@ -61,6 +62,7 @@ function App() {
             <Route path="EMDataUpdate" element={<EMDataUpdate />} />
             <Route path="DgServicingUpdate" element={<DGServicingUpdate />} />
             <Route path="DgRefuelingUpdate" element={<DgRefuelingUpdate />} />
+            <Route path="DgUseMaterial" element={<DgUseMaterial />} />
             {/*  <Route path="UserList" element={<RequireAdmin>
                 <UserList/></RequireAdmin>}>
               </Route> */}
@@ -86,7 +88,7 @@ function App() {
         <Route element={<RequireAdmin />}>
           <Route path="/RectifierUpdate" element={<RectifierInfoUpdate />} />
           <Route path="/Signup" element={<SignUp />}></Route>
-          <Route path="/PendingPgRun" element={<ApprovalPendingList />}/> 
+          <Route path="/PendingPgRun" element={<ApprovalPendingList />} />
         </Route>
       </Routes>
       <Footer />

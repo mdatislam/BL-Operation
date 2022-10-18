@@ -25,7 +25,7 @@ const EMDataUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/emInfo", {
+    fetch(" http://localhost:5000/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -104,7 +104,7 @@ const EMDataUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/emInfo/${siteID}`, {
+    fetch(`http://localhost:5000/emInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

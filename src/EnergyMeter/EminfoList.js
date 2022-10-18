@@ -8,7 +8,7 @@ import EmInfoListRow from "./EmInfoListRow";
 const EminfoList = () => {
   const navigate = useNavigate();
   const { data: EmInfo, isLoading } = useQuery(["EmInfoList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/emInfo", {
+    fetch(" http://localhost:5000/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

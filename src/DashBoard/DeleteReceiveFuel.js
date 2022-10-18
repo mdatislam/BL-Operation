@@ -6,7 +6,7 @@ const DeleteReceiveFuel = ({ delFuel, refetch, setDelFuel }) => {
 
   const handleDelete = (id) => {
     console.log(id);
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/receivedFuel/${id}`, {
+    fetch(`http://localhost:5000/receivedFuel/${id}`, {
       method: "DELETE",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

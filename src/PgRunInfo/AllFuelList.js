@@ -1,14 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import DeleteReceiveFuel from "../DashBoard/DeleteReceiveFuel";
+import auth from "../firebase.init";
+import useAdmin from "../Pages/Hook/useAdmin";
 import Loading from "../Pages/SharedPage/Loading";
 import AllFuelListRow from "./AllFuelListRow";
 
 const AllFuelList = () => {
+    const [user] = useAuthState(auth);
+
+    const [admin] = useAdmin(user);
   const navigate = useNavigate();
-  const { data: receiveFuel, isLoading } = useQuery(["fuel"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelListAll", {
+   const [delFuel, setDelFuel] = useState("");
+  const { data: receiveFuel, isLoading,refetch } = useQuery(["fuel"], () =>
+    fetch("http://localhost:5000/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -62,6 +70,7 @@ const AllFuelList = () => {
                 <div>Fuel</div>
                 <div>Issuer</div>
               </th>
+              {admin && <th>Action</th>}
             </tr>
           </thead>
           <tbody>
@@ -70,11 +79,20 @@ const AllFuelList = () => {
                 key={fuel._id}
                 fuel={fuel}
                 index={index}
+                setDelFuel={setDelFuel}
+                admin={admin}
               ></AllFuelListRow>
             ))}
           </tbody>
         </table>
       </div>
+      {delFuel && (
+        <DeleteReceiveFuel
+          delFuel={delFuel}
+          setDelFuel={setDelFuel}
+          refetch={refetch}
+        />
+      )}
     </div>
   );
 };

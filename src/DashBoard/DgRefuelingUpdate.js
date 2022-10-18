@@ -22,7 +22,7 @@ const DgRefuelingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgRefuelingInfo", {
+    fetch(" http://localhost:5000/dgRefuelingInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -93,17 +93,14 @@ const DgRefuelingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/dgRefuelingInfo/${siteID}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(dgRefuelingData),
-      }
-    )
+    fetch(`http://localhost:5000/dgRefuelingInfo/${siteID}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(dgRefuelingData),
+    })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");
@@ -121,7 +118,7 @@ const DgRefuelingUpdate = () => {
       });
 
     /* for posting all refueling data */
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/dgAllRefueling`, {
+    fetch(`http://localhost:5000/dgAllRefueling`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
