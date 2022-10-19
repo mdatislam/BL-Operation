@@ -15,7 +15,6 @@ import PgRunUpdate from "./DashBoard/PgRunUpdate";
 import ApprovalPending from "./DashBoard/ApprovalPending";
 import FuelUpdate from "./DashBoard/FuelUpdate";
 import FuelDataList from "./DashBoard/FuelDataList";
-import DG from "./Pages/DG-Info/DG";
 import PgFuel from "./PgRunInfo/PgFuel";
 import AllPgRunList from "./PgRunInfo/AllPgRunList";
 import AllFuelList from "./PgRunInfo/AllFuelList";
@@ -32,6 +31,7 @@ import DgRefuelingUpdate from "./DashBoard/DgRefuelingUpdate";
 import ApprovalPendingList from "./PgRunInfo/ApprovalPendingList";
 import AllRefuelingList from "./Pages/DG-Info/AllRefuelingList";
 import DgUseMaterial from "./DashBoard/DgUseMaterial";
+import DgUseMaterialList from "./Pages/DG-Info/DgUseMaterialList";
 
 
 
@@ -77,7 +77,7 @@ function App() {
           <Route path="/PgFuel" element={<PgFuel />} />
           <Route path="/AllPgRunList" element={<AllPgRunList />} />
           <Route path="/AllFuelList" element={<AllFuelList />} />
-          <Route path="/DgInfo" element={<DG />} />
+          <Route path="/DgMaterial" element={<DgUseMaterialList />} />
           <Route path="/DgServicing" element={<DgServicingInfo />} />
           <Route path="/DgRefueling" element={<DgRefuelingList />} />
           <Route path="/AllRefueling" element={<AllRefuelingList />} />

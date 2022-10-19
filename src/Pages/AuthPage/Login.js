@@ -36,7 +36,7 @@ let signInError;
 if (error) {
   signInError = (
     <p className=" text-red-500">
-      <small>{error?.message}</small>
+      <small>{errors?.message}</small>
     </p>
   );
 }
@@ -49,9 +49,9 @@ if (error) {
   };
   
 
-  let from = location.state?.from?.pathname || "/Home";
+let from = location.state?.from?.pathname || "/Home";
   if (token) {
-    navigate(from, { replace: true });
+    navigate(from, {replace:true });
   }
 
   return (

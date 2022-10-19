@@ -22,6 +22,7 @@ const useToken = (user) => {
         },
         body: JSON.stringify(userInfo),
       })
+     /*  .then(res=>res.json()) */
         .then((res) => {
           if (res.status === 401 || res.status === 403) {
             toast.error("Unauthorize access");

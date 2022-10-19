@@ -11,7 +11,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 const DgUseMaterial = () => {
   const [user] = useAuthState(auth);
-  const [isBattery, setIsBattery] = useState(true)
+  const [isBattery, setIsBattery] = useState(false)
+  const [isOther, setIsOther] = useState(false)
   const [material,setMaterial]=useState("")
   const navigate = useNavigate();
   const {
@@ -21,15 +22,21 @@ const DgUseMaterial = () => {
     handleSubmit,
   } = useForm();
  
-  let MaterialName;
+ 
   const handleMaterialUpdate = (event) => {
-   
+   setIsBattery(null);
+   setIsOther(null);
    event.preventDefault();
     const MaterialName = event.target.value
-    if (MaterialName === "DG Battery") {
+   if (MaterialName === "DG Battery") {
       setIsBattery(true)
-    } else {
-      setIsBattery(false)
+   }
+   else if (MaterialName === " ") {
+     setIsOther(true)
+    }
+   else {
+     setIsBattery(false)
+     setIsOther(false);
     }
     //console.log(MaterialName)
     setMaterial(MaterialName)
@@ -41,7 +48,9 @@ const DgUseMaterial = () => {
       siteId: data.siteId,
       date: data.date2,
       material: material,
-      batterySerialNo: data.dgBatteryNo,
+      oldBatterySerialNo: data.oldBatteryNo,
+      newBatterySerialNo: data.newBatteryNo,
+      other:data.other,
       rhReading: data.rhReading,
       updaterName: user.displayName,
       updaterEmail: user.email,
@@ -70,9 +79,8 @@ const DgUseMaterial = () => {
         if (dgData.insertedId) {
           toast.success("Data Successfully Update");
         }
-        reset();
         setMaterial("")
-        
+         reset();
       });
   };
   return (
@@ -83,7 +91,7 @@ const DgUseMaterial = () => {
       <div className="card  lg:w-96 bg-base-100 shadow-2xl my-8">
         <div className="card-body">
           <Link
-            to="/DgInfo"
+            to="/DgMaterial"
             className="btn  btn-primary font-semiBold text-xl mb-2"
           >
             <svg
@@ -100,7 +108,7 @@ const DgUseMaterial = () => {
                 d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
               />
             </svg>
-            Back &nbsp;Use DG Materials
+            &nbsp; Back to Materials List
           </Link>
           <h2 className="text-center text-secondary-focus text-2xl font-bold mb-3">
             Update Use DG Material
@@ -160,41 +168,60 @@ const DgUseMaterial = () => {
                 className="input input-bordered w-full max-w-xs"
                 type="text"
                 name="material"
-                placeholder=" select DG material "
+                placeholder=" select Use material "
                 onChange={handleMaterialUpdate}
               >
-                <option value="MC">MC</option>
+                <option value="MC-100A">MC-100A</option>
+                <option value="MC-80A">MC-80A</option>
+                <option value="MC-60A">MC-60A</option>
                 <option value="Timer">Timer</option>
                 <option value="DG Battery">DG Battery</option>
                 <option value="RVD Timer">RVD Timer</option>
                 <option value="Relay">Relay</option>
+                <option value=" ">Other</option>
               </select>
-               <label className="label">
-                
-              </label> 
+              <label className="label"></label>
             </div>
 
-            {/*  DG Battery serial No */}
+            {/*  DG new Battery serial No */}
             <div className="form-control w-full max-w-xs">
               <input
                 type="text"
                 hidden={!isBattery}
-                placeholder=" DG Battery Serial No"
-                className="input input-bordered w-full max-w-xs"
-                {...register(
-                  "dgBatteryNo"  
-                )}
+                placeholder=" New DG Battery Serial No"
+                className="input input-bordered input-secondary w-full max-w-xs"
+                {...register("newBatteryNo")}
               />
-               <label className="label">
-                
-              </label> 
+              <label className="label"></label>
+            </div>
+            {/*  DG old Battery serial No */}
+            <div className="form-control w-full max-w-xs">
+              <input
+                type="text"
+                hidden={!isBattery}
+                placeholder=" Old DG Battery Serial No"
+                className="input input-bordered input-secondary w-full max-w-xs"
+                {...register("oldBatteryNo")}
+              />
+              <label className="label"></label>
+            </div>
+            {/*  Other type Material */}
+            <div className="form-control w-full max-w-xs">
+              <input
+                type="text"
+                hidden={!isOther}
+                placeholder=" Write Material Name "
+                className="input input-bordered input-secondary w-full max-w-xs"
+                {...register("other")}
+              />
+              <label className="label"></label>
             </div>
 
             {/*  DG RH Reading*/}
             <div className="form-control w-full max-w-xs">
               <input
-                type="number"
-                placeholder=" Put Servicing DG RunHour "
+                type="text"
+                placeholder=" If applicable, present DG RunHour,  "
                 className="input input-bordered w-full max-w-xs"
                 {...register("rhReading", {
                   required: {
@@ -219,7 +246,7 @@ const DgUseMaterial = () => {
               </label>
               <textarea
                 type="text"
-                placeholder="Write  findings, if found "
+                placeholder="Write purpose of using"
                 className="input input-bordered w-full max-w-xs"
                 {...register("remark")}
               />

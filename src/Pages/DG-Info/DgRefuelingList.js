@@ -47,21 +47,6 @@ const DgRefuelingList = () => {
             <tr className="divide-x divide-blue-400">
               <th>SN</th>
               <th>Site ID</th>
-
-              <th>
-                <div>previous</div>
-                <div>Refueling Date</div>
-              </th>
-
-              <th>
-                <div>Previous </div>
-                <div>Refueling RH</div>
-              </th>
-              <th>
-                <div>Total Fuel</div>
-                <div>last Refueling</div>
-              </th>
-
               <th>
                 <div>Latest</div>
                 <div>Refueling Date</div>
@@ -80,6 +65,19 @@ const DgRefuelingList = () => {
                 <div>Refueling</div>
                 <div>Quantity</div>
               </th>
+              <th className="text-[#e98811] font-bold">
+                <div>previous</div>
+                <div>Refueling Date</div>
+              </th>
+
+              <th className="text-[#e98811] font-bold">
+                <div>Previous </div>
+                <div>Refueling RH</div>
+              </th>
+              <th className="text-[#e98811] font-bold">
+                <div>Total Fuel</div>
+                <div>last Refueling</div>
+              </th>
               <th>
                 <div>Consumption</div>
               </th>
@@ -96,7 +94,7 @@ const DgRefuelingList = () => {
             </tr>
           </thead>
           <tbody>
-            {dgRefueling.map((refuel, index) => (
+            {dgRefueling?.map((refuel, index) => (
               <DgRefuelingRow key={refuel._id} refuel={refuel} index={index} />
             ))}
           </tbody>

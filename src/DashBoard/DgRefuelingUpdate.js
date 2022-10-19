@@ -62,12 +62,12 @@ const DgRefuelingUpdate = () => {
     //console.log(presentSite)
 
     const preRhReading = presentSite?.map((s) => s.rhReading);
-    const previousFuel = presentSite.map((s) => s.previousQuantity);
+    const previousFuel = presentSite?.map((s) => s.previousQuantity);
     const previousReFuel = presentSite.map((s) => s.reFuelQuantity);
     const preTotal =
       parseFloat(previousFuel[0]) + parseFloat(previousReFuel[0]);
     const consumption =
-      (preTotal - data.preFuel) / (data.rhReading - parseFloat(preRhReading));
+      ((preTotal - data.preFuel) / (data.rhReading - parseFloat(preRhReading))).toFixed(2);
     const PreDate = presentSite?.map((s) => s.date);
     // console.log(EmPreReading[0])
 

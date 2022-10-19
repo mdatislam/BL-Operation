@@ -22,14 +22,15 @@ const DgRefuelingRow = ({ refuel, index }) => {
       <tr className="border-2 border-[#F0D786]  hover divide-x divide-gray-300 text-center">
         <td>{index + 1}</td>
         <td>{siteId}</td>
+        <td className="text-[#85c5ea] font-bold">{date}</td>
+        <td className="text-[#85c5ea] font-bold">{rhReading} </td>
+        <td className="text-[#85c5ea] font-bold">{previousQuantity}</td>
+        <td className="text-[#85c5ea] font-bold">{reFuelQuantity}</td>
         <td>{previousDate} </td>
         <td>{preRhReading} </td>
         <td>{preTotalFuel} </td>
-        <td className="text-[#3d6ae8] font-bold">{date}</td>
-        <td className="text-[#3d6ae8] font-bold">{rhReading} </td>
-        <td className="text-[#3d6ae8] font-bold">{previousQuantity}</td>
-        <td className="text-[#3d6ae8] font-bold">{reFuelQuantity}</td>
-        <td className="text-[#3d6ae8] font-bold">{consumption}</td>
+
+        <td className="text-[#ea85e8] font-bold">{consumption}</td>
         <td>{updaterName} </td>
         <td>
           <div className="flex items-center space-x-3">
