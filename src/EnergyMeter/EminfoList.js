@@ -100,7 +100,7 @@ const EminfoList = () => {
             </tr>
           </thead>
           <tbody>
-            {EmInfo.map((emInfo, index) => (
+            {EmInfo?.map((emInfo, index) => (
               <EmInfoListRow key={emInfo._id} emInfo={emInfo} index={index} />
             ))}
           </tbody>

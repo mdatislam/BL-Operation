@@ -1,19 +1,17 @@
 import React from 'react';
-import FuelBalance from '../../DashBoard/FuelBalance';
 import Employee from './Employee';
 import HomeBanner from './HomeBanner';
+import NavbarItem from './NavbarItem';
 import OutstandingTask from './OutstandingTask';
 
 const Home = () => {
     return (
-        <>
-            <HomeBanner />
-            
-        <Employee/>
-        <OutstandingTask/>
-        
-        </>
- 
+      <div className=' h-full'>
+        <HomeBanner />
+        <NavbarItem />
+        {/* <Employee />
+        <OutstandingTask /> */}
+      </div>
     );
 };
 

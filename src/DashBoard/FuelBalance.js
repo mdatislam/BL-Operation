@@ -52,7 +52,7 @@ const FuelBalance = () => {
   //console.log(receiveFuel);
 
   /*   if (users) { */
-  users?.forEach((user) => {
+  const atiq=users?.forEach((user) => {
     // per user total fuel consumption calculation
 
     const pgRun = pgRunData?.filter((p) => p.pgRunnerEmail === user.email);
