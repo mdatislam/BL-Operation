@@ -32,6 +32,7 @@ import ApprovalPendingList from "./PgRunInfo/ApprovalPendingList";
 import AllRefuelingList from "./Pages/DG-Info/AllRefuelingList";
 import DgUseMaterial from "./DashBoard/DgUseMaterial";
 import DgUseMaterialList from "./Pages/DG-Info/DgUseMaterialList";
+import FcuMaintenanceList from "./FCU/FcuMaintenanceList";
 
 
 
@@ -81,7 +82,7 @@ function App() {
           <Route path="/DgServicing" element={<DgServicingInfo />} />
           <Route path="/DgRefueling" element={<DgRefuelingList />} />
           <Route path="/AllRefueling" element={<AllRefuelingList />} />
-
+          <Route path="/FcuMaintenance" element={<FcuMaintenanceList />} />
           <Route path="/EmInfo" element={<EminfoList />} />
         </Route>
 

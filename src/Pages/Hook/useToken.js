@@ -15,14 +15,14 @@ const useToken = (user) => {
         name: name,
         email: email,
       };
-      fetch(` http://localhost:5000/user/${email}`, {
+      fetch(` https://enigmatic-eyrie-94440.herokuapp.com/user/${email}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json",
         },
         body: JSON.stringify(userInfo),
       })
-     /*  .then(res=>res.json()) */
+        /*  .then(res=>res.json()) */
         .then((res) => {
           if (res.status === 401 || res.status === 403) {
             toast.error("Unauthorize access");

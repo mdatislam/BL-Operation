@@ -22,7 +22,7 @@ const DgRefuelingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" http://localhost:5000/dgRefuelingInfo", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgRefuelingInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -66,8 +66,10 @@ const DgRefuelingUpdate = () => {
     const previousReFuel = presentSite.map((s) => s.reFuelQuantity);
     const preTotal =
       parseFloat(previousFuel[0]) + parseFloat(previousReFuel[0]);
-    const consumption =
-      ((preTotal - data.preFuel) / (data.rhReading - parseFloat(preRhReading))).toFixed(2);
+    const consumption = (
+      (preTotal - data.preFuel) /
+      (data.rhReading - parseFloat(preRhReading))
+    ).toFixed(2);
     const PreDate = presentSite?.map((s) => s.date);
     // console.log(EmPreReading[0])
 
@@ -93,14 +95,17 @@ const DgRefuelingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`http://localhost:5000/dgRefuelingInfo/${siteID}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(dgRefuelingData),
-    })
+    fetch(
+      `https://enigmatic-eyrie-94440.herokuapp.com/dgRefuelingInfo/${siteID}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(dgRefuelingData),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");
@@ -118,7 +123,7 @@ const DgRefuelingUpdate = () => {
       });
 
     /* for posting all refueling data */
-    fetch(`http://localhost:5000/dgAllRefueling`, {
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/dgAllRefueling`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

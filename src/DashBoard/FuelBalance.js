@@ -9,7 +9,7 @@ const FuelBalance = () => {
   const navigate = useNavigate();
 
   const { data: users, isLoading } = useQuery(["userList"], () =>
-    fetch("http://localhost:5000/userList", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList/pgRunner", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -26,7 +26,7 @@ const FuelBalance = () => {
   );
 
   const { data: pgRunData, isLoading2 } = useQuery(["list"], () =>
-    fetch("http://localhost:5000/ApprovedAllPgRun", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/ApprovedAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -35,7 +35,7 @@ const FuelBalance = () => {
   );
 
   const { data: receiveFuel, isLoading3 } = useQuery(["fuel"], () =>
-    fetch("http://localhost:5000/fuelListAll", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -52,7 +52,7 @@ const FuelBalance = () => {
   //console.log(receiveFuel);
 
   /*   if (users) { */
-  const atiq=users?.forEach((user) => {
+  const atiq = users?.forEach((user) => {
     // per user total fuel consumption calculation
 
     const pgRun = pgRunData?.filter((p) => p.pgRunnerEmail === user.email);
@@ -113,7 +113,7 @@ const FuelBalance = () => {
             ))}
           </tbody>
           <tfoot>
-            <tr className="border-collapse border-2 border-[#F0D786]">
+            <tr className="border-collapse border-2 border-[#F0D786] text-center">
               <th></th>
               <th className=" font-bold text-[#008080]">
                 Total Fuel Issued ={" "}

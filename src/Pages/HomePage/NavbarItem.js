@@ -88,7 +88,7 @@ const NavbarItem = () => {
             </div>
           </NavLink>
           {/* 8th Item */}
-          <NavLink className="rounded-lg my-4 px-4" to="/DgMaterial">
+          <NavLink className="rounded-lg my-4 px-4" to="/FcuMaintenance">
             <div className="card w-64  bg-base-100 shadow-xl   outline-offset-4 outline hover:outline-blue-400 ">
               <div className="card-body">
                 <h3 className="card-title text-secondary-focus">

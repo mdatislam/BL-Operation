@@ -22,7 +22,7 @@ const DGServicingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" http://localhost:5000/dgServiceInfo", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -86,14 +86,17 @@ const DGServicingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`http://localhost:5000/dgServiceInfo/${siteID}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(dgServicingData),
-    })
+    fetch(
+      `https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo/${siteID}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(dgServicingData),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");

@@ -11,9 +11,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 const DgUseMaterial = () => {
   const [user] = useAuthState(auth);
-  const [isBattery, setIsBattery] = useState(false)
-  const [isOther, setIsOther] = useState(false)
-  const [material,setMaterial]=useState("")
+  const [isBattery, setIsBattery] = useState(false);
+  const [isOther, setIsOther] = useState(false);
+  const [material, setMaterial] = useState("");
   const navigate = useNavigate();
   const {
     register,
@@ -21,43 +21,39 @@ const DgUseMaterial = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
- 
- 
+
   const handleMaterialUpdate = (event) => {
-   setIsBattery(null);
-   setIsOther(null);
-   event.preventDefault();
-    const MaterialName = event.target.value
-   if (MaterialName === "DG Battery") {
-      setIsBattery(true)
-   }
-   else if (MaterialName === " ") {
-     setIsOther(true)
-    }
-   else {
-     setIsBattery(false)
-     setIsOther(false);
+    setIsBattery(null);
+    setIsOther(null);
+    event.preventDefault();
+    const MaterialName = event.target.value;
+    if (MaterialName === "DG Battery") {
+      setIsBattery(true);
+    } else if (MaterialName === " ") {
+      setIsOther(true);
+    } else {
+      setIsBattery(false);
+      setIsOther(false);
     }
     //console.log(MaterialName)
-    setMaterial(MaterialName)
-  }
- 
-  const onSubmit = (data) => {
+    setMaterial(MaterialName);
+  };
 
+  const onSubmit = (data) => {
     const useDgMaterial = {
       siteId: data.siteId,
       date: data.date2,
       material: material,
       oldBatterySerialNo: data.oldBatteryNo,
       newBatterySerialNo: data.newBatteryNo,
-      other:data.other,
+      other: data.other,
       rhReading: data.rhReading,
       updaterName: user.displayName,
       updaterEmail: user.email,
       remark: data.remark,
     };
 
-    fetch(`http://localhost:5000/dgMatrialInfo/`, {
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/dgMaterialInfo/`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -79,8 +75,8 @@ const DgUseMaterial = () => {
         if (dgData.insertedId) {
           toast.success("Data Successfully Update");
         }
-        setMaterial("")
-         reset();
+        setMaterial("");
+        reset();
       });
   };
   return (

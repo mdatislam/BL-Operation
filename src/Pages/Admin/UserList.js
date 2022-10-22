@@ -1,26 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import UserListRows from "./UserListRows";
 import Loading from "../SharedPage/Loading";
 import newUser from "../../images/NewUser.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import RectifierInfo from "./RectifierInfo";
+import ProfileChange from "./ProfileChange";
+import { toast } from "react-toastify";
 
 const UserList = () => {
+  const [profile, setProfile] = useState(" ");
+  const navigate = useNavigate();
   const { data: users, isLoading } = useQuery(["list"], () =>
-    fetch("http://localhost:5000/userList", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-    }).then((res) => res.json())
+    }).then((res) => {
+      if (res.status === 401 || res.status === 403) {
+        toast.error("Unauthorize access");
+
+        localStorage.removeItem("accessToken");
+        navigate("/Login");
+      }
+      return res.json();
+    })
   );
 
   if (isLoading) {
     return <Loading />;
   }
   return (
-    <div className="px-2 lg:px-16 my-8">
+    <div className="px-2 lg:px-4 my-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
         <div className="overflow-x-auto mt-16 px-2">
           <div className="grid h-12 card bg-[#6495ED] rounded-box place-items-center mb-4">
@@ -44,16 +56,20 @@ const UserList = () => {
             </thead>
             <tbody>
               {users?.map((use) => (
-                <UserListRows key={use._id} use={use}></UserListRows>
+                <UserListRows
+                  key={use._id}
+                  use={use}
+                  setProfile={setProfile}
+                ></UserListRows>
               ))}
             </tbody>
           </table>
         </div>
         <div className="grid grid-cols-1 gap-4 ">
           <div className="card w-full bg-base-100 shadow-xl mt-16">
-            <figure className="px-10 pt-10">
+            {/* <figure className="px-10 pt-10">
               <img src={newUser} alt="PG Pic" className="rounded-xl" />
-            </figure>
+            </figure> */}
             <div className="card-body">
               <div className="stats stats-vertical lg:stats-horizontal shadow bg-[#6495ED] text-primary-content">
                 <div className="stat">
@@ -108,6 +124,7 @@ const UserList = () => {
           </div>
         </div>
       </div>
+      {profile && <ProfileChange profile={profile} setProfile={setProfile} />}
     </div>
   );
 };

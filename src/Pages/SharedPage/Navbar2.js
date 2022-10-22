@@ -1,24 +1,48 @@
 import { signOut } from "firebase/auth";
-
 import { useAuthState } from "react-firebase-hooks/auth";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
 import mobileTower1 from "../../images/Mobile Tower2.jpg";
+import Loading from "./Loading";
 
 const Navbar2 = () => {
   const { pathname } = useLocation();
   const [user] = useAuthState(auth);
- 
- //console.log(user)
   const navigate = useNavigate();
+
+  /* const { data: users, isLoading } = useQuery(["userList", user], () =>
+  fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
+    method: "GET",
+    headers: {
+      authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  }).then((res) => {
+    if (res.status === 401 || res.status === 403) {
+      toast.error("Unauthorize access");
+
+      localStorage.removeItem("accessToken");
+      navigate("/Login");
+    }
+    return res.json();
+  })
+);
+
+if (isLoading) {
+  return <Loading />;
+}
+console.log(users); */
+
+  /* const userPhoto = users?.filter((pic) => pic.email === user.email);
+//const url=userPhoto[0].url
+
+console.log(userPhoto); 
+  //console.log(user) */
+
   const logout = () => {
     signOut(auth);
     localStorage.removeItem("accessToken");
     navigate("/Login");
   };
-
-   
- 
   const menuItem = (
     <>
       <li>
@@ -96,13 +120,15 @@ const Navbar2 = () => {
       </ul>
     </div>
   );
+
   /* Profile */
   const userStatus = (
     <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-        <div className="w-48 rounded-full">
-          <img src={mobileTower1} alt="tower"/>
-          Profile
+      <label tabIndex={0} className="btn btn-ghost  avatar">
+        <div className="avatar">
+          <div className="w-24 rounded-xl">
+            <img src={mobileTower1} alt="mobileTower1" />)
+          </div>
         </div>
       </label>
       <ul
@@ -131,10 +157,6 @@ const Navbar2 = () => {
 
   /*Profile end  */
 
-
-
-
-  
   return (
     <div className=" navbar  sticky top-0  z-20 bg-[#ffcb24]  lg:px-20">
       <div className="navbar-end ">

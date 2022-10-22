@@ -30,14 +30,17 @@ const RectifierInfoUpdate = () => {
       consumeFuel: data.consume,
     };
     //console.log(PgRunData);
-    fetch(`http://localhost:5000/rectifier?brand=${brand}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(RectifierInfo),
-    })
+    fetch(
+      `https://enigmatic-eyrie-94440.herokuapp.com/rectifier?brand=${brand}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(RectifierInfo),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");

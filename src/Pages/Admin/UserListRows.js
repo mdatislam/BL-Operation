@@ -1,6 +1,6 @@
 import React from "react";
 
-const UserListRows = ({ use}) => {
+const UserListRows = ({ use,setProfile}) => {
   const { name, email, role } = use;
 
   return (
@@ -14,7 +14,14 @@ const UserListRows = ({ use}) => {
       <td>{email} </td>
       <td>{role}</td>
       <td>
-        <button className="btn btn-outline">Change Role</button>
+        <label
+          htmlFor="profileChange"
+          className="btn modal-button"
+          onClick={() => setProfile(use)}
+        >
+          Change Profile
+        </label>
+       
       </td>
     </tr>
   );

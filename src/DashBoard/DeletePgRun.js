@@ -6,7 +6,7 @@ const DeletePgRun = ({ delPg, refetch, setDelPg }) => {
 
   const handleDelete = (id) => {
     //console.log(id);
-    fetch(`http://localhost:5000/pgRun/${id}`, {
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/pgRun/${id}`, {
       method: "DELETE",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
