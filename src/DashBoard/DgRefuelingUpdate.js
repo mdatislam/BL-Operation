@@ -22,7 +22,8 @@ const DgRefuelingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("  http://localhost:5000/dgRefuelingInfo", {
+    fetch("  https://enigmatic-eyrie-94440.herokuapp.com
+/dgRefuelingInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -96,7 +97,8 @@ const DgRefuelingUpdate = () => {
     };
 
     fetch(
-      ` http://localhost:5000
+      ` https://enigmatic-eyrie-94440.herokuapp.com
+
 /dgRefuelingInfo/${siteID}`,
       {
         method: "PUT",
@@ -124,7 +126,8 @@ const DgRefuelingUpdate = () => {
       });
 
     /* for posting all refueling data */
-    fetch(` http://localhost:5000
+    fetch(` https://enigmatic-eyrie-94440.herokuapp.com
+
 /dgAllRefueling`, {
       method: "POST",
       headers: {

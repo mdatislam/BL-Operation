@@ -22,7 +22,8 @@ const ApprovalPendingRow = ({ pgRun, index, setReject, refetch }) => {
 
   const handleApprove = (id) => {
     fetch(
-      `  http://localhost:5000
+      `  https://enigmatic-eyrie-94440.herokuapp.com
+
 /pgRunList/${id}`,
       {
         method: "PUT",

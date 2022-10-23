@@ -17,7 +17,8 @@ const RejectApproval = ({ reject, setReject, refetch }) => {
 
   const onSubmit = (data, id) => {
     fetch(
-      `  http://localhost:5000
+      `  https://enigmatic-eyrie-94440.herokuapp.com
+
 /pgRunList/${_id}`,
       {
         method: "PUT",

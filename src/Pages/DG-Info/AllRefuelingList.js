@@ -9,7 +9,8 @@ import { CSVLink } from "react-csv";
 const AllRefuelingList = () => {
   const navigate = useNavigate();
   const { data: dgRefueling, isLoading } = useQuery(["DgRefueling"], () =>
-    fetch(" http://localhost:5000/dgAllRefueling", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com
+/dgAllRefueling", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
