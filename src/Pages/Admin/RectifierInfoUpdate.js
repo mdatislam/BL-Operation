@@ -31,7 +31,8 @@ const RectifierInfoUpdate = () => {
     };
     //console.log(PgRunData);
     fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/rectifier?brand=${brand}`,
+      ` http://localhost:5000
+/rectifier?brand=${brand}`,
       {
         method: "PUT",
         headers: {

@@ -22,7 +22,7 @@ const DGServicingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo", {
+    fetch("  http://localhost:5000/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -87,7 +87,8 @@ const DGServicingUpdate = () => {
     };
 
     fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo/${siteID}`,
+      ` http://localhost:5000
+/dgServiceInfo/${siteID}`,
       {
         method: "PUT",
         headers: {

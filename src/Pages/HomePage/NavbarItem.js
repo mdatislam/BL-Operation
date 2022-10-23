@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 const NavbarItem = () => {
     return (
-      <div className="my-12  mx-2 mb-4 bg-gray-300 rounded-lg">
+      <div className="my-4  mx-2 mb-4 bg-gray-300 rounded-lg">
         <h2 className="text-[#ed38c0e4] text-2xl font-bold text-center py-4">
           Query Items
         </h2>

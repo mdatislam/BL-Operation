@@ -54,7 +54,8 @@ const ProfileChange = ({ profile, setProfile }) => {
     };
 
     fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/profileChange/${email}`,
+      ` http://localhost:5000
+/profileChange/${email}`,
       {
         method: "PUT",
         headers: {

@@ -16,17 +16,21 @@ const RejectApproval = ({ reject, setReject, refetch }) => {
   } = useForm();
 
   const onSubmit = (data, id) => {
-    fetch(` https://enigmatic-eyrie-94440.herokuapp.com/pgRunList/${_id}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify({
-        status: "Reject",
-        remark: data.rejectMsg,
-      }),
-    })
+    fetch(
+      `  http://localhost:5000
+/pgRunList/${_id}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify({
+          status: "Reject",
+          remark: data.rejectMsg,
+        }),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");

@@ -6,8 +6,9 @@ import OutstandingTask from './OutstandingTask';
 
 const Home = () => {
     return (
-      <div className=' h-full'>
-        <HomeBanner />
+      <div className=' '>
+     
+       {/*  <HomeBanner /> */}
         <NavbarItem />
         {/* <Employee />
         <OutstandingTask /> */}

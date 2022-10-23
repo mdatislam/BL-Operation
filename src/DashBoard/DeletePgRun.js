@@ -6,12 +6,16 @@ const DeletePgRun = ({ delPg, refetch, setDelPg }) => {
 
   const handleDelete = (id) => {
     //console.log(id);
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/pgRun/${id}`, {
-      method: "DELETE",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    })
+    fetch(
+      ` http://localhost:5000
+/pgRun/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.deletedCount > 0) {

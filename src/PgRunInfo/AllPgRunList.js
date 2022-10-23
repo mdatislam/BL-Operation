@@ -3,11 +3,12 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../Pages/SharedPage/Loading";
 import AllPgRunRows from "./AllPgRunRows";
+import { CSVLink } from "react-csv";
 
 const AllPgRunList = () => {
   const navigate = useNavigate();
   const { data: pgRunData, isLoading } = useQuery(["list"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/ApprovedAllPgRun", {
+    fetch(" http://localhost:5000/ApprovedAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -35,6 +36,30 @@ const AllPgRunList = () => {
         <Link to="/Dashboard/PgRunUpdate" className="btn btn-secondary">
           GO PG RUN UPDATE
         </Link>
+      </div>
+      {/* For data export */}
+      <div>
+        <CSVLink
+          data={pgRunData}
+          filename="PgRunData"
+          className="btn btn-outline btn-info mb-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+            />
+          </svg>
+         &nbsp; Download
+        </CSVLink>
       </div>
       <div className="overflow-x-auto  mt-4">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">

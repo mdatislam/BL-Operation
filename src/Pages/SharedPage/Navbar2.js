@@ -1,43 +1,17 @@
+
 import { signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
-import mobileTower1 from "../../images/Mobile Tower2.jpg";
-import Loading from "./Loading";
+//import ProfilePic from "./ProfilePic";
+
+
 
 const Navbar2 = () => {
   const { pathname } = useLocation();
   const [user] = useAuthState(auth);
+
   const navigate = useNavigate();
-
-  /* const { data: users, isLoading } = useQuery(["userList", user], () =>
-  fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
-    method: "GET",
-    headers: {
-      authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    },
-  }).then((res) => {
-    if (res.status === 401 || res.status === 403) {
-      toast.error("Unauthorize access");
-
-      localStorage.removeItem("accessToken");
-      navigate("/Login");
-    }
-    return res.json();
-  })
-);
-
-if (isLoading) {
-  return <Loading />;
-}
-console.log(users); */
-
-  /* const userPhoto = users?.filter((pic) => pic.email === user.email);
-//const url=userPhoto[0].url
-
-console.log(userPhoto); 
-  //console.log(user) */
-
   const logout = () => {
     signOut(auth);
     localStorage.removeItem("accessToken");
@@ -45,11 +19,6 @@ console.log(userPhoto);
   };
   const menuItem = (
     <>
-      <li>
-        <NavLink className="rounded-lg" to="/Home">
-          Home
-        </NavLink>
-      </li>
       <li>
         <NavLink className="rounded-lg" to="/Dashboard">
           Data-Update
@@ -121,42 +90,6 @@ console.log(userPhoto);
     </div>
   );
 
-  /* Profile */
-  const userStatus = (
-    <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="btn btn-ghost  avatar">
-        <div className="avatar">
-          <div className="w-24 rounded-xl">
-            <img src={mobileTower1} alt="mobileTower1" />)
-          </div>
-        </div>
-      </label>
-      <ul
-        tabIndex={0}
-        className="mt-3 p-2 shadow menu menu-compact dropdown-content  bg-base-100 rounded-box"
-      >
-        <li>
-          {!user ? (
-            <NavLink className="rounded-lg" to="/Login">
-              Login
-            </NavLink>
-          ) : (
-            <>
-              <li>{user.displayName}</li>
-              <li>
-                <button onClick={logout} className=" rounded-lg btn-outline">
-                  LogOut
-                </button>
-              </li>
-            </>
-          )}
-        </li>
-      </ul>
-    </div>
-  );
-
-  /*Profile end  */
-
   return (
     <div className=" navbar  sticky top-0  z-20 bg-[#ffcb24]  lg:px-20">
       <div className="navbar-end ">
@@ -184,6 +117,13 @@ console.log(userPhoto);
         <div className="flex-1 px-2 mx-2 font-bold text-2xl text-white">
           Rangpur O&amp;M
         </div>
+        <ul className="menu">
+          <li>
+            <NavLink className="rounded-lg" to="/Home">
+              Home
+            </NavLink>
+          </li>
+        </ul>
       </div>
       <div className="navbar-start hidden lg:flex">
         <ul className="menu  menu-horizontal  p-0">
@@ -191,11 +131,37 @@ console.log(userPhoto);
           {dgSubMenu}
         </ul>
       </div>
-
-      {userStatus}
+      <ul className="menu px-2">
+        <li>
+          {!user ? (
+            <NavLink className="rounded-lg" to="/Login">
+              Login
+            </NavLink>
+          ) : (
+            <button onClick={logout} className=" rounded-lg">
+              LogOut
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
+                />
+              </svg>
+            </button>
+          )}
+        </li>
+      </ul>
+   {/*  <ProfilePic/> */}
       {/* For mobile device */}
       <div className="navbar-end">
-        <div className="dropdown dropdown-end">
+        <div className="dropdown dropdown-end px-2">
           <label tabIndex={0} className="btn btn-ghost  lg:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"

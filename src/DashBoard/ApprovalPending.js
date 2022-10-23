@@ -23,7 +23,8 @@ const ApprovalPending = () => {
     refetch,
   } = useQuery(["list", user], () =>
     fetch(
-      ` https://enigmatic-eyrie-94440.herokuapp.com/ApprovalList?email=${user.email}`,
+      `  http://localhost:5000
+/ApprovalList?email=${user.email}`,
       {
         method: "GET",
         headers: {

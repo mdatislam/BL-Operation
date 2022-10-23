@@ -3,10 +3,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Loading from "../Pages/SharedPage/Loading";
 import ApprovalPendingRow from "./ApprovalPendingRow";
+import { CSVLink } from "react-csv";
 
 const ApprovalPendingList = () => {
   const { data: pgRunData, isLoading } = useQuery(["list"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/PendingAllPgRun", {
+    fetch(" http://localhost:5000/PendingAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -56,6 +57,30 @@ const ApprovalPendingList = () => {
           </svg>{" "}
           &nbsp; Home
         </Link>
+      </div>
+      {/* For Data Export */}
+      <div>
+        <CSVLink
+          data={pgRunData}
+          filename="PendingPgRunApproval"
+          className="btn btn-outline btn-info mb-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+            />
+          </svg>
+          &nbsp; Download
+        </CSVLink>
       </div>
       <div className="overflow-x-auto  mt-4">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">

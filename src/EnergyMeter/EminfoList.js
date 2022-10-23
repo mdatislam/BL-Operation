@@ -4,11 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loading from "../Pages/SharedPage/Loading";
 import EmInfoListRow from "./EmInfoListRow";
+import { CSVLink } from "react-csv";
 
 const EminfoList = () => {
   const navigate = useNavigate();
   const { data: EmInfo, isLoading } = useQuery(["EmInfoList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/emInfo", {
+    fetch("  http://localhost:5000/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -36,11 +37,35 @@ const EminfoList = () => {
         <h2 className="stat-title lg:card-title font-bold col-start-2 col-span-2 lg:col-span-6 justify-self-center self-center text-white">
           All Energy Meter <p>updated Record</p>
         </h2>
-        <Link to="/Dashboard/EMDataUpdate" className="btn btn-secondary">
+        <Link to="/Dashboard/EMDataUpdate" className="btn btn-Primary">
           GO EM Info UPDATE
         </Link>
       </div>
 
+      {/* For Data export */}
+      <div>
+        <CSVLink
+          data={EmInfo}
+          filename="EnergyMeterInfo"
+          className="btn btn-outline btn-info mb-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+            />
+          </svg>
+          &nbsp; Download
+        </CSVLink>
+      </div>
       <div className="overflow-x-auto  mt-4">
         <table className="table table-compact w-full  ">
           <thead className="border-2 border-[#FFCB24] ">

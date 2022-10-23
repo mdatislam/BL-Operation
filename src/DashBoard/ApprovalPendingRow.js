@@ -21,17 +21,21 @@ const ApprovalPendingRow = ({ pgRun, index, setReject, refetch }) => {
   } = pgRun;
 
   const handleApprove = (id) => {
-    fetch(` https://enigmatic-eyrie-94440.herokuapp.com/pgRunList/${id}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify({
-        status: "Approved",
-        remark: "OK",
-      }),
-    })
+    fetch(
+      `  http://localhost:5000
+/pgRunList/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify({
+          status: "Approved",
+          remark: "OK",
+        }),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");
