@@ -5,8 +5,7 @@ import RectifierInfoRows from "./RectifierInfoRows";
 
 const RectifierInfo = () => {
   const { data: rectifiers, isLoading } = useQuery(["rectifierlist"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com
-/rectifier", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/rectifier", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

@@ -22,8 +22,7 @@ const DgRefuelingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("  https://enigmatic-eyrie-94440.herokuapp.com
-/dgRefuelingInfo", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgRefuelingInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -40,8 +39,7 @@ const DgRefuelingUpdate = () => {
     const imageFile = event.target.files[0];
     const formData = new FormData();
     formData.set("image", imageFile);
-    fetch(
-      "https://api.imgbb.com/1/upload?key=1b570ca2c45d58b767860a466c63580e",
+    fetch("https://api.imgbb.com/1/upload?key=1b570ca2c45d58b767860a466c63580e",
       {
         method: "POST",
 
@@ -96,10 +94,7 @@ const DgRefuelingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(
-      ` https://enigmatic-eyrie-94440.herokuapp.com
-
-/dgRefuelingInfo/${siteID}`,
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/dgRefuelingInfo/${siteID}`,
       {
         method: "PUT",
         headers: {
@@ -126,9 +121,7 @@ const DgRefuelingUpdate = () => {
       });
 
     /* for posting all refueling data */
-    fetch(` https://enigmatic-eyrie-94440.herokuapp.com
-
-/dgAllRefueling`, {
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/dgAllRefueling`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

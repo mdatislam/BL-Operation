@@ -8,8 +8,7 @@ import { CSVLink } from "react-csv";
 const AllPgRunList = () => {
   const navigate = useNavigate();
   const { data: pgRunData, isLoading } = useQuery(["list"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com
-/ApprovedAllPgRun", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/ApprovedAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

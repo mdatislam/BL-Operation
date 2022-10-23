@@ -21,8 +21,7 @@ const AllFuelList = () => {
     isLoading,
     refetch,
   } = useQuery(["fuel"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com
-/fuelListAll", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

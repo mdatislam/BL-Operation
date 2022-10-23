@@ -25,8 +25,7 @@ const EMDataUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("  https://enigmatic-eyrie-94440.herokuapp.com
-/emInfo", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -44,9 +43,7 @@ const EMDataUpdate = () => {
     const imageFile = event.target.files[0];
     const formData = new FormData();
     formData.set("image", imageFile);
-    fetch(
-      "https://api.imgbb.com/1/upload?key=f84c57341c651748792aeb7c4d477c29",
-      {
+    fetch("https://api.imgbb.com/1/upload?key=f84c57341c651748792aeb7c4d477c29",{
         method: "POST",
 
         body: formData,

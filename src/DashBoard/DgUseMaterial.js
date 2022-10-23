@@ -53,11 +53,7 @@ const DgUseMaterial = () => {
       remark: data.remark,
     };
 
-    fetch(
-      ` https://enigmatic-eyrie-94440.herokuapp.com
-
-/dgMaterialInfo/`,
-      {
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/dgMaterialInfo/`,{
         method: "POST",
         headers: {
           "content-type": "application/json",

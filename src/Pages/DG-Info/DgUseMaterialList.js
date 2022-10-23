@@ -9,8 +9,7 @@ import { CSVLink } from "react-csv";
 const DgUseMaterialList = () => {
   const navigate = useNavigate();
   const { data: dgMaterialInfo, isLoading } = useQuery(["DgInfoList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com
-/dgMaterialInfo", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgMaterialInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

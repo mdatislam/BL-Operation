@@ -9,8 +9,7 @@ import { CSVLink } from "react-csv";
 const EminfoList = () => {
   const navigate = useNavigate();
   const { data: EmInfo, isLoading } = useQuery(["EmInfoList"], () =>
-    fetch("  https://enigmatic-eyrie-94440.herokuapp.com
-/emInfo", {
+    fetch("  https://enigmatic-eyrie-94440.herokuapp.com/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
