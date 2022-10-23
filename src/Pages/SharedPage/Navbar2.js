@@ -92,7 +92,10 @@ const Navbar2 = () => {
 
   return (
     <div className=" navbar  sticky top-0  z-20 bg-[#ffcb24]  lg:px-20">
-      <div className="navbar-end ">
+      <div className="navbar-end px-2">
+         {/* <div className="flex-1 px-2 mx-2 font-bold text-2xl text-white">
+          Rangpur O&amp;M
+        </div>   */}
         {pathname.includes("Dashboard") && (
           <label
             htmlFor="dashboard-drawer"
@@ -114,9 +117,7 @@ const Navbar2 = () => {
             </svg>
           </label>
         )}
-        <div className="flex-1 px-2 mx-2 font-bold text-2xl text-white">
-          Rangpur O&amp;M
-        </div>
+      
         <ul className="menu">
           <li>
             <NavLink className="rounded-lg" to="/Home">

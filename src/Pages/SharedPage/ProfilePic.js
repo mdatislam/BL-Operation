@@ -32,7 +32,7 @@ const ProfilePic = () => {
   if (isLoading) {
     return <Loading />;
   }
-  console.log(users);
+  //console.log(users);
 
   return (
     <div className="py-2 flex justify-center items-center bg-slate-400">
