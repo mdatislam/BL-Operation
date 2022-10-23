@@ -1,13 +1,14 @@
 import React from 'react';
-import Employee from './Employee';
+import ProfilePic from '../SharedPage/ProfilePic';
+//import Employee from './Employee';
 import HomeBanner from './HomeBanner';
 import NavbarItem from './NavbarItem';
-import OutstandingTask from './OutstandingTask';
+//import OutstandingTask from './OutstandingTask';
 
 const Home = () => {
     return (
-      <div className=' '>
-     
+      <div className="h-full">
+        <ProfilePic />
        {/*  <HomeBanner /> */}
         <NavbarItem />
         {/* <Employee />

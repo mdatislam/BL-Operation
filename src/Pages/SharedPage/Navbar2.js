@@ -91,11 +91,11 @@ const Navbar2 = () => {
   );
 
   return (
-    <div className=" navbar  sticky top-0  z-20 bg-[#ffcb24]  lg:px-20">
+    <div className=" navbar  sticky top-0  z-20 bg-[#ffcb24]  text-lg lg:px-4">
       <div className="navbar-end px-2">
-         {/* <div className="flex-1 px-2 mx-2 font-bold text-2xl text-white">
-          Rangpur O&amp;M
-        </div>   */}
+        {/* <div className=" flex-1 px-2 mx-2 font-bold text-2xl text-white">
+          <h3 className="md:hidden"> Rangpur O&amp;M</h3>
+        </div> */}
         {pathname.includes("Dashboard") && (
           <label
             htmlFor="dashboard-drawer"
@@ -117,8 +117,8 @@ const Navbar2 = () => {
             </svg>
           </label>
         )}
-      
-        <ul className="menu">
+
+        <ul className="menu ">
           <li>
             <NavLink className="rounded-lg" to="/Home">
               Home
@@ -126,8 +126,8 @@ const Navbar2 = () => {
           </li>
         </ul>
       </div>
-      <div className="navbar-start hidden lg:flex">
-        <ul className="menu  menu-horizontal  p-0">
+      <div className="navbar-start hidden lg:flex justify-between">
+        <ul className="menu  menu-horizontal">
           {menuItem}
           {dgSubMenu}
         </ul>
@@ -159,7 +159,7 @@ const Navbar2 = () => {
           )}
         </li>
       </ul>
-   {/*  <ProfilePic/> */}
+      {/*  <ProfilePic/> */}
       {/* For mobile device */}
       <div className="navbar-end">
         <div className="dropdown dropdown-end px-2">

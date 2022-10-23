@@ -9,7 +9,7 @@ const FuelBalance = () => {
   const navigate = useNavigate();
 
   const { data: users, isLoading } = useQuery(["userList"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList/pgRunner", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

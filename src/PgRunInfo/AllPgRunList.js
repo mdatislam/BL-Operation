@@ -4,8 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import Loading from "../Pages/SharedPage/Loading";
 import AllPgRunRows from "./AllPgRunRows";
 import { CSVLink } from "react-csv";
+import { useState } from "react";
 
 const AllPgRunList = () => {
+  const [searchPgRun, setSearchPgRun] = useState("");
+  const [filter, setFilter] = useState([]);
   const navigate = useNavigate();
   const { data: pgRunData, isLoading } = useQuery(["list"], () =>
     fetch(" https://enigmatic-eyrie-94440.herokuapp.com/ApprovedAllPgRun", {
@@ -24,6 +27,25 @@ const AllPgRunList = () => {
   if (isLoading) {
     return <Loading />;
   }
+  
+  /* For filtering purpose */
+  const handlesearch = (e) => {
+    const search = e.target.value
+    setSearchPgRun(search)
+
+    if (search !== "") {
+      const filterData = pgRunData.filter(item => {
+        return Object.values(item)
+          .join("")
+          .toLowerCase()
+          .includes(search.toLowerCase());
+      })
+      setFilter(filterData)
+    }
+    else {
+      setFilter(pgRunData)
+    }
+  }
   return (
     <div className="px-2 lg:px-16 mt-12 mb-8">
       <div className="grid grid-cols-4 lg:grid-cols-8 h-12 gap-x-3 card bg-[#6934e3] rounded-lg justify-self-start mb-8">
@@ -38,28 +60,38 @@ const AllPgRunList = () => {
         </Link>
       </div>
       {/* For data export */}
-      <div>
-        <CSVLink
-          data={pgRunData}
-          filename="PgRunData"
-          className="btn btn-outline btn-info mb-2"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
+      <div className="flex justify-between">
+        <input
+          type="text"
+          className="input input-bordered border-sky-400 w-full max-w-xs"
+          placeholder="Enter search Keyword"
+          onChange={(e) => {
+            handlesearch(e);
+          }}
+        />
+        <div>
+          <CSVLink
+            data={pgRunData}
+            filename="PgRunData"
+            className="btn btn-outline btn-info mb-2"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-            />
-          </svg>
-         &nbsp; Download
-        </CSVLink>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+              />
+            </svg>
+            &nbsp; Download
+          </CSVLink>
+        </div>
       </div>
       <div className="overflow-x-auto  mt-4">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
@@ -89,13 +121,21 @@ const AllPgRunList = () => {
             </tr>
           </thead>
           <tbody>
-            {pgRunData?.map((pgRun, index) => (
-              <AllPgRunRows
-                key={pgRun._id}
-                pgRun={pgRun}
-                index={index}
-              ></AllPgRunRows>
-            ))}
+            {searchPgRun.length > 1
+              ? filter.map((pgRun, index) => (
+                  <AllPgRunRows
+                    key={pgRun._id}
+                    pgRun={pgRun}
+                    index={index}
+                  ></AllPgRunRows>
+                ))
+              : pgRunData?.map((pgRun, index) => (
+                  <AllPgRunRows
+                    key={pgRun._id}
+                    pgRun={pgRun}
+                    index={index}
+                  ></AllPgRunRows>
+                ))}
           </tbody>
         </table>
       </div>

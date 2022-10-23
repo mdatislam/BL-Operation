@@ -33,7 +33,7 @@ import AllRefuelingList from "./Pages/DG-Info/AllRefuelingList";
 import DgUseMaterial from "./DashBoard/DgUseMaterial";
 import DgUseMaterialList from "./Pages/DG-Info/DgUseMaterialList";
 import FcuMaintenanceList from "./FCU/FcuMaintenanceList";
-import ProfilePic from "./Pages/SharedPage/ProfilePic";
+//import ProfilePic from "./Pages/SharedPage/ProfilePic";
 
 
 
@@ -43,13 +43,11 @@ function App() {
     <>
       {/*  <NavBar> */}
       <Navbar2 />
-      <ProfilePic />
       <Routes>
         {/*  Public Route */}
         {/*    <Route path="/" element={<Home />}></Route> */}
 
         <Route path="/Login" element={<Login />}></Route>
-        {/*     <Route path="/Signup" element={<SignUp />}></Route> */}
         <Route path="*" element={<NotFound />}></Route>
 
         {/*  private Route */}

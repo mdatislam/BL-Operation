@@ -11,6 +11,8 @@ import AllFuelListRow from "./AllFuelListRow";
 import { CSVLink } from "react-csv";
 
 const AllFuelList = () => {
+  const [searchFuel, setSearchFuel] = useState("");
+  const [filter, setFilter] = useState([]);
   const [user] = useAuthState(auth);
 
   const [admin] = useAdmin(user);
@@ -40,6 +42,24 @@ const AllFuelList = () => {
   if (isLoading) {
     return <Loading />;
   }
+
+  /* For filtering purpose */
+  const handlesearch = (e) => {
+    const search = e.target.value;
+    setSearchFuel(search);
+
+    if (search !== "") {
+      const filterData = receiveFuel.filter((item) => {
+        return Object.values(item)
+          .join("")
+          .toLowerCase()
+          .includes(search.toLowerCase());
+      });
+      setFilter(filterData);
+    } else {
+      setFilter(receiveFuel);
+    }
+  };
   return (
     <div className="px-2 lg:px-16 mt-12 mb-8">
       <div className="grid gap-x-2 grid-cols-4 lg:grid-cols-8 h-12 card bg-[#5a23d9] rounded-lg justify-self-start mb-8">
@@ -53,6 +73,15 @@ const AllFuelList = () => {
           GO FUEL UPDATE
         </Link>
       </div>
+      <div className="flex justify-between">
+        <input
+          type="text"
+          className="input input-bordered border-sky-400 w-full max-w-xs"
+          placeholder="Enter search Keyword"
+          onChange={(e) => {
+            handlesearch(e);
+          }}
+        />
       <div>
         <CSVLink
           data={receiveFuel}
@@ -75,7 +104,8 @@ const AllFuelList = () => {
           </svg>
           &nbsp; Download
         </CSVLink>
-      </div>
+        </div>
+        </div>
       <div className="overflow-x-auto  mt-4">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
           <thead className="border-2 border-[#FFCB24]">
@@ -102,7 +132,17 @@ const AllFuelList = () => {
             </tr>
           </thead>
           <tbody>
-            {receiveFuel?.map((fuel, index) => (
+            {searchFuel.length > 1 ?
+              
+              filter?.map((fuel, index) => (
+              <AllFuelListRow
+                key={fuel._id}
+                fuel={fuel}
+                index={index}
+                setDelFuel={setDelFuel}
+                admin={admin}
+              ></AllFuelListRow>))
+              :receiveFuel.map((fuel, index) => (
               <AllFuelListRow
                 key={fuel._id}
                 fuel={fuel}
