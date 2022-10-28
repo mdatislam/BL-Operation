@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
  
-  useSignInWithEmailAndPassword
+  useSignInWithEmailAndPassword, 
 } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,8 +15,44 @@ import loginBack from "../../images/login.png";
 const Login = () => {
  
   const [password, setPassword] = useState(" ");
-  
+
+ 
   const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+  const [token] = useToken(user );
+
+  if (loading ) return <Loading></Loading>;
+
+  let signInError;
+  if (error) {
+    signInError = (
+      <p className=" text-red-500">
+        <small>{error?.message }</small>
+      </p>
+    );
+  }
+
+  const onSubmit = (data) => {
+    console.log(data);
+    signInWithEmailAndPassword(data.email, data.password);
+  };
+
+  let from = location.state?.from?.pathname || "/Home";
+
+  if (token) {
+    //console.log(user);
+    navigate(from, { replace: true });
+  }
+  
+ /*  const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
  
   const {
@@ -24,14 +60,23 @@ const Login = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
+
+  const [token] = useToken(user);
   const navigate = useNavigate();
   const location = useLocation();
+   if (loading) {
+     return <Loading />;
+   } 
+ 
 
-   const [token] = useToken(user);
-
-  if (loading) {
-    return <Loading />;
-  } 
+  
+  const onSubmit = (data) => {
+    //console.log(data)
+    const password = data.password;
+    const email = data.email;
+    signInWithEmailAndPassword(email, password);
+  };
+  
 let signInError;
 if (error) {
   signInError = (
@@ -41,18 +86,11 @@ if (error) {
   );
 }
   
-  const onSubmit = (data) => {
-    //console.log(data)
-    const password = data.password;
-    const email = data.email;
-    signInWithEmailAndPassword(email, password);
-  };
-  
 
 let from = location.state?.from?.pathname || "/Home";
   if (token) {
     navigate(from, {replace:true });
-  }
+  } */
 
   return (
     <div
@@ -145,13 +183,13 @@ let from = location.state?.from?.pathname || "/Home";
                 </div>
               </div>
             </div>
-
+            {signInError}
             <div className="form-control mt-2">
               <input type="submit" className="btn btn-primary" value="Login" />
             </div>
           </div>
         </form>
-        {signInError}
+
         {/* <div className="divider mt-[-20px]">OR</div>
 
         {admin && (

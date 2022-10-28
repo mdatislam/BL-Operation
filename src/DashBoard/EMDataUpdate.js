@@ -43,7 +43,9 @@ const EMDataUpdate = () => {
     const imageFile = event.target.files[0];
     const formData = new FormData();
     formData.set("image", imageFile);
-    fetch("https://api.imgbb.com/1/upload?key=f84c57341c651748792aeb7c4d477c29",{
+    fetch(
+      "https://api.imgbb.com/1/upload?key=f84c57341c651748792aeb7c4d477c29",
+      {
         method: "POST",
 
         body: formData,
@@ -102,9 +104,7 @@ const EMDataUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(` https://enigmatic-eyrie-94440.herokuapp.com
-
-/emInfo/${siteID}`, {
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/emInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -330,7 +330,7 @@ const EMDataUpdate = () => {
             <input
               type="submit"
               className="btn btn-accent w-full max-w-xs m-2"
-              disabled={!imgUrl ? true : false}
+              /* disabled={!imgUrl ? true : false} */
               value="Submit-Data"
               /*   <button className="btn btn-success">Success</button> */
             />

@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const useUserList = () => {
-  const [userList, setUserList] = useState([]);
+const usePgList = () => {
+  const [PgList, setPgList] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList/pgRunner", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/PgList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -18,9 +19,9 @@ const useUserList = () => {
         }
         return res.json();
       })
-      .then((data) => setUserList(data));
+      .then((data) => setPgList(data));
   }, []);
 
-  return [userList];
+  return [PgList];
 };
-export default useUserList;
+export default usePgList;

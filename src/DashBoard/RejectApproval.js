@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import auth from "../firebase.init";
 
 const RejectApproval = ({ reject, setReject, refetch }) => {
-  const navigate = useNavigate();
   const { _id } = reject;
   const {
     register,
@@ -14,24 +13,20 @@ const RejectApproval = ({ reject, setReject, refetch }) => {
     formState: { errors },
     handleSubmit,
   } = useForm();
+  const navigate = useNavigate();
 
   const onSubmit = (data, id) => {
-    fetch(
-      `  https://enigmatic-eyrie-94440.herokuapp.com
-
-/pgRunList/${_id}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify({
-          status: "Reject",
-          remark: data.rejectMsg,
-        }),
-      }
-    )
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/pgRunList/${_id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify({
+        status: "Reject",
+        remark: data.rejectMsg,
+      }),
+    })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");

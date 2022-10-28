@@ -30,23 +30,31 @@ const DgRefuelingList = () => {
   }
   return (
     <div className="mt-8 px-4 mb-4">
-      <div className="grid grid-cols-4 lg:grid-cols-8 h-12 card bg-[#099252] rounded-lg justify-self-start mb-8 gap-x-16">
-        <Link to="/AllRefueling" className="btn btn-secondary">
-          All Refueling
-        </Link>
-        <h2 className="stat-title lg:card-title font-bold col-start-2 col-span-2 lg:col-span-6 justify-self-center self-center text-white">
-          Only Latest DG <p>Refueling Record</p>
+      <div className=" flex flex-col lg:flex-row gap-2  rounded-lg mb-4 ">
+        <div className="flex flex-row lg:flex-col gap-2 justify-between">
+          <Link
+            to="/AllRefueling"
+            className=" flex-1 order-first btn btn-secondary"
+          >
+            View All Refueling List
+          </Link>
+          <Link
+            to="/Dashboard/DgRefuelingUpdate"
+            className=" flex-1  btn btn-secondary"
+          >
+            GO DG Refueling Update
+          </Link>
+        </div>
+        <h2 className="grow  bg-[#6495ED] rounded-lg text-center h-12 py-2 align-text-bottom text-xl font-bold text-white">
+          Only Latest DG Refueling Record
         </h2>
-        <Link to="/Dashboard/DgRefuelingUpdate" className="btn btn-secondary">
-          GO DG Refueling Update
-        </Link>
       </div>
       {/* For Data export */}
       <div>
         <CSVLink
           data={dgRefueling}
           filename="PgRunData"
-          className="btn btn-outline btn-info mb-2"
+          className="btn btn-primary btn-sm mb-2"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

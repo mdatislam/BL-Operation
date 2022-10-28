@@ -1,29 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import useUserList from "../Pages/Hook/useUserList";
 import Loading from "../Pages/SharedPage/Loading";
 import FuelBalanceRow from "./FuelBalanceRow";
 
 const FuelBalance = () => {
-  /* const [user] = useAuthState(auth); */
-  const navigate = useNavigate();
-
-  const { data: users, isLoading } = useQuery(["userList"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList/pgRunner", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        toast.error("Unauthorize access");
-
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
+  const [userList] = useUserList();
 
   const { data: pgRunData, isLoading2 } = useQuery(["list"], () =>
     fetch("https://enigmatic-eyrie-94440.herokuapp.com/ApprovedAllPgRun", {
@@ -43,7 +26,7 @@ const FuelBalance = () => {
     }).then((res) => res.json())
   );
 
-  if (isLoading || isLoading2 || isLoading3) {
+  if (isLoading2 || isLoading3) {
     return <Loading />;
   }
 
@@ -52,7 +35,7 @@ const FuelBalance = () => {
   //console.log(receiveFuel);
 
   /*   if (users) { */
-  const atiq=users?.forEach((user) => {
+  userList?.forEach((user) => {
     // per user total fuel consumption calculation
 
     const pgRun = pgRunData?.filter((p) => p.pgRunnerEmail === user.email);
@@ -108,7 +91,7 @@ const FuelBalance = () => {
             </tr>
           </thead>
           <tbody>
-            {users?.map((u, index) => (
+            {userList?.map((u, index) => (
               <FuelBalanceRow key={u._id} index={index} u={u}></FuelBalanceRow>
             ))}
           </tbody>

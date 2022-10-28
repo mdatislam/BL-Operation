@@ -27,25 +27,24 @@ const AllPgRunList = () => {
   if (isLoading) {
     return <Loading />;
   }
-  
+
   /* For filtering purpose */
   const handlesearch = (e) => {
-    const search = e.target.value
-    setSearchPgRun(search)
+    const search = e.target.value;
+    setSearchPgRun(search);
 
     if (search !== "") {
-      const filterData = pgRunData.filter(item => {
+      const filterData = pgRunData.filter((item) => {
         return Object.values(item)
           .join("")
           .toLowerCase()
           .includes(search.toLowerCase());
-      })
-      setFilter(filterData)
+      });
+      setFilter(filterData);
+    } else {
+      setFilter(pgRunData);
     }
-    else {
-      setFilter(pgRunData)
-    }
-  }
+  };
   return (
     <div className="px-2 lg:px-16 mt-12 mb-8">
       <div className="grid grid-cols-4 lg:grid-cols-8 h-12 gap-x-3 card bg-[#6934e3] rounded-lg justify-self-start mb-8">
@@ -60,20 +59,21 @@ const AllPgRunList = () => {
         </Link>
       </div>
       {/* For data export */}
-      <div className="flex justify-between">
+      <div className="flex  justify-between flex-wrap gap-4">
         <input
           type="text"
-          className="input input-bordered border-sky-400 w-full max-w-xs"
+          className="input input-bordered border-sky-400 w-full max-w-xs flex-auto"
           placeholder="Enter search Keyword"
           onChange={(e) => {
             handlesearch(e);
           }}
         />
+
         <div>
           <CSVLink
             data={pgRunData}
             filename="PgRunData"
-            className="btn btn-outline btn-info mb-2"
+            className="btn btn-outline btn-info mb-2 flex-auto"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

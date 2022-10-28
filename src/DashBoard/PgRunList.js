@@ -14,9 +14,7 @@ const PgRunList = () => {
 
   const [receiveFuel, setReceiveFuel] = useState([]);
   useEffect(() => {
-    const url = ` https://enigmatic-eyrie-94440.herokuapp.com
-
-/fuelList?email=${user.email}`;
+    const url = ` https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`;
     //console.log(url)
     fetch(url, {
       method: "GET",
@@ -40,9 +38,7 @@ const PgRunList = () => {
     refetch,
   } = useQuery(["list"], () =>
     fetch(
-      `  https://enigmatic-eyrie-94440.herokuapp.com
-
-/pgRunAllList?email=${user.email}`,
+      `  https://enigmatic-eyrie-94440.herokuapp.com/pgRunAllList?email=${user.email}`,
       {
         method: "GET",
         headers: {

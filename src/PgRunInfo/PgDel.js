@@ -1,15 +1,14 @@
 import React from "react";
 import { toast } from "react-toastify";
 
-const DeletePgRun = ({ delPg, refetch, setDelPg }) => {
-  const { _id } = delPg;
-
-  const handleDelete = (id) => {
-    //console.log(id);
+const PgDel = ({ pgDel, setPgDel, refetch }) => {
+  const { pgNo } = pgDel;
+  const handlePgDelete = (pgNo) => {
+    //console.log(pgNo);
     fetch(
       `https://enigmatic-eyrie-94440.herokuapp.com/
 
-pgRun/${id}`,
+pgList/${pgNo}`,
       {
         method: "DELETE",
         headers: {
@@ -20,31 +19,38 @@ pgRun/${id}`,
       .then((res) => res.json())
       .then((data) => {
         if (data.deletedCount > 0) {
-          toast.success(" Delete done ");
+          toast.success(` ${pgNo} Delete done`);
         }
         refetch();
-        setDelPg(null);
-        // console.log(data)
+        setPgDel(null);
       });
   };
   return (
     <div>
-      <input type="checkbox" id="deletePgRun" className="modal-toggle" />
+      <input type="checkbox" id="pgDel" className="modal-toggle" />
       <div className="modal modal-bottom sm:modal-middle">
         <div className="modal-box relative">
           <label
-            htmlFor="deletePgRun"
+            htmlFor="pgDel"
             className="btn btn-sm btn-circle absolute right-2 top-2"
           >
             ✕
           </label>
-          <h3 className="font-bold text-warning text-lg">Warning!</h3>
-          <p className="py-4 font-bold text-2xl text-red-500">
-            Are You Sure to Delete it ?
+          <h3 className=" text-center font-bold text-red-600 text-2xl ">
+            Warning!
+          </h3>
+          <p className="font-semibold text-xl text-blue-500 mt-4 px-12">
+            {" "}
+            Are You Sure to Remove This PG ?
           </p>
+
           <div className="modal-action">
-            <button onClick={() => handleDelete(_id)} className="btn btn-error">
-              Confirm!
+            <button
+              className="btn btn-outline btn-error"
+              onClick={() => handlePgDelete(pgNo)}
+            >
+              {" "}
+              Confirm
             </button>
           </div>
         </div>
@@ -53,4 +59,4 @@ pgRun/${id}`,
   );
 };
 
-export default DeletePgRun;
+export default PgDel;

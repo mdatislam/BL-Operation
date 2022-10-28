@@ -4,21 +4,24 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../../firebase.init";
+//import useUserList from "../Hook/useUserList";
 import Loading from "./Loading";
 
 const ProfilePic = () => {
   const [user] = useAuthState(auth);
-  const navigate = useNavigate();
+  //const [userList] = useUserList();
 
-  const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com
-/userList/user?email=${user.email}`).then((res) => {
-    /* , {
+  const navigate = useNavigate();
+  const { data: users, isLoading } = useQuery(["List", user], () =>
+    fetch(
+      `https://enigmatic-eyrie-94440.herokuapp.com/userList/users?email=${user.email}`,
+      {
         method: "GET",
         headers: {
           authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
-      } */
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         toast.error("Unauthorize access");
 
@@ -35,7 +38,7 @@ const ProfilePic = () => {
   //console.log(users);
 
   return (
-    <div className="py-2 flex justify-center items-center bg-slate-400">
+    <div className="py-2 flex flex-col  justify-center items-center bg-slate-400">
       {user && (
         <div className="avatar">
           <div className="w-24 rounded-xl">
@@ -45,6 +48,7 @@ const ProfilePic = () => {
           </div>
         </div>
       )}
+      <h2 className="font-bold">{user.displayName}</h2>
     </div>
   );
 };

@@ -6,10 +6,12 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
+import usePgList from "../Pages/Hook/usePgList";
 import Loading from "../Pages/SharedPage/Loading";
 
 const PgRunUpdate = () => {
   const [user] = useAuthState(auth);
+  const [PgList] = usePgList();
   const navigate = useNavigate();
   const {
     register,
@@ -264,16 +266,9 @@ const PgRunUpdate = () => {
                   },
                 })}
               >
-                <option value="PG_09">PG_09</option>
-                <option value="PG_17">PG_17</option>
-                <option value="PG_40">PG_40</option>
-                <option value="PG_48">PG_48</option>
-                <option value="PG_57">PG_57</option>
-                <option value="PG_61">PG_61</option>
-                <option value="PG_70">PG_70</option>
-                <option value="PG_72">PG_72</option>
-                <option value="PG_89">PG_89</option>
-                <option value="PG_98">PG_98</option>
+                {PgList?.map((pg) => (
+                  <option value={pg.pgNo}>{pg.pgNo}</option>
+                ))}
               </select>
               <label className="label">
                 {errors.pgNo?.type === "required" && (

@@ -11,7 +11,7 @@ const FuelBalanceRow = ({ u,index }) => {
           <input type="checkbox" className="checkbox" />
         </label>
       </th>
-      <td>{name}</td>
+      <td className="text-start">{name}</td>
       <td>{fuelQuantity} </td>
       <td>{fuelConsume} </td>
       <td className="text-[#3d6ae8] font-bold">{Balance}</td>

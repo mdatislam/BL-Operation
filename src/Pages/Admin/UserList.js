@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import UserListRows from "./UserListRows";
-import Loading from "../SharedPage/Loading";
 //import newUser from "../../images/NewUser.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import RectifierInfo from "./RectifierInfo";
 import ProfileChange from "./ProfileChange";
+import Loading from "../SharedPage/Loading";
 import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
+//import useUserList from "../Hook/useUserList";
 
 const UserList = () => {
+  //const [userList]=useUserList()
   const [profile, setProfile] = useState(" ");
+
   const navigate = useNavigate();
   const { data: users, isLoading } = useQuery(["list"], () =>
     fetch(" https://enigmatic-eyrie-94440.herokuapp.com/userList", {

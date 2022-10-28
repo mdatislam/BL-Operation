@@ -39,7 +39,8 @@ const DgRefuelingUpdate = () => {
     const imageFile = event.target.files[0];
     const formData = new FormData();
     formData.set("image", imageFile);
-    fetch("https://api.imgbb.com/1/upload?key=1b570ca2c45d58b767860a466c63580e",
+    fetch(
+      "https://api.imgbb.com/1/upload?key=1b570ca2c45d58b767860a466c63580e",
       {
         method: "POST",
 
@@ -94,7 +95,10 @@ const DgRefuelingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/dgRefuelingInfo/${siteID}`,
+    fetch(
+      `https://enigmatic-eyrie-94440.herokuapp.com/
+
+dgRefuelingInfo/${siteID}`,
       {
         method: "PUT",
         headers: {
@@ -121,14 +125,19 @@ const DgRefuelingUpdate = () => {
       });
 
     /* for posting all refueling data */
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/dgAllRefueling`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(dgRefuelingData),
-    })
+    fetch(
+      `https://enigmatic-eyrie-94440.herokuapp.com/
+
+dgAllRefueling`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(dgRefuelingData),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");
@@ -328,7 +337,7 @@ const DgRefuelingUpdate = () => {
             <input
               type="submit"
               className="btn btn-accent w-full max-w-xs m-2"
-              disabled={!imgUrl ? true : false}
+              /*   disabled={!imgUrl ? true : false} */
               value="Submit-Data"
             />
           </form>

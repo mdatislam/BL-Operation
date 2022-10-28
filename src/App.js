@@ -33,6 +33,7 @@ import AllRefuelingList from "./Pages/DG-Info/AllRefuelingList";
 import DgUseMaterial from "./DashBoard/DgUseMaterial";
 import DgUseMaterialList from "./Pages/DG-Info/DgUseMaterialList";
 import FcuMaintenanceList from "./FCU/FcuMaintenanceList";
+import PgStatus from "./PgRunInfo/PgStatus";
 //import ProfilePic from "./Pages/SharedPage/ProfilePic";
 
 
@@ -84,6 +85,7 @@ function App() {
           <Route path="/AllRefueling" element={<AllRefuelingList />} />
           <Route path="/FcuMaintenance" element={<FcuMaintenanceList />} />
           <Route path="/EmInfo" element={<EminfoList />} />
+          <Route path="/PgStatus" element={<PgStatus />} />
         </Route>
 
         <Route element={<RequireAdmin />}>

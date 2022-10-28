@@ -54,9 +54,7 @@ const ProfileChange = ({ profile, setProfile }) => {
     };
 
     fetch(
-      ` https://enigmatic-eyrie-94440.herokuapp.com
-
-/profileChange/${email}`,
+      `https://enigmatic-eyrie-94440.herokuapp.com/profileChange/${email}`,
       {
         method: "PUT",
         headers: {
@@ -180,7 +178,7 @@ const ProfileChange = ({ profile, setProfile }) => {
               <input
                 type="submit"
                 className="btn btn-accent w-full max-w-xs m-2"
-                disabled={!imgUrl ? true : false}
+                /* disabled={!imgUrl ? true : false} */
                 value="Submit-Data"
               />
             </form>

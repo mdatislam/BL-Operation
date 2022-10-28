@@ -25,9 +25,7 @@ const FuelDataList = () => {
     refetch,
   } = useQuery(["list", user], () =>
     fetch(
-      `  https://enigmatic-eyrie-94440.herokuapp.com
-
-/fuelList?email=${user.email}`,
+      `https://enigmatic-eyrie-94440.herokuapp.com/fuelList?email=${user.email}`,
       {
         method: "GET",
         headers: {

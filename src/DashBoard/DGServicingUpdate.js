@@ -39,7 +39,9 @@ const DGServicingUpdate = () => {
     const imageFile = event.target.files[0];
     const formData = new FormData();
     formData.set("image", imageFile);
-    fetch("https://api.imgbb.com/1/upload?key=035305de2b8938534ebaad927c214018",{
+    fetch(
+      "https://api.imgbb.com/1/upload?key=035305de2b8938534ebaad927c214018",
+      {
         method: "POST",
 
         body: formData,
@@ -84,7 +86,8 @@ const DGServicingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo/${siteID}`,
+    fetch(
+      `https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo/${siteID}`,
       {
         method: "PUT",
         headers: {
@@ -296,7 +299,7 @@ const DGServicingUpdate = () => {
             <input
               type="submit"
               className="btn btn-accent w-full max-w-xs m-2"
-              disabled={!imgUrl ? true : false}
+              /*  disabled={!imgUrl ? true : false} */
               value="Submit-Data"
             />
           </form>

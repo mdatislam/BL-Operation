@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const useToken = (user) => {
-  const navigate = useNavigate();
   const [token, setToken] = useState(" ");
+  const navigate = useNavigate();
   useEffect(() => {
     if (user) {
       //console.log(user);
@@ -15,19 +15,14 @@ const useToken = (user) => {
         name: name,
         email: email,
       };
-      fetch(
-        `  https://enigmatic-eyrie-94440.herokuapp.com
-
-/user/${email}`,
-        {
-          method: "PUT",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(userInfo),
-        }
-      )
-        /*  .then(res=>res.json()) */
+      fetch(`https://enigmatic-eyrie-94440.herokuapp.com/user/${email}`, {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(userInfo),
+      })
+        /* .then(res=>res.json()) */
         .then((res) => {
           if (res.status === 401 || res.status === 403) {
             toast.error("Unauthorize access");
