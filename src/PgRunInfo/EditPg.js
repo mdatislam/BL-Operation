@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
-import PgStatus from "./PgStatus";
 
 const EditPg = ({ pgEdit, setPgEdit, refetch }) => {
   const [user] = useAuthState(auth);
@@ -14,7 +13,6 @@ const EditPg = ({ pgEdit, setPgEdit, refetch }) => {
 
   const {
     register,
-    reset,
     formState: { errors },
     handleSubmit,
   } = useForm();

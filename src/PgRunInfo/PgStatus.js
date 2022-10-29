@@ -79,8 +79,8 @@ const PgStatus = () => {
       },
     }).then((res) => {
       if (res.status === 401 || res.status === 403) {
-        toast.error("Unauthorize access");
-
+        toast.error("Unauthorize Access");
+        signOut(auth);
         localStorage.removeItem("accessToken");
         navigate("/Login");
       }
@@ -210,8 +210,7 @@ const PgStatus = () => {
               </th>
 
               <th>
-                <div>Faulty</div>
-                <div> Announced By</div>
+                <div>Updated By</div>
               </th>
               <th>Date</th>
               <th>Action</th>

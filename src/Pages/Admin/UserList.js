@@ -7,6 +7,8 @@ import ProfileChange from "./ProfileChange";
 import Loading from "../SharedPage/Loading";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
+import { signOut } from "firebase/auth";
+import auth from "../../firebase.init";
 //import useUserList from "../Hook/useUserList";
 
 const UserList = () => {
@@ -22,8 +24,8 @@ const UserList = () => {
       },
     }).then((res) => {
       if (res.status === 401 || res.status === 403) {
-        toast.error("Unauthorize access");
-
+        toast.error("Unauthorize Access");
+        signOut(auth);
         localStorage.removeItem("accessToken");
         navigate("/Login");
       }

@@ -1,18 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loading from "../Pages/SharedPage/Loading";
 import ApprovalPendingRow from "./ApprovalPendingRow";
 import { CSVLink } from "react-csv";
+import { toast } from "react-toastify";
+import { signOut } from "firebase/auth";
+import auth from "../firebase.init";
 
 const ApprovalPendingList = () => {
+  const navigate = useNavigate();
   const { data: pgRunData, isLoading } = useQuery(["list"], () =>
     fetch(" https://enigmatic-eyrie-94440.herokuapp.com/PendingAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-    }).then((res) => res.json())
+    }).then((res) => {
+      if (res.status === 401 || res.status === 403) {
+        toast.error("Unauthorize Access");
+        signOut(auth);
+        localStorage.removeItem("accessToken");
+        navigate("/Login");
+      }
+      return res.json();
+    })
   );
   if (isLoading) {
     return <Loading />;

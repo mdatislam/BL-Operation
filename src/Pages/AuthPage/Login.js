@@ -41,7 +41,7 @@ const Login = () => {
   }
 
   const onSubmit = (data) => {
-    console.log(data);
+    //console.log(data);
     signInWithEmailAndPassword(data.email, data.password);
   };
 
@@ -52,45 +52,7 @@ const Login = () => {
     navigate(from, { replace: true });
   }
   
- /*  const [signInWithEmailAndPassword, user, loading, error] =
-    useSignInWithEmailAndPassword(auth);
  
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
-
-  const [token] = useToken(user);
-  const navigate = useNavigate();
-  const location = useLocation();
-   if (loading) {
-     return <Loading />;
-   } 
- 
-
-  
-  const onSubmit = (data) => {
-    //console.log(data)
-    const password = data.password;
-    const email = data.email;
-    signInWithEmailAndPassword(email, password);
-  };
-  
-let signInError;
-if (error) {
-  signInError = (
-    <p className=" text-red-500">
-      <small>{errors?.message}</small>
-    </p>
-  );
-}
-  
-
-let from = location.state?.from?.pathname || "/Home";
-  if (token) {
-    navigate(from, {replace:true });
-  } */
 
   return (
     <div
@@ -170,7 +132,7 @@ let from = location.state?.from?.pathname || "/Home";
                   </span>
                 )}
               </label>
-
+              {signInError}
               <div className="flex flex-cols">
                 <div>
                   <label
@@ -183,7 +145,6 @@ let from = location.state?.from?.pathname || "/Home";
                 </div>
               </div>
             </div>
-            {signInError}
             <div className="form-control mt-2">
               <input type="submit" className="btn btn-primary" value="Login" />
             </div>

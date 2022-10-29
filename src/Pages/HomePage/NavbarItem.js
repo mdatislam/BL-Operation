@@ -3,11 +3,11 @@ import { Link, NavLink } from 'react-router-dom';
 
 const NavbarItem = () => {
     return (
-      <div className="my-4  mx-2 mb-4 bg-gray-300 rounded-lg">
+      <div className="my-2  mx-2 mb-2 bg-gray-300 rounded-lg">
         <h2 className="text-[#ed38c0e4] text-2xl font-bold text-center py-4">
           Query Items
         </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 justify-items-center ">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-items-center ">
           {/* 1st Item */}
           <NavLink className="rounded-lg my-4 px-4" to="/Dashboard">
             <div className="card w-64  bg-base-100 shadow-xl   outline-offset-4 outline hover:outline-blue-400 ">

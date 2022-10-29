@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import Loading from "../SharedPage/Loading";
 import AllRefuelingRows from "./AllRefuelingRows";
 import { CSVLink } from "react-csv";
+import { signOut } from "firebase/auth";
+import auth from "../../firebase.init";
 
 const AllRefuelingList = () => {
   const navigate = useNavigate();
@@ -16,8 +18,8 @@ const AllRefuelingList = () => {
       },
     }).then((res) => {
       if (res.status === 401 || res.status === 403) {
-        toast.error("Unauthorize access");
-
+        toast.error("Unauthorize Access");
+        signOut(auth);
         localStorage.removeItem("accessToken");
         navigate("/Login");
       }

@@ -1,12 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
+import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import auth from "../firebase.init";
 import useUserList from "../Pages/Hook/useUserList";
 import Loading from "../Pages/SharedPage/Loading";
 import FuelBalanceRow from "./FuelBalanceRow";
 
 const FuelBalance = () => {
   const [userList] = useUserList();
+  const navigate = useNavigate();
 
   const { data: pgRunData, isLoading2 } = useQuery(["list"], () =>
     fetch("https://enigmatic-eyrie-94440.herokuapp.com/ApprovedAllPgRun", {
@@ -14,7 +16,14 @@ const FuelBalance = () => {
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-    }).then((res) => res.json())
+    }).then((res) => {
+      if (res.status === 401 || res.status === 403) {
+        signOut(auth);
+        localStorage.removeItem("accessToken");
+        navigate("/Login");
+      }
+      return res.json();
+    })
   );
 
   const { data: receiveFuel, isLoading3 } = useQuery(["fuel"], () =>

@@ -9,6 +9,7 @@ import useAdmin from "../Pages/Hook/useAdmin";
 import Loading from "../Pages/SharedPage/Loading";
 import AllFuelListRow from "./AllFuelListRow";
 import { CSVLink } from "react-csv";
+import { signOut } from "firebase/auth";
 
 const AllFuelList = () => {
   const [searchFuel, setSearchFuel] = useState("");
@@ -30,8 +31,8 @@ const AllFuelList = () => {
       },
     }).then((res) => {
       if (res.status === 401 || res.status === 403) {
-        toast.error("Unauthorize access");
-
+        toast.error("Unauthorize Access");
+        signOut(auth);
         localStorage.removeItem("accessToken");
         navigate("/Login");
       }

@@ -26,7 +26,15 @@ const PgRunUpdate = () => {
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-    }).then((res) => res.json())
+    }).then((res) => {
+      if (res.status === 401 || res.status === 403) {
+        toast.error("Unauthorize Access");
+        signOut(auth);
+        localStorage.removeItem("accessToken");
+        navigate("/Login");
+      }
+      return res.json();
+    })
   );
   const { data: rectifiers, isLoading3 } = useQuery(["rectifierList"], () =>
     fetch("https://enigmatic-eyrie-94440.herokuapp.com/rectifier", {
@@ -41,6 +49,29 @@ const PgRunUpdate = () => {
   if (isLoading || isLoading3) {
     return <Loading />;
   }
+
+  /* today & previous date calculation */
+
+  let pre = new Date();
+  pre.setDate(pre.getDate() - 2);
+  let preYear = pre.getFullYear();
+  let preMonth = pre.getMonth() + 1;
+  if (preMonth < 10) {
+    preMonth = "0" + preMonth;
+  }
+  let preDay = pre.getDate();
+  if (preDay < 10) {
+    preDay = "0" + preDay;
+  }
+  let preDate = preYear + "-" + preMonth + "-" + preDay;
+
+  //console.log(preDate);
+
+  let date = new Date();
+  date.setDate(date.getDate());
+  let today = date.toLocaleDateString("en-CA");
+  //console.log(today);
+  /* today & previous date calculation */
 
   const availableUser = users?.filter((u) => u.name !== user.displayName);
 
@@ -100,7 +131,6 @@ const PgRunUpdate = () => {
     })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
           signOut(auth);
           localStorage.removeItem("accessToken");
           navigate("/Login");
@@ -134,6 +164,8 @@ const PgRunUpdate = () => {
               <input
                 type="date"
                 placeholder="Date"
+                min={preDate}
+                max={today}
                 //defaultValue="9/21/22"
                 className="input input-bordered w-full max-w-xs"
                 {...register("date", {

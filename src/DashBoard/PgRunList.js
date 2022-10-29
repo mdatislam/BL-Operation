@@ -6,8 +6,12 @@ import PgRunRows from "./PgRunRows";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import DeletePgRun from "./DeletePgRun";
+import { signOut } from "firebase/auth";
+import { toast } from "react-toastify";
 
 const PgRunList = () => {
+  const [searchPgRun, setSearchPgRun] = useState("");
+  const [filter, setFilter] = useState([]);
   const [delPg, setDelPg] = useState("");
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
@@ -24,6 +28,8 @@ const PgRunList = () => {
     })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
+          toast.error("Unauthorize Access");
+          signOut(auth);
           localStorage.removeItem("accessToken");
           navigate("/Login");
         }
@@ -67,7 +73,7 @@ const PgRunList = () => {
     (previous, current) => previous + parseFloat(current),
     0
   );
-
+  const totalApprovedConsume = totalConsume?.toFixed(2);
   const Fuel = receiveFuel?.map((C) => {
     const fuelReceive = C.fuelQuantity;
     return fuelReceive;
@@ -81,6 +87,24 @@ const PgRunList = () => {
 
   const balance = (receivedFuel - totalConsume).toFixed(2);
 
+  /* For filtering purpose */
+  const handlesearch = (e) => {
+    const search = e.target.value;
+    setSearchPgRun(search);
+
+    if (search !== "") {
+      const filterData = pgRunData.filter((item) => {
+        return Object.values(item)
+          .join("")
+          .toLowerCase()
+          .includes(search.toLowerCase());
+      });
+      setFilter(filterData);
+    } else {
+      setFilter(pgRunData);
+    }
+  };
+
   return (
     <div>
       <div className="text-center  text-2xl mt-12 mb-8">
@@ -93,7 +117,7 @@ const PgRunList = () => {
 
           <div className="stat text-[#FFF]">
             <div className="stat-title">Total Approved Consume</div>
-            <div className="stat-value">{totalConsume}</div>
+            <div className="stat-value">{totalApprovedConsume}</div>
             <div className="stat-desc">Liter</div>
           </div>
 
@@ -103,9 +127,19 @@ const PgRunList = () => {
             <div className="stat-desc"> Liter</div>
           </div>
         </div>
-        <div className="grid h-12 card bg-[#FFCB24] rounded-box place-items-center mt-12">
-          <h2 className="text-[#828282] font-bold ">Your All PG Run Record</h2>
+        <div className="grid h-12 card bg-[#34aaef] rounded-box place-items-center mt-12">
+          <h2 className="text-white font-bold ">Your All PG Run Record</h2>
         </div>
+      </div>
+      <div className="flex  justify-between flex-wrap mb-4 px-2">
+        <input
+          type="text"
+          className="input input-bordered border-sky-400 w-full max-w-xs flex-auto "
+          placeholder="Enter search Keyword"
+          onChange={(e) => {
+            handlesearch(e);
+          }}
+        />
       </div>
       <div className="overflow-x-auto">
         <table className="table table-compact w-full">
@@ -144,15 +178,25 @@ const PgRunList = () => {
             </tr>
           </thead>
           <tbody>
-            {pgRunData.map((pgRun, index) => (
-              <PgRunRows
-                key={pgRun._id}
-                pgRun={pgRun}
-                index={index}
-                setDelPg={setDelPg}
-                //fuelConsume={fuelConsume}
-              ></PgRunRows>
-            ))}
+            {searchPgRun.length > 0
+              ? filter.map((pgRun, index) => (
+                  <PgRunRows
+                    key={pgRun._id}
+                    pgRun={pgRun}
+                    index={index}
+                    setDelPg={setDelPg}
+                    //fuelConsume={fuelConsume}
+                  ></PgRunRows>
+                ))
+              : pgRunData.map((pgRun, index) => (
+                  <PgRunRows
+                    key={pgRun._id}
+                    pgRun={pgRun}
+                    index={index}
+                    setDelPg={setDelPg}
+                    //fuelConsume={fuelConsume}
+                  ></PgRunRows>
+                ))}
           </tbody>
         </table>
       </div>

@@ -8,9 +8,11 @@ import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import usePgList from "../Pages/Hook/usePgList";
 import Loading from "../Pages/SharedPage/Loading";
+import useAdmin from "./../Pages/Hook/useAdmin";
 
 const FuelUpdate = () => {
   const [user] = useAuthState(auth);
+  const [admin] = useAdmin(user);
   const [PgList] = usePgList();
   const navigate = useNavigate();
   const {
@@ -26,7 +28,14 @@ const FuelUpdate = () => {
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-    }).then((res) => res.json())
+    }).then((res) => {
+      if (res.status === 401 || res.status === 403) {
+        signOut(auth);
+        localStorage.removeItem("accessToken");
+        navigate("/Login");
+      }
+      return res.json();
+    })
   );
   // console.log(services)
   if (isLoading) {
@@ -37,6 +46,17 @@ const FuelUpdate = () => {
 
   const onSubmit = (data) => {
     const fuelIssuer = availableUser.filter((x) => x.name === data.fuelIssuer);
+
+    let x = [];
+    if (admin) {
+      x.push(data.fuelReceiver);
+      x.push(data.fuelReceiverEmail);
+    } else {
+      x.push(user.displayName);
+      x.push(user.email);
+    }
+
+    //console.log(x)
     const fuelData = {
       siteId: data.siteId,
       date: data.date,
@@ -45,10 +65,11 @@ const FuelUpdate = () => {
       fuelQuantity: data.fuel,
       fuelIssuer: data.fuelIssuer,
       fuelIssuerEmail: fuelIssuer[0].email,
-      fuelReceiverName: user.displayName,
-      fuelReceiverEmail: user.email,
+      fuelReceiverName: x[0],
+      fuelReceiverEmail: x[1],
     };
-    //console.log(PgRunData);
+
+    //console.log(fuelData);
     fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelData", {
       method: "POST",
       headers: {
@@ -200,6 +221,46 @@ const FuelUpdate = () => {
                 )}
               </label>
             </div>
+
+            {/*  On Fuel receiver   Name */}
+            {admin && (
+              <div className="form-control w-full max-w-xs">
+                <label className="label">
+                  <span className="label-text">Fuel Receiver:</span>
+                </label>
+                <select
+                  type="text"
+                  placeholder=" Fuel Receiver Name"
+                  className="input input-bordered border-purple-600 border-4 w-full max-w-xs"
+                  {...register("fuelReceiver")}
+                >
+                  {users.map((user) => (
+                    <option value={user.name}>{user.name} </option>
+                  ))}
+                </select>
+                <label className="label"></label>
+              </div>
+            )}
+
+            {/*  On Fuel receiver email */}
+            {admin && (
+              <div className="form-control w-full max-w-xs">
+                <label className="label">
+                  <span className="label-text">Fuel Receiver Email:</span>
+                </label>
+                <select
+                  type="text"
+                  placeholder=" Fuel Receiver Name"
+                  className="input input-bordered border-purple-600 border-4 w-full max-w-xs"
+                  {...register("fuelReceiverEmail")}
+                >
+                  {users.map((user) => (
+                    <option value={user.email}>{user.email} </option>
+                  ))}
+                </select>
+                <label className="label"></label>
+              </div>
+            )}
             {/*  On Call Engineer  Name */}
             <div className="form-control w-full max-w-xs">
               <label className="label">

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { signOut } from "firebase/auth";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
@@ -23,8 +24,8 @@ const ProfilePic = () => {
       }
     ).then((res) => {
       if (res.status === 401 || res.status === 403) {
-        toast.error("Unauthorize access");
-
+        toast.error("Unauthorize Access");
+        signOut(auth);
         localStorage.removeItem("accessToken");
         navigate("/Login");
       }
@@ -38,14 +39,18 @@ const ProfilePic = () => {
   //console.log(users);
 
   return (
-    <div className="py-2 flex flex-col  justify-center items-center bg-slate-400">
+    <div className="py-2 flex flex-col  justify-center items-center bg-slate-400 px-4 rounded-lg">
       {user && (
         <div className="avatar">
-          <div className="w-24 rounded-xl">
+          <figure className="w-32">
             {users?.map((p) => (
-              <img src={p.url} alt="Profile Pic" />
+              <img
+                src={p.url}
+                className="rounded-lg"
+                alt="Profile Pic download problem"
+              />
             ))}
-          </div>
+          </figure>
         </div>
       )}
       <h2 className="font-bold">{user.displayName}</h2>

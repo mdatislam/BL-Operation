@@ -37,7 +37,7 @@ const DashBoard = () => {
         <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
         <ul className="menu p-4  overflow-y-auto w-70  bg-[#020203] text-[#FFCB24]">
           {/*  <!-- Sidebar content here --> */}
-         {!admin && ( <li>
+         {( <li>
             <Link to="/Dashboard">
               {subMenu}
               Your PG Run List

@@ -5,6 +5,9 @@ import Loading from "../Pages/SharedPage/Loading";
 import AllPgRunRows from "./AllPgRunRows";
 import { CSVLink } from "react-csv";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { signOut } from "firebase/auth";
+import auth from "../firebase.init";
 
 const AllPgRunList = () => {
   const [searchPgRun, setSearchPgRun] = useState("");
@@ -18,6 +21,8 @@ const AllPgRunList = () => {
       },
     }).then((res) => {
       if (res.status === 401 || res.status === 403) {
+        toast.error("Unauthorize Access");
+        signOut(auth);
         localStorage.removeItem("accessToken");
         navigate("/Login");
       }
@@ -58,7 +63,7 @@ const AllPgRunList = () => {
           GO PG RUN UPDATE
         </Link>
       </div>
-      {/* For data export */}
+      {/* For filter input box */}
       <div className="flex  justify-between flex-wrap gap-4">
         <input
           type="text"
@@ -68,7 +73,7 @@ const AllPgRunList = () => {
             handlesearch(e);
           }}
         />
-
+        {/* For Data export/download */}
         <div>
           <CSVLink
             data={pgRunData}

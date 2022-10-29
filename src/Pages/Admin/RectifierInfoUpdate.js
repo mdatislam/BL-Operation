@@ -1,18 +1,16 @@
-import { async } from "@firebase/util";
-import { useQuery } from "@tanstack/react-query";
+
+
 import { signOut } from "firebase/auth";
 import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+//import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../../firebase.init";
-import Loading from "../SharedPage/Loading";
-import ZTE from "../../images/ZTE.png";
 import huawei from "../../images/Huawei.png";
 
 const RectifierInfoUpdate = () => {
-  const [user] = useAuthState(auth);
+ // const [user] = useAuthState(auth);
   const navigate = useNavigate();
   const {
     register,
