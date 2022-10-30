@@ -22,7 +22,7 @@ const DgRefuelingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgRefuelingInfo", {
+    fetch(" http://localhost:5000/dgRefuelingInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -104,7 +104,7 @@ const DgRefuelingUpdate = () => {
     };
 
     fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/
+      `http://localhost:5000/
 
 dgRefuelingInfo/${siteID}`,
       {
@@ -134,7 +134,7 @@ dgRefuelingInfo/${siteID}`,
 
     /* for posting all refueling data */
     fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/
+      `http://localhost:5000/
 
 dgAllRefueling`,
       {
@@ -167,6 +167,11 @@ dgAllRefueling`,
         //console.log(pgData)
       });
   };
+  /*  today find code */
+  let date = new Date();
+  date.setDate(date.getDate());
+  let today = date.toLocaleDateString("en-CA");
+
   return (
     <div
       className="flex justify-center justify-items-center bg-no-repeat bg-bottom bg-fixed"
@@ -207,6 +212,7 @@ dgAllRefueling`,
               <input
                 type="date"
                 // disabled
+                defaultValue={today}
                 className="input input-bordered w-full max-w-xs"
                 {...register("date2", {
                   required: {

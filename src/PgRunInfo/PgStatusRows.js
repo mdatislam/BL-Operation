@@ -10,8 +10,8 @@ const PgStatusRows = ({ pg, index, refetch, setPgEdit,setPgDel,admin }) => {
       <tr className="border-2 border-[#F0D786]  hover divide-x divide-gray-300 text-center">
         <th>{index + 1}</th>
         <td>{pgNo}</td>
-        <td>{pgStatus}</td>
-        <td className="text-start">{pgDetail}</td>
+        <td className="text-start">{pgStatus}</td>
+        <td className=" px-2 text-start break-all ">{pgDetail}</td>
         <td>{updaterName}</td>
         <td>{date}</td>
         <td className="flex justify-items-center gap-x-2 text-center">
@@ -37,30 +37,32 @@ const PgStatusRows = ({ pg, index, refetch, setPgEdit,setPgDel,admin }) => {
             </svg>
           </label>
           {/*  Or button */}
-         {admin && <span className="font-bold">|</span>}
+          {admin && <span className="font-bold">|</span>}
 
           {/* cancel button */}
 
-        { admin && (<label
-        htmlFor="pgDel"
-        className=" text-red-500"
-        onClick={() => setPgDel(pg)}
-        >
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-        >
-            <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-        </svg>
-        </label>)}
+          {admin && (
+            <label
+              htmlFor="pgDel"
+              className=" text-red-500"
+              onClick={() => setPgDel(pg)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </label>
+          )}
         </td>
       </tr>
     </>

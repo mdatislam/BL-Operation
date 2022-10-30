@@ -23,7 +23,7 @@ const FuelUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
+    fetch("http://localhost:5000/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -41,7 +41,11 @@ const FuelUpdate = () => {
   if (isLoading) {
     return <Loading />;
   }
-
+/*  today find code */
+      let date = new Date();
+      date.setDate(date.getDate());
+  let today = date.toLocaleDateString("en-CA");
+  
   const availableUser = users?.filter((u) => u.name !== user.displayName);
 
   const onSubmit = (data) => {
@@ -67,10 +71,11 @@ const FuelUpdate = () => {
       fuelIssuerEmail: fuelIssuer[0].email,
       fuelReceiverName: x[0],
       fuelReceiverEmail: x[1],
+      remark:data.remark
     };
 
     //console.log(fuelData);
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelData", {
+    fetch("http://localhost:5000/fuelData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -112,6 +117,7 @@ const FuelUpdate = () => {
               <input
                 type="date"
                 placeholder="Date"
+                defaultValue={today}
                 className="input input-bordered w-full max-w-xs"
                 {...register("date", {
                   required: {
@@ -152,9 +158,7 @@ const FuelUpdate = () => {
 
             {/*  PG No */}
             <div className="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="label-text">PG No:</span>
-              </label>
+              
               <select
                 type="text"
                 placeholder=" PG Number "
@@ -166,6 +170,7 @@ const FuelUpdate = () => {
                   },
                 })}
               >
+                <option value=""> --------Select PG No-------------- </option>
                 {PgList?.map((pg) => (
                   <option value={pg.pgNo}>{pg.pgNo}</option>
                 ))}
@@ -203,7 +208,7 @@ const FuelUpdate = () => {
             {/*  Fuel Quantity*/}
             <div className="form-control w-full max-w-xs">
               <input
-                type="number"
+                type="text"
                 placeholder="Fuel Quantity"
                 className="input input-bordered w-full max-w-xs"
                 {...register("fuel", {
@@ -225,15 +230,17 @@ const FuelUpdate = () => {
             {/*  On Fuel receiver   Name */}
             {admin && (
               <div className="form-control w-full max-w-xs">
-                <label className="label">
-                  <span className="label-text">Fuel Receiver:</span>
-                </label>
+                
                 <select
                   type="text"
                   placeholder=" Fuel Receiver Name"
                   className="input input-bordered border-purple-600 border-4 w-full max-w-xs"
                   {...register("fuelReceiver")}
                 >
+                  <option value="">
+                    {" "}
+                    --------Select Fuel Receiver Name-------{" "}
+                  </option>
                   {users.map((user) => (
                     <option value={user.name}>{user.name} </option>
                   ))}
@@ -245,15 +252,17 @@ const FuelUpdate = () => {
             {/*  On Fuel receiver email */}
             {admin && (
               <div className="form-control w-full max-w-xs">
-                <label className="label">
-                  <span className="label-text">Fuel Receiver Email:</span>
-                </label>
+                
                 <select
                   type="text"
                   placeholder=" Fuel Receiver Name"
                   className="input input-bordered border-purple-600 border-4 w-full max-w-xs"
                   {...register("fuelReceiverEmail")}
                 >
+                  <option value="">
+                    {" "}
+                    --------Select Receiver email-------{" "}
+                  </option>
                   {users.map((user) => (
                     <option value={user.email}>{user.email} </option>
                   ))}
@@ -263,9 +272,7 @@ const FuelUpdate = () => {
             )}
             {/*  On Call Engineer  Name */}
             <div className="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="label-text">Fuel Issuer:</span>
-              </label>
+              
               <select
                 type="text"
                 placeholder=" Fuel Issuer Name"
@@ -277,6 +284,10 @@ const FuelUpdate = () => {
                   },
                 })}
               >
+                <option value="">
+                  {" "}
+                  -------- Select On Caller Name-------{" "}
+                </option>
                 {availableUser.map((user) => (
                   <option value={user.name}>{user.name} </option>
                 ))}
@@ -287,6 +298,18 @@ const FuelUpdate = () => {
                     {errors.fuelIssuer.message}
                   </span>
                 )}
+              </label>
+            </div>
+            {/* Remarks */}
+            <div className="form-control w-full max-w-xs">
+              <input
+                type="text"
+                placeholder=" Write Remark if have"
+                className="input input-bordered w-full max-w-xs"
+                {...register("remark")}
+              />
+              <label className="label">
+                
               </label>
             </div>
 

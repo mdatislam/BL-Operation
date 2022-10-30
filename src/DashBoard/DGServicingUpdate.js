@@ -22,7 +22,7 @@ const DGServicingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo", {
+    fetch("http://localhost:5000/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -94,17 +94,14 @@ const DGServicingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo/${siteID}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(dgServicingData),
-      }
-    )
+    fetch(`http://localhost:5000/dgServiceInfo/${siteID}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(dgServicingData),
+    })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");
@@ -124,6 +121,11 @@ const DGServicingUpdate = () => {
         //console.log(pgData)
       });
   };
+  /*  today find code */
+  let date = new Date();
+  date.setDate(date.getDate());
+  let today = date.toLocaleDateString("en-CA");
+
   return (
     <div
       className="flex justify-center justify-items-center bg-no-repeat bg-bottom bg-fixed"
@@ -164,6 +166,7 @@ const DGServicingUpdate = () => {
               <input
                 type="date"
                 // disabled
+                defaultValue={today}
                 className="input input-bordered w-full max-w-xs"
                 {...register("date2", {
                   required: {

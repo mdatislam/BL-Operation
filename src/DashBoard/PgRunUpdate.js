@@ -21,7 +21,7 @@ const PgRunUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
+    fetch("http://localhost:5000/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -37,7 +37,7 @@ const PgRunUpdate = () => {
     })
   );
   const { data: rectifiers, isLoading3 } = useQuery(["rectifierList"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/rectifier", {
+    fetch("http://localhost:5000/rectifier", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -121,7 +121,7 @@ const PgRunUpdate = () => {
       status: "Pending",
     };
     //console.log(PgRunData);
-    fetch("  https://enigmatic-eyrie-94440.herokuapp.com/pgRunData", {
+    fetch("  http://localhost:5000/pgRunData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -166,7 +166,7 @@ const PgRunUpdate = () => {
                 placeholder="Date"
                 min={preDate}
                 max={today}
-                //defaultValue="9/21/22"
+                defaultValue={today}
                 className="input input-bordered w-full max-w-xs"
                 {...register("date", {
                   required: {
@@ -206,9 +206,9 @@ const PgRunUpdate = () => {
             </div>
             {/* Rectifier Module Capacity */}
             <div className="form-control w-full max-w-xs">
-              <label className="label">
+              {/* <label className="label">
                 <span className="label-text">Rectifier Module Capacity:</span>
-              </label>
+              </label> */}
               <select
                 type="text"
                 defaultValue="kw3"
@@ -220,6 +220,10 @@ const PgRunUpdate = () => {
                   },
                 })}
               >
+                <option value="">
+                  {" "}
+                  --------Rectifier Per Module capacity-------{" "}
+                </option>
                 {rectifiers?.map((recti) => (
                   <option value={recti.capacity}>{recti.capacity} </option>
                 ))}
@@ -284,9 +288,9 @@ const PgRunUpdate = () => {
             </div>
             {/*  PG NO*/}
             <div className="form-control w-full max-w-xs">
-              <label className="label">
+              {/* <label className="label">
                 <span className="label-text">PG No:</span>
-              </label>
+              </label> */}
               <select
                 type="text"
                 placeholder="PG Number"
@@ -298,6 +302,7 @@ const PgRunUpdate = () => {
                   },
                 })}
               >
+                <option value=""> -------- Select PG No------ </option>
                 {PgList?.map((pg) => (
                   <option value={pg.pgNo}>{pg.pgNo}</option>
                 ))}
@@ -312,9 +317,7 @@ const PgRunUpdate = () => {
             </div>
             {/*  On Call Engineer  Name */}
             <div className="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="label-text">On Call Name:</span>
-              </label>
+              
               <select
                 type="text"
                 placeholder=" On Caller  Name"
@@ -326,6 +329,10 @@ const PgRunUpdate = () => {
                   },
                 })}
               >
+                <option value="">
+                  {" "}
+                  -------- Select On Caller Name-------{" "}
+                </option>
                 {availableUser.map((user) => (
                   <option value={user.name}>{user.name} </option>
                 ))}

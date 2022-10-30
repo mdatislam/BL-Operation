@@ -1,5 +1,3 @@
-
-
 import { signOut } from "firebase/auth";
 import React from "react";
 //import { useAuthState } from "react-firebase-hooks/auth";
@@ -10,7 +8,7 @@ import auth from "../../firebase.init";
 import huawei from "../../images/Huawei.png";
 
 const RectifierInfoUpdate = () => {
- // const [user] = useAuthState(auth);
+  // const [user] = useAuthState(auth);
   const navigate = useNavigate();
   const {
     register,
@@ -28,17 +26,14 @@ const RectifierInfoUpdate = () => {
       consumeFuel: data.consume,
     };
     //console.log(PgRunData);
-    fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/rectifier?brand=${brand}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(RectifierInfo),
-      }
-    )
+    fetch(`http://localhost:5000/rectifier?brand=${brand}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(RectifierInfo),
+    })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");

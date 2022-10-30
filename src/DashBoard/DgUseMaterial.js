@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -54,7 +53,7 @@ const DgUseMaterial = () => {
     };
 
     fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/
+      `http://localhost:5000/
 
 dgMaterialInfo/`,
       {
@@ -84,6 +83,12 @@ dgMaterialInfo/`,
         reset();
       });
   };
+
+  /*  today find code */
+  let date = new Date();
+  date.setDate(date.getDate());
+  let today = date.toLocaleDateString("en-CA");
+
   return (
     <div
       className="flex justify-center justify-items-center bg-no-repeat bg-bottom bg-fixed"
@@ -124,6 +129,7 @@ dgMaterialInfo/`,
               <input
                 type="date"
                 // disabled
+                defaultValue={today}
                 className="input input-bordered w-full max-w-xs"
                 {...register("date2", {
                   required: {

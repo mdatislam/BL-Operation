@@ -40,7 +40,7 @@ const PgStatus = () => {
       date: today,
     };
 
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/pgList/${data.pgno}`, {
+    fetch(`http://localhost:5000/pgList/${data.pgno}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -72,7 +72,7 @@ const PgStatus = () => {
     isLoading,
     refetch,
   } = useQuery(["pgList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/pgList", {
+    fetch(" http://localhost:5000/pgList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -197,23 +197,21 @@ const PgStatus = () => {
         </div>
       )}
       <div className="overflow-x-auto  mt-4">
-        <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600 text-center">
+        <table className=" table-fixed w-full  border-spacing-2  border border-3 border-slate-600 ">
           <thead className="border-2 border-[#FFCB24]">
             <tr className="divide-x divide-blue-400">
-              <th>SN</th>
+              <th className="w-8">SN</th>
 
               <th>PG NO</th>
-              <th>Condition</th>
+              <th className="w-24 ">Condition</th>
 
-              <th>
-                <div>Fault Detail</div>
-              </th>
+              <th className="w-48 ">Fault Detail</th>
 
-              <th>
+              <th className="w-24">
                 <div>Updated By</div>
               </th>
-              <th>Date</th>
-              <th>Action</th>
+              <th className="w-24">Date</th>
+              <th className="w-20">Action</th>
             </tr>
           </thead>
           <tbody>

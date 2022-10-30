@@ -7,7 +7,7 @@ const DeleteReceiveFuel = ({ delFuel, refetch, setDelFuel }) => {
   const handleDelete = (id) => {
     //console.log(id);
     fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/
+      `http://localhost:5000/
 
 receivedFuel/${id}`,
       {

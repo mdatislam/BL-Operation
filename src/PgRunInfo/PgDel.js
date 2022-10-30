@@ -6,7 +6,7 @@ const PgDel = ({ pgDel, setPgDel, refetch }) => {
   const handlePgDelete = (pgNo) => {
     //console.log(pgNo);
     fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/
+      `http://localhost:5000/
 
 pgList/${pgNo}`,
       {
