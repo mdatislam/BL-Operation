@@ -29,7 +29,7 @@ const DgRefuelingUpdate = () => {
       },
     }).then((res) => {
       if (res.status === 401 || res.status === 403) {
-        toast.error("Unauthorize Access");
+        //  toast.error("Unauthorize Access")
         signOut(auth);
         localStorage.removeItem("accessToken");
         navigate("/Login");
@@ -80,10 +80,6 @@ const DgRefuelingUpdate = () => {
     ).toFixed(2);
     const PreDate = presentSite?.map((s) => s.date);
     // console.log(EmPreReading[0])
-
-    /*   let date = new Date();
-    date.setDate(date.getDate());
-    let vv = date.toLocaleDateString("en-CA");   */
 
     const dgRefuelingData = {
       siteId: siteID,
@@ -334,7 +330,10 @@ dgAllRefueling`,
                 onChange={handleImageUpload}
               />
             </div>
-
+            <small className=" text-red-500">
+              **Don't submit until loading finish,
+              <p>if more time take then submit**</p>
+            </small>
             {/* Remarks */}
             <div className="form-control w-full max-w-xs">
               <label className="label">

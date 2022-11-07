@@ -79,7 +79,7 @@ const PgStatus = () => {
       },
     }).then((res) => {
       if (res.status === 401 || res.status === 403) {
-        toast.error("Unauthorize Access");
+        //  toast.error("Unauthorize Access")
         signOut(auth);
         localStorage.removeItem("accessToken");
         navigate("/Login");
@@ -94,7 +94,7 @@ const PgStatus = () => {
 
   return (
     <div className="mt-8 px-4 mb-4">
-      <h2 className="grow  bg-[#7fed64] rounded-lg text-center h-12 py-2 align-text-bottom text-xl font-bold text-white">
+      <h2 className="grow  bg-[#7fed64] rounded-lg text-center h-12 py-2 align-text-bottom text-lg font-bold text-white">
         Available PG Status
       </h2>
       <div className="stat-actions">
@@ -202,10 +202,10 @@ const PgStatus = () => {
             <tr className="divide-x divide-blue-400">
               <th className="w-8">SN</th>
 
-              <th>PG NO</th>
-              <th className="w-24 ">Condition</th>
+              <th className=" w-20">PG NO</th>
+              <th className="w-20">Condition</th>
 
-              <th className="w-48 ">Fault Detail</th>
+              <th className="">Fault Detail</th>
 
               <th className="w-24">
                 <div>Updated By</div>

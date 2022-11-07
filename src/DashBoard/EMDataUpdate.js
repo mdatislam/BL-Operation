@@ -312,6 +312,10 @@ const EMDataUpdate = () => {
               >
                 Upload-Photo
               </label>
+              <small className=" text-red-500">
+                **Don't submit until loading finish,
+                <p>if more time take then submit**</p>
+              </small>
               <input
                 id="image"
                 type="file"

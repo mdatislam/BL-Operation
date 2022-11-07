@@ -21,7 +21,7 @@ const AllPgRunList = () => {
       },
     }).then((res) => {
       if (res.status === 401 || res.status === 403) {
-        toast.error("Unauthorize Access");
+        //  toast.error("Unauthorize Access")
         signOut(auth);
         localStorage.removeItem("accessToken");
         navigate("/Login");
@@ -34,7 +34,7 @@ const AllPgRunList = () => {
   }
 
   /* For filtering purpose */
-  const handlesearch = (e) => {
+  const handleSearch = (e) => {
     const search = e.target.value;
     setSearchPgRun(search);
 
@@ -50,6 +50,7 @@ const AllPgRunList = () => {
       setFilter(pgRunData);
     }
   };
+
   return (
     <div className="px-2 lg:px-16 mt-12 mb-8">
       <div className="grid grid-cols-4 lg:grid-cols-8 h-12 gap-x-3 card bg-[#6934e3] rounded-lg justify-self-start mb-8">
@@ -70,9 +71,17 @@ const AllPgRunList = () => {
           className="input input-bordered border-sky-400 w-full max-w-xs flex-auto"
           placeholder="Enter search Keyword"
           onChange={(e) => {
-            handlesearch(e);
+            handleSearch(e);
           }}
         />
+        {/* <input
+          type="text"
+          className="input input-bordered border-sky-400 w-full max-w-xs flex-auto"
+          placeholder="Enter PG runner Name Keyword"
+          onChange={(e) => {
+            searchPgRunner(e);
+          }}
+        /> */}
         {/* For Data export/download */}
         <div>
           <CSVLink

@@ -28,7 +28,7 @@ const PgRunUpdate = () => {
       },
     }).then((res) => {
       if (res.status === 401 || res.status === 403) {
-        toast.error("Unauthorize Access");
+        /*  toast.error("Unauthorize Access") */
         signOut(auth);
         localStorage.removeItem("accessToken");
         navigate("/Login");
@@ -119,6 +119,7 @@ const PgRunUpdate = () => {
       pgRunnerName: user.displayName,
       pgRunnerEmail: user.email,
       status: "Pending",
+      remark: data.remark,
     };
     //console.log(PgRunData);
     fetch("  http://localhost:5000/pgRunData", {
@@ -317,7 +318,6 @@ const PgRunUpdate = () => {
             </div>
             {/*  On Call Engineer  Name */}
             <div className="form-control w-full max-w-xs">
-              
               <select
                 type="text"
                 placeholder=" On Caller  Name"
@@ -344,6 +344,18 @@ const PgRunUpdate = () => {
                   </span>
                 )}
               </label>
+            </div>
+            {/* Remarks */}
+            <div className="form-control w-full max-w-xs">
+              <label className="label">
+                <span className="label-text">Remark:</span>
+              </label>
+              <textarea
+                type="text"
+                placeholder="Write  findings, if found "
+                className="input input-bordered w-full max-w-xs"
+                {...register("remark")}
+              />
             </div>
 
             <input

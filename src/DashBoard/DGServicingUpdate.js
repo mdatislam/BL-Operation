@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const DGServicingUpdate = () => {
+  const [filterData,setFilterData]=useState("[]")
   const [user] = useAuthState(auth);
   const [imgUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,7 +30,7 @@ const DGServicingUpdate = () => {
       },
     }).then((res) => {
       if (res.status === 401 || res.status === 403) {
-        toast.error("Unauthorize Access");
+        //  toast.error("Unauthorize Access")
         signOut(auth);
         localStorage.removeItem("accessToken");
         navigate("/Login");
@@ -65,7 +66,21 @@ const DGServicingUpdate = () => {
   //console.log(imgUrl)
 
   const onSubmit = (data) => {
-    //console.log(" click me");
+   
+    /*  next DG servicing date calculation */
+       const date3 = data.date2;
+       let dateObject = new Date(date3).toDateString();
+    let serviceDateMsec = Date.parse(dateObject);
+    //console.log(serviceDateMsec);
+    let next = serviceDateMsec + (180 * 3600 * 1000 * 24);
+    const nextPlan = new Date(next)
+    const year = nextPlan.getFullYear()
+    const month = nextPlan.getMonth()
+    const day = nextPlan.getDate()
+    let planDate = year + "-" + month + "-" + day;
+    //console.log(planDate);
+
+
     const siteID = data.siteId;
     const presentSite = sites?.filter((site) => site.siteId === siteID);
     //console.log(presentSite)
@@ -88,11 +103,37 @@ const DGServicingUpdate = () => {
       previousDate: PreDate[0],
       batteryPreSerialNo: batteryPreSerialNo[0],
       preRhReading: preRhReading[0],
+      nextPlanDate:planDate,
       updaterName: user.displayName,
       updaterEmail: user.email,
       url: imgUrl,
       remark: data.remark,
     };
+
+    fetch(`http://localhost:5000/dgAllServicing`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(dgServicingData),
+    })
+      .then((res) => {
+        if (res.status === 401 || res.status === 403) {
+         // toast.error("Unauthorize access");
+          signOut(auth);
+          localStorage.removeItem("accessToken");
+          navigate("/Login");
+        }
+        return res.json();
+      })
+      .then((dgData) => {
+        //console.log(dgData);
+        if (dgData.insertedId) {
+          toast.success("Data Post Successfully");
+        }
+        
+      });
 
     fetch(`http://localhost:5000/dgServiceInfo/${siteID}`, {
       method: "PUT",
@@ -104,7 +145,7 @@ const DGServicingUpdate = () => {
     })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
+         // toast.error("Unauthorize access");
           signOut(auth);
           localStorage.removeItem("accessToken");
           navigate("/Login");
@@ -112,7 +153,7 @@ const DGServicingUpdate = () => {
         return res.json();
       })
       .then((dgData) => {
-        console.log(dgData);
+        //console.log(dgData);
         if (dgData.upsertedCount || dgData.modifiedCount) {
           toast.success("Data Successfully Update");
         }
@@ -125,6 +166,8 @@ const DGServicingUpdate = () => {
   let date = new Date();
   date.setDate(date.getDate());
   let today = date.toLocaleDateString("en-CA");
+
+  
 
   return (
     <div
@@ -189,6 +232,7 @@ const DGServicingUpdate = () => {
             <div className="form-control w-full max-w-xs">
               <input
                 type="text"
+                
                 placeholder="Site ID"
                 className="input input-bordered w-full max-w-xs"
                 {...register("siteId", {
@@ -198,6 +242,11 @@ const DGServicingUpdate = () => {
                   },
                 })}
               />
+              {/* {
+                filterData.map((item,index)=> {
+                  (<div key={item+index}>{ item}</div>)
+                })
+              } */}
               <label className="label">
                 {errors.siteId?.type === "required" && (
                   <span className="label-text-alt text-red-500">
@@ -293,7 +342,10 @@ const DGServicingUpdate = () => {
                 onChange={handleImageUpload}
               />
             </div>
-
+            <small className=" text-red-500">
+              **Don't submit until loading finish,
+              <p>if more time take then submit**</p>
+            </small>
             {/* Remarks */}
             <div className="form-control w-full max-w-xs">
               <label className="label">

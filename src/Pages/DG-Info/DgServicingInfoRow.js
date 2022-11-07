@@ -10,6 +10,7 @@ const DgServicingInfoRow = ({ dgInfo, index }) => {
       remark,
       rhReading,
       updaterName,
+      nextPlanDate,
       url,
       preRhReading,
       previousDate,
@@ -25,6 +26,7 @@ const DgServicingInfoRow = ({ dgInfo, index }) => {
         <td className="text-[#3d6ae8] font-bold">{rhReading} </td>
         <td className="text-[#3d6ae8] font-bold">{batterySerialNo}</td>
         <td className="text-[#3d6ae8] font-bold">{airFilter}</td>
+        <td className="text-[#e41fe4f6] font-bold">{nextPlanDate}</td>
         <td>
           <div className="flex items-center space-x-3">
             <div className="avatar">

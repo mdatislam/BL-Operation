@@ -18,7 +18,7 @@ const DgServicingInfo = () => {
       },
     }).then((res) => {
       if (res.status === 401 || res.status === 403) {
-        toast.error("Unauthorize Access");
+        //  toast.error("Unauthorize Access")
         signOut(auth);
         localStorage.removeItem("accessToken");
         navigate("/Login");
@@ -26,46 +26,105 @@ const DgServicingInfo = () => {
       return res.json();
     })
   );
+
+  /*  All DG service record */
+  const { data: dgAllServiceInfo, isLoading2 } = useQuery(
+    ["DgAllInfoList"],
+    () =>
+      fetch(" http://localhost:5000/dgAllServiceInfo", {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }).then((res) => {
+        if (res.status === 401 || res.status === 403) {
+          //  toast.error("Unauthorize Access")
+          signOut(auth);
+          localStorage.removeItem("accessToken");
+          navigate("/Login");
+        }
+        return res.json();
+      })
+  );
+
   // console.log(services)
-  if (isLoading) {
+  if (isLoading || isLoading2) {
     return <Loading />;
   }
   return (
     <div className="mt-8 px-4 mb-4">
-      <div className="grid grid-cols-4 lg:grid-cols-8 h-12 card bg-[#008282] rounded-lg justify-self-start mb-8 gap-x-16">
-        <Link to="/Home" className="btn btn-secondary">
-          Go Home
-        </Link>
-        <h2 className="stat-title lg:card-title font-bold col-start-2 col-span-2 lg:col-span-6 justify-self-center self-center text-white">
-          DG Servicing<p>updated Record</p>
-        </h2>
-        <Link to="/Dashboard/DgServicingUpdate" className="btn btn-secondary">
-          GO DG Service UPDATE
-        </Link>
-      </div>
-      {/* For Data Export */}
-      <div>
-        <CSVLink
-          data={dgServiceInfo}
-          filename="dgServiceInfo"
-          className="btn btn-outline btn-primary mb-2"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
+      <h2 className="flex rounded-lg  text-white bg-[#0f19cb] mb-4 h-12 justify-center items-center">
+        DG Servicing updated Record
+      </h2>
+
+      <div className="flex flex-col lg:flex-row justify-between border-2  p-4">
+        <div className="flex justify-between gap-8">
+          <Link
+            to="/DgAllServicing"
+            className="btn  btn-sm btn-outline btn-info  mb-2"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-            />
-          </svg>
-          &nbsp; Download
-        </CSVLink>
+            Plan site
+          </Link>
+         
+
+          <Link
+            to="/Dashboard/DgServicingUpdate"
+            className="btn  btn-sm btn-outline btn-info  mb-2"
+          >
+            Data UPDATE
+          </Link>
+        </div>
+
+        <div className="flex flex-row justify-between">
+          {/* For All service Data Export */}
+          <div>
+            <CSVLink
+              data={dgAllServiceInfo}
+              filename="dgServiceInfo"
+              className="btn  btn-sm btn-outline btn-secondary mb-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                />
+              </svg>
+              &nbsp; All service
+            </CSVLink>
+          </div>
+          {/* For only last service Data Export */}
+          <div className="lg:px-4 ">
+            <CSVLink
+              data={dgServiceInfo}
+              filename="dgServiceInfo"
+              className="btn btn-outline btn-sm btn-primary mb-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                />
+              </svg>
+              &nbsp; Last service
+            </CSVLink>
+          </div>
+        </div>
       </div>
 
       <div className="overflow-x-auto  mt-4">
@@ -105,6 +164,10 @@ const DgServicingInfo = () => {
               <th>
                 <div>Air Filter</div>
                 <div>Use Status</div>
+              </th>
+              <th className="bg-[#61ec4c]">
+                <div>Next Plan</div>
+                <div>Date(YY_MM_DD)</div>
               </th>
               <th>
                 <div>DG RH</div>
