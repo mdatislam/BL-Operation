@@ -1,7 +1,7 @@
 import React from 'react';
 
 const FetchExcelTableRow = ({ data, index }) => {
-    const {siteId,lat,long,priority,shareId,connectedSite,batteryInfo,batteryBackup,rectifierInfo,address}=data
+    const {siteId,lat,long,priority,shareId,keyStatus,connectedSite,batteryInfo,batteryBackup,rectifierInfo,address}=data
     
     return (
       <>
@@ -13,6 +13,7 @@ const FetchExcelTableRow = ({ data, index }) => {
           <th>{long}</th>
           <th>{priority}</th>
           <th>{shareId}</th>
+          <th>{keyStatus}</th>
           <th>{connectedSite}</th>
           <th>{batteryInfo}</th>
           <th>{batteryBackup}</th>

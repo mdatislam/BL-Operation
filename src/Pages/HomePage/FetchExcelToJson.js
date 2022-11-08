@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
-import FetchExcelTableRow from './FetchExcelTableRow';
+import React, { useState } from "react";
+import FetchExcelTableRow from "./FetchExcelTableRow";
 import * as XLSX from "xlsx";
-import { signOut } from 'firebase/auth';
-import auth from '../../firebase.init';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import Loading from './../SharedPage/Loading';
-import { useQuery } from '@tanstack/react-query';
+import { signOut } from "firebase/auth";
+import auth from "../../firebase.init";
+import { useNavigate } from "react-router-dom";
 
 const FetchExcelToJson = () => {
   // on change states
@@ -16,7 +13,7 @@ const FetchExcelToJson = () => {
   // submit
   const [excelData, setExcelData] = useState(null);
   // it will contain array of objects
- // console.log(excelData);
+  // console.log(excelData);
   const navigate = useNavigate();
   // handle File
   const fileType = ["application/vnd.ms-excel"];
@@ -54,71 +51,48 @@ const FetchExcelToJson = () => {
     }
   };
 
-  excelData?.map(siteInfo => {
-    const siteID = siteInfo.siteId
+  excelData?.map((siteInfo) => {
+    const siteID = siteInfo.siteId;
     //console.log(siteID);
 
-    
-     const siteData = {
-       siteId: siteInfo.siteId,
-       lat: siteInfo.lat,
-       long: siteInfo.long,
-       priority: siteInfo.priority,
-       shareId: siteInfo.shareId,
-       batteryInfo: siteInfo.batteryInfo,
-       batteryBackup: siteInfo.batteryBackup,
-       rectifierInfo: siteInfo.rectifierInfo,
-       connectedSite: siteInfo.connectedSite,
-       address:siteInfo.address
-       
-     };
-    fetch(`http://localhost:5000/siteInfo/${siteID}`, {
+    const siteData = {
+      siteId: siteInfo.siteId,
+      lat: siteInfo.lat,
+      long: siteInfo.long,
+      priority: siteInfo.priority,
+      shareId: siteInfo.shareId,
+      keyStatus: siteInfo.keyStatus,
+      batteryInfo: siteInfo.batteryInfo,
+      batteryBackup: siteInfo.batteryBackup,
+      rectifierInfo: siteInfo.rectifierInfo,
+      connectedSite: siteInfo.connectedSite,
+      address: siteInfo.address,
+    };
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/siteInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify(siteData),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          // toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-     /*  .then((dgData) => {
+    }).then((res) => {
+      if (res.status === 401 || res.status === 403) {
+        // toast.error("Unauthorize access");
+        signOut(auth);
+        localStorage.removeItem("accessToken");
+        navigate("/Login");
+      }
+      return res.json();
+    });
+    /*  .then((dgData) => {
         //console.log(dgData);
         if (dgData.upsertedCount || dgData.modifiedCount) {
           toast.success("Data Successfully Update");
         }
        
       }); */
-    return siteData
-   
- })
- 
-  const { data:siteDataInfo, isLoading } = useQuery(["sitelist"], () =>
-    fetch(" http://localhost:5000/siteInfo", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
-  if (isLoading) {
-    return <Loading />;
-  }
+    return siteData;
+  });
 
   return (
     <>
@@ -159,6 +133,7 @@ const FetchExcelToJson = () => {
                     <div>Share Site</div>
                     <div>Code</div>
                   </th>
+                  <th>Key Status</th>
                   <th>
                     <div>Connected</div>
                     <div>Site</div>
@@ -189,6 +164,6 @@ const FetchExcelToJson = () => {
       </div>
     </>
   );
-};        
+};
 
 export default FetchExcelToJson;

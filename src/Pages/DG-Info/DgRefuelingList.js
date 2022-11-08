@@ -11,7 +11,7 @@ import auth from "../../firebase.init";
 const DgRefuelingList = () => {
   const navigate = useNavigate();
   const { data: dgRefueling, isLoading } = useQuery(["DgRefueling"], () =>
-    fetch(" http://localhost:5000/dgRefuelingInfo", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgRefuelingInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

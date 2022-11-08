@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { signOut } from "firebase/auth";
-import React from "react";
+import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -9,9 +9,12 @@ import auth from "../firebase.init";
 import usePgList from "../Pages/Hook/usePgList";
 import Loading from "../Pages/SharedPage/Loading";
 import useAdmin from "./../Pages/Hook/useAdmin";
+import useSiteList from "./../Pages/Hook/useSiteList";
 
 const FuelUpdate = () => {
   const [user] = useAuthState(auth);
+  const [siteList] = useSiteList();
+  const [search, setSearch] = useState("");
   const [admin] = useAdmin(user);
   const [PgList] = usePgList();
   const navigate = useNavigate();
@@ -23,7 +26,7 @@ const FuelUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("http://localhost:5000/userList", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -41,11 +44,11 @@ const FuelUpdate = () => {
   if (isLoading) {
     return <Loading />;
   }
-/*  today find code */
-      let date = new Date();
-      date.setDate(date.getDate());
+  /*  today find code */
+  let date = new Date();
+  date.setDate(date.getDate());
   let today = date.toLocaleDateString("en-CA");
-  
+
   const availableUser = users?.filter((u) => u.name !== user.displayName);
 
   const onSubmit = (data) => {
@@ -62,7 +65,7 @@ const FuelUpdate = () => {
 
     //console.log(x)
     const fuelData = {
-      siteId: data.siteId,
+      siteId: search,
       date: data.date,
       slipNo: data.slipNo,
       pgNo: data.pgNo,
@@ -71,11 +74,11 @@ const FuelUpdate = () => {
       fuelIssuerEmail: fuelIssuer[0].email,
       fuelReceiverName: x[0],
       fuelReceiverEmail: x[1],
-      remark:data.remark
+      remark: data.remark,
     };
 
     //console.log(fuelData);
-    fetch("http://localhost:5000/fuelData", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -97,8 +100,18 @@ const FuelUpdate = () => {
           toast.success("Fuel Data Successfully Update");
         }
         reset();
+        setSearch("");
         //console.log(pgData)
       });
+  };
+
+  /*  For site list auto suggestion */
+  const handleSiteSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleSearchItem = (searchItem) => {
+    setSearch(searchItem);
   };
   return (
     <div className="flex  justify-center justify-items-center mt-8">
@@ -158,7 +171,6 @@ const FuelUpdate = () => {
 
             {/*  PG No */}
             <div className="form-control w-full max-w-xs">
-              
               <select
                 type="text"
                 placeholder=" PG Number "
@@ -188,22 +200,37 @@ const FuelUpdate = () => {
             <div className="form-control w-full max-w-xs">
               <input
                 type="text"
-                placeholder="Site ID"
+                placeholder="Site ID ( type only number )"
+                onChange={handleSiteSearch}
+                value={search}
+                required
                 className="input input-bordered w-full max-w-xs"
-                {...register("siteId", {
-                  required: {
-                    value: true,
-                    message: " Site ID Required",
-                  },
-                })}
               />
-              <label className="label">
-                {errors.siteId?.type === "required" && (
-                  <span className="label-text-alt text-red-500">
-                    {errors.siteId.message}
-                  </span>
-                )}
-              </label>
+              {/*  For site list auto suggestion */}
+
+              <div className=" border-0 rounded-lg w-3/4 max-w-xs mt-2">
+                {siteList
+                  .filter((item) => {
+                    const searchItem = search.toLowerCase();
+                    const name1 = item.siteId.toLowerCase();
+                    return (
+                      searchItem &&
+                      name1.includes(searchItem) &&
+                      searchItem !== name1
+                    );
+                  })
+                  .slice(0, 10)
+                  .map((item, index) => (
+                    <ul
+                      className="menu p-2 w-52"
+                      onClick={() => handleSearchItem(item.siteId)}
+                      key={index}
+                    >
+                      <li className="text-blue-500 hover"> {item.siteId}</li>
+                    </ul>
+                  ))}
+              </div>
+              <label className="label"></label>
             </div>
             {/*  Fuel Quantity*/}
             <div className="form-control w-full max-w-xs">
@@ -230,7 +257,6 @@ const FuelUpdate = () => {
             {/*  On Fuel receiver   Name */}
             {admin && (
               <div className="form-control w-full max-w-xs">
-                
                 <select
                   type="text"
                   placeholder=" Fuel Receiver Name"
@@ -252,7 +278,6 @@ const FuelUpdate = () => {
             {/*  On Fuel receiver email */}
             {admin && (
               <div className="form-control w-full max-w-xs">
-                
                 <select
                   type="text"
                   placeholder=" Fuel Receiver Name"
@@ -272,7 +297,6 @@ const FuelUpdate = () => {
             )}
             {/*  On Call Engineer  Name */}
             <div className="form-control w-full max-w-xs">
-              
               <select
                 type="text"
                 placeholder=" Fuel Issuer Name"
@@ -308,9 +332,7 @@ const FuelUpdate = () => {
                 className="input input-bordered w-full max-w-xs"
                 {...register("remark")}
               />
-              <label className="label">
-                
-              </label>
+              <label className="label"></label>
             </div>
 
             <input

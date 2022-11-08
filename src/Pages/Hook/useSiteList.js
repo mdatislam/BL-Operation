@@ -1,14 +1,13 @@
-import { signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { signOut } from "firebase/auth";
 import auth from "../../firebase.init";
 
-const useUserList = () => {
-  const [userList, setUserList] = useState([]);
+const useSiteList = () => {
+  const [siteList, setSiteList] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList/pgRunner", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/siteInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -23,9 +22,9 @@ const useUserList = () => {
         }
         return res.json();
       })
-      .then((data) => setUserList(data));
+      .then((data) => setSiteList(data));
   });
 
-  return [userList];
+  return [siteList];
 };
-export default useUserList;
+export default useSiteList;

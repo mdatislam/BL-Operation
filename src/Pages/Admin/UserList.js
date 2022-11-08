@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { signOut } from "firebase/auth";
 import auth from "../../firebase.init";
 //import useUserList from "../Hook/useUserList";
+import RectifierInfoUpdate from "./RectifierInfoUpdate";
 
 const UserList = () => {
   //const [userList]=useUserList()
@@ -17,7 +18,7 @@ const UserList = () => {
 
   const navigate = useNavigate();
   const { data: users, isLoading } = useQuery(["list"], () =>
-    fetch(" http://localhost:5000/userList", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -113,7 +114,6 @@ const UserList = () => {
                 </div>
               </div>
               <RectifierInfo />
-
               <div className="card w-96  text-white bg-[#6495ED] mt-8">
                 <div className="card-body items-center text-center">
                   <h2 className="card-title stat-title">To Show </h2>
@@ -121,6 +121,18 @@ const UserList = () => {
                   <div className="card-actions justify-end">
                     <Link to="/PendingPgRun" className="btn btn-secondary mb-2">
                       Go-List
+                    </Link>
+                  </div>
+                </div>
+              </div>
+              {/*  Site data record */}
+              <div className="card w-96  text-white bg-[#6495ED] mt-8">
+                <div className="card-body items-center text-center">
+                  <h2 className="card-title stat-title">To Show </h2>
+                  <p>Site Data Base .</p>
+                  <div className="card-actions justify-end">
+                    <Link to="/siteData" className="btn btn-secondary mb-2">
+                      Site-Data
                     </Link>
                   </div>
                 </div>

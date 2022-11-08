@@ -1,10 +1,10 @@
 import React from 'react';
 import ProfilePic from '../SharedPage/ProfilePic';
-import FetchExcelToJson from './FetchExcelToJson';
+
 //import Employee from './Employee';
 //import HomeBanner from './HomeBanner';
 import NavbarItem from './NavbarItem';
-import OutstandingTask from './OutstandingTask';
+//import OutstandingTask from './OutstandingTask';
 
 
 const Home = () => {
@@ -14,8 +14,8 @@ const Home = () => {
        {/*  <HomeBanner /> */}
         <NavbarItem />
         {/*  <Employee /> */}
-        <OutstandingTask /> 
-        <FetchExcelToJson/>
+       {/*  <OutstandingTask />  */}
+       
       </div>
     );
 };

@@ -8,10 +8,12 @@ import { signOut } from "firebase/auth";
 import auth from "../firebase.init";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
+import useSiteList from "./../Pages/Hook/useSiteList";
 
 const DGServicingUpdate = () => {
-  const [filterData,setFilterData]=useState("[]")
   const [user] = useAuthState(auth);
+  const [siteList] = useSiteList();
+  const [search, setSearch] = useState("");
   const [imgUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ const DGServicingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("http://localhost:5000/dgServiceInfo", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -66,33 +68,26 @@ const DGServicingUpdate = () => {
   //console.log(imgUrl)
 
   const onSubmit = (data) => {
-   
     /*  next DG servicing date calculation */
-       const date3 = data.date2;
-       let dateObject = new Date(date3).toDateString();
+    const date3 = data.date2;
+    let dateObject = new Date(date3).toDateString();
     let serviceDateMsec = Date.parse(dateObject);
     //console.log(serviceDateMsec);
-    let next = serviceDateMsec + (180 * 3600 * 1000 * 24);
-    const nextPlan = new Date(next)
-    const year = nextPlan.getFullYear()
-    const month = nextPlan.getMonth()
-    const day = nextPlan.getDate()
+    let next = serviceDateMsec + 180 * 3600 * 1000 * 24;
+    const nextPlan = new Date(next);
+    const year = nextPlan.getFullYear();
+    const month = nextPlan.getMonth();
+    const day = nextPlan.getDate();
     let planDate = year + "-" + month + "-" + day;
     //console.log(planDate);
 
-
-    const siteID = data.siteId;
+    const siteID = search;
     const presentSite = sites?.filter((site) => site.siteId === siteID);
     //console.log(presentSite)
 
     const preRhReading = presentSite.map((s) => s.rhReading);
     const batteryPreSerialNo = presentSite.map((s) => s.batterySerialNo);
     const PreDate = presentSite.map((s) => s.date);
-    // console.log(EmPreReading[0])
-
-    /*   let date = new Date();
-    date.setDate(date.getDate());
-    let vv = date.toLocaleDateString("en-CA");   */
 
     const dgServicingData = {
       siteId: siteID,
@@ -103,14 +98,14 @@ const DGServicingUpdate = () => {
       previousDate: PreDate[0],
       batteryPreSerialNo: batteryPreSerialNo[0],
       preRhReading: preRhReading[0],
-      nextPlanDate:planDate,
+      nextPlanDate: planDate,
       updaterName: user.displayName,
       updaterEmail: user.email,
       url: imgUrl,
       remark: data.remark,
     };
 
-    fetch(`http://localhost:5000/dgAllServicing`, {
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/dgAllServicing`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -120,7 +115,7 @@ const DGServicingUpdate = () => {
     })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
-         // toast.error("Unauthorize access");
+          // toast.error("Unauthorize access");
           signOut(auth);
           localStorage.removeItem("accessToken");
           navigate("/Login");
@@ -132,20 +127,22 @@ const DGServicingUpdate = () => {
         if (dgData.insertedId) {
           toast.success("Data Post Successfully");
         }
-        
       });
 
-    fetch(`http://localhost:5000/dgServiceInfo/${siteID}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(dgServicingData),
-    })
+    fetch(
+      `https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo/${siteID}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(dgServicingData),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
-         // toast.error("Unauthorize access");
+          // toast.error("Unauthorize access");
           signOut(auth);
           localStorage.removeItem("accessToken");
           navigate("/Login");
@@ -167,7 +164,14 @@ const DGServicingUpdate = () => {
   date.setDate(date.getDate());
   let today = date.toLocaleDateString("en-CA");
 
-  
+  /*  For site list auto suggestion */
+  const handleSiteSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleSearchItem = (searchItem) => {
+    setSearch(searchItem);
+  };
 
   return (
     <div
@@ -232,28 +236,37 @@ const DGServicingUpdate = () => {
             <div className="form-control w-full max-w-xs">
               <input
                 type="text"
-                
-                placeholder="Site ID"
+                placeholder="Site ID ( type only number )"
+                onChange={handleSiteSearch}
+                value={search}
+                required
                 className="input input-bordered w-full max-w-xs"
-                {...register("siteId", {
-                  required: {
-                    value: true,
-                    message: " Site ID Required",
-                  },
-                })}
               />
-              {/* {
-                filterData.map((item,index)=> {
-                  (<div key={item+index}>{ item}</div>)
-                })
-              } */}
-              <label className="label">
-                {errors.siteId?.type === "required" && (
-                  <span className="label-text-alt text-red-500">
-                    {errors.siteId.message}
-                  </span>
-                )}
-              </label>
+              {/*  For site list auto suggestion */}
+
+              <div className=" border-0 rounded-lg w-3/4 max-w-xs mt-2">
+                {siteList
+                  .filter((item) => {
+                    const searchItem = search.toLowerCase();
+                    const name1 = item.siteId.toLowerCase();
+                    return (
+                      searchItem &&
+                      name1.includes(searchItem) &&
+                      searchItem !== name1
+                    );
+                  })
+                  .slice(0, 10)
+                  .map((item, index) => (
+                    <ul
+                      className="menu p-2 w-52"
+                      onClick={() => handleSearchItem(item.siteId)}
+                      key={index}
+                    >
+                      <li className="text-blue-500 hover"> {item.siteId}</li>
+                    </ul>
+                  ))}
+              </div>
+              <label className="label"></label>
             </div>
 
             {/*  DG Battery serial No */}
@@ -281,7 +294,7 @@ const DGServicingUpdate = () => {
             {/*  DG RH Reading*/}
             <div className="form-control w-full max-w-xs">
               <input
-                type="number"
+                type="text"
                 placeholder=" Put Servicing DG RunHour "
                 className="input input-bordered w-full max-w-xs"
                 {...register("rhReading", {

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { signOut } from "firebase/auth";
-import React from "react";
+import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -8,9 +8,12 @@ import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import usePgList from "../Pages/Hook/usePgList";
 import Loading from "../Pages/SharedPage/Loading";
+import useSiteList from "./../Pages/Hook/useSiteList";
 
 const PgRunUpdate = () => {
   const [user] = useAuthState(auth);
+  const [siteList] = useSiteList();
+  const [search, setSearch] = useState("");
   const [PgList] = usePgList();
   const navigate = useNavigate();
   const {
@@ -21,7 +24,7 @@ const PgRunUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("http://localhost:5000/userList", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -37,7 +40,7 @@ const PgRunUpdate = () => {
     })
   );
   const { data: rectifiers, isLoading3 } = useQuery(["rectifierList"], () =>
-    fetch("http://localhost:5000/rectifier", {
+    fetch("https://enigmatic-eyrie-94440.herokuapp.com/rectifier", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -106,7 +109,7 @@ const PgRunUpdate = () => {
     );
 
     const PgRunData = {
-      site: data.siteName,
+      site: search,
       date: data.date,
       moduleCapacity: data.capacity,
       pgStartTime: pgStart,
@@ -122,7 +125,7 @@ const PgRunUpdate = () => {
       remark: data.remark,
     };
     //console.log(PgRunData);
-    fetch("  http://localhost:5000/pgRunData", {
+    fetch("  https://enigmatic-eyrie-94440.herokuapp.com/pgRunData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -143,8 +146,18 @@ const PgRunUpdate = () => {
           toast.success("Data Successfully Update");
         }
         reset();
+        setSearch("");
         //console.log(pgData)
       });
+  };
+
+  /*  For site list auto suggestion */
+  const handleSiteSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleSearchItem = (searchItem) => {
+    setSearch(searchItem);
   };
 
   return (
@@ -184,26 +197,41 @@ const PgRunUpdate = () => {
                 )}
               </label>
             </div>
-            {/*  Site Name */}
+            {/*  Site ID */}
             <div className="form-control w-full max-w-xs">
               <input
                 type="text"
-                placeholder=" Site Name"
+                placeholder="Site ID ( type only number )"
+                onChange={handleSiteSearch}
+                value={search}
+                required
                 className="input input-bordered w-full max-w-xs"
-                {...register("siteName", {
-                  required: {
-                    value: true,
-                    message: " Site Name is required",
-                  },
-                })}
               />
-              <label className="label">
-                {errors.siteName?.type === "required" && (
-                  <span className="label-text-alt text-red-500">
-                    {errors.siteName.message}
-                  </span>
-                )}
-              </label>
+              {/*  For site list auto suggestion */}
+
+              <div className=" border-0 rounded-lg w-3/4 max-w-xs mt-2">
+                {siteList
+                  .filter((item) => {
+                    const searchItem = search.toLowerCase();
+                    const name1 = item.siteId.toLowerCase();
+                    return (
+                      searchItem &&
+                      name1.includes(searchItem) &&
+                      searchItem !== name1
+                    );
+                  })
+                  .slice(0, 10)
+                  .map((item, index) => (
+                    <ul
+                      className="menu p-2 w-52"
+                      onClick={() => handleSearchItem(item.siteId)}
+                      key={index}
+                    >
+                      <li className="text-blue-500 hover"> {item.siteId}</li>
+                    </ul>
+                  ))}
+              </div>
+              <label className="label"></label>
             </div>
             {/* Rectifier Module Capacity */}
             <div className="form-control w-full max-w-xs">
@@ -223,7 +251,7 @@ const PgRunUpdate = () => {
               >
                 <option value="">
                   {" "}
-                  --------Rectifier Per Module capacity-------{" "}
+                  --------Rectifier's Per Module capacity-------{" "}
                 </option>
                 {rectifiers?.map((recti) => (
                   <option value={recti.capacity}>{recti.capacity} </option>

@@ -11,6 +11,7 @@ const FuelDataListRow = ({ fuel, index, setDelFuel,admin }) => {
     fuelQuantity,
     fuelIssuer,
     fuelReceiverName,
+    remark
   } = fuel;
   return (
     <>
@@ -47,6 +48,7 @@ const FuelDataListRow = ({ fuel, index, setDelFuel,admin }) => {
             </label>
           </th>
         )}
+        <th>{remark}</th>
       </tr>
     </>
   );

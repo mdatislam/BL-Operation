@@ -11,7 +11,7 @@ import auth from "../../firebase.init";
 const DgServicingInfo = () => {
   const navigate = useNavigate();
   const { data: dgServiceInfo, isLoading } = useQuery(["DgInfoList"], () =>
-    fetch(" http://localhost:5000/dgServiceInfo", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -31,7 +31,7 @@ const DgServicingInfo = () => {
   const { data: dgAllServiceInfo, isLoading2 } = useQuery(
     ["DgAllInfoList"],
     () =>
-      fetch(" http://localhost:5000/dgAllServiceInfo", {
+      fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgAllServiceInfo", {
         method: "GET",
         headers: {
           authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -65,7 +65,6 @@ const DgServicingInfo = () => {
           >
             Plan site
           </Link>
-         
 
           <Link
             to="/Dashboard/DgServicingUpdate"

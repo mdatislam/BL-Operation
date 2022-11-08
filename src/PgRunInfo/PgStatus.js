@@ -40,7 +40,7 @@ const PgStatus = () => {
       date: today,
     };
 
-    fetch(`http://localhost:5000/pgList/${data.pgno}`, {
+    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/pgList/${data.pgno}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -72,7 +72,7 @@ const PgStatus = () => {
     isLoading,
     refetch,
   } = useQuery(["pgList"], () =>
-    fetch(" http://localhost:5000/pgList", {
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/pgList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

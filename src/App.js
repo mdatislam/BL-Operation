@@ -35,6 +35,7 @@ import DgUseMaterialList from "./Pages/DG-Info/DgUseMaterialList";
 import FcuMaintenanceList from "./FCU/FcuMaintenanceList";
 import PgStatus from "./PgRunInfo/PgStatus";
 import DgServicingPlan from "./Pages/DG-Info/DgServicingPlan";
+import FetchExcelToJson from "./Pages/HomePage/FetchExcelToJson";
 //import ProfilePic from "./Pages/SharedPage/ProfilePic";
 
 
@@ -94,6 +95,7 @@ function App() {
           <Route path="/RectifierUpdate" element={<RectifierInfoUpdate />} />
           <Route path="/Signup" element={<SignUp />}></Route>
           <Route path="/PendingPgRun" element={<ApprovalPendingList />} />
+          <Route path="/siteData" element={<FetchExcelToJson />} />
         </Route>
       </Routes>
       <Footer />
