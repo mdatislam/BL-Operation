@@ -197,21 +197,20 @@ const PgStatus = () => {
         </div>
       )}
       <div className="overflow-x-auto  mt-4">
-        <table className=" table-fixed w-full  border-spacing-2  border border-3 border-slate-600 ">
+        <table className=" table table-compact  border-spacing-2  border border-3 border-slate-600 ">
           <thead className="border-2 border-[#FFCB24]">
             <tr className="divide-x divide-blue-400">
               <th className="w-8">SN</th>
-
+              <th className="w-20">Action</th>
               <th className=" w-20">PG NO</th>
-              <th className="w-20">Condition</th>
+              <th className="w-24">Date</th>
+              <th className="">Condition</th>
 
-              <th className="">Fault Detail</th>
+              <th className="w-48">Fault Detail</th>
 
-              <th className="w-24">
+              <th className="">
                 <div>Updated By</div>
               </th>
-              <th className="w-24">Date</th>
-              <th className="w-20">Action</th>
             </tr>
           </thead>
           <tbody>

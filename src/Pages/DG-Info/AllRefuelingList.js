@@ -32,15 +32,32 @@ const AllRefuelingList = () => {
   }
   return (
     <div className="mt-8 px-4 mb-4">
-      <div className="grid grid-cols-4 lg:grid-cols-8 h-12 card bg-[#099252] rounded-lg justify-self-start mb-8 gap-x-16">
-        <Link to="/Home" className="btn btn-secondary">
-          Go Home
+      <div className="flex flex-row flex-wrap h-12 card bg-[#099252] rounded-lg justify-between mb-4 gap-x-16">
+        <Link to="/DgRefueling" className="flex-1 btn btn-secondary h-12">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
+            />
+          </svg>
+          Back
         </Link>
-        <h2 className="stat-title lg:card-title font-bold col-start-2 col-span-2 lg:col-span-6 justify-self-center self-center text-white">
-          All DG <p>Refueling Record</p>
+        <h2 className=" flex-auto font-bold  justify-center text-white">
+          All Refueling Record
         </h2>
-        <Link to="/Dashboard/DgRefuelingUpdate" className="btn btn-secondary">
-          GO DG Refueling Update
+        <Link
+          to="/Dashboard/DgRefuelingUpdate"
+          className="flex-1 btn btn-secondary h-12"
+        >
+          Refueling Update
         </Link>
       </div>
       {/* For data export */}

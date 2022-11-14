@@ -9,11 +9,6 @@ const PgStatusRows = ({ pg, index, refetch, setPgEdit,setPgDel,admin }) => {
     <>
       <tr className="border-2 border-[#F0D786]  hover divide-x divide-gray-300 text-center">
         <th>{index + 1}</th>
-        <td>{pgNo}</td>
-        <td className="text-start">{pgStatus}</td>
-        <td className=" px-2 text-start break-all ">{pgDetail}</td>
-        <td>{updaterName}</td>
-        <td>{date}</td>
         <td className="flex justify-items-center gap-x-2 text-center">
           {/* Edit button */}
           <label
@@ -64,6 +59,11 @@ const PgStatusRows = ({ pg, index, refetch, setPgEdit,setPgDel,admin }) => {
             </label>
           )}
         </td>
+        <td>{pgNo}</td>
+        <td>{date}</td>
+        <td className="text-start">{pgStatus}</td>
+        <td className=" px-2 text-start break-all ">{pgDetail}</td>
+        <td>{updaterName}</td>
       </tr>
     </>
   );

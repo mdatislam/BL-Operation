@@ -50,7 +50,7 @@ const ApprovalPendingList = () => {
           Back
         </Link>
         <h2 className="stat-title lg:card-title font-bold col-start-2 col-span-2 lg:col-span-6 justify-self-center self-center text-white">
-          All PG Run Approval <p>Pending List</p>
+          PG Run Approval <p>Pending List</p>
         </h2>
         <Link to="/Home" className="btn btn-secondary">
           <svg

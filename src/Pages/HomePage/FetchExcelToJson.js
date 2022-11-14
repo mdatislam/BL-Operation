@@ -3,9 +3,10 @@ import FetchExcelTableRow from "./FetchExcelTableRow";
 import * as XLSX from "xlsx";
 import { signOut } from "firebase/auth";
 import auth from "../../firebase.init";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const FetchExcelToJson = () => {
+  // const [admin]=useAdmin()
   // on change states
   const [excelFile, setExcelFile] = useState(null);
   const [excelFileError, setExcelFileError] = useState(null);
@@ -96,72 +97,98 @@ const FetchExcelToJson = () => {
 
   return (
     <>
-      <form className="form-group" autoComplete="off" onSubmit={handleSubmit}>
-        <label>
-          <h5>Upload Excel file</h5>
-        </label>
+      <div className="my-4 h-screen px-2">
+        <form className="px-2" autoComplete="off" onSubmit={handleSubmit}>
+          <label>
+            <h5 className="bg-[#28c843df] flex justify-center items-center text-white text-xl font-bold h-12 mt-4 p-4 rounded-lg">
+              Upload Excel file
+            </h5>
+          </label>
+          <div className="flex flex-row gap-x-4 justify-start items-center">
+            <div className="form-control w-full max-w-xs  mt-4">
+              <input
+                type="file"
+                onChange={handleFile}
+                required
+                className="input input-bordered w-full max-w-xs py-2"
+              />
+            </div>
 
-        <input type="file" onChange={handleFile} required></input>
-        {excelFileError && (
-          <div className="" style={{ marginTop: 5 + "px" }}>
-            {excelFileError}
+            <button type="submit" className="btn btn-primary mt-2">
+              Submit
+            </button>
           </div>
-        )}
-        <button
-          type="submit"
-          className="btn btn-primary"
-          style={{ marginTop: 5 + "px" }}
-        >
-          Submit
-        </button>
-      </form>
+          <label className="label">
+            <span className="label-text font-bold text-warning">
+              **File Type Should (.xls)**
+            </span>
+          </label>
+          {excelFileError && (
+            <div
+              className="font-bold text-red-600"
+              style={{ marginTop: 5 + "px" }}
+            >
+              {excelFileError}
+            </div>
+          )}
+        </form>
+        {/*  To show Existing Site Data */}
+        <Link to="/siteData">
+          <button className="btn btn-wide btn-success">
+            TO show Existing Site data
+          </button>
+        </Link>
 
-      <h5>View Excel file</h5>
-      <div className="">
-        {excelData === null && <>No file selected</>}
-        {excelData !== null && (
-          <div className="overflow-x-auto  mt-4">
-            <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
-              <thead className="border-2 border-[#FFCB24]">
-                <tr className="divide-x divide-blue-400 text-center">
-                  <th>SNo</th>
-                  <th>Site ID</th>
-                  <th>Latitude</th>
-                  <th>Longitude</th>
-                  <th>Priority</th>
-                  <th>
-                    <div>Share Site</div>
-                    <div>Code</div>
-                  </th>
-                  <th>Key Status</th>
-                  <th>
-                    <div>Connected</div>
-                    <div>Site</div>
-                  </th>
-                  <th>
-                    <div>Battery</div>
-                    <div>Info</div>
-                  </th>
-                  <th>
-                    <div>Battery</div>
-                    <div>Backup</div>
-                  </th>
-                  <th>
-                    <div>Rectifier</div>
-                    <div>Info</div>
-                  </th>
-                  <th>Address</th>
-                </tr>
-              </thead>
-              <tbody>
-                {excelData?.map((data, index) => (
-                  <FetchExcelTableRow key={index} data={data} index={index} />
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+        <h5 className="flex justify-center items-center text-white text-xl font-bold h-12 mt-4 p-4 rounded-lg bg-[#6e3790] px-2">
+          View Excel file
+        </h5>
+        <div className=" text-center font-bold ">
+          {excelData === null && <>No file selected</>}
+          {excelData !== null && (
+            <div className="overflow-x-auto  mt-4">
+              <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
+                <thead className="border-2 border-[#FFCB24]">
+                  <tr className="divide-x divide-blue-400 text-center">
+                    <th>SNo</th>
+                    <th>Site ID</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Priority</th>
+                    <th>
+                      <div>Share Site</div>
+                      <div>Code</div>
+                    </th>
+                    <th>Key Status</th>
+                    <th>
+                      <div>Connected</div>
+                      <div>Site</div>
+                    </th>
+                    <th>
+                      <div>Battery</div>
+                      <div>Info</div>
+                    </th>
+                    <th>
+                      <div>Battery</div>
+                      <div>Backup</div>
+                    </th>
+                    <th>
+                      <div>Rectifier</div>
+                      <div>Info</div>
+                    </th>
+                    <th>Address</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {excelData?.map((data, index) => (
+                    <FetchExcelTableRow key={index} data={data} index={index} />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
+      {/* Existing stie data upload code */}
     </>
   );
 };

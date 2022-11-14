@@ -18,7 +18,7 @@ const FetchExcelTableRow = ({ data, index }) => {
           <th>{batteryInfo}</th>
           <th>{batteryBackup}</th>
           <th>{rectifierInfo}</th>
-          <th>{address}</th>
+         {/*  <th className='w-12 text-start'>{address}</th> */}
         </tr>
       </>
     );

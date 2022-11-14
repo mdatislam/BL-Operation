@@ -128,10 +128,13 @@ const UserList = () => {
               {/*  Site data record */}
               <div className="card w-96  text-white bg-[#6495ED] mt-8">
                 <div className="card-body items-center text-center">
-                  <h2 className="card-title stat-title">To Show </h2>
+                  <h2 className="card-title stat-title">To Show & Upload </h2>
                   <p>Site Data Base .</p>
                   <div className="card-actions justify-end">
-                    <Link to="/siteData" className="btn btn-secondary mb-2">
+                    <Link
+                      to="/siteDataUpdate"
+                      className="btn btn-secondary mb-2"
+                    >
                       Site-Data
                     </Link>
                   </div>

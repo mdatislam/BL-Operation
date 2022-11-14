@@ -36,6 +36,8 @@ import FcuMaintenanceList from "./FCU/FcuMaintenanceList";
 import PgStatus from "./PgRunInfo/PgStatus";
 import DgServicingPlan from "./Pages/DG-Info/DgServicingPlan";
 import FetchExcelToJson from "./Pages/HomePage/FetchExcelToJson";
+import DGAllServiceList from "./Pages/DG-Info/DGAllServiceList";
+import SiteDataInfo from "./Pages/Admin/SiteDataInfo";
 //import ProfilePic from "./Pages/SharedPage/ProfilePic";
 
 
@@ -83,7 +85,8 @@ function App() {
           <Route path="/AllFuelList" element={<AllFuelList />} />
           <Route path="/DgMaterial" element={<DgUseMaterialList />} />
           <Route path="/DgServicing" element={<DgServicingInfo />} />
-          <Route path="/DgAllServicing" element={<DgServicingPlan />} />
+          <Route path="/DgAllServicing" element={<DGAllServiceList />} />
+          <Route path="/DgPlanServicing" element={<DgServicingPlan />} />
           <Route path="/DgRefueling" element={<DgRefuelingList />} />
           <Route path="/AllRefueling" element={<AllRefuelingList />} />
           <Route path="/FcuMaintenance" element={<FcuMaintenanceList />} />
@@ -95,7 +98,8 @@ function App() {
           <Route path="/RectifierUpdate" element={<RectifierInfoUpdate />} />
           <Route path="/Signup" element={<SignUp />}></Route>
           <Route path="/PendingPgRun" element={<ApprovalPendingList />} />
-          <Route path="/siteData" element={<FetchExcelToJson />} />
+          <Route path="/siteData" element={<SiteDataInfo />} />
+          <Route path="/siteDataUpdate" element={<FetchExcelToJson />} />
         </Route>
       </Routes>
       <Footer />

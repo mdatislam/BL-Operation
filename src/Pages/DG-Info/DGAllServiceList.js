@@ -1,16 +1,25 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Loading from "../SharedPage/Loading";
 import { CSVLink } from "react-csv";
+
 import { signOut } from "firebase/auth";
 import auth from "../../firebase.init";
-import DgServicePlanRows from "./DgServicePlanRows";
+import DgAllServiceRows from "./DgAllServiceRows";
 
-const DgServicingPlan = () => {
+const DGAllServiceList = () => {
+  const [isChecked, setIsChecked] = useState("");
+
   const navigate = useNavigate();
-  const { data: dgServiceInfo, isLoading } = useQuery(["DgInfoList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo", {
+  /*  All DG service record */
+  const {
+    data: dgAllServiceInfo,
+    isLoading,
+    refetch,
+  } = useQuery(["DgAllInfoList"], () =>
+    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgAllServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -25,18 +34,51 @@ const DgServicingPlan = () => {
       return res.json();
     })
   );
+
   // console.log(services)
   if (isLoading) {
     return <Loading />;
   }
-  // console.log(dgServiceInfo);
+
+  const handleMultiDelete = () => {
+    //console.log(isChecked)
+
+    if (isChecked) {
+      fetch(
+        `https://enigmatic-eyrie-94440.herokuapp.com/dgAllServiceInfo/multiDelete`,
+        {
+          method: "DELETE",
+          headers: {
+            "content-type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          body: JSON.stringify(isChecked),
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          //console.log(data);
+          if (data.deletedCount > 0) {
+            toast.success(
+              ` ${data.deletedCount} Nos record delete successfully`
+            );
+          }
+          refetch();
+          setIsChecked("");
+        });
+    } else {
+      toast.error(" Please select min 1 row");
+    }
+  };
+
+  //console.log(isChecked);
   return (
-    <div className="mt-8 px-4 mb-4 lg:w-3/4 mx-auto">
-      <h2 className="flex rounded-lg  text-white bg-[#78e33f] mb-4 h-12 justify-center items-center">
-        DG Servicing Plan Sites
+    <div className="mt-8 px-4 mb-4">
+      <h2 className="flex rounded-lg  text-white bg-[#de2aeb] mb-4 h-12 justify-center items-center">
+        DG All Servicing Record
       </h2>
 
-      <div className=" flex justify-between  mb-2 rounded-lg border-2 p-4 ">
+      <div className=" flex justify-between  mb-8 rounded-lg border-2 p-4 ">
         <Link
           to="/DgServicing"
           className="flex btn btn-outline btn-primary btn-sm"
@@ -66,7 +108,7 @@ const DgServicingPlan = () => {
         {/* For Data Export */}
         <div>
           <CSVLink
-            data={dgServiceInfo}
+            data={dgAllServiceInfo}
             filename="dgServiceInfo"
             className="flex btn btn-outline btn-primary btn-sm"
           >
@@ -88,12 +130,34 @@ const DgServicingPlan = () => {
         </div>
       </div>
 
+      <button className="btn btn-sm btn-error mt-4" onClick={handleMultiDelete}>
+        Delete
+      </button>
+
       <div className="overflow-x-auto  mt-4">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
           <thead className="border-2 border-[#FFCB24]">
-            <tr className="divide-x divide-blue-400 text-center">
-              <th className="w-12">SN</th>
+            <tr className="divide-x divide-blue-400">
+              <th>
+                <input type="checkbox" className="checkbox"></input>
+              </th>
+              <th>SN</th>
               <th>Site ID</th>
+
+              <th>
+                <div>previous</div>
+                <div>DG Service Date</div>
+              </th>
+
+              <th>
+                <div>Previous </div>
+                <div>DG RH</div>
+              </th>
+              <th>
+                <div>Previous</div>
+                <div>Battery SN</div>
+              </th>
+
               <th>
                 <div>Latest</div>
                 <div>Service Date</div>
@@ -103,25 +167,38 @@ const DgServicingPlan = () => {
                 <div>Latest </div>
                 <div>DG RH</div>
               </th>
-
+              <th>
+                <div>Latest</div>
+                <div>Battery SN</div>
+              </th>
               <th>
                 <div>Air Filter</div>
                 <div>Use Status</div>
               </th>
-              <th>Day Difference</th>
               <th className="bg-[#61ec4c]">
                 <div>Next Plan</div>
                 <div>Date(YY_MM_DD)</div>
               </th>
+              <th>
+                <div>DG RH</div>
+                <div>Picture</div>
+              </th>
+              <th>
+                <div>DG Service</div>
+                <div>Collector</div>
+              </th>
+
               <th>Remarks</th>
             </tr>
           </thead>
           <tbody>
-            {dgServiceInfo?.map((dgInfo, index) => (
-              <DgServicePlanRows
+            {dgAllServiceInfo?.map((dgInfo, index) => (
+              <DgAllServiceRows
                 key={dgInfo._id}
                 dgInfo={dgInfo}
                 index={index}
+                setIsChecked={setIsChecked}
+                isChecked={isChecked}
               />
             ))}
           </tbody>
@@ -131,4 +208,4 @@ const DgServicingPlan = () => {
   );
 };
 
-export default DgServicingPlan;
+export default DGAllServiceList;
