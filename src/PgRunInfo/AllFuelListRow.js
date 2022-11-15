@@ -5,6 +5,7 @@ const AllFuelListRow = ({ fuel, index, setDelFuel, admin  }) => {
        date,
        siteId,
        pgNo,
+       vehicleNo,
        slipNo,
        fuelQuantity,
        fuelIssuer,
@@ -17,6 +18,7 @@ const AllFuelListRow = ({ fuel, index, setDelFuel, admin  }) => {
         <td>{date}</td>
         <td>{slipNo}</td>
         <td>{pgNo}</td>
+        <td>{vehicleNo}</td>
         <td>{siteId}</td>
         <td>{fuelQuantity}</td>
         <td>{fuelReceiverName}</td>

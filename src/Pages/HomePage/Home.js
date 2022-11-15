@@ -4,6 +4,7 @@ import ProfilePic from '../SharedPage/ProfilePic';
 //import Employee from './Employee';
 //import HomeBanner from './HomeBanner';
 import NavbarItem from './NavbarItem';
+import OutstandingTask from './OutstandingTask';
 //import OutstandingTask from './OutstandingTask';
 
 

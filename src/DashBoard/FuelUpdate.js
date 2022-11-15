@@ -8,14 +8,14 @@ import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import usePgList from "../Pages/Hook/usePgList";
 import Loading from "../Pages/SharedPage/Loading";
-import useAdmin from "./../Pages/Hook/useAdmin";
+//import useAdmin from "./../Pages/Hook/useAdmin";
 import useSiteList from "./../Pages/Hook/useSiteList";
 
 const FuelUpdate = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
   const [search, setSearch] = useState("");
-  const [admin] = useAdmin(user);
+  //const [admin] = useAdmin(user);
   const [PgList] = usePgList();
   const navigate = useNavigate();
   const {
@@ -52,9 +52,9 @@ const FuelUpdate = () => {
   const availableUser = users?.filter((u) => u.name !== user.displayName);
 
   const onSubmit = (data) => {
-    const fuelIssuer = availableUser.filter((x) => x.name === data.fuelIssuer);
-
-    let x = [];
+    /* const fuelIssuer = availableUser.filter((x) => x.name === data.fuelIssuer);
+ */
+   /*  let x = [];
     if (admin) {
       x.push(data.fuelReceiver);
       x.push(data.fuelReceiverEmail);
@@ -62,18 +62,21 @@ const FuelUpdate = () => {
       x.push(user.displayName);
       x.push(user.email);
     }
-
+ */
     //console.log(x)
     const fuelData = {
       siteId: search,
       date: data.date,
       slipNo: data.slipNo,
       pgNo: data.pgNo,
+      vehicleNo: data.carNo,
       fuelQuantity: data.fuel,
       fuelIssuer: data.fuelIssuer,
-      fuelIssuerEmail: fuelIssuer[0].email,
-      fuelReceiverName: x[0],
-      fuelReceiverEmail: x[1],
+      fuelReceiverName: user.displayName,
+      fuelReceiverEmail: user.email,
+    /*   //fuelIssuerEmail: fuelIssuer[0].email,
+      // fuelReceiverName: x[0],
+      //fuelReceiverEmail: x[1], */
       remark: data.remark,
     };
 
@@ -122,7 +125,6 @@ const FuelUpdate = () => {
           </h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Date input field */}
-
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Date:</span>
@@ -168,7 +170,6 @@ const FuelUpdate = () => {
                 )}
               </label>
             </div>
-
             {/*  PG No */}
             <div className="form-control w-full max-w-xs">
               <select
@@ -195,7 +196,41 @@ const FuelUpdate = () => {
                 )}
               </label>
             </div>
+            {/* Vehicle No */}
+            <div className="form-control w-full max-w-xs">
+              <select
+                type="text"
+                className="input input-bordered w-full max-w-xs"
+                {...register("carNo", {
+                  required: {
+                    value: true,
+                    message: " Vehicle No Required",
+                  },
+                })}
+              >
+                <option value="">
+                  {" "}
+                  --------Select vehicle No--------------{" "}
+                </option>
+                <option value="11-7415">11-7415</option>
+                <option value="13-5629">11-5629</option>
+                <option value="15-2171">15-2171</option>
+                <option value="13-0233">13-0233</option>
+                <option value="11-0201">11-0201</option>
+                <option value="14-1208">14-1208</option>
 
+                {/* {PgList?.map((pg) => (
+                  <option value={pg.pgNo}>{pg.pgNo}</option>
+                ))} */}
+              </select>
+              <label className="label">
+                {errors.pgNo?.type === "required" && (
+                  <span className="label-text-alt text-red-500">
+                    {errors.pgNo.message}
+                  </span>
+                )}
+              </label>
+            </div>
             {/*  Site ID */}
             <div className="form-control w-full max-w-xs">
               <input
@@ -253,9 +288,9 @@ const FuelUpdate = () => {
                 )}
               </label>
             </div>
-
             {/*  On Fuel receiver   Name */}
-            {admin && (
+
+              {/*  {admin && (
               <div className="form-control w-full max-w-xs">
                 <select
                   type="text"
@@ -273,10 +308,11 @@ const FuelUpdate = () => {
                 </select>
                 <label className="label"></label>
               </div>
-            )}
+            )}  */}
 
             {/*  On Fuel receiver email */}
-            {admin && (
+           
+           {/* {admin && (
               <div className="form-control w-full max-w-xs">
                 <select
                   type="text"
@@ -295,6 +331,8 @@ const FuelUpdate = () => {
                 <label className="label"></label>
               </div>
             )}
+              */}
+
             {/*  On Call Engineer  Name */}
             <div className="form-control w-full max-w-xs">
               <select
@@ -334,7 +372,6 @@ const FuelUpdate = () => {
               />
               <label className="label"></label>
             </div>
-
             <input
               type="submit"
               className="btn btn-accent w-full max-w-xs m-2"

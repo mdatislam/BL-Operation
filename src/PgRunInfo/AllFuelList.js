@@ -115,7 +115,8 @@ const AllFuelList = () => {
 
               <th>Date</th>
               <th>Slip No</th>
-              <th>PG No</th>
+              <th>PG No </th>
+              <th>Vehicle No</th>
               <th>Site ID</th>
               <th>
                 <div>Fuel</div>

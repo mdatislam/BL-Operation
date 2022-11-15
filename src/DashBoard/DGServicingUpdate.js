@@ -16,6 +16,7 @@ const DGServicingUpdate = () => {
   const [search, setSearch] = useState("");
   const [imgUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
+ 
   const navigate = useNavigate();
   const {
     register,
@@ -66,20 +67,27 @@ const DGServicingUpdate = () => {
       });
   };
   //console.log(imgUrl)
+  
 
   const onSubmit = (data) => {
     /*  next DG servicing date calculation */
     const date3 = data.date2;
-    let dateObject = new Date(date3).toDateString();
-    let serviceDateMsec = Date.parse(dateObject);
+    let presentServiceDate = new Date(date3).toDateString();
+
+   /*  const nextPlan = new Date(
+      presentServiceDate.setDate(presentServiceDate.getDate() + 180)
+    ).toDateString(); */
+
+     let serviceDateMsec = Date.parse(presentServiceDate);
     //console.log(serviceDateMsec);
     let next = serviceDateMsec + 180 * 3600 * 1000 * 24;
-    const nextPlan = new Date(next);
-    const year = nextPlan.getFullYear();
-    const month = nextPlan.getMonth();
+    const nextPlan = new Date(next).toDateString();
+
+    /* const year = nextPlan.getFullYear();
+    const month = nextPlan.getMonth()+1;
     const day = nextPlan.getDate();
-    let planDate = year + "-" + month + "-" + day;
-    //console.log(planDate);
+    let planDate = year + "-" + month + "-" + day; */
+    //console.log(nextPlan); 
 
     const siteID = search;
     const presentSite = sites?.filter((site) => site.siteId === siteID);
@@ -98,7 +106,7 @@ const DGServicingUpdate = () => {
       previousDate: PreDate[0],
       batteryPreSerialNo: batteryPreSerialNo[0],
       preRhReading: preRhReading[0],
-      nextPlanDate: planDate,
+      nextPlanDate: nextPlan,
       updaterName: user.displayName,
       updaterEmail: user.email,
       url: imgUrl,
