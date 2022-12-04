@@ -11,7 +11,7 @@ import auth from "../firebase.init";
 const EminfoList = () => {
   const navigate = useNavigate();
   const { data: EmInfo, isLoading } = useQuery(["EmInfoList"], () =>
-    fetch("http://localhost:5000/emInfo", {
+    fetch("https://bl-operation-server-production.up.railway.app/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

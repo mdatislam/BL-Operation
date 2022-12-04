@@ -10,7 +10,7 @@ const SiteDataInfo = () => {
   // For Existing site upload
   const navigate = useNavigate();
   const { data: siteData, isLoading } = useQuery(["siteInfo"], () =>
-    fetch(" http://localhost:5000/siteData", {
+    fetch(" https://bl-operation-server-production.up.railway.app/siteData", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
