@@ -69,7 +69,7 @@ const FetchExcelToJson = () => {
       connectedSite: siteInfo.connectedSite,
       address: siteInfo.address,
     };
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/siteInfo/${siteID}`, {
+    fetch(`http://localhost:5000/siteInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

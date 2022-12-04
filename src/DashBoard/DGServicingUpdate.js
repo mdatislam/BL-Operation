@@ -16,7 +16,7 @@ const DGServicingUpdate = () => {
   const [search, setSearch] = useState("");
   const [imgUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
- 
+
   const navigate = useNavigate();
   const {
     register,
@@ -26,7 +26,7 @@ const DGServicingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo", {
+    fetch("http://localhost:5000/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -67,18 +67,17 @@ const DGServicingUpdate = () => {
       });
   };
   //console.log(imgUrl)
-  
 
   const onSubmit = (data) => {
     /*  next DG servicing date calculation */
     const date3 = data.date2;
     let presentServiceDate = new Date(date3).toDateString();
 
-   /*  const nextPlan = new Date(
+    /*  const nextPlan = new Date(
       presentServiceDate.setDate(presentServiceDate.getDate() + 180)
     ).toDateString(); */
 
-     let serviceDateMsec = Date.parse(presentServiceDate);
+    let serviceDateMsec = Date.parse(presentServiceDate);
     //console.log(serviceDateMsec);
     let next = serviceDateMsec + 180 * 3600 * 1000 * 24;
     const nextPlan = new Date(next).toDateString();
@@ -87,7 +86,7 @@ const DGServicingUpdate = () => {
     const month = nextPlan.getMonth()+1;
     const day = nextPlan.getDate();
     let planDate = year + "-" + month + "-" + day; */
-    //console.log(nextPlan); 
+    //console.log(nextPlan);
 
     const siteID = search;
     const presentSite = sites?.filter((site) => site.siteId === siteID);
@@ -113,7 +112,7 @@ const DGServicingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`https://enigmatic-eyrie-94440.herokuapp.com/dgAllServicing`, {
+    fetch(`http://localhost:5000/dgAllServicing`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -137,17 +136,14 @@ const DGServicingUpdate = () => {
         }
       });
 
-    fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo/${siteID}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(dgServicingData),
-      }
-    )
+    fetch(`http://localhost:5000/dgServiceInfo/${siteID}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(dgServicingData),
+    })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           // toast.error("Unauthorize access");

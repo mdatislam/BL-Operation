@@ -26,7 +26,7 @@ const FuelUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/userList", {
+    fetch("http://localhost:5000/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -53,8 +53,8 @@ const FuelUpdate = () => {
 
   const onSubmit = (data) => {
     /* const fuelIssuer = availableUser.filter((x) => x.name === data.fuelIssuer);
- */
-   /*  let x = [];
+     */
+    /*  let x = [];
     if (admin) {
       x.push(data.fuelReceiver);
       x.push(data.fuelReceiverEmail);
@@ -74,14 +74,14 @@ const FuelUpdate = () => {
       fuelIssuer: data.fuelIssuer,
       fuelReceiverName: user.displayName,
       fuelReceiverEmail: user.email,
-    /*   //fuelIssuerEmail: fuelIssuer[0].email,
+      /*   //fuelIssuerEmail: fuelIssuer[0].email,
       // fuelReceiverName: x[0],
       //fuelReceiverEmail: x[1], */
       remark: data.remark,
     };
 
     //console.log(fuelData);
-    fetch("https://enigmatic-eyrie-94440.herokuapp.com/fuelData", {
+    fetch("http://localhost:5000/fuelData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -213,7 +213,7 @@ const FuelUpdate = () => {
                   --------Select vehicle No--------------{" "}
                 </option>
                 <option value="11-7415">11-7415</option>
-                <option value="13-5629">11-5629</option>
+                <option value="13-5629">13-5629</option>
                 <option value="15-2171">15-2171</option>
                 <option value="13-0233">13-0233</option>
                 <option value="11-0201">11-0201</option>
@@ -290,7 +290,7 @@ const FuelUpdate = () => {
             </div>
             {/*  On Fuel receiver   Name */}
 
-              {/*  {admin && (
+            {/*  {admin && (
               <div className="form-control w-full max-w-xs">
                 <select
                   type="text"
@@ -311,8 +311,8 @@ const FuelUpdate = () => {
             )}  */}
 
             {/*  On Fuel receiver email */}
-           
-           {/* {admin && (
+
+            {/* {admin && (
               <div className="form-control w-full max-w-xs">
                 <select
                   type="text"

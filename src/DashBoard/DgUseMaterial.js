@@ -56,7 +56,7 @@ const DgUseMaterial = () => {
     };
 
     fetch(
-      `https://enigmatic-eyrie-94440.herokuapp.com/
+      `http://localhost:5000/
 
 dgMaterialInfo/`,
       {

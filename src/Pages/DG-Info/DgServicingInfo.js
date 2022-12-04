@@ -16,7 +16,7 @@ const DgServicingInfo = () => {
     isLoading,
     refetch,
   } = useQuery(["DgInfoList"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo", {
+    fetch(" http://localhost:5000/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -41,17 +41,14 @@ const DgServicingInfo = () => {
     //console.log(isChecked)
 
     if (isChecked) {
-      fetch(
-        `https://enigmatic-eyrie-94440.herokuapp.com/dgServiceInfo/multiDelete`,
-        {
-          method: "DELETE",
-          headers: {
-            "content-type": "application/json",
-            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-          body: JSON.stringify(isChecked),
-        }
-      )
+      fetch(`http://localhost:5000/dgServiceInfo/multiDelete`, {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(isChecked),
+      })
         .then((res) => res.json())
         .then((data) => {
           //console.log(data);

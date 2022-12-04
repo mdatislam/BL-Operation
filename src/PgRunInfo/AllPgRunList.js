@@ -14,7 +14,7 @@ const AllPgRunList = () => {
   const [filter, setFilter] = useState([]);
   const navigate = useNavigate();
   const { data: pgRunData, isLoading } = useQuery(["list"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/ApprovedAllPgRun", {
+    fetch(" http://localhost:5000/ApprovedAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

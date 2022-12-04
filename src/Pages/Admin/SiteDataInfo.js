@@ -10,7 +10,7 @@ const SiteDataInfo = () => {
   // For Existing site upload
   const navigate = useNavigate();
   const { data: siteData, isLoading } = useQuery(["siteInfo"], () =>
-    fetch(" https://enigmatic-eyrie-94440.herokuapp.com/siteData", {
+    fetch(" http://localhost:5000/siteData", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

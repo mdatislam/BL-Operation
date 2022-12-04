@@ -15,7 +15,7 @@ const useToken = (user) => {
         name: name,
         email: email,
       };
-      fetch(`https://enigmatic-eyrie-94440.herokuapp.com/user/${email}`, {
+      fetch(`http://localhost:5000/user/${email}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json",
