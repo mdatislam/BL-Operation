@@ -39,6 +39,7 @@ import FetchExcelToJson from "./Pages/HomePage/FetchExcelToJson";
 import DGAllServiceList from "./Pages/DG-Info/DGAllServiceList";
 import SiteDataInfo from "./Pages/Admin/SiteDataInfo";
 //import ProfilePic from "./Pages/SharedPage/ProfilePic";
+import FuelUpdateOncall from './DashBoard/FuelUpdateOncall';
 
 
 
@@ -64,6 +65,7 @@ function App() {
             <Route path="ApprovalPending" element={<ApprovalPending />} />
             <Route path="PgRunUpdate" element={<PgRunUpdate />} />
             <Route path="FuelUpdate" element={<FuelUpdate />} />
+            <Route path="FuelUpdateOnCall" element={<FuelUpdateOncall />} />
             <Route path="FuelData" element={<FuelDataList />} />
             <Route path="EMDataUpdate" element={<EMDataUpdate />} />
             <Route path="DgServicingUpdate" element={<DGServicingUpdate />} />

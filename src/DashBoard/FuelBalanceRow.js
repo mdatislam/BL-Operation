@@ -1,9 +1,13 @@
 import React from "react";
+//import FuelBalance from './FuelBalance';
 
 const FuelBalanceRow = ({ u,index }) => {
-  const { fuelConsume, name, fuelQuantity } = u;
+  const { fuelConsume, name, fuelQuantity,fuelQuantityOncall} = u;
 //console.log(fuelConsume)
-    const Balance = (fuelQuantity-fuelConsume).toFixed(2)
+ 
+    /* const fuelBalance = (fuelQuantity - fuelConsume).toFixed(2) */
+  
+  
   return (
     <tr className="border-2 border-[#F0D786]  hover divide-x divide-gray-300 text-center">
       <th>
@@ -12,9 +16,16 @@ const FuelBalanceRow = ({ u,index }) => {
         </label>
       </th>
       <td className="text-start">{name}</td>
-      <td>{fuelQuantity} </td>
+      <td>
+        {fuelQuantityOncall} || {fuelQuantity}{" "}
+      </td>
+     {/*  <td>{fuelQuantity} </td> */}
       <td>{fuelConsume} </td>
-      <td className="text-[#3d6ae8] font-bold">{Balance}</td>
+      <td className="text-[#3d6ae8] font-bold">
+        {fuelQuantityOncall > fuelQuantity
+          ? (fuelQuantityOncall - fuelConsume).toFixed(2)
+          : (fuelQuantity - fuelConsume).toFixed(2)}
+      </td>
     </tr>
   );
 };

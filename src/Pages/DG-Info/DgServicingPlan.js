@@ -10,15 +10,12 @@ import DgServicePlanRows from "./DgServicePlanRows";
 const DgServicingPlan = () => {
   const navigate = useNavigate();
   const { data: dgServiceInfo, isLoading } = useQuery(["DgInfoList"], () =>
-    fetch(
-      " https://bl-operation-server-production.up.railway.app/dgServiceInfo",
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch("  http://localhost:5000/dgServiceInfo", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);
@@ -114,7 +111,7 @@ const DgServicingPlan = () => {
               <th>Day Difference</th>
               <th className="bg-[#61ec4c]">
                 <div>Next Plan</div>
-                <div>Date(YY_MM_DD)</div>
+                <div>Date</div>
               </th>
               <th>Remarks</th>
             </tr>

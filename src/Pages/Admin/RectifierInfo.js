@@ -5,7 +5,7 @@ import RectifierInfoRows from "./RectifierInfoRows";
 
 const RectifierInfo = () => {
   const { data: rectifiers, isLoading } = useQuery(["rectifierlist"], () =>
-    fetch(" https://bl-operation-server-production.up.railway.app/rectifier", {
+    fetch("  http://localhost:5000/rectifier", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

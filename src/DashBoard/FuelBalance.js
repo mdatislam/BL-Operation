@@ -11,15 +11,12 @@ const FuelBalance = () => {
   const navigate = useNavigate();
 
   const { data: pgRunData, isLoading2 } = useQuery(["list"], () =>
-    fetch(
-      "https://bl-operation-server-production.up.railway.app/ApprovedAllPgRun",
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch(" http://localhost:5000/ApprovedAllPgRun", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         signOut(auth);
         localStorage.removeItem("accessToken");
@@ -30,7 +27,7 @@ const FuelBalance = () => {
   );
 
   const { data: receiveFuel, isLoading3 } = useQuery(["fuel"], () =>
-    fetch("https://bl-operation-server-production.up.railway.app/fuelListAll", {
+    fetch(" http://localhost:5000/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -38,7 +35,15 @@ const FuelBalance = () => {
     }).then((res) => res.json())
   );
 
-  if (isLoading2 || isLoading3) {
+  const { data: receiveFuelOncall, isLoading } = useQuery(["fuelOncall"], () =>
+    fetch("http://localhost:5000/fuelListAllOncall", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => res.json())
+  );
+  if (isLoading || isLoading2 || isLoading3) {
     return <Loading />;
   }
 
@@ -71,12 +76,30 @@ const FuelBalance = () => {
     );
 
     user.fuelQuantity = totalFuel;
+
+    // per user total fuel receiveOncall calculation
+    const fuelTakerOncall = receiveFuelOncall?.filter(
+      (g) => g.fuelReceiverEmail === user.email
+    );
+    const fuelTakenOncall = fuelTakerOncall?.map((d) => d.fuelQuantity);
+    const totalFuelOncall = fuelTakenOncall?.reduce(
+      (previous, current) => previous + parseFloat(current),
+      0
+    );
+
+    user.fuelQuantityOncall = totalFuelOncall;
   });
-  /* } */
 
   // Total issued fuel calculation
   const FF = receiveFuel?.map((f) => f.fuelQuantity);
   const total = FF?.reduce(
+    (previous, current) => previous + parseFloat(current),
+    0
+  );
+
+  // Total issued fuel Oncall calculation
+  const GG = receiveFuelOncall?.map((f) => f.fuelQuantity);
+  const totalOncall = GG?.reduce(
     (previous, current) => previous + parseFloat(current),
     0
   );
@@ -94,8 +117,11 @@ const FuelBalance = () => {
               </th>
               <th>Name</th>
               <th>
-                Fuel<p>Receive</p>{" "}
+                Received Fuel<p className="text-pink-400">(Oncall || Own)</p>{" "}
               </th>
+              {/*  <th>
+                Fuel<p>Receive</p>{" "}
+              </th> */}
               <th>
                 Fuel <p>Consume</p>
               </th>
@@ -113,8 +139,9 @@ const FuelBalance = () => {
               <th className=" font-bold text-[#008080]">
                 Total Fuel Issued ={" "}
               </th>
-              <th className="text-[#008080] text-xl font-bold">
-                {total}
+              <th className=" text-xl font-bold">
+                <span className="text-pink-700">{totalOncall} </span>
+                || <span className="text-blue-600">{total} </span>
                 <span className="stat-desc"> &nbsp;liter</span>
               </th>
               <th></th>

@@ -14,15 +14,12 @@ const AllPgRunList = () => {
   const [filter, setFilter] = useState([]);
   const navigate = useNavigate();
   const { data: pgRunData, isLoading } = useQuery(["list"], () =>
-    fetch(
-      " https://bl-operation-server-production.up.railway.app/ApprovedAllPgRun",
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch("  http://localhost:5000/ApprovedAllPgRun", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);
@@ -77,15 +74,7 @@ const AllPgRunList = () => {
             handleSearch(e);
           }}
         />
-        {/* <input
-          type="text"
-          className="input input-bordered border-sky-400 w-full max-w-xs flex-auto"
-          placeholder="Enter PG runner Name Keyword"
-          onChange={(e) => {
-            searchPgRunner(e);
-          }}
-        /> */}
-        {/* For Data export/download */}
+        
         <div>
           <CSVLink
             data={pgRunData}

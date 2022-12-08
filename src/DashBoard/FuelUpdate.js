@@ -26,7 +26,7 @@ const FuelUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("https://bl-operation-server-production.up.railway.app/userList", {
+    fetch(" http://localhost:5000/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -81,7 +81,7 @@ const FuelUpdate = () => {
     };
 
     //console.log(fuelData);
-    fetch("https://bl-operation-server-production.up.railway.app/fuelData", {
+    fetch(" http://localhost:5000/fuelData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -208,16 +208,13 @@ const FuelUpdate = () => {
                   },
                 })}
               >
-                <option value="">
-                  {" "}
-                  --------Select vehicle No--------------{" "}
-                </option>
+                <option value=""> --------Select vehicle No-------- </option>
                 <option value="11-7415">11-7415</option>
                 <option value="13-5629">13-5629</option>
                 <option value="15-2171">15-2171</option>
                 <option value="13-0233">13-0233</option>
                 <option value="11-0201">11-0201</option>
-                <option value="14-1208">14-1208</option>
+                <option value="02-4608">02-4608</option>
 
                 {/* {PgList?.map((pg) => (
                   <option value={pg.pgNo}>{pg.pgNo}</option>
