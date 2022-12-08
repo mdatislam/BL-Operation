@@ -39,12 +39,15 @@ const FuelBalance = () => {
   );
 
   const { data: receiveFuelOncall, isLoading } = useQuery(["fuelOncall"], () =>
-    fetch("http://localhost:5000/fuelListAllOncall", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => res.json())
+    fetch(
+      "https://bl-operation-server-production.up.railway.app/fuelListAllOncall",
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => res.json())
   );
   if (isLoading || isLoading2 || isLoading3) {
     return <Loading />;
