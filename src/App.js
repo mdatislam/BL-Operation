@@ -40,6 +40,7 @@ import DGAllServiceList from "./Pages/DG-Info/DGAllServiceList";
 import SiteDataInfo from "./Pages/Admin/SiteDataInfo";
 //import ProfilePic from "./Pages/SharedPage/ProfilePic";
 import FuelUpdateOncall from './DashBoard/FuelUpdateOncall';
+import AllFuelListOncall from "./PgRunInfo/AllFuelListOncall";
 
 
 
@@ -85,6 +86,7 @@ function App() {
           <Route path="/PgFuel" element={<PgFuel />} />
           <Route path="/AllPgRunList" element={<AllPgRunList />} />
           <Route path="/AllFuelList" element={<AllFuelList />} />
+          <Route path="/AllFuelListOncall" element={<AllFuelListOncall />} />
           <Route path="/DgMaterial" element={<DgUseMaterialList />} />
           <Route path="/DgServicing" element={<DgServicingInfo />} />
           <Route path="/DgAllServicing" element={<DGAllServiceList />} />

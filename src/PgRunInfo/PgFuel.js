@@ -36,9 +36,12 @@ const PgFuel = () => {
               <div className="stat bg-[#6492ed] rounded-lg ">
                 <div className="stat-title">Issued Fuel</div>
                 <div className="stat-value">To Show</div>
-                <div className="stat-actions">
-                  <Link to="/AllFuelList" className="btn btn-wide btn-accent">
-                   Issued Fuel Record
+                <div className="stat-actions flex  gap-x-2">
+                  <Link to="/AllFuelList" className="btn btn-sm btn-accent">
+                  Updated_Own
+                  </Link>
+                  <Link to="/AllFuelListOncall" className="btn btn-sm btn-secondary">
+                    Updated_Oncall
                   </Link>
                 </div>
               </div>

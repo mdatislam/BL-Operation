@@ -172,10 +172,7 @@ const DGAllServiceList = () => {
                 <div>Air Filter</div>
                 <div>Use Status</div>
               </th>
-              <th className="bg-[#61ec4c]">
-                <div>Next Plan</div>
-                <div>Date(YY_MM_DD)</div>
-              </th>
+              
               <th>
                 <div>DG RH</div>
                 <div>Picture</div>
