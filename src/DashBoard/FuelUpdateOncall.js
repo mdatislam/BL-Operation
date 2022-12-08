@@ -8,10 +8,8 @@ import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import Loading from "../Pages/SharedPage/Loading";
 
-
-
 const FuelUpdateOncall = () => {
-    const [user]=useAuthState(auth)
+  const [user] = useAuthState(auth);
   const navigate = useNavigate();
   const {
     register,
@@ -21,7 +19,7 @@ const FuelUpdateOncall = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch(" http://localhost:5000/userList", {
+    fetch("https://bl-operation-server-production.up.railway.app/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -45,32 +43,33 @@ const FuelUpdateOncall = () => {
   let today = date.toLocaleDateString("en-CA");
 
   const availableUser = users?.filter((u) => u.name !== user.displayName);
-    
 
-    const onSubmit = (data) => {
-      const receive = users?.filter(x => x.name ===data.fuelReceiver ); 
-     
+  const onSubmit = (data) => {
+    const receive = users?.filter((x) => x.name === data.fuelReceiver);
+
     const fuelData = {
-     
       date: data.date,
       slipNo: data.slipNo,
       fuelQuantity: data.fuel,
       fuelIssuer: user.displayName,
       fuelIssuerEmail: user.email,
-        fuelReceiverName: data.fuelReceiver,
-      fuelReceiverEmail:receive[0].email,
+      fuelReceiverName: data.fuelReceiver,
+      fuelReceiverEmail: receive[0].email,
       remark: data.remark,
     };
 
-     //console.log(receive);
-    fetch(" http://localhost:5000/fuelDataOncall", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(fuelData),
-    })
+    //console.log(receive);
+    fetch(
+      "https://bl-operation-server-production.up.railway.app/fuelDataOncall",
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(fuelData),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");
@@ -85,12 +84,11 @@ const FuelUpdateOncall = () => {
           toast.success("Fuel Data Successfully Update");
         }
         reset();
-       
+
         //console.log(pgData)
       });
   };
 
- 
   return (
     <div className="flex  justify-center justify-items-center mt-8">
       <div className="card w-96 bg-base-100 shadow-2xl">

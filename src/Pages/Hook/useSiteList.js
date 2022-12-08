@@ -7,7 +7,7 @@ const useSiteList = () => {
   const [siteList, setSiteList] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-    fetch(" http://localhost:5000/siteInfo", {
+    fetch("https://bl-operation-server-production.up.railway.app/siteInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

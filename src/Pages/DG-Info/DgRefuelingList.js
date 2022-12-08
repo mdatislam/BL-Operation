@@ -11,12 +11,15 @@ import auth from "../../firebase.init";
 const DgRefuelingList = () => {
   const navigate = useNavigate();
   const { data: dgRefueling, isLoading } = useQuery(["DgRefueling"], () =>
-    fetch("  http://localhost:5000/dgRefuelingInfo", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
+    fetch(
+      " https://bl-operation-server-production.up.railway.app/dgRefuelingInfo",
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);

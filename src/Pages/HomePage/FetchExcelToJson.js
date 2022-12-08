@@ -69,14 +69,17 @@ const FetchExcelToJson = () => {
       connectedSite: siteInfo.connectedSite,
       address: siteInfo.address,
     };
-    fetch(` http://localhost:5000/siteInfo/${siteID}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(siteData),
-    }).then((res) => {
+    fetch(
+      `https://bl-operation-server-production.up.railway.app/siteInfo/${siteID}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(siteData),
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         // toast.error("Unauthorize access");
         signOut(auth);

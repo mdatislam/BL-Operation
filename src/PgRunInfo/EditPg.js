@@ -30,14 +30,17 @@ const EditPg = ({ pgEdit, setPgEdit, refetch }) => {
       date: today,
     };
 
-    fetch(` http://localhost:5000/pgList/${pgNo}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(PgData),
-    })
+    fetch(
+      `https://bl-operation-server-production.up.railway.app/pgList/${pgNo}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(PgData),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");

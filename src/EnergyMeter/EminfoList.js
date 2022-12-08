@@ -13,7 +13,7 @@ const EminfoList = () => {
   const [filter, setFilter] = useState([]);
   const navigate = useNavigate();
   const { data: EmInfo, isLoading } = useQuery(["EmInfoList"], () =>
-    fetch(" http://localhost:5000/emInfo", {
+    fetch("https://bl-operation-server-production.up.railway.app/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -97,14 +97,14 @@ const EminfoList = () => {
             </button>
           </div>
         </div> */}
-         <input
+        <input
           type="text"
           className="input input-bordered border-sky-400 w-full max-w-xs flex-auto"
           placeholder="Enter search Keyword/Site Id number"
           onChange={(e) => {
             handleSearch(e);
           }}
-        /> 
+        />
 
         <div>
           <CSVLink

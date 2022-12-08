@@ -7,7 +7,7 @@ const DeletePgRun = ({ delPg, refetch, setDelPg }) => {
   const handleDelete = (id) => {
     //console.log(id);
     fetch(
-      ` http://localhost:5000/
+      `https://bl-operation-server-production.up.railway.app/
 
 pgRun/${id}`,
       {

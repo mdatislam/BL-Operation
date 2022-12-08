@@ -11,12 +11,15 @@ const FuelBalance = () => {
   const navigate = useNavigate();
 
   const { data: pgRunData, isLoading2 } = useQuery(["list"], () =>
-    fetch(" http://localhost:5000/ApprovedAllPgRun", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
+    fetch(
+      "https://bl-operation-server-production.up.railway.app/ApprovedAllPgRun",
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         signOut(auth);
         localStorage.removeItem("accessToken");
@@ -27,7 +30,7 @@ const FuelBalance = () => {
   );
 
   const { data: receiveFuel, isLoading3 } = useQuery(["fuel"], () =>
-    fetch(" http://localhost:5000/fuelListAll", {
+    fetch("https://bl-operation-server-production.up.railway.app/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
