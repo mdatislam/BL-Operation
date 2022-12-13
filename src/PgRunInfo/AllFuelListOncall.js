@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import DeleteReceiveFuel from "../DashBoard/DeleteReceiveFuel";
 import auth from "../firebase.init";
 import useAdmin from "../Pages/Hook/useAdmin";
 import Loading from "../Pages/SharedPage/Loading";
 import AllFuelListRowsOncall from "./AllFuelListRowsOncall";
 import { CSVLink } from "react-csv";
 import { signOut } from "firebase/auth";
+import DeleteFuelOnCall from "./DeleteFuelOnCall";
 
 const AllFuelListOncall = () => {
   const [searchFuel, setSearchFuel] = useState("");
@@ -20,19 +20,16 @@ const AllFuelListOncall = () => {
   const navigate = useNavigate();
   const [delFuel, setDelFuel] = useState("");
   const {
-    data: receiveFuel,
+    data: receiveFuelOncall,
     isLoading,
     refetch,
-  } = useQuery(["fuel"], () =>
-    fetch(
-      " https://bl-operation-server-production.up.railway.app/fuelListAllOncall",
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+  } = useQuery(["fuelOnCall"], () =>
+    fetch(" http://localhost:5000/onCall/fuelListAll", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);
@@ -53,7 +50,7 @@ const AllFuelListOncall = () => {
     setSearchFuel(search);
 
     if (search !== "") {
-      const filterData = receiveFuel.filter((item) => {
+      const filterData = receiveFuelOncall.filter((item) => {
         return Object.values(item)
           .join("")
           .toLowerCase()
@@ -61,7 +58,7 @@ const AllFuelListOncall = () => {
       });
       setFilter(filterData);
     } else {
-      setFilter(receiveFuel);
+      setFilter(receiveFuelOncall);
     }
   };
   return (
@@ -88,8 +85,8 @@ const AllFuelListOncall = () => {
         />
         <div>
           <CSVLink
-            data={receiveFuel}
-            filename="receiveFuel"
+            data={receiveFuelOncall}
+            filename="receiveFuelOncall"
             className="btn btn-outline btn-accent mb-2"
           >
             <svg
@@ -106,7 +103,7 @@ const AllFuelListOncall = () => {
                 d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
               />
             </svg>
-            &nbsp; Download
+            &nbsp;
           </CSVLink>
         </div>
       </div>
@@ -118,9 +115,6 @@ const AllFuelListOncall = () => {
 
               <th>Date</th>
               <th>Slip No</th>
-              <th>PG No </th>
-              <th>Vehicle No</th>
-              <th>Site ID</th>
               <th>
                 <div>Fuel</div>
                 <div>Quantity</div>
@@ -134,6 +128,7 @@ const AllFuelListOncall = () => {
                 <div>Issuer</div>
               </th>
               {admin && <th>Action</th>}
+              <th>Remarks</th>
             </tr>
           </thead>
           <tbody>
@@ -147,7 +142,7 @@ const AllFuelListOncall = () => {
                     admin={admin}
                   ></AllFuelListRowsOncall>
                 ))
-              : receiveFuel.map((fuel, index) => (
+              : receiveFuelOncall.map((fuel, index) => (
                   <AllFuelListRowsOncall
                     key={fuel._id}
                     fuel={fuel}
@@ -160,7 +155,7 @@ const AllFuelListOncall = () => {
         </table>
       </div>
       {delFuel && (
-        <DeleteReceiveFuel
+        <DeleteFuelOnCall
           delFuel={delFuel}
           setDelFuel={setDelFuel}
           refetch={refetch}

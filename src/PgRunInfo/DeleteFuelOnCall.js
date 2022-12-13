@@ -1,13 +1,13 @@
 import React from "react";
 import { toast } from "react-toastify";
 
-const DeleteReceiveFuel = ({ delFuel, refetch, setDelFuel }) => {
+const DeleteFuelOnCall = ({ delFuel, refetch, setDelFuel }) => {
   const { _id } = delFuel;
 
   const handleDelete = (id) => {
-    console.log(id);
+    //console.log(id);
     fetch(
-      `http://localhost:5000/
+      `http://localhost:5000/onCall/
 
 receivedFuel/${id}`,
       {
@@ -56,4 +56,4 @@ receivedFuel/${id}`,
   );
 };
 
-export default DeleteReceiveFuel;
+export default DeleteFuelOnCall;

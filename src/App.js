@@ -96,13 +96,14 @@ function App() {
           <Route path="/FcuMaintenance" element={<FcuMaintenanceList />} />
           <Route path="/EmInfo" element={<EminfoList />} />
           <Route path="/PgStatus" element={<PgStatus />} />
+          <Route path="/siteData" element={<SiteDataInfo />} />
         </Route>
 
         <Route element={<RequireAdmin />}>
           <Route path="/RectifierUpdate" element={<RectifierInfoUpdate />} />
           <Route path="/Signup" element={<SignUp />}></Route>
           <Route path="/PendingPgRun" element={<ApprovalPendingList />} />
-          <Route path="/siteData" element={<SiteDataInfo />} />
+
           <Route path="/siteDataUpdate" element={<FetchExcelToJson />} />
         </Route>
       </Routes>

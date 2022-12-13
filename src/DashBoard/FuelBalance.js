@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import auth from "../firebase.init";
 import useUserList from "../Pages/Hook/useUserList";
 import Loading from "../Pages/SharedPage/Loading";
@@ -11,15 +11,12 @@ const FuelBalance = () => {
   const navigate = useNavigate();
 
   const { data: pgRunData, isLoading2 } = useQuery(["list"], () =>
-    fetch(
-      "https://bl-operation-server-production.up.railway.app/ApprovedAllPgRun",
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch("http://localhost:5000/ApprovedAllPgRun", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         signOut(auth);
         localStorage.removeItem("accessToken");
@@ -30,7 +27,7 @@ const FuelBalance = () => {
   );
 
   const { data: receiveFuel, isLoading3 } = useQuery(["fuel"], () =>
-    fetch("https://bl-operation-server-production.up.railway.app/fuelListAll", {
+    fetch("http://localhost:5000/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -39,15 +36,12 @@ const FuelBalance = () => {
   );
 
   const { data: receiveFuelOncall, isLoading } = useQuery(["fuelOncall"], () =>
-    fetch(
-      "https://bl-operation-server-production.up.railway.app/fuelListAllOncall",
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => res.json())
+    fetch("http://localhost:5000/fuelListAllOncall", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => res.json())
   );
   if (isLoading || isLoading2 || isLoading3) {
     return <Loading />;
@@ -112,6 +106,12 @@ const FuelBalance = () => {
 
   return (
     <div>
+      <Link
+        className="btn btn-sm btn-outline btn-secondary mb-3"
+        to="/Dashboard/fuelUpdateOnCall"
+      >
+        Fuel Update_OnCall
+      </Link>
       <div className="overflow-x-auto">
         <table className="table table-compact w-full border-3 border-[#ffcb24]">
           <thead className="border-2 border-[#ffcb24] bg-[#ffcb24] !important">
@@ -123,7 +123,10 @@ const FuelBalance = () => {
               </th>
               <th>Name</th>
               <th>
-                Received Fuel<p className="text-pink-400">(Oncall || Own)</p>{" "}
+                Received Fuel
+                <p className="text-pink-400">
+                  (Oncall &nbsp;&nbsp;&nbsp; ||&nbsp;&nbsp;&nbsp; Own)
+                </p>{" "}
               </th>
               {/*  <th>
                 Fuel<p>Receive</p>{" "}

@@ -3,13 +3,12 @@ import React from "react";
 const AllFuelListRowsOncall = ({ fuel, index, setDelFuel, admin }) => {
   const {
     date,
-    siteId,
-    pgNo,
-    vehicleNo,
+    
     slipNo,
     fuelQuantity,
     fuelIssuer,
     fuelReceiverName,
+    remark
   } = fuel;
   return (
     <tr className="border-2 border-[#F0D786]  hover divide-x divide-gray-300 text-center">
@@ -17,9 +16,7 @@ const AllFuelListRowsOncall = ({ fuel, index, setDelFuel, admin }) => {
 
       <td>{date}</td>
       <td>{slipNo}</td>
-      <td>{pgNo}</td>
-      <td>{vehicleNo}</td>
-      <td>{siteId}</td>
+      
       <td>{fuelQuantity}</td>
       <td>{fuelReceiverName}</td>
       <td>{fuelIssuer}</td>
@@ -46,7 +43,8 @@ const AllFuelListRowsOncall = ({ fuel, index, setDelFuel, admin }) => {
             </svg>
           </label>
         </th>
-      )}
+          )}
+          <td>{remark}</td>
     </tr>
   );
 };

@@ -59,14 +59,14 @@ const NavbarItem = () => {
             <div className="card w-64  bg-base-100 shadow-xl   outline-offset-4 outline hover:outline-blue-400 ">
               <div className="card-body">
                 <h3 className="card-title text-secondary-focus">
-                  DG  Refueling
+                  DG Refueling
                 </h3>
                 <p>To View DG Refueling Info</p>
               </div>
             </div>
           </NavLink>
           {/* {/* 6th Item */}
-         {/* <NavLink className="rounded-lg my-4 px-4" to="/AllRefueling">
+          {/* <NavLink className="rounded-lg my-4 px-4" to="/AllRefueling">
             <div className="card w-64  bg-base-100 shadow-xl   outline-offset-4 outline hover:outline-blue-400 ">
               <div className="card-body">
                 <h3 className="card-title text-secondary-focus">
@@ -95,6 +95,17 @@ const NavbarItem = () => {
                   FCU Maintenance
                 </h3>
                 <p>Coming Soon</p>
+              </div>
+            </div>
+          </NavLink>
+          {/* 9th Item */}
+          <NavLink className="rounded-lg my-4 px-4" to="/siteData">
+            <div className="card w-64  bg-base-100 shadow-xl   outline-offset-4 outline hover:outline-blue-400 ">
+              <div className="card-body">
+                <h3 className="card-title text-secondary-focus">
+                  Site Data
+                </h3>
+                <p>View & Edit Site Info</p>
               </div>
             </div>
           </NavLink>

@@ -23,24 +23,27 @@ const PgFuel = () => {
           <div className="">
             <div className=" text-primary-content flex flex-col lg:flex-row gap-y-4 lg:gap-x-4">
               <div className="stat bg-[#6495ED] rounded-lg  ">
-                <div className="stat-title">All PG Run List</div>
-                <div className="stat-value">To Show </div>
+                <div className="stat-value">To Show</div>
+                <div className="stat-title text-white font-bold"> All PG Run List </div>
 
                 <div className="stat-actions">
-                  <Link to="/AllPgRunList" className="btn btn-wide btn-warning">
-                    PG Run List
+                  <Link to="/AllPgRunList" className="btn btn-md btn-outline text-white ">
+                   Click Here
                   </Link>
                 </div>
               </div>
 
               <div className="stat bg-[#6492ed] rounded-lg ">
-                <div className="stat-title">Issued Fuel</div>
                 <div className="stat-value">To Show</div>
+                <div className="stat-title">Issued Fuel List</div>
                 <div className="stat-actions flex  gap-x-2">
-                  <Link to="/AllFuelList" className="btn btn-sm btn-accent">
-                  Updated_Own
+                  <Link to="/AllFuelList" className="btn btn-md btn-outline text-white">
+                    Updated_Own
                   </Link>
-                  <Link to="/AllFuelListOncall" className="btn btn-sm btn-secondary">
+                  <Link
+                    to="/AllFuelListOncall"
+                    className="btn btn-md btn-outline btn-warning"
+                  >
                     Updated_Oncall
                   </Link>
                 </div>
