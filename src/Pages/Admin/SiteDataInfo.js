@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
 import Loading from "../SharedPage/Loading";
 import SiteDataInfoRows from "./SiteDataInfoRows";
-import useAdmin from './../Hook/useAdmin';
+import useAdmin from "./../Hook/useAdmin";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EditSiteData from "./EditSiteData";
 
@@ -19,8 +19,12 @@ const SiteDataInfo = () => {
   const navigate = useNavigate();
 
   // For Existing site upload
-  const { data: siteData, isLoading,refetch } = useQuery(["siteInfo"], () =>
-    fetch(" http://localhost:5000/siteData", {
+  const {
+    data: siteData,
+    isLoading,
+    refetch,
+  } = useQuery(["siteInfo"], () =>
+    fetch(" https://bl-operation-server-production.up.railway.app/siteData", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -57,7 +61,7 @@ const SiteDataInfo = () => {
       setFilter(siteData);
     }
   };
- //console.log(siteDataEdit)
+  //console.log(siteDataEdit)
   return (
     <>
       <div className="px-3 mb-4">

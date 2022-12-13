@@ -1,12 +1,12 @@
-import { signOut } from 'firebase/auth';
-import React from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import auth from '../../firebase.init';
+import { signOut } from "firebase/auth";
+import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import auth from "../../firebase.init";
 
-const EditSiteData = ({ siteDataEdit, setSiteDataEdit,refetch }) => {
+const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
   const [user] = useAuthState(auth);
   const {
     siteId,
@@ -22,7 +22,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit,refetch }) => {
   } = siteDataEdit;
   const navigate = useNavigate();
 
-  const { register, handleSubmit,reset } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   let date = new Date();
   date.setDate(date.getDate());
@@ -37,21 +37,24 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit,refetch }) => {
       mobileNo1: data.mobileNo1,
       mobileNo2: data.mobileNo2,
       unUsed: data.unUsed,
-        snag: data.sanag,
-      remark:data.remark,
+      snag: data.sanag,
+      remark: data.remark,
       updaterName: user.displayName,
       updaterEmail: user.email,
       date: today,
     };
 
-    fetch(`http://localhost:5000/siteInfo/${siteId}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(updateSiteData),
-    })
+    fetch(
+      `https://bl-operation-server-production.up.railway.app/siteInfo/${siteId}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(updateSiteData),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");
