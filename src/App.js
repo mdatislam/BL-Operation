@@ -41,6 +41,7 @@ import SiteDataInfo from "./Pages/Admin/SiteDataInfo";
 //import ProfilePic from "./Pages/SharedPage/ProfilePic";
 import FuelUpdateOncall from './DashBoard/FuelUpdateOncall';
 import AllFuelListOncall from "./PgRunInfo/AllFuelListOncall";
+import SnagList from "./Pages/Admin/SnagList";
 
 
 
@@ -97,6 +98,7 @@ function App() {
           <Route path="/EmInfo" element={<EminfoList />} />
           <Route path="/PgStatus" element={<PgStatus />} />
           <Route path="/siteData" element={<SiteDataInfo />} />
+          <Route path="/snagList" element={<SnagList />} />
         </Route>
 
         <Route element={<RequireAdmin />}>

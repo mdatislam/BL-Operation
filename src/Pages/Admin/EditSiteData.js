@@ -17,7 +17,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
     mobileNo1,
     mobileNo2,
     unUsed,
-    snagInfo,
+    snag,
     remark,
   } = siteDataEdit;
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
       mobileNo1: data.mobileNo1,
       mobileNo2: data.mobileNo2,
       unUsed: data.unUsed,
-      snag: data.sanag,
+      snag: data.snag,
       remark: data.remark,
       updaterName: user.displayName,
       updaterEmail: user.email,
@@ -81,7 +81,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
         <div className="modal-box relative">
           <label
             htmlFor="siteEdit"
-            className="btn btn-sm btn-circle absolute right-2 top-2"
+            className="btn btn-sm btn-circle btn-error absolute right-2 top-2"
           >
             ✕
           </label>
@@ -95,12 +95,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
                 type="text"
                 defaultValue={keyStatus}
                 className=""
-                {...register("keyInfo", {
-                  required: {
-                    value: true,
-                    message: " Date is required",
-                  },
-                })}
+                {...register("keyInfo")}
               />
             </div>
 
@@ -110,12 +105,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
                 type="text"
                 defaultValue={rectifierInfo}
                 className=""
-                {...register("rectifierInfo", {
-                  required: {
-                    value: true,
-                    message: " Date is required",
-                  },
-                })}
+                {...register("rectifierInfo")}
               />
             </div>
 
@@ -125,12 +115,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
                 type="text"
                 defaultValue={batteryInfo}
                 className="input w-full max-w-xs"
-                {...register("batteryInfo", {
-                  required: {
-                    value: true,
-                    message: " Date is required",
-                  },
-                })}
+                {...register("batteryInfo")}
               />
             </div>
             <div className="flex input-group mb-3">
@@ -139,26 +124,16 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
                 type="text"
                 defaultValue={mobileNo1}
                 className="input w-full max-w-xs"
-                {...register("mobileNo1", {
-                  required: {
-                    value: true,
-                    message: " Date is required",
-                  },
-                })}
+                {...register("mobileNo1")}
               />
             </div>
             <div className="flex input-group mb-3">
               <span className=" font-bold">Mobile No_2:</span>
               <input
-                type="text"
+                type="number"
                 defaultValue={mobileNo2}
                 className="input w-full max-w-xs"
-                {...register("mobileNo2", {
-                  required: {
-                    value: true,
-                    message: " Date is required",
-                  },
-                })}
+                {...register("mobileNo2")}
               />
             </div>
 
@@ -168,12 +143,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
                 type="text"
                 defaultValue={batteryBackup}
                 className="input w-full max-w-xs"
-                {...register("batteryBackup", {
-                  required: {
-                    value: true,
-                    message: " Date is required",
-                  },
-                })}
+                {...register("batteryBackup")}
               />
             </div>
 
@@ -183,38 +153,23 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
                 type="text"
                 defaultValue={unUsed}
                 className="input w-full max-w-xs"
-                {...register("unUsed", {
-                  required: {
-                    value: true,
-                    message: " Date is required",
-                  },
-                })}
+                {...register("unUsed")}
               />
             </div>
             <div className="flex input-group mb-3">
               <span className=" font-bold">Snags List:</span>
               <textarea
                 type="text"
-                defaultValue={snagInfo}
+                defaultValue={snag}
                 className="input w-full max-w-xs"
-                {...register("unUsed", {
-                  required: {
-                    value: true,
-                    message: " Date is required",
-                  },
-                })}
+                {...register("snag")}
               />
             </div>
             <div className="form-control w-full max-w-xs">
               <textarea
                 placeholder=" Remarks if have"
                 className="input input-bordered w-full max-w-xs mx-2 "
-                {...register("remark", {
-                  required: {
-                    value: true,
-                    message: " Fault specific  is required",
-                  },
-                })}
+                {...register("remark")}
               />
               <label className="label"></label>
             </div>

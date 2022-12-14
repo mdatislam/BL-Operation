@@ -4,13 +4,13 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
 import Loading from "../SharedPage/Loading";
-import SiteDataInfoRows from "./SiteDataInfoRows";
+import SnagListRows from "./SnagListRows";
 import useAdmin from "./../Hook/useAdmin";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EditSiteData from "./EditSiteData";
 import "./SiteDataInfo.css";
 
-const SiteDataInfo = () => {
+const SnagList = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
   const [searchFuel, setSearchFuel] = useState("");
@@ -73,11 +73,11 @@ const SiteDataInfo = () => {
   //console.log(siteDataEdit)
   return (
     <>
-      <div className="px-3 mb-2">
-        <h5 className="flex justify-center items-center text-white text-xl font-bold h-12 mt-4 p-4 rounded-lg bg-[#6e3790] px-2">
-          Existing Site Data Record
+      <div className="px-3 mb-4">
+        <h5 className="flex justify-center items-center text-white text-xl font-bold h-12 mt-4 p-4 rounded-lg bg-[#d55d26] px-2">
+          Existing Site's Snag List !!
         </h5>
-        <div className="flex flex-cols  justify-between items-center ">
+        <div className="flex flex-cols  justify-between items-center mt-4">
           <div className="flex-auto">
             <input
               type="text"
@@ -90,15 +90,14 @@ const SiteDataInfo = () => {
           </div>
           <div className="flex-none">
             <NavLink
-              to="/snagList"
-              className="btn btn-primary btn-outline btn-wide"
+              to="/siteData"
+              className="btn btn-info text-white font-bold btn-wide"
             >
               {" "}
-              snag list
+              Site Info & Update
             </NavLink>
           </div>
-
-          <div className="flex-none font-bold bg-slate-200 pagination px-2 rounded-lg mt-2">
+          <div className="flex-none font-bold bg-slate-200 pagination px-2 rounded-lg">
             Pages: &nbsp;
             {[...Array(pages).keys()].map((number) => (
               <button
@@ -122,38 +121,19 @@ const SiteDataInfo = () => {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto  mt-4">
           <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
             <thead className="border-2 border-[#FFCB24]">
               <tr className="divide-x divide-blue-400 text-center">
                 <th>SNo</th>
-                <th>Action</th>
                 <th>Site ID</th>
-                <th>
-                  <div>Share Site</div>
-                  <div>Code</div>
-                </th>
-                <th>Key Status</th>
-                <th>
-                  <div>Connected</div>
-                  <div>Site</div>
-                </th>
-                <th>
-                  <div>Battery</div>
-                  <div>Info</div>
-                </th>
-                <th>
-                  <div>Battery</div>
-                  <div>Backup(hr)</div>
-                </th>
-                <th>
-                  <div>Rectifier</div>
-                  <div>Info</div>
-                </th>
-                <th>MobileNo-1</th>
-                <th>MobileNo-2</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Snags</th>
+                <th>Unused</th>
                 <th>Date</th>
                 <th>Updater Name</th>
+                <th>Remark</th>
 
                 {/* <th className="w-12 text-start">Address</th> */}
               </tr>
@@ -161,16 +141,16 @@ const SiteDataInfo = () => {
             <tbody>
               {searchFuel.length > 1
                 ? filter?.map((data, index) => (
-                    <SiteDataInfoRows
+                    <SnagListRows
                       key={data._id}
                       data={data}
                       index={index}
                       setSiteDataEdit={setSiteDataEdit}
                       admin={admin}
-                    ></SiteDataInfoRows>
+                    ></SnagListRows>
                   ))
                 : siteData.result?.map((data, index) => (
-                    <SiteDataInfoRows
+                    <SnagListRows
                       key={index._id}
                       data={data}
                       setSiteDataEdit={setSiteDataEdit}
@@ -193,4 +173,4 @@ const SiteDataInfo = () => {
   );
 };
 
-export default SiteDataInfo;
+export default SnagList;

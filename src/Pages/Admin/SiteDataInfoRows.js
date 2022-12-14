@@ -3,9 +3,7 @@ import React from 'react';
 const SiteDataInfoRows = ({ data, index, admin, setSiteDataEdit }) => {
   const {
     siteId,
-    lat,
-    long,
-    priority,
+    
     shareId,
     keyStatus,
     connectedSite,
@@ -16,7 +14,7 @@ const SiteDataInfoRows = ({ data, index, admin, setSiteDataEdit }) => {
     mobileNo2,
     date,
     updaterName,
-    address,
+    
   } = data;
 
   return (
@@ -74,9 +72,6 @@ const SiteDataInfoRows = ({ data, index, admin, setSiteDataEdit }) => {
           )}
         </td>
         <td>{siteId}</td>
-        <td>{lat}</td>
-        <td>{long}</td>
-        <td>{priority}</td>
         <td>{shareId}</td>
         <td>{keyStatus}</td>
         <td>{connectedSite}</td>
