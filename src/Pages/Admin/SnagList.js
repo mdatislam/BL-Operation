@@ -77,8 +77,8 @@ const SnagList = () => {
         <h5 className="flex justify-center items-center text-white text-xl font-bold h-12 mt-4 p-4 rounded-lg bg-[#d55d26] px-2">
           Existing Site's Snag List !!
         </h5>
-        <div className="flex flex-cols  justify-between items-center mt-4">
-          <div className="flex-auto">
+        <div className="flex flex-col justify-start  lg:items-center lg:flex-row  gap-2 ">
+          <div className="flex-1">
             <input
               type="text"
               className="input input-bordered border-sky-400 w-full max-w-xs"
@@ -88,36 +88,40 @@ const SnagList = () => {
               }}
             />
           </div>
-          <div className="flex-none">
-            <NavLink
-              to="/siteData"
-              className="btn btn-info text-white font-bold btn-wide"
-            >
+          <div className="flex-1">
+            <NavLink to="/siteData" className="btn btn-primary btn-wide">
               {" "}
-              Site Info & Update
+              To View Site Info
             </NavLink>
           </div>
-          <div className="flex-none font-bold bg-slate-200 pagination px-2 rounded-lg">
-            Pages: &nbsp;
-            {[...Array(pages).keys()].map((number) => (
-              <button
-                key={number}
-                onClick={() => setPage(number)}
-                className={
-                  page === number ? " btn btn-active btn-accent text-white" : ""
-                }
-              >
-                {number + 1}
-              </button>
-            ))}
-            <span className="text-pink-700">Size: &nbsp; </span>
-            {
-              <select onChange={(e) => setSize(e.target.value)}>
-                <option value="50">50</option>
-                <option value="80">80</option>
-                <option value="100">100</option>
-              </select>
-            }
+
+          <div className="font-bold text-lg pagination  rounded-lg mt-2 px-2">
+            <div className="">
+              Pages: &nbsp;
+              {[...Array(pages).keys()]?.map((number) => (
+                <button
+                  key={number}
+                  onClick={() => setPage(number)}
+                  className={
+                    page === number
+                      ? " btn btn-active text-lg btn-accent text-white"
+                      : ""
+                  }
+                >
+                  {number + 1}
+                </button>
+              ))}
+            </div>
+            <div>
+              <span className="text-pink-700">Size: &nbsp; </span>
+              {
+                <select onChange={(e) => setSize(e.target.value)}>
+                  <option value="50">50</option>
+                  <option value="80">80</option>
+                  <option value="100">100</option>
+                </select>
+              }
+            </div>
           </div>
         </div>
 

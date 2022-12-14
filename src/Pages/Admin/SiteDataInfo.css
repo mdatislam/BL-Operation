@@ -1,6 +1,7 @@
 .pagination {
-    margin-left: 200px;
+    margin-left: 20px;
     margin-bottom: 50px;
+    background-color: rgba(213, 238, 238, 0.824);
 }
 .pagination button{
     margin-right: 10px;
