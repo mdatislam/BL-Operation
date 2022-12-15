@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { signOut } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
 import Loading from "../SharedPage/Loading";
@@ -13,7 +13,8 @@ import "./SiteDataInfo.css";
 const SiteDataInfo = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
-  const [searchFuel, setSearchFuel] = useState("");
+  const [siteName, setSiteName] = useState("")
+  const [selectSite,setSelectSite]=useState([])
   const [filter, setFilter] = useState([]);
   const [siteDataEdit, setSiteDataEdit] = useState([]);
   const [page, setPage] = useState(0);
@@ -28,15 +29,12 @@ const SiteDataInfo = () => {
     isLoading,
     refetch,
   } = useQuery(["siteInfo", [page, size]], () =>
-    fetch(
-      `https://bl-operation-server-production.up.railway.app/siteData?page=${page}&size=${size}`,
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch(`http://localhost:5000/siteData?page=${page}&size=${size}`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);
@@ -44,52 +42,72 @@ const SiteDataInfo = () => {
         navigate("/Login");
       }
       return res.json();
+       
     })
+  
   );
 
   if (isLoading) {
     return <Loading />;
   }
   //console.log(siteData)
+  
+  
+  const pages = Math.ceil(siteData.count/size);
+  //console.log(siteDataEdit)
 
-  /* For filtering purpose */
-  const handleSearch = (e) => {
-    const search = e.target.value;
-    setSearchFuel(search);
+  const handleSearch2 = (site) => {
+   
+    if (site) {
+     
+         fetch(`http://localhost:5000/searchSite?site=${site}`)
+           .then((res) => res.json())
+           .then((data) => {
+             //console.log(data);
+             setSelectSite(data);
+           });
+    }
 
-    if (search !== "") {
-      const filterData = siteData.result.filter((item) => {
+    if (selectSite !=="") {
+      const filterData = selectSite?.filter((item) => {
         return Object.values(item)
           .join("")
           .toLowerCase()
-          .includes(search.toLowerCase());
+          .includes(siteName.toLowerCase());
       });
       setFilter(filterData);
     } else {
       setFilter(siteData.result);
     }
+    
   };
-  const pages = Math.ceil(siteData.count / size);
-  //console.log(siteDataEdit)
+  //console.log(selectSite)
   return (
     <>
       <div className="px-3 mb-2">
-        <h5 className="flex justify-center items-center text-white text-xl font-bold h-12 mt-4 p-4 rounded-lg bg-[#6e3790] px-2 mb-2">
+        <div className="flex flex-row gap-x-2 my-5">
+          <input
+            type="text"
+            name="select"
+            onChange={(e) => setSiteName(e.target.value)}
+            className="input input-bordered border-sky-400"
+            placeholder="Search by site no"
+          />
+          <button
+            className="btn btn-info"
+            onClick={() => handleSearch2(siteName)}
+          >
+            {" "}
+            search
+          </button>
+        </div>
+
+        <h5 className="flex justify-center items-center text-white text-xl font-bold h-12 mt-2 p-4 rounded-lg bg-[#6e3790] px-2 mb-2">
           Existing Site Data Record
         </h5>
-        <div className="flex flex-col justify-start  lg:items-center lg:flex-row  gap-2 ">
+        <div className="flex flex-col justify-start  lg:items-center lg:flex-row  gap-2 mt-3">
           <div className="flex-1">
-            <input
-              type="text"
-              className="input input-bordered border-sky-400 w-full max-w-xs"
-              placeholder="Search by site no/any Keyword "
-              onChange={(e) => {
-                handleSearch(e);
-              }}
-            />
-          </div>
-          <div className="flex-1">
-            <NavLink to="/snagList" className="btn btn-primary btn-wide">
+            <NavLink to="/snagList" className="btn bg-[#d99ddb] btn-outline rounded-lg btn-md">
               {" "}
               To View snag list
             </NavLink>
@@ -162,25 +180,15 @@ const SiteDataInfo = () => {
               </tr>
             </thead>
             <tbody>
-              {searchFuel.length > 1
-                ? filter?.map((data, index) => (
-                    <SiteDataInfoRows
-                      key={data._id}
-                      data={data}
-                      index={index}
-                      setSiteDataEdit={setSiteDataEdit}
-                      admin={admin}
-                    ></SiteDataInfoRows>
-                  ))
-                : siteData.result?.map((data, index) => (
-                    <SiteDataInfoRows
-                      key={index._id}
-                      data={data}
-                      setSiteDataEdit={setSiteDataEdit}
-                      admin={admin}
-                      index={index}
-                    />
-                  ))}
+              {siteData.result?.map((data, index) => (
+                <SiteDataInfoRows
+                  key={index._id}
+                  data={data}
+                  setSiteDataEdit={setSiteDataEdit}
+                  admin={admin}
+                  index={index}
+                />
+              ))}
             </tbody>
           </table>
           {siteDataEdit && (
@@ -188,6 +196,7 @@ const SiteDataInfo = () => {
               siteDataEdit={siteDataEdit}
               refetch={refetch}
               setSiteDataEdit={setSiteDataEdit}
+              setFilter={setFilter}
             ></EditSiteData>
           )}
         </div>

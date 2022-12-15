@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../../firebase.init";
 
-const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
+const EditSiteData = ({ siteDataEdit, setSiteDataEdit,setFilter,refetch }) => {
   const [user] = useAuthState(auth);
   const {
     siteId,
@@ -30,7 +30,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
 
   const onSubmit = (data) => {
     const updateSiteData = {
-      keyStatus: data.keyInfo,
+      keyStatus: data.keyStatus,
       batteryBackup: data.batteryBackup,
       rectifierInfo: data.rectifierInfo,
       batteryInfo: data.batteryInfo,
@@ -44,17 +44,14 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
       date: today,
     };
 
-    fetch(
-      `https://bl-operation-server-production.up.railway.app/siteInfo/${siteId}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(updateSiteData),
-      }
-    )
+    fetch(`http://localhost:5000/siteInfo/${siteId}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(updateSiteData),
+    })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");
@@ -71,6 +68,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
         }
         reset();
         setSiteDataEdit(null);
+        setFilter("")
         refetch();
       });
   };
@@ -95,12 +93,12 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
                 type="text"
                 defaultValue={keyStatus}
                 className=""
-                {...register("keyInfo")}
+                {...register("keyStatus")}
               />
             </div>
 
             <div className="  input-group mb-3">
-              <span className=" font-bold">Rectifier :</span>
+              <span className=" font-bold">Rectifier info:</span>
               <input
                 type="text"
                 defaultValue={rectifierInfo}
