@@ -37,11 +37,13 @@ import PgStatus from "./PgRunInfo/PgStatus";
 import DgServicingPlan from "./Pages/DG-Info/DgServicingPlan";
 import FetchExcelToJson from "./Pages/HomePage/FetchExcelToJson";
 import DGAllServiceList from "./Pages/DG-Info/DGAllServiceList";
-import SiteDataInfo from "./Pages/Admin/SiteDataInfo";
 //import ProfilePic from "./Pages/SharedPage/ProfilePic";
 import FuelUpdateOncall from './DashBoard/FuelUpdateOncall';
 import AllFuelListOncall from "./PgRunInfo/AllFuelListOncall";
-import SnagList from "./Pages/Admin/SnagList";
+import SnagList from './Pages/SiteData/SnagList';
+import SiteDataInfo from "./Pages/SiteData/SiteDataInfo";
+import SiteDataHome from "./Pages/SiteData/SiteDataHome";
+
 
 
 
@@ -97,7 +99,8 @@ function App() {
           <Route path="/FcuMaintenance" element={<FcuMaintenanceList />} />
           <Route path="/EmInfo" element={<EminfoList />} />
           <Route path="/PgStatus" element={<PgStatus />} />
-          <Route path="/siteData" element={<SiteDataInfo />} />
+          <Route path="/siteDataHome" element={<SiteDataHome />} />
+          <Route path="/siteDataInfo" element={<SiteDataInfo />} />
           <Route path="/snagList" element={<SnagList />} />
         </Route>
 

@@ -7,7 +7,7 @@ const DeleteFuelOnCall = ({ delFuel, refetch, setDelFuel }) => {
   const handleDelete = (id) => {
     //console.log(id);
     fetch(
-      `http://localhost:5000/onCall/
+      `https://bl-operation-server-production.up.railway.app/onCall/
 
 receivedFuel/${id}`,
       {

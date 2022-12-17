@@ -28,12 +28,15 @@ const SnagList = () => {
     isLoading,
     refetch,
   } = useQuery(["siteInfo", [page, size]], () =>
-    fetch(`http://localhost:5000/siteData?page=${page}&size=${size}`, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
+    fetch(
+      `https://bl-operation-server-production.up.railway.app/siteData?page=${page}&size=${size}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);
@@ -62,7 +65,7 @@ const SnagList = () => {
           .includes(search.toLowerCase());
       });
       setFilter(filterData);
-      }
+    }
     /* else {
       setFilter(siteData.result);
     } */
@@ -76,10 +79,12 @@ const SnagList = () => {
           Existing Site's Snag List !!
         </h5>
         <div className="flex flex-col justify-start  lg:items-center lg:flex-row  gap-2 ">
-
-            <div className="flex-1">
-            <NavLink to="/siteData" className="btn btn-secondary  btn-outline btn-sm mt-3">
-            Back
+          <div className="flex-1 mt-3">
+            <NavLink
+              to="/siteDataHome"
+              className="btn btn-secondary  btn-outline btn-sm "
+            >
+              Back
             </NavLink>
           </div>
           <div className="flex-1">

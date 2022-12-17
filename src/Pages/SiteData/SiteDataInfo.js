@@ -4,18 +4,17 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
 import Loading from "../SharedPage/Loading";
-import SiteDataInfoRows from "./SiteDataInfoRows";
-import useAdmin from "./../Hook/useAdmin";
+import useAdmin from "../Hook/useAdmin";
 import { useAuthState } from "react-firebase-hooks/auth";
-import EditSiteData from "./EditSiteData";
+
 import "./SiteDataInfo.css";
+import SiteDataInfoRows from "./SiteDataInfoRows";
+import EditSiteData from "./EditSiteData";
+import { CSVLink } from "react-csv";
 
 const SiteDataInfo = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
-  const [siteName, setSiteName] = useState("")
-  const [selectSite,setSelectSite]=useState([])
-  const [filter, setFilter] = useState([]);
   const [siteDataEdit, setSiteDataEdit] = useState([]);
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(50);
@@ -29,12 +28,15 @@ const SiteDataInfo = () => {
     isLoading,
     refetch,
   } = useQuery(["siteInfo", [page, size]], () =>
-    fetch(`http://localhost:5000/siteData?page=${page}&size=${size}`, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
+    fetch(
+      `https://bl-operation-server-production.up.railway.app/siteData?page=${page}&size=${size}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);
@@ -42,77 +44,57 @@ const SiteDataInfo = () => {
         navigate("/Login");
       }
       return res.json();
-       
     })
-  
   );
 
   if (isLoading) {
     return <Loading />;
   }
   //console.log(siteData)
-  
-  
-  const pages = Math.ceil(siteData.count/size);
+
+  const pages = Math.ceil(siteData.count / size);
   //console.log(siteDataEdit)
 
-  const handleSearch2 = (site) => {
-   
-    if (site) {
-     
-         fetch(`http://localhost:5000/searchSite?site=${site}`)
-           .then((res) => res.json())
-           .then((data) => {
-             //console.log(data);
-             setSelectSite(data);
-           });
-    }
-
-    if (selectSite !=="") {
-      const filterData = selectSite?.filter((item) => {
-        return Object.values(item)
-          .join("")
-          .toLowerCase()
-          .includes(siteName.toLowerCase());
-      });
-      setFilter(filterData);
-    } else {
-      setFilter(siteData.result);
-    }
-    
-  };
   //console.log(selectSite)
   return (
     <>
       <div className="px-3 mb-2">
-        <div className="flex flex-row gap-x-2 my-5">
-          <input
-            type="text"
-            name="select"
-            onChange={(e) => setSiteName(e.target.value)}
-            className="input input-bordered border-sky-400"
-            placeholder="Search by site no"
-          />
-          <button
-            className="btn btn-info"
-            onClick={() => handleSearch2(siteName)}
-          >
-            {" "}
-            search
-          </button>
-        </div>
-
-        <h5 className="flex justify-center items-center text-white text-xl font-bold h-12 mt-2 p-4 rounded-lg bg-[#6e3790] px-2 mb-2">
+        <h5 className="flex justify-center items-center text-white text-xl font-bold h-12 mt-2 p-4 rounded-lg bg-[#6e3790] px-2">
           Existing Site Data Record
         </h5>
-        <div className="flex flex-col justify-start  lg:items-center lg:flex-row  gap-2 mt-3">
-          <div className="flex-1">
-            <NavLink to="/snagList" className="btn bg-[#d99ddb] btn-outline rounded-lg btn-md">
-              {" "}
-              To View snag list
+        <div className="flex flex-col justify-start lg:justify-end  lg:items-center lg:flex-row  gap-2 mt-1">
+          <div className="flex flex-cols justify-between lg:gap-x-4 lg:justify-start mt-2">
+            <NavLink
+              to="/siteDataHome"
+              className="btn btn-secondary  btn-outline btn-sm mt-3"
+            >
+              Back
             </NavLink>
-          </div>
 
+            {/* For Data Export */}
+            <div className="mt-3">
+              <CSVLink
+                data={siteData.result}
+                filename="SiteDataInfo"
+                className="btn btn-outline btn-accent btn-sm mb-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                  />
+                </svg>
+              </CSVLink>
+            </div>
+          </div>
           <div className="font-bold text-lg pagination  rounded-lg mt-2 px-2">
             <div className="">
               Pages: &nbsp;
@@ -135,8 +117,9 @@ const SiteDataInfo = () => {
               {
                 <select onChange={(e) => setSize(e.target.value)}>
                   <option value="50">50</option>
-                  <option value="80">80</option>
+                  <option value="10">10</option>
                   <option value="100">100</option>
+                  <option value="1000">All</option>
                 </select>
               }
             </div>
@@ -154,7 +137,7 @@ const SiteDataInfo = () => {
                   <div>Share Site</div>
                   <div>Code</div>
                 </th>
-                <th>Key Status</th>
+
                 <th>
                   <div>Connected</div>
                   <div>Site</div>
@@ -171,6 +154,7 @@ const SiteDataInfo = () => {
                   <div>Rectifier</div>
                   <div>Info</div>
                 </th>
+                <th>Key Status</th>
                 <th>MobileNo-1</th>
                 <th>MobileNo-2</th>
                 <th>Date</th>
@@ -196,7 +180,6 @@ const SiteDataInfo = () => {
               siteDataEdit={siteDataEdit}
               refetch={refetch}
               setSiteDataEdit={setSiteDataEdit}
-              setFilter={setFilter}
             ></EditSiteData>
           )}
         </div>

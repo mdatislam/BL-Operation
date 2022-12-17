@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import {  NavLink } from 'react-router-dom';
 
 const NavbarItem = () => {
     return (
@@ -43,6 +43,17 @@ const NavbarItem = () => {
               </div>
             </div>
           </NavLink>
+          {/* 9th Item */}
+          <NavLink className="rounded-lg my-4 px-4" to="/siteDataHome">
+            <div className="card w-64  bg-base-100 shadow-xl   outline-offset-4 outline hover:outline-blue-400 ">
+              <div className="card-body">
+                <h3 className="card-title text-secondary-focus">
+                  Site Data Info
+                </h3>
+                <p>View & Edit Site Info</p>
+              </div>
+            </div>
+          </NavLink>
           {/* 4th Item */}
           <NavLink className="rounded-lg my-4 px-4" to="/DgServicing">
             <div className="card w-64  bg-base-100 shadow-xl   outline-offset-4 outline hover:outline-blue-400 ">
@@ -65,17 +76,7 @@ const NavbarItem = () => {
               </div>
             </div>
           </NavLink>
-          {/* {/* 6th Item */}
-          {/* <NavLink className="rounded-lg my-4 px-4" to="/AllRefueling">
-            <div className="card w-64  bg-base-100 shadow-xl   outline-offset-4 outline hover:outline-blue-400 ">
-              <div className="card-body">
-                <h3 className="card-title text-secondary-focus">
-                  DG All Refueling
-                </h3>
-                <p>All Refueling Record</p>
-              </div>
-            </div>
-          </NavLink>  */}
+
           {/* 7th Item */}
           <NavLink className="rounded-lg my-4 px-4" to="/DgMaterial">
             <div className="card w-64  bg-base-100 shadow-xl   outline-offset-4 outline hover:outline-blue-400 ">
@@ -95,17 +96,6 @@ const NavbarItem = () => {
                   FCU Maintenance
                 </h3>
                 <p>Coming Soon</p>
-              </div>
-            </div>
-          </NavLink>
-          {/* 9th Item */}
-          <NavLink className="rounded-lg my-4 px-4" to="/siteData">
-            <div className="card w-64  bg-base-100 shadow-xl   outline-offset-4 outline hover:outline-blue-400 ">
-              <div className="card-body">
-                <h3 className="card-title text-secondary-focus">
-                  Site Data
-                </h3>
-                <p>View & Edit Site Info</p>
               </div>
             </div>
           </NavLink>

@@ -6,7 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../../firebase.init";
 
-const EditSiteData = ({ siteDataEdit, setSiteDataEdit,setFilter,refetch }) => {
+const EditSiteData = ({
+  siteDataEdit,
+  setSiteDataEdit,
+  setSearch,
+  refetch,
+}) => {
   const [user] = useAuthState(auth);
   const {
     siteId,
@@ -20,6 +25,8 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit,setFilter,refetch }) => {
     snag,
     remark,
   } = siteDataEdit;
+
+  //console.log(siteDataEdit)
   const navigate = useNavigate();
 
   const { register, handleSubmit, reset } = useForm();
@@ -44,14 +51,17 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit,setFilter,refetch }) => {
       date: today,
     };
 
-    fetch(`http://localhost:5000/siteInfo/${siteId}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(updateSiteData),
-    })
+    fetch(
+      `https://bl-operation-server-production.up.railway.app/siteInfo/${siteId}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(updateSiteData),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");
@@ -68,7 +78,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit,setFilter,refetch }) => {
         }
         reset();
         setSiteDataEdit(null);
-        setFilter("")
+        setSearch(null);
         refetch();
       });
   };
@@ -86,12 +96,20 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit,setFilter,refetch }) => {
           <h3 className=" text-center font-bold text-pink-600 text-xl mb-4 ">
             Existing Info of {siteId}
           </h3>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="  input-group mb-3">
+          <h5 className="text-red-500 font-bold text-xs mb-2">
+            NB:Where data already available & not need to change Please only "
+            click" that fields before update.
+          </h5>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="mb-3 border-2 border-blue-200 rounded-lg p-3"
+          >
+            <div className=" input-group ">
               <span className=" font-bold">Key Info:</span>
               <input
                 type="text"
                 defaultValue={keyStatus}
+                autoFocus
                 className=""
                 {...register("keyStatus")}
               />
@@ -102,6 +120,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit,setFilter,refetch }) => {
               <input
                 type="text"
                 defaultValue={rectifierInfo}
+                autoFocus
                 className=""
                 {...register("rectifierInfo")}
               />
@@ -112,6 +131,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit,setFilter,refetch }) => {
               <input
                 type="text"
                 defaultValue={batteryInfo}
+                autoFocus
                 className="input w-full max-w-xs"
                 {...register("batteryInfo")}
               />
@@ -128,7 +148,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit,setFilter,refetch }) => {
             <div className="flex input-group mb-3">
               <span className=" font-bold">Mobile No_2:</span>
               <input
-                type="number"
+                type="text"
                 defaultValue={mobileNo2}
                 className="input w-full max-w-xs"
                 {...register("mobileNo2")}
