@@ -99,7 +99,7 @@ const SiteDataHome = () => {
           <EditSiteData
             setSiteDataEdit={setSiteDataEdit}
             siteDataEdit={siteDataEdit}
-            setSearch={setSearch}
+            
           />
         )}
       </div>

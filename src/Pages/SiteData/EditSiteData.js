@@ -9,7 +9,7 @@ import auth from "../../firebase.init";
 const EditSiteData = ({
   siteDataEdit,
   setSiteDataEdit,
-  setSearch,
+ 
   refetch,
 }) => {
   const [user] = useAuthState(auth);
@@ -78,7 +78,7 @@ const EditSiteData = ({
         }
         reset();
         setSiteDataEdit(null);
-        setSearch(null);
+        
         refetch();
       });
   };
