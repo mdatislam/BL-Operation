@@ -36,8 +36,9 @@ const EditSiteData = ({
   let today = date.toLocaleDateString("en-CA");
 
   const onSubmit = (data) => {
+    
     const updateSiteData = {
-      keyStatus: data.keyStatus,
+      keyStatus:data.keyStatus,
       batteryBackup: data.batteryBackup,
       rectifierInfo: data.rectifierInfo,
       batteryInfo: data.batteryInfo,
@@ -104,99 +105,124 @@ const EditSiteData = ({
             onSubmit={handleSubmit(onSubmit)}
             className="mb-3 border-2 border-blue-200 rounded-lg p-3"
           >
-            <div className=" input-group ">
-              <span className=" font-bold">Key Info:</span>
-              <input
-                type="text"
-                defaultValue={keyStatus}
-                autoFocus
-                className=""
-                {...register("keyStatus")}
-              />
+            <div className=" form-control mb-3">
+              <label className="input-group">
+                <span className="font-bold">Key Info:</span>
+                <input
+                  type="text"
+                  defaultValue={keyStatus}
+                  autoFocus
+                  className="input input-bordered w-full max-w--xs"
+                  {...register("keyStatus")}
+                />
+              </label>
             </div>
 
             <div className="  input-group mb-3">
-              <span className=" font-bold">Rectifier info:</span>
-              <input
-                type="text"
-                defaultValue={rectifierInfo}
-                autoFocus
-                className=""
-                {...register("rectifierInfo")}
-              />
+              <label className="input-group">
+                <span className=" font-bold">Rectifier info:</span>
+                <input
+                  type="text"
+                  defaultValue={rectifierInfo}
+                  autoFocus
+                  className="input input-bordered w-full max-w--xs"
+                  {...register("rectifierInfo")}
+                />
+              </label>
             </div>
 
             <div className="flex input-group mb-3">
-              <span className=" font-bold">Battery Info:</span>
-              <input
-                type="text"
-                defaultValue={batteryInfo}
-                autoFocus
-                className="input w-full max-w-xs"
-                {...register("batteryInfo")}
-              />
+              <label className="input-group">
+                <span className=" font-bold">Battery Info:</span>
+                <input
+                  type="text"
+                  defaultValue={batteryInfo}
+                  autoFocus
+                  className="input input-bordered w-full max-w--xs"
+                  {...register("batteryInfo")}
+                />
+              </label>
             </div>
             <div className="flex input-group mb-3">
-              <span className=" font-bold">Mobile No_1:</span>
-              <input
-                type="text"
-                defaultValue={mobileNo1}
-                className="input w-full max-w-xs"
-                {...register("mobileNo1")}
-              />
+              <label className="input-group">
+                <span className=" font-bold">Mobile No_1:</span>
+                <input
+                  type="text"
+                  defaultValue={mobileNo1}
+                  className="input input-bordered w-full max-w--xs"
+                  {...register("mobileNo1")}
+                />
+              </label>
             </div>
             <div className="flex input-group mb-3">
-              <span className=" font-bold">Mobile No_2:</span>
-              <input
-                type="text"
-                defaultValue={mobileNo2}
-                className="input w-full max-w-xs"
-                {...register("mobileNo2")}
-              />
+              <label className="input-group">
+                <span className=" font-bold">Mobile No_2:</span>
+                <input
+                  type="text"
+                  defaultValue={mobileNo2}
+                  className="input input-bordered w-full max-w--xs"
+                  {...register("mobileNo2")}
+                />
+              </label>
             </div>
 
             <div className="flex input-group mb-3">
-              <span className=" font-bold">Battery Backup:</span>
-              <input
-                type="text"
-                defaultValue={batteryBackup}
-                className="input w-full max-w-xs"
-                {...register("batteryBackup")}
-              />
+              <label className="input-group">
+                <span className=" font-bold">Battery Backup:</span>
+                <input
+                  type="text"
+                  defaultValue={batteryBackup}
+                  className="input input-bordered w-full max-w--xs"
+                  {...register("batteryBackup")}
+                />
+              </label>
             </div>
 
             <div className="flex input-group mb-3">
-              <span className=" font-bold">UnUsed Items:</span>
-              <input
-                type="text"
-                defaultValue={unUsed}
-                className="input w-full max-w-xs"
-                {...register("unUsed")}
-              />
+              <label className="input-group">
+                <span className=" font-bold">UnUsed Items:</span>
+                <input
+                  type="text"
+                  defaultValue={unUsed}
+                  className="input input-bordered w-full max-w--xs"
+                  {...register("unUsed")}
+                />
+              </label>
             </div>
             <div className="flex input-group mb-3">
-              <span className=" font-bold">Snags List:</span>
-              <textarea
-                type="text"
-                defaultValue={snag}
-                className="input w-full max-w-xs"
-                {...register("snag")}
-              />
+              <label className="input-group">
+                <span className=" font-bold">Snags List:</span>
+                <textarea
+                  type="text"
+                  defaultValue={snag}
+                  className="input input-bordered w-full max-w--xs"
+                  {...register("snag")}
+                />
+              </label>
             </div>
-            <div className="form-control w-full max-w-xs">
-              <textarea
-                placeholder=" Remarks if have"
-                className="input input-bordered w-full max-w-xs mx-2 "
-                {...register("remark")}
-              />
-              <label className="label"></label>
+            <div className="form-control w-full max-w-xs mb-3">
+              <label className="input-group">
+                <span className=" font-bold">Remark:</span>
+                <textarea
+                  type="text"
+                  defaultValue={remark}
+                  placeholder=" Remarks if have"
+                  className="input input-bordered w-full max-w--xs "
+                  {...register("remark")}
+                />
+              </label>
             </div>
-            <input
-              type="submit"
-              className="btn btn-primary w-full max-w-xs m-2"
-              /* onClick={() => handlePgEdit(pgEdit)} */
-              value="Update Data"
-            />
+            <div className="flex flex-row justify-center items-center">
+              <input
+                type="submit"
+                className="btn btn-primary btn-sm max-w-xs m-2"
+                /* onClick={() => handlePgEdit(pgEdit)} */
+                value="Update Data"
+              />
+              <label htmlFor="siteEdit" className="btn btn-sm  btn-error">
+                Cancel
+              </label>
+            </div>
           </form>
         </div>
       </div>

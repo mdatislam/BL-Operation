@@ -47,7 +47,7 @@ const SiteDataHome = () => {
   // console.log(siteDataEdit);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-6 gap-x-2 gap-y-5 mt-2 mb-3 px-1 lg:mx-3 ">
-      <div className="lg:col-span-4 col-start-1 bg-sky-300 rounded-lg">
+      <div className="lg:col-span-4 col-start-1 bg-sky-200 rounded-lg">
         <h2 className="font-bold text-pink-500 mt-3 text-xl text-center">
           Enter Site ID To View Site Info !!
         </h2>

@@ -56,6 +56,8 @@ const SiteDataInfo = () => {
   //console.log(siteDataEdit)
 
   //console.log(selectSite)
+
+ 
   return (
     <>
       <div className="px-3 mb-2">
@@ -91,6 +93,7 @@ const SiteDataInfo = () => {
                     strokeLinejoin="round"
                     d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
                   />
+                  csv
                 </svg>
               </CSVLink>
             </div>
@@ -125,9 +128,9 @@ const SiteDataInfo = () => {
             </div>
           </div>
         </div>
-
-        <div className="overflow-x-auto">
-          <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
+       
+        <div className="overflow-x-scroll">
+          <table className="table table-compact w- border-spacing-2 border border-3 border-slate-600">
             <thead className="border-2 border-[#FFCB24]">
               <tr className="divide-x divide-blue-400 text-center">
                 <th>SNo</th>

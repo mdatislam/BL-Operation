@@ -14,3 +14,8 @@
     width: 40px;
     padding: 8px;
 }
+
+.wrapper1, .wrapper2 { width: 100%; overflow-x: scroll; overflow-y: hidden; }
+.wrapper1 { height: 20px; }
+.div1 { height: 20px; }
+.div2 { overflow: none; }
