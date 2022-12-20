@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../../firebase.init";
 
+
 const EditSiteData = ({
   siteDataEdit,
   setSiteDataEdit,
- 
   refetch,
 }) => {
   const [user] = useAuthState(auth);
@@ -36,7 +36,7 @@ const EditSiteData = ({
   let today = date.toLocaleDateString("en-CA");
 
   const onSubmit = (data) => {
-    
+
     const updateSiteData = {
       keyStatus:data.keyStatus,
       batteryBackup: data.batteryBackup,
@@ -52,36 +52,45 @@ const EditSiteData = ({
       date: today,
     };
 
-    fetch(
-      `https://bl-operation-server-production.up.railway.app/siteInfo/${siteId}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(updateSiteData),
-      }
-    )
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
+    let confrmMsg = window.confirm("Are you Check All Fields ?\n If YES press Ok otherwise Cancel");
+    if (confrmMsg) {
+      
+      fetch(
+        `https://bl-operation-server-production.up.railway.app/siteInfo/${siteId}`,
+        {
+          method: "PUT",
+          headers: {
+            "content-type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          body: JSON.stringify(updateSiteData),
         }
-        return res.json();
-      })
-      .then((siteData) => {
-        //console.log(pgData);
-        if (siteData.upsertedCount || siteData.modifiedCount) {
-          toast.success("Data Successfully Update");
-        }
-        reset();
-        setSiteDataEdit(null);
-        
-        refetch();
-      });
+      )
+        .then((res) => {
+          if (res.status === 401 || res.status === 403) {
+            toast.error("Unauthorize access");
+            signOut(auth);
+            localStorage.removeItem("accessToken");
+            navigate("/Login");
+          }
+          return res.json();
+        })
+        .then((siteData) => {
+          //console.log(pgData);
+          if (siteData.upsertedCount || siteData.modifiedCount) {
+            toast.success("Data Successfully Update");
+          }
+          reset();
+          setSiteDataEdit(null);
+
+          refetch();
+        });
+    }
+    else{
+      toast.warning("Not update, Please Click All Unchanged field")
+    }
+    
+    
   };
   return (
     <div>
@@ -213,12 +222,15 @@ const EditSiteData = ({
               </label>
             </div>
             <div className="flex flex-row justify-center items-center">
-              <input
-                type="submit"
-                className="btn btn-primary btn-sm max-w-xs m-2"
-                /* onClick={() => handlePgEdit(pgEdit)} */
-                value="Update Data"
-              />
+              {
+                <input
+                  type="submit"
+                  className="btn btn-primary btn-sm max-w-xs m-2"
+              /*    onClick={() => handlePgEdit(pgEdit) */
+                  value="Update Data"
+                />
+              }
+              
               <label htmlFor="siteEdit" className="btn btn-sm  btn-error">
                 Cancel
               </label>

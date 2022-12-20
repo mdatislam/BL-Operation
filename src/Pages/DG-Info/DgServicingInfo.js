@@ -7,8 +7,12 @@ import { CSVLink } from "react-csv";
 import DgServicingInfoRow from "./DgServicingInfoRow";
 import { signOut } from "firebase/auth";
 import auth from "../../firebase.init";
+import useAdmin from "../Hook/useAdmin";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const DgServicingInfo = () => {
+  const [user] = useAuthState(auth);
+  const [admin] = useAdmin(user);
   const [isChecked, setIsChecked] = useState("");
   const navigate = useNavigate();
   const {
@@ -103,7 +107,7 @@ const DgServicingInfo = () => {
 
         <div className="flex flex-row justify-between">
           {/* For only last service Data Export */}
-          <div className="lg:px-4 ">
+          {admin && <div className="lg:px-4 ">
             <CSVLink
               data={dgService}
               filename="dgServiceInfo"
@@ -124,13 +128,13 @@ const DgServicingInfo = () => {
                 />
               </svg>
             </CSVLink>
-          </div>
+          </div>}
         </div>
       </div>
 
-      <button className="btn btn-sm btn-error mt-4" onClick={handleMultiDelete}>
+     {admin &&  <button className="btn btn-sm btn-error mt-4" onClick={handleMultiDelete}>
         Delete
-      </button>
+      </button>}
 
       <div className="overflow-x-auto  mt-4">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">

@@ -8,8 +8,12 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { signOut } from "firebase/auth";
 import auth from "../firebase.init";
+import useAdmin from "../Pages/Hook/useAdmin";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const AllPgRunList = () => {
+  const [user] = useAuthState(auth);
+  const [admin] = useAdmin(user);
   const [searchPgRun, setSearchPgRun] = useState("");
   const [filter, setFilter] = useState([]);
   const navigate = useNavigate();
@@ -78,7 +82,7 @@ const AllPgRunList = () => {
           }}
         />
 
-        <div>
+        {admin && <div>
           <CSVLink
             data={pgRunData}
             filename="PgRunData"
@@ -100,7 +104,7 @@ const AllPgRunList = () => {
             </svg>
             &nbsp; Download
           </CSVLink>
-        </div>
+        </div>}
       </div>
       <div className="overflow-x-auto  mt-4">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">

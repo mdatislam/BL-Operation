@@ -6,8 +6,12 @@ import { CSVLink } from "react-csv";
 import { signOut } from "firebase/auth";
 import auth from "../../firebase.init";
 import DgServicePlanRows from "./DgServicePlanRows";
+import useAdmin from "../Hook/useAdmin";
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const DgServicingPlan = () => {
+  const [user] = useAuthState(auth);
+  const [admin] = useAdmin(user);
   const navigate = useNavigate();
   const { data: dgServiceInfo, isLoading } = useQuery(["DgInfoList"], () =>
     fetch(
@@ -67,7 +71,7 @@ const DgServicingPlan = () => {
           Data UPDATE
         </Link>
         {/* For Data Export */}
-        <div>
+        {admin && <div>
           <CSVLink
             data={dgServiceInfo}
             filename="dgServiceInfo"
@@ -88,7 +92,7 @@ const DgServicingPlan = () => {
               />
             </svg>
           </CSVLink>
-        </div>
+        </div>}
       </div>
 
       <div className="overflow-x-auto  mt-4">

@@ -3,6 +3,7 @@ import React from "react";
 const SearchSiteRows = ({ siteInfo, setSiteDataEdit }) => {
   const {
     siteId,
+    shareId,
     lat,
     long,
     priority,
@@ -74,18 +75,23 @@ const SearchSiteRows = ({ siteInfo, setSiteDataEdit }) => {
                   </div>
                 </div>
               </div>
+              
             </div>
 
             <div className="lg:col-start-4 col-span-3">
-              <div className="stats stats-horizontal shadow-md mt-3">
+              <div className="stats stats-vertical shadow-md mt-3">
+                <div className="stat">
+                  <div className="stat-title">Share Site ID</div>
+                  <div className="stat-des text-start  font-semibold text-[#e02acb]">
+                    {shareId}
+                  </div>
+                </div>
                 <div className="stat">
                   <div className="stat-title">Rectifier Info</div>
                   <div className="stat-des text-start  font-semibold text-[#e02acb]">
                     {rectifierInfo}
                   </div>
                 </div>
-              </div>
-              <div className="stats stats-horizontal shadow-md mt-3">
                 <div className="stat ">
                   <div className="stat-title">Un Used Items:</div>
                   <div className="stat-des text-start font-semibold text-[#e02acb]">
@@ -94,7 +100,17 @@ const SearchSiteRows = ({ siteInfo, setSiteDataEdit }) => {
                 </div>
               </div>
             </div>
-            
+          </div>
+
+          <div className="col-start-1 col-span-6">
+            <div className="stats stats-horizontal shadow-md mt-3">
+              <div className="stat ">
+                <div className="stat-title">Key Status:</div>
+                <div className="stat-des text-start font-semibold text-[#e02acb]">
+                  {keyStatus}
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="col-start-1 col-span-6">
