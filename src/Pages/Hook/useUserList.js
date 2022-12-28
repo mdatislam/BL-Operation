@@ -8,15 +8,12 @@ const useUserList = () => {
   const [userList, setUserList] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-    fetch(
-      "https://bl-operation-server-production.up.railway.app/userList/pgRunner",
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    )
+    fetch("http://localhost:5000/userList/pgRunner", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           //  toast.error("Unauthorize Access")

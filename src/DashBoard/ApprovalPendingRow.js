@@ -22,7 +22,7 @@ const ApprovalPendingRow = ({ pgRun, index, setReject, refetch }) => {
 
   const handleApprove = (id) => {
     fetch(
-      `https://bl-operation-server-production.up.railway.app/
+      `http://localhost:5000/
 
 pgRunList/${id}`,
       {

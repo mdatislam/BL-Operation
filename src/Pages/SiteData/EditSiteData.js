@@ -6,12 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../../firebase.init";
 
-
-const EditSiteData = ({
-  siteDataEdit,
-  setSiteDataEdit,
-  refetch,
-}) => {
+const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
   const [user] = useAuthState(auth);
   const {
     siteId,
@@ -36,9 +31,8 @@ const EditSiteData = ({
   let today = date.toLocaleDateString("en-CA");
 
   const onSubmit = (data) => {
-
     const updateSiteData = {
-      keyStatus:data.keyStatus,
+      keyStatus: data.keyStatus,
       batteryBackup: data.batteryBackup,
       rectifierInfo: data.rectifierInfo,
       batteryInfo: data.batteryInfo,
@@ -52,20 +46,18 @@ const EditSiteData = ({
       date: today,
     };
 
-    let confrmMsg = window.confirm("Are you Check All Fields ?\n If YES press Ok otherwise Cancel");
+    let confrmMsg = window.confirm(
+      "Are you Check All Fields ?\n If YES press Ok otherwise Cancel"
+    );
     if (confrmMsg) {
-      
-      fetch(
-        `https://bl-operation-server-production.up.railway.app/siteInfo/${siteId}`,
-        {
-          method: "PUT",
-          headers: {
-            "content-type": "application/json",
-            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-          body: JSON.stringify(updateSiteData),
-        }
-      )
+      fetch(`http://localhost:5000/siteInfo/${siteId}`, {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(updateSiteData),
+      })
         .then((res) => {
           if (res.status === 401 || res.status === 403) {
             toast.error("Unauthorize access");
@@ -85,12 +77,9 @@ const EditSiteData = ({
 
           refetch();
         });
+    } else {
+      toast.warning("Not update, Please Click All Unchanged field");
     }
-    else{
-      toast.warning("Not update, Please Click All Unchanged field")
-    }
-    
-    
   };
   return (
     <div>
@@ -226,11 +215,11 @@ const EditSiteData = ({
                 <input
                   type="submit"
                   className="btn btn-primary btn-sm max-w-xs m-2"
-              /*    onClick={() => handlePgEdit(pgEdit) */
+                  /*    onClick={() => handlePgEdit(pgEdit) */
                   value="Update Data"
                 />
               }
-              
+
               <label htmlFor="siteEdit" className="btn btn-sm  btn-error">
                 Cancel
               </label>

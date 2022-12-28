@@ -20,15 +20,12 @@ const DgServicingInfo = () => {
     isLoading,
     refetch,
   } = useQuery(["DgInfoList"], () =>
-    fetch(
-      " https://bl-operation-server-production.up.railway.app/dgServiceInfo",
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch(" http://localhost:5000/dgServiceInfo", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         // toast.error("Unauthorize Access")
         signOut(auth);
@@ -48,17 +45,14 @@ const DgServicingInfo = () => {
     //console.log(isChecked)
 
     if (isChecked) {
-      fetch(
-        `https://bl-operation-server-production.up.railway.app/dgServiceInfo/multiDelete`,
-        {
-          method: "DELETE",
-          headers: {
-            "content-type": "application/json",
-            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-          body: JSON.stringify(isChecked),
-        }
-      )
+      fetch(`http://localhost:5000/dgServiceInfo/multiDelete`, {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(isChecked),
+      })
         .then((res) => res.json())
         .then((data) => {
           //console.log(data);
@@ -107,34 +101,41 @@ const DgServicingInfo = () => {
 
         <div className="flex flex-row justify-between">
           {/* For only last service Data Export */}
-          {admin && <div className="lg:px-4 ">
-            <CSVLink
-              data={dgService}
-              filename="dgServiceInfo"
-              className="btn btn-outline btn-sm btn-primary mb-2"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
+          {admin && (
+            <div className="lg:px-4 ">
+              <CSVLink
+                data={dgService}
+                filename="dgServiceInfo"
+                className="btn btn-outline btn-sm btn-primary mb-2"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-                />
-              </svg>
-            </CSVLink>
-          </div>}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                  />
+                </svg>
+              </CSVLink>
+            </div>
+          )}
         </div>
       </div>
 
-     {admin &&  <button className="btn btn-sm btn-error mt-4" onClick={handleMultiDelete}>
-        Delete
-      </button>}
+      {admin && (
+        <button
+          className="btn btn-sm btn-error mt-4"
+          onClick={handleMultiDelete}
+        >
+          Delete
+        </button>
+      )}
 
       <div className="overflow-x-auto  mt-4">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
