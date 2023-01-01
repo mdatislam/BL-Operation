@@ -55,7 +55,7 @@ const PgRunUpdate = () => {
 
   /* today & previous date calculation */
 
-  let pre = new Date();
+  /* let pre = new Date();
   pre.setDate(pre.getDate() - 10);
   let preYear = pre.getFullYear();
   let preMonth = pre.getMonth() + 1;
@@ -66,7 +66,7 @@ const PgRunUpdate = () => {
   if (preDay < 10) {
     preDay = "0" + preDay;
   }
-  let preDate = preYear + "-" + preMonth + "-" + preDay;
+  let preDate = preYear + "-" + preMonth + "-" + preDay; */
 
   //console.log(preDate);
 
@@ -178,8 +178,8 @@ const PgRunUpdate = () => {
               <input
                 type="date"
                 placeholder="Date"
-                //min={preDate}
-                //max={today}
+                /* min={preDate}
+                max={today} */
                 defaultValue={today}
                 className="input input-bordered w-full max-w-xs"
                 {...register("date", {
