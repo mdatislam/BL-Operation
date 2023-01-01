@@ -178,8 +178,8 @@ const PgRunUpdate = () => {
               <input
                 type="date"
                 placeholder="Date"
-                min={preDate}
-                max={today}
+                //min={preDate}
+                //max={today}
                 defaultValue={today}
                 className="input input-bordered w-full max-w-xs"
                 {...register("date", {
