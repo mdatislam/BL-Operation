@@ -101,6 +101,8 @@ const FuelUpdate = () => {
       .then((fuelData) => {
         if (fuelData.insertedId) {
           toast.success("Fuel Data Successfully Update");
+        } else if (fuelData.msg) {
+          toast.error(`Warning: ${fuelData.msg}`);
         }
         reset();
         setSearch("");

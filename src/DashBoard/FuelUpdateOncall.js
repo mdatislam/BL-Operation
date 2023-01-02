@@ -77,11 +77,15 @@ const FuelUpdateOncall = () => {
           localStorage.removeItem("accessToken");
           navigate("/Login");
         }
+
         return res.json();
       })
       .then((fuelData) => {
+        //console.log(fuelData)
         if (fuelData.insertedId) {
           toast.success("Fuel Data Successfully Update");
+        } else if (fuelData.msg) {
+          toast.error(`Warning: ${fuelData.msg}`);
         }
         reset();
 

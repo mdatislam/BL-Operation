@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
 const SiteDataInfoRows = ({ data, index, admin, setSiteDataEdit }) => {
   const {
     siteId,
-    
+
     shareId,
     keyStatus,
     connectedSite,
@@ -14,7 +14,6 @@ const SiteDataInfoRows = ({ data, index, admin, setSiteDataEdit }) => {
     mobileNo2,
     date,
     updaterName,
-    
   } = data;
 
   return (
@@ -75,7 +74,7 @@ const SiteDataInfoRows = ({ data, index, admin, setSiteDataEdit }) => {
         <td>{shareId}</td>
         <td>{connectedSite}</td>
         <td>{batteryInfo}</td>
-        <td>{batteryBackup}</td>
+        <td>{batteryBackup.toFixed(2)}</td>
         <td>{rectifierInfo}</td>
         <td>{keyStatus}</td>
         <td>{mobileNo1}</td>

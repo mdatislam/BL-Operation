@@ -53,10 +53,10 @@ const PgRunUpdate = () => {
     return <Loading />;
   }
 
- /* today & previous date calculation */
+  /* today & previous date calculation */
 
-   let pre = new Date();
-  pre.setDate(pre.getDate() - 10);
+  let pre = new Date();
+  pre.setDate(pre.getDate() - 2);
   let preYear = pre.getFullYear();
   let preMonth = pre.getMonth() + 1;
   if (preMonth < 10) {
@@ -66,7 +66,7 @@ const PgRunUpdate = () => {
   if (preDay < 10) {
     preDay = "0" + preDay;
   }
-  let preDate = preYear + "-" + preMonth + "-" + preDay; 
+  let preDate = preYear + "-" + preMonth + "-" + preDay;
 
   //console.log(preDate);
 
