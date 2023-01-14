@@ -20,15 +20,12 @@ const DgServicingInfo = () => {
     isLoading,
     refetch,
   } = useQuery(["DgInfoList"], () =>
-    fetch(
-      " https://bl-operation-server-production.up.railway.app/dgServiceInfo",
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch(" http://localhost:5000/dgServiceInfo", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         // toast.error("Unauthorize Access")
         signOut(auth);
@@ -48,17 +45,14 @@ const DgServicingInfo = () => {
     //console.log(isChecked)
 
     if (isChecked) {
-      fetch(
-        `https://bl-operation-server-production.up.railway.app/dgServiceInfo/multiDelete`,
-        {
-          method: "DELETE",
-          headers: {
-            "content-type": "application/json",
-            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-          body: JSON.stringify(isChecked),
-        }
-      )
+      fetch(`http://localhost:5000/dgServiceInfo/multiDelete`, {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(isChecked),
+      })
         .then((res) => res.json())
         .then((data) => {
           //console.log(data);
@@ -78,12 +72,8 @@ const DgServicingInfo = () => {
   //console.log(isChecked);
   return (
     <div className="mt-8 px-2 mb-4">
-      <h2 className="flex rounded-lg  text-white bg-[#575fec] mb-4 h-12 justify-center items-center">
-        Latest DG Servicing Record
-      </h2>
-
-      <div className="flex flex-col flex-nowrap lg:flex-row justify-between border-2 py-4">
-        <div className="flex justify-between gap-2">
+      <div className="flex flex-col flex-nowrap lg:flex-row justify-between items-center border-2 py-4">
+        <div className="flex justify-between gap-2 px-2">
           <Link
             to="/DgAllServicing"
             className="btn  btn-sm btn-outline btn-info  mb-2"
@@ -105,7 +95,27 @@ const DgServicingInfo = () => {
           </Link>
         </div>
 
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-row justify-between items-center gap-x-3">
+          <div>
+            {admin && (
+              <button
+                className="btn btn-sm btn-error"
+                onClick={handleMultiDelete}
+              >
+                Delete
+              </button>
+            )}
+          </div>
+          <div>
+            {admin && (
+              <Link
+                to="/ServiceMaterial"
+                className="btn  btn-sm btn-outline btn-info"
+              >
+                Service-Material
+              </Link>
+            )}
+          </div>
           {/* For only last service Data Export */}
           {admin && (
             <div className="lg:px-4 ">
@@ -134,14 +144,9 @@ const DgServicingInfo = () => {
         </div>
       </div>
 
-      {admin && (
-        <button
-          className="btn btn-sm btn-error mt-4"
-          onClick={handleMultiDelete}
-        >
-          Delete
-        </button>
-      )}
+      <h2 className="flex rounded-lg  text-white bg-[#575fec] mb-4 h-12 justify-center items-center text-xl mt-4">
+        Latest DG Servicing Record
+      </h2>
 
       <div className="overflow-x-auto  mt-4">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">

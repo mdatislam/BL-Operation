@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { signOut } from "firebase/auth";
 import auth from "../../firebase.init";
 //import useUserList from "../Hook/useUserList";
-import RectifierInfoUpdate from "./RectifierInfoUpdate";
+//import RectifierInfoUpdate from "./RectifierInfoUpdate";
 
 const UserList = () => {
   //const [userList]=useUserList()
@@ -18,7 +18,7 @@ const UserList = () => {
 
   const navigate = useNavigate();
   const { data: users, isLoading } = useQuery(["list"], () =>
-    fetch(" https://bl-operation-server-production.up.railway.app/userList", {
+    fetch(" http://localhost:5000/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -38,7 +38,7 @@ const UserList = () => {
     return <Loading />;
   }
   return (
-    <div className="px-2 lg:px-4 my-8">
+    <div className="px-2 lg:px-4 my-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
         <div className="overflow-x-auto mt-16 px-2">
           <div className="grid h-12 card bg-[#6495ED] rounded-box place-items-center mb-4">
@@ -73,9 +73,6 @@ const UserList = () => {
         </div>
         <div className="grid grid-cols-1 gap-4 ">
           <div className="card w-full bg-base-100 shadow-xl mt-16">
-            {/* <figure className="px-10 pt-10">
-              <img src={newUser} alt="PG Pic" className="rounded-xl" />
-            </figure> */}
             <div className="card-body">
               <div className="stats stats-vertical lg:stats-horizontal shadow bg-[#6495ED] text-primary-content">
                 <div className="stat">
@@ -113,33 +110,41 @@ const UserList = () => {
                   </div>
                 </div>
               </div>
-              <RectifierInfo />
-              <div className="card w-96  text-white bg-[#6495ED] mt-8">
-                <div className="card-body items-center text-center">
-                  <h2 className="card-title stat-title">To Show </h2>
-                  <p>Approval Pending PG Run Record .</p>
-                  <div className="card-actions justify-end">
+
+              {/* site data & Pending pgRun Approval */}
+              <div className="stats stats-vertical lg:stats-horizontal shadow bg-[#191b1f] text-primary-content mt-2">
+                <div className="stat">
+                  <div className="stat-title">To show & Update </div>
+                  <div className="stat-value">Site Data </div>
+
+                  <div className="stat-actions">
+                    <Link
+                      to="/siteDataUpdate"
+                      className="btn btn-secondary mb-2"
+                    >
+                      Click Me
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="divider lg:divider-horizontal"></div>
+
+                <div className="stat">
+                  <div className="stat-title">
+                    To View Approval Pending PG Run{" "}
+                  </div>
+                  <div className="stat-value">Record</div>
+                  <div className="stat-actions">
                     <Link to="/PendingPgRun" className="btn btn-secondary mb-2">
                       Go-List
                     </Link>
                   </div>
                 </div>
               </div>
-              {/*  Site data record */}
-              <div className="card w-96  text-white bg-[#6495ED] mt-8">
-                <div className="card-body items-center text-center">
-                  <h2 className="card-title stat-title">To Show & Upload </h2>
-                  <p>Site Data Base .</p>
-                  <div className="card-actions justify-end">
-                    <Link
-                      to="/siteDataUpdate"
-                      className="btn btn-secondary mb-2"
-                    >
-                      Site-Data
-                    </Link>
-                  </div>
-                </div>
-              </div>
+              <RectifierInfo />
+
+              {/*  Lub oil Record */}
+              <div>Atik</div>
             </div>
           </div>
         </div>

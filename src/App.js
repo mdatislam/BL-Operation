@@ -43,6 +43,7 @@ import AllFuelListOncall from "./PgRunInfo/AllFuelListOncall";
 import SnagList from './Pages/SiteData/SnagList';
 import SiteDataInfo from "./Pages/SiteData/SiteDataInfo";
 import SiteDataHome from "./Pages/SiteData/SiteDataHome";
+import ServiceMaterial from "./Pages/DG-Info/ServiceMaterial";
 
 
 
@@ -108,6 +109,7 @@ function App() {
           <Route path="/RectifierUpdate" element={<RectifierInfoUpdate />} />
           <Route path="/Signup" element={<SignUp />}></Route>
           <Route path="/PendingPgRun" element={<ApprovalPendingList />} />
+          <Route path="/ServiceMaterial" element={<ServiceMaterial />} />
 
           <Route path="/siteDataUpdate" element={<FetchExcelToJson />} />
         </Route>

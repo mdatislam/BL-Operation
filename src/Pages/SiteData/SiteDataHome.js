@@ -26,9 +26,7 @@ const SiteDataHome = () => {
   const handleSearch = (site) => {
     //console.log(site)
     if (search !== "") {
-      fetch(
-        `https://bl-operation-server-production.up.railway.app/searchSite?site=${site}`
-      )
+      fetch(`http://localhost:5000/searchSite?site=${site}`)
         .then((res) => res.json())
         .then((data) => {
           //console.log(data);
@@ -79,17 +77,14 @@ const SiteDataHome = () => {
       date: today,
     };
 
-    fetch(
-      `https://bl-operation-server-production.up.railway.app/siteInfo/${data.siteId}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(newSiteInfo),
-      }
-    )
+    fetch(`http://localhost:5000/siteInfo/${data.siteId}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(newSiteInfo),
+    })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");
@@ -110,7 +105,7 @@ const SiteDataHome = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-6 gap-x-2 gap-y-5 mt-2 mb-3 px-1 lg:mx-3 ">
+    <div className="grid grid-cols-1 lg:grid-cols-6 gap-x-2 gap-y-5 mt-2 mb-3  lg:mx-3 ">
       <div className="lg:col-span-4 col-start-1 bg-sky-200 rounded-lg">
         <h2 className="font-bold text-pink-500 mt-3 text-xl text-center">
           To View Site Info !!
