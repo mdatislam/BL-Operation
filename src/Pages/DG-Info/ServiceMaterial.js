@@ -89,9 +89,45 @@ const ServiceMaterial = () => {
     })
   );
   //console.log(LubOilRecord);
-  if (isLoading) {
+
+  /*  All DG service record */
+  const {
+    data: dgAllServiceInfo,
+    isLoading2,
+   
+  } = useQuery(["DgAllInfoList"], () =>
+    fetch(" http://localhost:5000/dgAllServiceInfo", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
+      if (res.status === 401 || res.status === 403) {
+        //  toast.error("Unauthorize Access")
+        signOut(auth);
+        localStorage.removeItem("accessToken");
+        navigate("/Login");
+      }
+      return res.json();
+    })
+  );
+  if (isLoading || isLoading2) {
     return <Loading />;
   }
+
+  const LubOil = LubOilRecord?.map((quantity) => quantity.receivingQuantity);
+  const totalLubOil = LubOil?.reduce(
+    (previous, current) => previous + parseFloat(current),
+    0
+  );
+
+  /*   const max = Math.max(...LubOilRecord);
+ const index = LubOilRecord.indexOf(max);
+ console.log(index); */
+
+  const totalServicing = dgAllServiceInfo.length;
+  const totalConsumeLubOil = parseInt(totalServicing * 10)
+  const Balance = (totalLubOil-totalConsumeLubOil)/5
 
   return (
     <div className="px-2 lg:px-4 my-4">
@@ -99,7 +135,7 @@ const ServiceMaterial = () => {
         <div className=" col-span-2 overflow-x-auto mt-8 px-2">
           <div className="grid h-12 card bg-[#6495ED] rounded-box place-items-center mb-4">
             <h2 className="text-[#FFFFFF] card-title font-bold ">
-              Lub-Oil Receiving Record
+              Lub-Oil Receiving Record.
             </h2>
           </div>
           <table className="table table-compact w-full ">
@@ -128,11 +164,13 @@ const ServiceMaterial = () => {
               </tr>
             </thead>
             <tbody>
-              {
-                LubOilRecord.map((lubOil, index) => (<ServiceMaterialRow
-                  key={lubOil._id} lubOil={lubOil} index={index}
-                />))
-             }
+              {LubOilRecord.map((lubOil, index) => (
+                <ServiceMaterialRow
+                  key={lubOil._id}
+                  lubOil={lubOil}
+                  index={index}
+                />
+              ))}
             </tbody>
           </table>
         </div>
@@ -165,6 +203,7 @@ const ServiceMaterial = () => {
               Lub-Oil
             </button>
           </div>
+
           {visible && (
             <div>
               <div className="card w-full bg-base-300 shadow-xl mt-2">
@@ -282,6 +321,29 @@ const ServiceMaterial = () => {
               </div>
             </div>
           )}
+
+          {/* calculation part */}
+          <div className="text-center">
+            <div className=" mt-3 bg-primary text-primary-content stats stats-vertical lg:stats-horizontal shadow">
+              <div className="stat">
+                <div className="stat-title">Total Lub-Oil</div>
+                <div className="stat-value">{totalLubOil}</div>
+                <div className="stat-desc">Liter</div>
+              </div>
+
+              <div className="stat">
+                <div className="stat-title">Total Service</div>
+                <div className="stat-value">{totalServicing}</div>
+                <div className="stat-desc">sites</div>
+              </div>
+
+              <div className="stat">
+                <div className="stat-title">Balance</div>
+                <div className="stat-value">{Balance}</div>
+                <div className="stat-desc">Can</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
