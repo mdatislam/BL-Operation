@@ -18,11 +18,12 @@ const ApprovalPendingRow = ({ pgRun, index, setReject, refetch }) => {
     onCallName,
     status,
     pgRunnerName,
+    remark,
   } = pgRun;
 
   const handleApprove = (id) => {
     fetch(
-      `http://localhost:5000/
+      `https://bl-operation-server-production.up.railway.app/
 
 pgRunList/${id}`,
       {
@@ -68,6 +69,7 @@ pgRunList/${id}`,
       <td>{fuelConsume}</td>
       <td>{onCallName}</td>
       <td>{pgRunnerName}</td>
+      <td>{remark}</td>
 
       <td>
         <label

@@ -18,7 +18,7 @@ const PgRunList = () => {
 
   const [receiveFuel, setReceiveFuel] = useState([]);
   useEffect(() => {
-    const url = ` http://localhost:5000/fuelList?email=${user.email}`;
+    const url = ` https://bl-operation-server-production.up.railway.app/fuelList?email=${user.email}`;
     //console.log(url)
     fetch(url, {
       method: "GET",
@@ -43,12 +43,15 @@ const PgRunList = () => {
     isLoading,
     refetch,
   } = useQuery(["list"], () =>
-    fetch(`  http://localhost:5000/pgRunAllList?email=${user.email}`, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => res.json())
+    fetch(
+      `  https://bl-operation-server-production.up.railway.app/pgRunAllList?email=${user.email}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => res.json())
   );
 
   if (isLoading) {
@@ -138,7 +141,7 @@ const PgRunList = () => {
           }}
         />
       </div>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto px-2">
         <table className="table table-compact w-full">
           <thead className="border-2 border-[#FFCB24]">
             <tr className="divide-x divide-blue-400 text-center">

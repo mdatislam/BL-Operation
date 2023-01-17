@@ -9,11 +9,13 @@ import { toast } from "react-toastify";
 import auth from "../../firebase.init";
 import useAdmin from "../Hook/useAdmin";
 import Loading from "../SharedPage/Loading";
+import LubOilDel from "./LubOilDel";
 import ServiceMaterialRow from "./ServiceMaterialRow";
 
 const ServiceMaterial = () => {
   const [user] = useAuthState(auth);
   const [visible, setVisible] = useState(false);
+  const [lubOilDel, setLubOilDel] = useState([]);
   //const [admin] = useAdmin(user);
   const navigate = useNavigate();
 
@@ -40,7 +42,7 @@ const ServiceMaterial = () => {
       date: today,
     };
 
-    fetch(`http://localhost:5000/lubOil`, {
+    fetch(`https://bl-operation-server-production.up.railway.app/lubOil`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -73,7 +75,7 @@ const ServiceMaterial = () => {
     isLoading,
     refetch,
   } = useQuery(["LubOilRecord"], () =>
-    fetch(" http://localhost:5000/lubOil", {
+    fetch(" https://bl-operation-server-production.up.railway.app/lubOil", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -91,25 +93,26 @@ const ServiceMaterial = () => {
   //console.log(LubOilRecord);
 
   /*  All DG service record */
-  const {
-    data: dgAllServiceInfo,
-    isLoading2,
-   
-  } = useQuery(["DgAllInfoList"], () =>
-    fetch(" http://localhost:5000/dgAllServiceInfo", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
+  const { data: dgAllServiceInfo, isLoading2 } = useQuery(
+    ["DgAllInfoList"],
+    () =>
+      fetch(
+        " https://bl-operation-server-production.up.railway.app/dgAllServiceInfo",
+        {
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      ).then((res) => {
+        if (res.status === 401 || res.status === 403) {
+          //  toast.error("Unauthorize Access")
+          signOut(auth);
+          localStorage.removeItem("accessToken");
+          navigate("/Login");
+        }
+        return res.json();
+      })
   );
   if (isLoading || isLoading2) {
     return <Loading />;
@@ -125,9 +128,9 @@ const ServiceMaterial = () => {
  const index = LubOilRecord.indexOf(max);
  console.log(index); */
 
-  const totalServicing = dgAllServiceInfo.length;
-  const totalConsumeLubOil = parseInt(totalServicing * 10)
-  const Balance = (totalLubOil-totalConsumeLubOil)/5
+  const totalServicing = dgAllServiceInfo?.length;
+  const totalConsumeLubOil = parseInt(totalServicing * 10);
+  const Balance = (totalLubOil - totalConsumeLubOil) / 5;
 
   return (
     <div className="px-2 lg:px-4 my-4">
@@ -169,10 +172,18 @@ const ServiceMaterial = () => {
                   key={lubOil._id}
                   lubOil={lubOil}
                   index={index}
+                  setLubOilDel={setLubOilDel}
                 />
               ))}
             </tbody>
           </table>
+          {lubOilDel && (
+            <LubOilDel
+              lubOilDel={lubOilDel}
+              setLubOilDel={setLubOilDel}
+              refetch={refetch}
+            />
+          )}
         </div>
         {/* 2nd Part */}
         <div className="mt-8 order-first md:order-last">

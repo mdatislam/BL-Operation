@@ -14,12 +14,15 @@ const ProfilePic = () => {
 
   const navigate = useNavigate();
   const { data: users, isLoading } = useQuery(["List", user], () =>
-    fetch(`http://localhost:5000/userList/users?email=${user.email}`, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
+    fetch(
+      `https://bl-operation-server-production.up.railway.app/userList/users?email=${user.email}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);

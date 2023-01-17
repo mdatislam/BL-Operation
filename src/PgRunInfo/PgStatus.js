@@ -40,14 +40,17 @@ const PgStatus = () => {
       date: today,
     };
 
-    fetch(`http://localhost:5000/pgList/${data.pgno}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(PgData),
-    })
+    fetch(
+      `https://bl-operation-server-production.up.railway.app/pgList/${data.pgno}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(PgData),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");
@@ -72,7 +75,7 @@ const PgStatus = () => {
     isLoading,
     refetch,
   } = useQuery(["pgList"], () =>
-    fetch(" http://localhost:5000/pgList", {
+    fetch(" https://bl-operation-server-production.up.railway.app/pgList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -92,11 +95,32 @@ const PgStatus = () => {
     return <Loading />;
   }
 
+  const goodCondition = pgList?.filter((good) => good.pgStatus === "Good");
+  const goodPg = goodCondition?.length;
+  const faultyPg = pgList?.length - goodPg;
+
   return (
     <div className="mt-8 px-4 mb-4">
       <h2 className="grow  bg-[#7fed64] rounded-lg text-center h-12 py-2 align-text-bottom text-lg font-bold text-white">
-        Available PG Status
+        Available PG Status.
       </h2>
+      {/*  Status Summary */}
+      <div className="text-center">
+        <div className="stats shadow-lg bg-base-300 mt-4 mb-2">
+          <div className="stat text-center">
+            <div className="stat-title font-bold">Good Condition</div>
+            <div className="stat-value text-primary ">{goodPg}</div>
+            <div className="stat-desc">nos</div>
+          </div>
+          <div className="stat text-center">
+            <div className="stat-title font-bold">Faulty</div>
+            <div className="stat-value text-error">{faultyPg}</div>
+            <div className="stat-desc">nos</div>
+          </div>
+        </div>
+      </div>
+
+      {/* PG Add Part */}
       <div className="stat-actions">
         <button
           className="btn btn-sm btn-outline btn-primary"

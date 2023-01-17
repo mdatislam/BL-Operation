@@ -57,7 +57,7 @@ const PgRunRows = ({ pgRun, index, refetch, setDelPg }) => {
         <td>{pgRunnerName}</td>
         <td>{status}</td>
         <th>
-          <label
+          {status !== "Approved" ?<label
             htmlFor="deletePgRun"
             className="btn btn-link text-red-500"
             onClick={() => setDelPg(pgRun)}
@@ -76,7 +76,7 @@ const PgRunRows = ({ pgRun, index, refetch, setDelPg }) => {
                 d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-          </label>
+          </label>:""}
 
           {/* <label htmlFor="editPgRun" className="btn btn-link">
             <svg
