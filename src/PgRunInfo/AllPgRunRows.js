@@ -10,15 +10,13 @@ const AllPgRunRows = ({pgRun,index}) => {
       pgRunDuration,
       fuelConsume,
       onCallName,
-      status,
       pgRunnerName,
-      remark,
+     
     } = pgRun;
     return (
       <>
         <tr className="border-2 border-[#F0D786]  hover divide-x divide-gray-300 text-center">
-          <th>{index + 1}</th>
-
+          <td>{index+1}</td>
           <td>{date}</td>
           <td>{site}</td>
           <td>{pgNo}</td>
