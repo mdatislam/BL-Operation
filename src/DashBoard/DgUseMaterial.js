@@ -56,7 +56,7 @@ const DgUseMaterial = () => {
     };
 
     fetch(
-      `https://bl-operation-server-production.up.railway.app/
+      `http://localhost:5000/
 
 dgMaterialInfo/`,
       {

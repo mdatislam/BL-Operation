@@ -42,7 +42,7 @@ const ServiceMaterial = () => {
       date: today,
     };
 
-    fetch(`https://bl-operation-server-production.up.railway.app/lubOil`, {
+    fetch(`http://localhost:5000/lubOil`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -75,7 +75,7 @@ const ServiceMaterial = () => {
     isLoading,
     refetch,
   } = useQuery(["LubOilRecord"], () =>
-    fetch(" https://bl-operation-server-production.up.railway.app/lubOil", {
+    fetch(" http://localhost:5000/lubOil", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -96,15 +96,12 @@ const ServiceMaterial = () => {
   const { data: dgAllServiceInfo, isLoading2 } = useQuery(
     ["DgAllInfoList"],
     () =>
-      fetch(
-        " https://bl-operation-server-production.up.railway.app/dgAllServiceInfo",
-        {
-          method: "GET",
-          headers: {
-            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      ).then((res) => {
+      fetch(" http://localhost:5000/dgAllServiceInfo", {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }).then((res) => {
         if (res.status === 401 || res.status === 403) {
           //  toast.error("Unauthorize Access")
           signOut(auth);

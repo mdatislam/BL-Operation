@@ -11,15 +11,12 @@ import auth from "../../firebase.init";
 const DgUseMaterialList = () => {
   const navigate = useNavigate();
   const { data: dgMaterialInfo, isLoading } = useQuery(["DgInfoList"], () =>
-    fetch(
-      " https://bl-operation-server-production.up.railway.app/dgMaterialInfo",
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch(" http://localhost:5000/dgMaterialInfo", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);

@@ -24,7 +24,7 @@ const PgRunUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("https://bl-operation-server-production.up.railway.app/userList", {
+    fetch("http://localhost:5000/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -40,7 +40,7 @@ const PgRunUpdate = () => {
     })
   );
   const { data: rectifiers, isLoading3 } = useQuery(["rectifierList"], () =>
-    fetch("https://bl-operation-server-production.up.railway.app/rectifier", {
+    fetch("http://localhost:5000/rectifier", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -56,7 +56,7 @@ const PgRunUpdate = () => {
   /* today & previous date calculation */
 
   let pre = new Date();
-  pre.setDate(pre.getDate() - 15);
+  pre.setDate(pre.getDate() -2);
   let preYear = pre.getFullYear();
   let preMonth = pre.getMonth() + 1;
   if (preMonth < 10) {
@@ -125,7 +125,7 @@ const PgRunUpdate = () => {
       remark: data.remark,
     };
     //console.log(PgRunData);
-    fetch("  https://bl-operation-server-production.up.railway.app/pgRunData", {
+    fetch("  http://localhost:5000/pgRunData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
