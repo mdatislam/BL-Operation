@@ -7,7 +7,7 @@ const useSiteList = () => {
   const [siteList, setSiteList] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-    fetch("http://localhost:5000/siteInfo", {
+    fetch("https://itnuthosting.com/siteInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

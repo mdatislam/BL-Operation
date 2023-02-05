@@ -28,7 +28,7 @@ const SiteDataInfo = () => {
     isLoading,
     refetch,
   } = useQuery(["siteInfo", [page, size]], () =>
-    fetch(`http://localhost:5000/siteData?page=${page}&size=${size}`, {
+    fetch(`https://itnuthosting.com/siteData?page=${page}&size=${size}`, {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

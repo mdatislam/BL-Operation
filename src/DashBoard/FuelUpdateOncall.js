@@ -19,7 +19,7 @@ const FuelUpdateOncall = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("http://localhost:5000/userList", {
+    fetch("https://itnuthosting.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -59,7 +59,7 @@ const FuelUpdateOncall = () => {
     };
 
     //console.log(receive);
-    fetch("http://localhost:5000/fuelDataOncall", {
+    fetch("https://itnuthosting.com/fuelDataOncall", {
       method: "POST",
       headers: {
         "content-type": "application/json",

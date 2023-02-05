@@ -42,7 +42,7 @@ const ServiceMaterial = () => {
       date: today,
     };
 
-    fetch(`http://localhost:5000/lubOil`, {
+    fetch(`https://itnuthosting.com/lubOil`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -75,7 +75,7 @@ const ServiceMaterial = () => {
     isLoading,
     refetch,
   } = useQuery(["LubOilRecord"], () =>
-    fetch(" http://localhost:5000/lubOil", {
+    fetch(" https://itnuthosting.com/lubOil", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -96,7 +96,7 @@ const ServiceMaterial = () => {
   const { data: dgAllServiceInfo, isLoading2 } = useQuery(
     ["DgAllInfoList"],
     () =>
-      fetch(" http://localhost:5000/dgAllServiceInfo", {
+      fetch(" https://itnuthosting.com/dgAllServiceInfo", {
         method: "GET",
         headers: {
           authorization: `Bearer ${localStorage.getItem("accessToken")}`,

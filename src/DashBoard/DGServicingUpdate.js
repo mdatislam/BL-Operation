@@ -26,7 +26,7 @@ const DGServicingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("http://localhost:5000/dgServiceInfo", {
+    fetch("https://itnuthosting.com/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -112,7 +112,7 @@ const DGServicingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`http://localhost:5000/dgAllServicing`, {
+    fetch(`https://itnuthosting.com/dgAllServicing`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -136,7 +136,7 @@ const DGServicingUpdate = () => {
         }
       });
 
-    fetch(`http://localhost:5000/dgServiceInfo/${siteID}`, {
+    fetch(`https://itnuthosting.com/dgServiceInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

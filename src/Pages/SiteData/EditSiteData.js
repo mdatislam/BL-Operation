@@ -50,7 +50,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
       "Are you Check All Fields ?\n If YES press Ok otherwise Cancel"
     );
     if (confrmMsg) {
-      fetch(`http://localhost:5000/siteInfo/${siteId}`, {
+      fetch(`https://itnuthosting.com/siteInfo/${siteId}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json",

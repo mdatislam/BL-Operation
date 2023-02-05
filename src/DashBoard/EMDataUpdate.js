@@ -28,7 +28,7 @@ const EMDataUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("http://localhost:5000/emInfo", {
+    fetch("https://itnuthosting.com/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -103,7 +103,7 @@ const EMDataUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`http://localhost:5000/emInfo/${siteID}`, {
+    fetch(`https://itnuthosting.com/emInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

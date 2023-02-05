@@ -20,7 +20,7 @@ const DgServicingInfo = () => {
     isLoading,
     refetch,
   } = useQuery(["DgInfoList"], () =>
-    fetch(" http://localhost:5000/dgServiceInfo", {
+    fetch(" https://itnuthosting.com/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -45,7 +45,7 @@ const DgServicingInfo = () => {
     //console.log(isChecked)
 
     if (isChecked) {
-      fetch(`http://localhost:5000/dgServiceInfo/multiDelete`, {
+      fetch(`https://itnuthosting.com/dgServiceInfo/multiDelete`, {
         method: "DELETE",
         headers: {
           "content-type": "application/json",

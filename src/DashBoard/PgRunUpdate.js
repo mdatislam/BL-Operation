@@ -24,7 +24,7 @@ const PgRunUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("http://localhost:5000/userList", {
+    fetch("https://itnuthosting.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -40,7 +40,7 @@ const PgRunUpdate = () => {
     })
   );
   const { data: rectifiers, isLoading3 } = useQuery(["rectifierList"], () =>
-    fetch("http://localhost:5000/rectifier", {
+    fetch("https://itnuthosting.com/rectifier", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -56,7 +56,7 @@ const PgRunUpdate = () => {
   /* today & previous date calculation */
 
   let pre = new Date();
-  pre.setDate(pre.getDate() -2);
+  pre.setDate(pre.getDate() - 2);
   let preYear = pre.getFullYear();
   let preMonth = pre.getMonth() + 1;
   if (preMonth < 10) {
@@ -125,7 +125,7 @@ const PgRunUpdate = () => {
       remark: data.remark,
     };
     //console.log(PgRunData);
-    fetch("  http://localhost:5000/pgRunData", {
+    fetch("  https://itnuthosting.com/pgRunData", {
       method: "POST",
       headers: {
         "content-type": "application/json",

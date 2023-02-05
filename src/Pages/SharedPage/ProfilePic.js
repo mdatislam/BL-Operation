@@ -14,7 +14,7 @@ const ProfilePic = () => {
 
   const navigate = useNavigate();
   const { data: users, isLoading } = useQuery(["List", user], () =>
-    fetch(`http://localhost:5000/userList/users?email=${user.email}`, {
+    fetch(`https://itnuthosting.com/userList/users?email=${user.email}`, {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

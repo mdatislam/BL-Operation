@@ -56,7 +56,7 @@ const DgUseMaterial = () => {
     };
 
     fetch(
-      `http://localhost:5000/
+      `https://itnuthosting.com/
 
 dgMaterialInfo/`,
       {

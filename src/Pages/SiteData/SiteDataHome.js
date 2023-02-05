@@ -26,7 +26,7 @@ const SiteDataHome = () => {
   const handleSearch = (site) => {
     //console.log(site)
     if (search !== "") {
-      fetch(`http://localhost:5000/searchSite?site=${site}`)
+      fetch(`https://itnuthosting.com/searchSite?site=${site}`)
         .then((res) => res.json())
         .then((data) => {
           //console.log(data);
@@ -77,7 +77,7 @@ const SiteDataHome = () => {
       date: today,
     };
 
-    fetch(`http://localhost:5000/siteInfo/${data.siteId}`, {
+    fetch(`https://itnuthosting.com/siteInfo/${data.siteId}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

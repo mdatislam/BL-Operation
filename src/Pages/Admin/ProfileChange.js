@@ -53,7 +53,7 @@ const ProfileChange = ({ profile, setProfile }) => {
       url: imgUrl,
     };
 
-    fetch(`http://localhost:5000/profileChange/${email}`, {
+    fetch(`https://itnuthosting.com/profileChange/${email}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

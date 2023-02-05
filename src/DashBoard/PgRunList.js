@@ -18,7 +18,7 @@ const PgRunList = () => {
 
   const [receiveFuel, setReceiveFuel] = useState([]);
   useEffect(() => {
-    const url = ` http://localhost:5000/fuelList?email=${user.email}`;
+    const url = ` https://itnuthosting.com/fuelList?email=${user.email}`;
     //console.log(url)
     fetch(url, {
       method: "GET",
@@ -43,7 +43,7 @@ const PgRunList = () => {
     isLoading,
     refetch,
   } = useQuery(["list"], () =>
-    fetch(`  http://localhost:5000/pgRunAllList?email=${user.email}`, {
+    fetch(`  https://itnuthosting.com/pgRunAllList?email=${user.email}`, {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
