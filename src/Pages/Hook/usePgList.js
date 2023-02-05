@@ -9,7 +9,7 @@ const usePgList = () => {
   const [PgList, setPgList] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-    fetch("https://itnuthosting.com/PgList", {
+    fetch("https://bl-operation-server-production.up.railway.app/PgList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

@@ -26,7 +26,7 @@ const FuelUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("https://itnuthosting.com/userList", {
+    fetch("https://bl-operation-server-production.up.railway.app/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -81,7 +81,7 @@ const FuelUpdate = () => {
     };
 
     //console.log(fuelData);
-    fetch("https://itnuthosting.com/fuelData", {
+    fetch("https://bl-operation-server-production.up.railway.app/fuelData", {
       method: "POST",
       headers: {
         "content-type": "application/json",

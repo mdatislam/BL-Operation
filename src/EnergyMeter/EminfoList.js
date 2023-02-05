@@ -13,7 +13,7 @@ const EminfoList = () => {
   const [filter, setFilter] = useState([]);
   const navigate = useNavigate();
   const { data: EmInfo, isLoading } = useQuery(["EmInfoList"], () =>
-    fetch("https://itnuthosting.com/emInfo", {
+    fetch("https://bl-operation-server-production.up.railway.app/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

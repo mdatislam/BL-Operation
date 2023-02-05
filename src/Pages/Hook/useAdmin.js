@@ -7,12 +7,15 @@ const useAdmin = (user) => {
   useEffect(() => {
     const email = user.email;
     if (email) {
-      fetch(`https://itnuthosting.com/user/admin/${email}`, {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
+      fetch(
+        `https://bl-operation-server-production.up.railway.app/user/admin/${email}`,
+        {
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           setAdmin(data.admin);

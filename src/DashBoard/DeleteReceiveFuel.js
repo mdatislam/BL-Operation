@@ -7,7 +7,7 @@ const DeleteReceiveFuel = ({ delFuel, refetch, setDelFuel }) => {
   const handleDelete = (id) => {
     console.log(id);
     fetch(
-      `https://itnuthosting.com/
+      `https://bl-operation-server-production.up.railway.app/
 
 receivedFuel/${id}`,
       {

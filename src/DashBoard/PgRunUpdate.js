@@ -24,7 +24,7 @@ const PgRunUpdate = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("https://itnuthosting.com/userList", {
+    fetch("https://bl-operation-server-production.up.railway.app/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -40,7 +40,7 @@ const PgRunUpdate = () => {
     })
   );
   const { data: rectifiers, isLoading3 } = useQuery(["rectifierList"], () =>
-    fetch("https://itnuthosting.com/rectifier", {
+    fetch("https://bl-operation-server-production.up.railway.app/rectifier", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -125,7 +125,7 @@ const PgRunUpdate = () => {
       remark: data.remark,
     };
     //console.log(PgRunData);
-    fetch("  https://itnuthosting.com/pgRunData", {
+    fetch("  https://bl-operation-server-production.up.railway.app/pgRunData", {
       method: "POST",
       headers: {
         "content-type": "application/json",

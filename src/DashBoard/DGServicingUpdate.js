@@ -26,12 +26,15 @@ const DGServicingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("https://itnuthosting.com/dgServiceInfo", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
+    fetch(
+      "https://bl-operation-server-production.up.railway.app/dgServiceInfo",
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);
@@ -112,14 +115,17 @@ const DGServicingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`https://itnuthosting.com/dgAllServicing`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(dgServicingData),
-    })
+    fetch(
+      `https://bl-operation-server-production.up.railway.app/dgAllServicing`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(dgServicingData),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           // toast.error("Unauthorize access");
@@ -136,14 +142,17 @@ const DGServicingUpdate = () => {
         }
       });
 
-    fetch(`https://itnuthosting.com/dgServiceInfo/${siteID}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(dgServicingData),
-    })
+    fetch(
+      `https://bl-operation-server-production.up.railway.app/dgServiceInfo/${siteID}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(dgServicingData),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           // toast.error("Unauthorize access");

@@ -19,7 +19,7 @@ const FuelUpdateOncall = () => {
   } = useForm();
 
   const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("https://itnuthosting.com/userList", {
+    fetch("https://bl-operation-server-production.up.railway.app/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -59,14 +59,17 @@ const FuelUpdateOncall = () => {
     };
 
     //console.log(receive);
-    fetch("https://itnuthosting.com/fuelDataOncall", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(fuelData),
-    })
+    fetch(
+      "https://bl-operation-server-production.up.railway.app/fuelDataOncall",
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(fuelData),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");

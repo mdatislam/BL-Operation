@@ -25,12 +25,15 @@ const DgRefuelingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" https://itnuthosting.com/dgRefuelingInfo", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
+    fetch(
+      " https://bl-operation-server-production.up.railway.app/dgRefuelingInfo",
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);
@@ -103,7 +106,7 @@ const DgRefuelingUpdate = () => {
     };
 
     fetch(
-      `https://itnuthosting.com/
+      `https://bl-operation-server-production.up.railway.app/
 
 dgRefuelingInfo/${siteID}`,
       {
@@ -133,7 +136,7 @@ dgRefuelingInfo/${siteID}`,
 
     /* for posting all refueling data */
     fetch(
-      `https://itnuthosting.com/
+      `https://bl-operation-server-production.up.railway.app/
 
 dgAllRefueling`,
       {
