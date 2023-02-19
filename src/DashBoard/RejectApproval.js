@@ -16,20 +16,17 @@ const RejectApproval = ({ reject, setReject, refetch }) => {
   const navigate = useNavigate();
 
   const onSubmit = (data, id) => {
-    fetch(
-      `https://bl-operation-server-production.up.railway.app/pgRunList/${_id}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify({
-          status: "Reject",
-          remark: data.rejectMsg,
-        }),
-      }
-    )
+    fetch(`http://backend.bloperation.com/pgRunList/${_id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify({
+        status: "Reject",
+        remark: data.rejectMsg,
+      }),
+    })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");

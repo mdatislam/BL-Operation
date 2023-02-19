@@ -24,15 +24,12 @@ const AllFuelListOncall = () => {
     isLoading,
     refetch,
   } = useQuery(["fuelOnCall"], () =>
-    fetch(
-      " https://bl-operation-server-production.up.railway.app/onCall/fuelListAll",
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch(" http://backend.bloperation.com/onCall/fuelListAll", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);
