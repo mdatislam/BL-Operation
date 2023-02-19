@@ -56,7 +56,7 @@ const DgUseMaterial = () => {
     };
 
     fetch(
-      `http://backend.bloperation.com/
+      `https://backend.bloperation.com/
 
 dgMaterialInfo/`,
       {

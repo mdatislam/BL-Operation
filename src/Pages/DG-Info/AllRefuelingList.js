@@ -11,7 +11,7 @@ import auth from "../../firebase.init";
 const AllRefuelingList = () => {
   const navigate = useNavigate();
   const { data: dgRefueling, isLoading } = useQuery(["DgRefueling"], () =>
-    fetch(" http://backend.bloperation.com/dgAllRefueling", {
+    fetch(" https://backend.bloperation.com/dgAllRefueling", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

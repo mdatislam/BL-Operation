@@ -13,7 +13,7 @@ const EminfoList = () => {
   const [filter, setFilter] = useState([]);
   const navigate = useNavigate();
   const { data: EmInfo, isLoading } = useQuery(["EmInfoList"], () =>
-    fetch("http://backend.bloperation.com/emInfo", {
+    fetch("https://backend.bloperation.com/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

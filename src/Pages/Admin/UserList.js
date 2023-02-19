@@ -18,7 +18,7 @@ const UserList = () => {
 
   const navigate = useNavigate();
   const { data: users, isLoading } = useQuery(["list"], () =>
-    fetch(" http://backend.bloperation.com/userList", {
+    fetch(" https://backend.bloperation.com/userList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

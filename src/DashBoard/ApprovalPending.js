@@ -19,7 +19,7 @@ const ApprovalPending = () => {
     isLoading,
     refetch,
   } = useQuery(["list", user], () =>
-    fetch(`http://backend.bloperation.com/ApprovalList?email=${user.email}`, {
+    fetch(`https://backend.bloperation.com/ApprovalList?email=${user.email}`, {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

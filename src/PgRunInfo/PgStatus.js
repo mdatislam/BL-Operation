@@ -40,7 +40,7 @@ const PgStatus = () => {
       date: today,
     };
 
-    fetch(`http://backend.bloperation.com/pgList/${data.pgno}`, {
+    fetch(`https://backend.bloperation.com/pgList/${data.pgno}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -72,7 +72,7 @@ const PgStatus = () => {
     isLoading,
     refetch,
   } = useQuery(["pgList"], () =>
-    fetch(" http://backend.bloperation.com/pgList", {
+    fetch(" https://backend.bloperation.com/pgList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
