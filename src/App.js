@@ -44,6 +44,7 @@ import SnagList from './Pages/SiteData/SnagList';
 import SiteDataInfo from "./Pages/SiteData/SiteDataInfo";
 import SiteDataHome from "./Pages/SiteData/SiteDataHome";
 import ServiceMaterial from "./Pages/DG-Info/ServiceMaterial";
+import FcuFilterChange from './DashBoard/FcuFilterChange';
 
 
 
@@ -70,6 +71,7 @@ function App() {
             <Route path="ApprovalPending" element={<ApprovalPending />} />
             <Route path="PgRunUpdate" element={<PgRunUpdate />} />
             <Route path="FuelUpdate" element={<FuelUpdate />} />
+            <Route path="FcuFilterChange" element={<FcuFilterChange />} />
             <Route path="FuelUpdateOnCall" element={<FuelUpdateOncall />} />
             <Route path="FuelData" element={<FuelDataList />} />
             <Route path="EMDataUpdate" element={<EMDataUpdate />} />

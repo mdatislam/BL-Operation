@@ -95,7 +95,7 @@ const NavbarItem = () => {
                 <h3 className="card-title text-secondary-focus">
                   FCU Maintenance
                 </h3>
-                <p>Coming Soon</p>
+                <p>Fcu Filter Change Info</p>
               </div>
             </div>
           </NavLink>

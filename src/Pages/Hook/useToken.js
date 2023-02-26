@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 //import { useNavigate } from "react-router-dom";
 //import { toast } from "react-toastify";
 
-const useToken = (user) => {
+const UseToken = (user) => {
   const [token, setToken] = useState(" ");
   //const navigate = useNavigate();
   useEffect(() => {
@@ -15,7 +15,7 @@ const useToken = (user) => {
         name: name,
         email: email,
       };
-      fetch(`https://backend.bloperation.com/user/${email}`, {
+      fetch(`http://localhost:5000/user/${email}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json",
@@ -43,4 +43,4 @@ const useToken = (user) => {
 
   return [token];
 };
-export default useToken;
+export default UseToken;

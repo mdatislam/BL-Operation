@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useSiteList from "./../Pages/Hook/useSiteList";
 
-const DGServicingUpdate = () => {
+const FcuFilterChange = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
   const [search, setSearch] = useState("");
@@ -26,7 +26,7 @@ const DGServicingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("http://localhost:5000/dgServiceInfo", {
+    fetch("http://localhost:5000/fcuFilterChangeLatestRecord", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -69,42 +69,28 @@ const DGServicingUpdate = () => {
   //console.log(imgUrl)
 
   const onSubmit = (data) => {
-    /*  next DG servicing date calculation */
+    /*  next FCU filter change date calculation */
     const date3 = data.date2;
-    let presentServiceDate = new Date(date3).toDateString();
+    let presentFilterChangeDate = new Date(date3).toDateString();
 
-    /*  const nextPlan = new Date(
-      presentServiceDate.setDate(presentServiceDate.getDate() + 180)
-    ).toDateString(); */
-
-    let serviceDateMsec = Date.parse(presentServiceDate);
-    //console.log(serviceDateMsec);
-    let next = serviceDateMsec + 180 * 3600 * 1000 * 24;
+    let FilterChangeDateMsec = Date.parse(presentFilterChangeDate);
+    //console.log(FilterChangeDateMsec);
+    let next = FilterChangeDateMsec + 120 * 3600 * 1000 * 24;
     const nextPlan = new Date(next).toDateString();
-
-    /* const year = nextPlan.getFullYear();
-    const month = nextPlan.getMonth()+1;
-    const day = nextPlan.getDate();
-    let planDate = year + "-" + month + "-" + day; */
-    //console.log(nextPlan);
 
     const siteID = search;
     const presentSite = sites?.filter((site) => site.siteId === siteID);
     //console.log(presentSite)
 
-    const preRhReading = presentSite.map((s) => s.rhReading);
-    const batteryPreSerialNo = presentSite.map((s) => s.batterySerialNo);
     const PreDate = presentSite.map((s) => s.date);
 
-    const dgServicingData = {
+    const fcuFilterChangeData = {
       siteId: siteID,
-      date: data.date2,
-      batterySerialNo: data.dgBatteryNo,
-      rhReading: data.rhReading,
-      airFilter: data.airFilter,
+        date: data.date2,
+      fcuBrand:data.fcuBrand,
+        fcuFilterStatus: data.fcuFilter,
+      fcuCtrl:data.fcuCtrl,
       previousDate: PreDate[0],
-      batteryPreSerialNo: batteryPreSerialNo[0],
-      preRhReading: preRhReading[0],
       nextPlanDate: nextPlan,
       updaterName: user.displayName,
       updaterEmail: user.email,
@@ -112,13 +98,13 @@ const DGServicingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`http://localhost:5000/dgAllServicing`, {
+    fetch(`http://localhost:5000/fcuFilterChangeAllRecord`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-      body: JSON.stringify(dgServicingData),
+      body: JSON.stringify(fcuFilterChangeData),
     })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
@@ -136,13 +122,13 @@ const DGServicingUpdate = () => {
         }
       });
 
-    fetch(`http://localhost:5000/dgServiceInfo/${siteID}`, {
+    fetch(`http://localhost:5000/fcuFilterChangeLatestRecord/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-      body: JSON.stringify(dgServicingData),
+      body: JSON.stringify(fcuFilterChangeData),
     })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
@@ -160,7 +146,6 @@ const DGServicingUpdate = () => {
         }
         setImageUrl("");
         reset();
-        //console.log(pgData)
       });
   };
   /*  today find code */
@@ -176,16 +161,15 @@ const DGServicingUpdate = () => {
   const handleSearchItem = (searchItem) => {
     setSearch(searchItem);
   };
-
   return (
     <div
-      className="flex justify-center justify-items-center bg-no-repeat bg-bottom bg-fixed"
-      style={{ backgroundImage: `url(${background})` }}
+      className="flex justify-center justify-items-center bg-no-repeat bg-bottom bg-fixed bg-blue-500"
+      /* style={{ backgroundImage: `url(${background})` }} */
     >
       <div className="card  lg:w-96 bg-base-100 shadow-2xl my-8">
         <div className="card-body">
           <Link
-            to="/DgServicing"
+            to="/FcuMaintenance"
             className="btn  btn-primary font-semiBold text-xl mb-2"
           >
             <svg
@@ -202,10 +186,10 @@ const DGServicingUpdate = () => {
                 d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
               />
             </svg>
-            Back &nbsp;DG-Servicing List
+            &nbsp;FCU Update List
           </Link>
-          <h2 className="text-center text-secondary-focus text-2xl font-bold mb-3">
-            Update DG Servicing Info !!
+          <h2 className="text-center text-secondary-focus text-2xl font-bold mt-3">
+            Update FCU Status !!
           </h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Date input field */}
@@ -216,7 +200,6 @@ const DGServicingUpdate = () => {
               </label>
               <input
                 type="date"
-                // disabled
                 defaultValue={today}
                 className="input input-bordered w-full max-w-xs"
                 {...register("date2", {
@@ -225,7 +208,6 @@ const DGServicingUpdate = () => {
                     message: " Date is required",
                   },
                 })}
-                //defaultValue={vv}
               />
               <label className="label">
                 {errors.date?.type === "required" && (
@@ -273,84 +255,92 @@ const DGServicingUpdate = () => {
               <label className="label"></label>
             </div>
 
-            {/*  DG Battery serial No */}
+            {/*  FCU Brand */}
             <div className="form-control w-full max-w-xs">
               <input
                 type="text"
-                placeholder=" DG Battery Serial No"
+                placeholder=" Fcu Brand"
                 className="input input-bordered w-full max-w-xs"
-                {...register("dgBatteryNo", {
+                {...register("fcuBrand", {
                   required: {
                     value: true,
-                    message: " DG battery Serial No required",
+                    message: " Fcu Brand required",
                   },
                 })}
               />
               <label className="label">
-                {errors.dgBatteryNo?.type === "required" && (
+                {errors.fcuBrand?.type === "required" && (
                   <span className="label-text-alt text-red-500">
-                    {errors.dgBatteryNo.message}
+                    {errors.fcuBrand.message}
                   </span>
                 )}
               </label>
             </div>
 
-            {/*  DG RH Reading*/}
-            <div className="form-control w-full max-w-xs">
-              <input
-                type="text"
-                placeholder=" Put Servicing DG RunHour "
-                className="input input-bordered w-full max-w-xs"
-                {...register("rhReading", {
-                  required: {
-                    value: true,
-                    message: " DG servicing RH Required",
-                  },
-                })}
-              />
-              <label className="label">
-                {errors.rhReading?.type === "required" && (
-                  <span className="label-text-alt text-red-500">
-                    {errors.rhReading.message}
-                  </span>
-                )}
-              </label>
-            </div>
-
-            {/* Air filter use */}
+            {/* Filter status */}
             <div className="form-control w-full max-w-xs">
               <label className="label">
-                <span className="label-text">Air Filter:</span>
+                <span className="label-text">Filter Status:</span>
               </label>
               <select
                 type="text"
                 className="input input-bordered w-full max-w-xs"
-                {...register("airFilter", {
+                {...register("fcuFilter", {
                   required: {
                     value: true,
-                    message: " Air filter use Status required",
+                    message: "Fcu filter  Status required",
                   },
                 })}
               >
-                <option value="No"> No</option>
-                <option value="Yes">Yes</option>
+                <option value="">-------- Select Status -------</option>
+                <option value="Clean"> Clean</option>
+                <option value="Replace">Replace</option>
               </select>
               <label className="label">
-                {errors.airFilter?.type === "required" && (
+                {errors.fcuFilter?.type === "required" && (
                   <span className="label-text-alt text-red-500">
-                    {errors.airFilter.message}
+                    {errors.fcuFilter.message}
                   </span>
                 )}
               </label>
             </div>
 
-            {/* Pic of RH Reading */}
+            {/* ctrl Setting check */}
+
+            <div className="form-control w-full max-w-xs">
+              <label className="label">
+                <span className="label-text">Controller Setting:</span>
+              </label>
+              <select
+                type="text"
+                className="input input-bordered w-full max-w-xs"
+                {...register("fcuCtrl", {
+                  required: {
+                    value: true,
+                    message: "Fcu controller setting",
+                  },
+                })}
+              >
+                <option value="">------ Ctrl Checking Status ----</option>
+                <option value="Yes"> Yes</option>
+                <option value="No">No</option>
+              </select>
+              <label className="label">
+                {errors.fcuCtrl?.type === "required" && (
+                  <span className="label-text-alt text-red-500">
+                    {errors.fcuCtrl.message}
+                  </span>
+                )}
+              </label>
+            </div>
+
+            {/* Pic of FCU Filter */}
             <div className="form-control w-full max-w-xs">
               <label
                 htmlFor="image"
                 className={loading ? "btn loading mt-5" : "btn mt-5"}
               >
-                Upload-RH-Photo
+                Upload-FCU Filter Pic
               </label>
               <input
                 id="image"
@@ -389,4 +379,4 @@ const DGServicingUpdate = () => {
   );
 };
 
-export default DGServicingUpdate;
+export default FcuFilterChange;

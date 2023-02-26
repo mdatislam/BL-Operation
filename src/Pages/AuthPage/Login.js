@@ -1,41 +1,36 @@
 import React, { useState } from "react";
-import {
- 
-  useSignInWithEmailAndPassword, 
-} from "react-firebase-hooks/auth";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import auth from "./../../firebase.init";
 import Loading from "./../SharedPage/Loading";
-import useToken from "./../Hook/useToken";
+import UseToken from "./../Hook/useToken";
 import PasswordReset from "./PasswordReset";
 //import useAdmin from "../Hook/useAdmin";
 import loginBack from "../../images/login.png";
 
 const Login = () => {
- 
+   const {
+     register,
+     formState: { errors },
+     handleSubmit,
+   } = useForm();
   const [password, setPassword] = useState(" ");
-
- 
-  const [signInWithEmailAndPassword, user, loading, error] =
+  const [signInWithEmailAndPassword, user,loading,error] =
     useSignInWithEmailAndPassword(auth);
-  const location = useLocation();
-  const navigate = useNavigate();
+ const location = useLocation();
+ let from = location.state?.from.pathname || "/";
+ const navigate = useNavigate();
+  const [token] = UseToken(user);
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
-  const [token] = useToken(user );
-
-  if (loading ) return <Loading></Loading>;
+  if (loading) return <Loading></Loading>;
 
   let signInError;
+
   if (error) {
     signInError = (
-      <p className=" text-red-500">
-        <small>{error?.message }</small>
+      <p className="text-red-500">
+        <small>{error?.message}</small>
       </p>
     );
   }
@@ -45,14 +40,9 @@ const Login = () => {
     signInWithEmailAndPassword(data.email, data.password);
   };
 
-  let from = location.state?.from?.pathname || "/Home";
-
-  if (token) {
-    //console.log(user);
-    navigate(from, { replace: true });
-  }
-  
- 
+   if (token) {
+     navigate(from, { replace: true });
+   }
 
   return (
     <div
@@ -99,6 +89,7 @@ const Login = () => {
                 )}
               </label>
             </div>
+            {signInError}
             {/*  password field */}
             <div className="form-control">
               <label className="label">
@@ -132,7 +123,7 @@ const Login = () => {
                   </span>
                 )}
               </label>
-              {signInError}
+
               <div className="flex flex-cols">
                 <div>
                   <label
@@ -145,6 +136,7 @@ const Login = () => {
                 </div>
               </div>
             </div>
+            {signInError}
             <div className="form-control mt-2">
               <input type="submit" className="btn btn-primary" value="Login" />
             </div>
