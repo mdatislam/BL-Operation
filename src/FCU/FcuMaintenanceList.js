@@ -33,7 +33,7 @@ const FcuMaintenanceList = () => {
   if (isLoading) {
     return <Loading />;
   }
-   console.log(fcuFilter);
+   //console.log(fcuFilter);
   // console.log(dgServiceInfo);
   return (
     <div className="mt-8 px-4 mb-4 lg:w-3/4 mx-auto">

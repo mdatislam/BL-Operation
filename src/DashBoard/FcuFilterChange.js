@@ -69,29 +69,50 @@ const FcuFilterChange = () => {
   //console.log(imgUrl)
 
   const onSubmit = (data) => {
-    /*  next FCU filter change date calculation */
-    const date3 = data.date2;
-    let presentFilterChangeDate = new Date(date3).toDateString();
+    const currentDate = data.date2;
+    let PresentDate = new Date(currentDate);
+    //console.log(PresentDate);
+    let yPresentDate = new Intl.DateTimeFormat("en", {
+      year: "numeric",
+    }).format(PresentDate);
+    let moPresentDate = new Intl.DateTimeFormat("en", {
+      month: "short",
+    }).format(PresentDate);
+    let daPresentDate = new Intl.DateTimeFormat("en", {
+      day: "2-digit",
+    }).format(PresentDate);
+    let PresentChangingDate = `${daPresentDate}-${moPresentDate}-${yPresentDate}`;
 
-    let FilterChangeDateMsec = Date.parse(presentFilterChangeDate);
+    /*  next FCU filter change date calculation */
+
+    let nextFilterChangeDateMsec = Date.parse(PresentChangingDate);
     //console.log(FilterChangeDateMsec);
-    let next = FilterChangeDateMsec + 120 * 3600 * 1000 * 24;
-    const nextPlan = new Date(next).toDateString();
+    let NextDate = nextFilterChangeDateMsec + 120 * 3600 * 1000 * 24;
+    let yNextDate = new Intl.DateTimeFormat("en", {
+      year: "numeric",
+    }).format(NextDate);
+    let moNextDate = new Intl.DateTimeFormat("en", {
+      month: "short",
+    }).format(NextDate);
+    let daNextDate = new Intl.DateTimeFormat("en", {
+      day: "2-digit",
+    }).format(NextDate);
+    let NextChangingDate = `${daNextDate}-${moNextDate}-${yNextDate}`;
 
     const siteID = search;
     const presentSite = sites?.filter((site) => site.siteId === siteID);
     //console.log(presentSite)
 
-    const PreDate = presentSite.map((s) => s.date);
+    const PreDate = presentSite.map((s) => s.latestFilterChangeDate);
 
     const fcuFilterChangeData = {
       siteId: siteID,
-        date: data.date2,
-      fcuBrand:data.fcuBrand,
-        fcuFilterStatus: data.fcuFilter,
-      fcuCtrl:data.fcuCtrl,
-      previousDate: PreDate[0],
-      nextPlanDate: nextPlan,
+      latestFilterChangeDate: PresentChangingDate,
+      fcuBrand: data.fcuBrand,
+      fcuFilterStatus: data.fcuFilter,
+      fcuCtrl: data.fcuCtrl,
+      preFilterChangeDate: PreDate[0],
+      nextPlanDate: NextChangingDate,
       updaterName: user.displayName,
       updaterEmail: user.email,
       url: imgUrl,
@@ -139,9 +160,9 @@ const FcuFilterChange = () => {
         }
         return res.json();
       })
-      .then((dgData) => {
-        //console.log(dgData);
-        if (dgData.upsertedCount || dgData.modifiedCount) {
+      .then((fcuData) => {
+        //console.log(fcuData);
+        if (fcuData.upsertedCount || fcuData.modifiedCount) {
           toast.success("Data Successfully Update");
         }
         setImageUrl("");

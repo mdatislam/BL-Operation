@@ -102,6 +102,7 @@ function App() {
           <Route path="/AllRefueling" element={<AllRefuelingList />} />
           <Route path="/FcuMaintenance" element={<FcuMaintenanceList />} />
           <Route path="/FcuDataUpload" element={<FcuDataFromExcel />} />
+          <Route path="/FcuExistData" element={<FcuDataFromExcel />} />
           <Route path="/EmInfo" element={<EminfoList />} />
           <Route path="/PgStatus" element={<PgStatus />} />
           <Route path="/siteDataHome" element={<SiteDataHome />} />

@@ -1,11 +1,12 @@
-import React from 'react';
-import FcuDataFromExcelRow from './FcuDataFromExcelRow';
-import { Link } from 'react-router-dom';
-import { signOut } from 'firebase/auth';
-import auth from './../firebase.init';
-import * as XLSX  from 'xlsx';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import FcuDataFromExcelRow from "./FcuDataFromExcelRow";
+import { Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import auth from "./../firebase.init";
+import * as XLSX from "xlsx";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const FcuDataFromExcel = () => {
   // const [admin]=useAdmin()
@@ -54,32 +55,68 @@ const FcuDataFromExcel = () => {
     }
   };
 
-  excelData?.map((siteInfo) => {
-    const siteID = siteInfo.siteId;
-    //console.log(siteID);
+  excelData?.map((fcuInfo) => {
+    const siteID = fcuInfo.siteId;
 
-    const siteData = {
-      siteId: siteInfo.siteId,
-      lat: siteInfo.lat,
-      long: siteInfo.long,
-      priority: siteInfo.priority,
-      shareId: siteInfo.shareId,
-      keyStatus: siteInfo.keyStatus,
-      batteryInfo: siteInfo.batteryInfo,
-      batteryBackup: siteInfo.batteryBackup,
-      rectifierInfo: siteInfo.rectifierInfo,
-      connectedSite: siteInfo.connectedSite,
-      mobileNo1: siteInfo.mobileNo1,
-      mobileNo2: siteInfo.mobileNo2,
-      address: siteInfo.address,
+    const installDate = fcuInfo.installationDate;
+    let d = new Date(Math.round((installDate - 25569) * 86400 * 1000));
+    let ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(d);
+    let mo = new Intl.DateTimeFormat("en", { month: "short" }).format(d);
+    let da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
+    let installation = `${da}-${mo}-${ye}`;
+
+    const preDate = fcuInfo.preFilterChangeDate;
+    let pre = new Date(Math.round((preDate - 25569) * 86400 * 1000));
+    let yPre = new Intl.DateTimeFormat("en", { year: "numeric" }).format(pre);
+    let moPre = new Intl.DateTimeFormat("en", { month: "short" }).format(pre);
+    let daPre = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(pre);
+    let preChangingDate = `${daPre}-${moPre}-${yPre}`;
+
+    const latestDate = fcuInfo.latestFilterChangeDate;
+    let PresentDate = new Date(Math.round((latestDate - 25569) * 86400 * 1000));
+    let yPresentDate = new Intl.DateTimeFormat("en", {
+      year: "numeric",
+    }).format(PresentDate);
+    let moPresentDate = new Intl.DateTimeFormat("en", {
+      month: "short",
+    }).format(PresentDate);
+    let daPresentDate = new Intl.DateTimeFormat("en", {
+      day: "2-digit",
+    }).format(PresentDate);
+    let PresentChangingDate = `${daPresentDate}-${moPresentDate}-${yPresentDate}`;
+
+    let nextFilterChangeDateMsec = Date.parse(PresentChangingDate);
+    //console.log(FilterChangeDateMsec);
+    let NextDate = nextFilterChangeDateMsec + 120 * 3600 * 1000 * 24;
+    let yNextDate = new Intl.DateTimeFormat("en", {
+      year: "numeric",
+    }).format(NextDate);
+    let moNextDate = new Intl.DateTimeFormat("en", {
+      month: "short",
+    }).format(NextDate);
+    let daNextDate = new Intl.DateTimeFormat("en", {
+      day: "2-digit",
+    }).format(NextDate);
+    let NextChangingDate = `${daNextDate}-${moNextDate}-${yNextDate}`;
+
+    const fcuData = {
+      siteId: fcuInfo.siteId,
+      office: fcuInfo.office,
+      siteType: fcuInfo.siteType,
+      coolingSystem: fcuInfo.coolingSystem,
+      fcuBrand: fcuInfo.fcuBrand,
+      installationDate: installation,
+      preFilterChangeDate: preChangingDate,
+      latestFilterChangeDate: PresentChangingDate,
+      nextPlanDate: NextChangingDate,
     };
-    fetch(`http://localhost:5000/siteInfo/${siteID}`, {
+    fetch(`http://localhost:5000/fcuFilterChangeLatestRecord/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-      body: JSON.stringify(siteData),
+      body: JSON.stringify(fcuData),
     }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         // toast.error("Unauthorize access");
@@ -89,14 +126,13 @@ const FcuDataFromExcel = () => {
       }
       return res.json();
     });
-    /*  .then((dgData) => {
-        //console.log(dgData);
-        if (dgData.upsertedCount || dgData.modifiedCount) {
+    /* .then((fcuData) => {
+        //console.log(fcuData);
+        if (fcuData.upsertedId || fcuData.modifiedCount) {
           toast.success("Data Successfully Update");
         }
-       
       }); */
-    return siteData;
+    return fcuData;
   });
 
   return (
@@ -136,12 +172,12 @@ const FcuDataFromExcel = () => {
             </div>
           )}
         </form>
-        {/*  To show Existing Site Data */}
-        <Link to="/siteData">
+         {/* {/*  To show Existing Site Data */}
+        {/* <Link to="/FcuExistData">
           <button className="btn btn-wide btn-success">
             TO show Existing Site data
           </button>
-        </Link>
+        </Link> */}
 
         <h5 className="flex justify-center items-center text-white text-xl font-bold h-12 mt-4 p-4 rounded-lg bg-[#6e3790] px-2">
           View Excel file
@@ -155,43 +191,57 @@ const FcuDataFromExcel = () => {
                   <tr className="divide-x divide-blue-400 text-center">
                     <th>SNo</th>
                     <th>Site ID</th>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
-                    <th>Priority</th>
+                    <th>Office</th>
+                    <th>Site Type</th>
                     <th>
-                      <div>Share Site</div>
-                      <div>Code</div>
+                      <div>Cooling</div>
+                      <div>System</div>
                     </th>
-                    <th>Key Status</th>
+                    <th>FCU Brand</th>
                     <th>
-                      <div>Connected</div>
-                      <div>Site</div>
-                    </th>
-                    <th>
-                      <div>Battery</div>
-                      <div>Info</div>
+                      <div>Installation</div>
+                      <div>Date</div>
                     </th>
                     <th>
-                      <div>Battery</div>
-                      <div>Backup</div>
+                      <div>Pre Filter</div>
+                      <div>Change Date</div>
                     </th>
                     <th>
-                      <div>Rectifier</div>
-                      <div>Info</div>
+                      <div>Latest Filter</div>
+                      <div>Change Date</div>
                     </th>
-                    <th>MobileNo-1</th>
-                    <th>MobileNo-2</th>
-                    <th>Address</th>
+                    <th>
+                      <div>Next Plan</div>
+                      <div>Date</div>
+                    </th>
+                    <th>
+                      <div>Latest </div>
+                      <div>Action</div>
+                    </th>
+                    <th>
+                      <div>Setting</div>
+                      <div>Check?</div>
+                    </th>
+                    <th>
+                      <div>Updated</div>
+                      <div>By</div>
+                    </th>
+                    
                   </tr>
                 </thead>
                 <tbody>
                   {excelData?.map((data, index) => (
-                    <FcuDataFromExcelRow key={index} data={data} index={index} />
+                    <FcuDataFromExcelRow
+                      key={index}
+                      data={data}
+                      index={index}
+                    />
                   ))}
                 </tbody>
               </table>
             </div>
           )}
+          
         </div>
       </div>
       {/* Existing stie data upload code */}
