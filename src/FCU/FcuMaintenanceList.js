@@ -62,12 +62,20 @@ const FcuMaintenanceList = () => {
           </svg>
         </Link>
 
-        <Link
-          to="/Dashboard/fcuFilterChange"
-          className="flex btn btn-outline btn-primary btn-sm"
-        >
-          Data UPDATE
-        </Link>
+      <Link
+        to="/Dashboard/fcuFilterChange"
+        className="flex btn btn-outline btn-primary btn-sm"
+      >
+        Data UPDATE
+      </Link>
+      {/* For Data upload button */}
+      {admin && (<Link
+        to="/FcuDataUpload"
+        className="flex btn btn-outline btn-primary btn-sm"
+      >
+        FCU Data Import
+      </Link>)}
+
         {/* For Data Export */}
         {admin && (
           <div>
@@ -136,12 +144,11 @@ const FcuMaintenanceList = () => {
             </tr>
           </thead>
           <tbody>
-            {fcuFilter?.map((fcuInfo,index) => (
+            {fcuFilter?.map((fcuInfo, index) => (
               <FcuMaintenanceListRow
                 key={fcuInfo._id}
                 fcuInfo={fcuInfo}
                 index={index}
-               
               />
             ))}
           </tbody>

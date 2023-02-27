@@ -45,6 +45,7 @@ import SiteDataInfo from "./Pages/SiteData/SiteDataInfo";
 import SiteDataHome from "./Pages/SiteData/SiteDataHome";
 import ServiceMaterial from "./Pages/DG-Info/ServiceMaterial";
 import FcuFilterChange from './DashBoard/FcuFilterChange';
+import FcuDataFromExcel from "./FCU/FcuDataFromExcel";
 
 
 
@@ -100,6 +101,7 @@ function App() {
           <Route path="/DgRefueling" element={<DgRefuelingList />} />
           <Route path="/AllRefueling" element={<AllRefuelingList />} />
           <Route path="/FcuMaintenance" element={<FcuMaintenanceList />} />
+          <Route path="/FcuDataUpload" element={<FcuDataFromExcel />} />
           <Route path="/EmInfo" element={<EminfoList />} />
           <Route path="/PgStatus" element={<PgStatus />} />
           <Route path="/siteDataHome" element={<SiteDataHome />} />
