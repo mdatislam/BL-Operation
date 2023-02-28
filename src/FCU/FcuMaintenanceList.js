@@ -36,123 +36,135 @@ const FcuMaintenanceList = () => {
    //console.log(fcuFilter);
   // console.log(dgServiceInfo);
   return (
-    <div className="mt-8 px-4 mb-4 lg:w-3/4 mx-auto">
-      <h2 className="flex rounded-lg  text-white bg-[#d83fe3] mb-4 h-12 justify-center items-center text-2xl">
-        FCU Filter Changing Record
-      </h2>
+    <div className="bg-teal-300 h-100 px-2">
+      <div className="lg:w-3/4 mx-auto ">
+        <div className=" flex flex-col md:flex-row justify-between px-2 gap-y-2 mb-2 rounded-lg border-2 py-4">
+          <Link to="/Home" className="flex btn btn-outline btn-primary btn-sm">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
+              />
+            </svg>
+          </Link>
 
-      <div className=" flex justify-between  mb-2 rounded-lg border-2 p-4 ">
-        <Link
-          to="/fcuFilterChange"
-          className="flex btn btn-outline btn-primary btn-sm"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
+          <Link
+            to="/Dashboard/fcuFilterChange"
+            className="flex btn btn-outline btn-primary btn-sm"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
-            />
-          </svg>
-        </Link>
+            Data UPDATE
+          </Link>
 
-      <Link
-        to="/Dashboard/fcuFilterChange"
-        className="flex btn btn-outline btn-primary btn-sm"
-      >
-        Data UPDATE
-      </Link>
-      {/* For Data upload button */}
-      {admin && (<Link
-        to="/FcuDataUpload"
-        className="flex btn btn-outline btn-primary btn-sm"
-      >
-        FCU Data Import
-      </Link>)}
-
-        {/* For Data Export */}
-        {admin && (
-          <div>
-            <CSVLink
-              data={fcuFilter}
-              filename="fcuFilerChangeRecord"
+          {/* FCU filter calcultion */}
+          {admin && (
+            <Link
+              to="/fcuMaterial"
               className="flex btn btn-outline btn-primary btn-sm"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
+              FCU Material
+            </Link>
+          )}
+          {/* For Data upload button */}
+          {admin && (
+            <Link
+              to="/FcuDataUpload"
+              className="flex btn btn-outline btn-primary btn-sm"
+            >
+              Data Import
+            </Link>
+          )}
+
+          {/* For Data Export */}
+          {admin && (
+            <div>
+              <CSVLink
+                data={fcuFilter}
+                filename="fcuFilerChangeRecord"
+                className="flex btn btn-outline btn-primary btn-sm"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                  />
+                </svg>
+              </CSVLink>
+            </div>
+          )}
+        </div>
+
+        <h2 className="flex rounded-lg  text-white bg-[#d16bd8] mb-4 h-12 justify-center items-center text-2xl">
+          FCU Filter Changing Record
+        </h2>
+
+        <div className="overflow-x-auto  mt-4">
+          <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
+            <thead className="border-2 border-[#FFCB24]">
+              <tr className="divide-x divide-blue-400 text-center">
+                <th className="w-12">SN</th>
+                <th>Site ID</th>
+                <th>
+                  <div>FCU </div>
+                  <div>Brand</div>
+                </th>
+
+                <th>
+                  <div>Pre Filter</div>
+                  <div>Changing Date</div>
+                </th>
+                <th>
+                  <div>Latest Filter</div>
+                  <div>Changing Date</div>
+                </th>
+                <th className="text-[#5d9655]">
+                  <div>Next Plan</div>
+                  <div>Date</div>
+                </th>
+
+                <th>
+                  <div>Latest</div>
+                  <div>Action</div>
+                </th>
+                <th>
+                  <div>Setting</div>
+                  <div>Check ?</div>
+                </th>
+
+                <th>
+                  <div>Update</div>
+                  <div>By</div>
+                </th>
+                <th>Picture</th>
+                <th>Remarks</th>
+              </tr>
+            </thead>
+            <tbody>
+              {fcuFilter?.map((fcuInfo, index) => (
+                <FcuMaintenanceListRow
+                  key={fcuInfo._id}
+                  fcuInfo={fcuInfo}
+                  index={index}
                 />
-              </svg>
-            </CSVLink>
-          </div>
-        )}
-      </div>
-
-      <div className="overflow-x-auto  mt-4">
-        <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
-          <thead className="border-2 border-[#FFCB24]">
-            <tr className="divide-x divide-blue-400 text-center">
-              <th className="w-12">SN</th>
-              <th>Site ID</th>
-              <th>
-                <div>FCU </div>
-                <div>Brand</div>
-              </th>
-
-              <th>
-                <div>Pre Filter</div>
-                <div>Changing Date</div>
-              </th>
-              <th>
-                <div>Latest Filter</div>
-                <div>Changing Date</div>
-              </th>
-              <th className="text-[#5d9655]">
-                <div>Next Plan</div>
-                <div>Date</div>
-              </th>
-
-              <th>
-                <div>Latest</div>
-                <div>Action</div>
-              </th>
-              <th>
-                <div>Setting</div>
-                <div>Check ?</div>
-              </th>
-
-              <th>
-                <div>Update</div>
-                <div>By</div>
-              </th>
-              <th>Remarks</th>
-            </tr>
-          </thead>
-          <tbody>
-            {fcuFilter?.map((fcuInfo, index) => (
-              <FcuMaintenanceListRow
-                key={fcuInfo._id}
-                fcuInfo={fcuInfo}
-                index={index}
-              />
-            ))}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

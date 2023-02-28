@@ -38,7 +38,7 @@ const DgRefuelingRow = ({ refuel, index }) => {
               <a
                 href={url}
                 className="mask mask-squircle w-12 h-12 "
-                target="_blank"
+                target="_blank" rel="noReferrer"
               >
                 <img src={url} alt="pic of EM Reading" />
               </a>

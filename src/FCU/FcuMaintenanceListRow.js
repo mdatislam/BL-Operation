@@ -10,6 +10,7 @@ const FcuMaintenanceListRow = ({ fcuInfo, index }) => {
     fcuFilterStatus,
     fcuCtrl,
     updaterName,
+    url,
     remark,
   } = fcuInfo;
   return (
@@ -23,6 +24,20 @@ const FcuMaintenanceListRow = ({ fcuInfo, index }) => {
       <td className=" ">{fcuFilterStatus}</td>
       <td className=" ">{fcuCtrl}</td>
       <td className=" ">{updaterName}</td>
+      <td>
+        <div className="flex items-center space-x-3">
+          <div className="avatar">
+            <a
+              href={url}
+              className="mask mask-squircle w-12 h-12 "
+              target="_blank"
+              rel="noReferrer"
+            >
+              <img src={url} alt="pic of fcu Filter" />
+            </a>
+          </div>
+        </div>
+      </td>
       <td>{remark}</td>
     </tr>
   );

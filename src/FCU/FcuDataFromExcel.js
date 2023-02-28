@@ -163,6 +163,50 @@ const FcuDataFromExcel = () => {
               **File Type Should (.xls)**
             </span>
           </label>
+          <label className="label">
+            <h4>Heading of Excel sheet must contain bellow name</h4>
+            <div>
+              <tr className="divide-x  divide-blue-400 text-center">
+                <th>SNo</th>
+                <th>Site ID</th>
+                <th>Office</th>
+                <th>Site Type</th>
+                <th>
+                  <div>Cooling</div>
+                  <div>System</div>
+                </th>
+                <th>FCU Brand</th>
+                <th>
+                  <div>Installation</div>
+                  <div>Date</div>
+                </th>
+                <th>
+                  <div>Pre Filter</div>
+                  <div>Change Date</div>
+                </th>
+                <th>
+                  <div>Latest Filter</div>
+                  <div>Change Date</div>
+                </th>
+                <th>
+                  <div>Next Plan</div>
+                  <div>Date</div>
+                </th>
+                <th>
+                  <div>Latest </div>
+                  <div>Action</div>
+                </th>
+                <th>
+                  <div>Setting</div>
+                  <div>Check?</div>
+                </th>
+                <th>
+                  <div>Updated</div>
+                  <div>By</div>
+                </th>
+              </tr>
+            </div>
+          </label>
           {excelFileError && (
             <div
               className="font-bold text-red-600"
@@ -172,12 +216,6 @@ const FcuDataFromExcel = () => {
             </div>
           )}
         </form>
-         {/* {/*  To show Existing Site Data */}
-        {/* <Link to="/FcuExistData">
-          <button className="btn btn-wide btn-success">
-            TO show Existing Site data
-          </button>
-        </Link> */}
 
         <h5 className="flex justify-center items-center text-white text-xl font-bold h-12 mt-4 p-4 rounded-lg bg-[#6e3790] px-2">
           View Excel file
@@ -226,7 +264,6 @@ const FcuDataFromExcel = () => {
                       <div>Updated</div>
                       <div>By</div>
                     </th>
-                    
                   </tr>
                 </thead>
                 <tbody>
@@ -241,7 +278,6 @@ const FcuDataFromExcel = () => {
               </table>
             </div>
           )}
-          
         </div>
       </div>
       {/* Existing stie data upload code */}

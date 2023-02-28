@@ -74,7 +74,7 @@ const SiteDataInfoRows = ({ data, index, admin, setSiteDataEdit }) => {
         <td>{shareId}</td>
         <td>{connectedSite}</td>
         <td>{batteryInfo}</td>
-        <td>{batteryBackup.toFixed(2)}</td>
+        <td>{batteryBackup}</td>
         <td>{rectifierInfo}</td>
         <td>{keyStatus}</td>
         <td>{mobileNo1}</td>
