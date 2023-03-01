@@ -1,23 +1,22 @@
-
 import React, { useState } from "react";
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import auth from './../firebase.init';
-import { signOut } from 'firebase/auth';
+import auth from "./../firebase.init";
+import { signOut } from "firebase/auth";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../Pages/SharedPage/Loading";
 import FcuMaterialRow from "./FcuMaterialRow";
 import useAdmin from "../Pages/Hook/useAdmin";
-import FcuFilterDel from './FcuFilterDel';
+import FcuFilterDel from "./FcuFilterDel";
 
 const FcuMaterial = () => {
   const [user] = useAuthState(auth);
-  const [admin]=useAdmin
+  const [admin] = useAdmin(user);
   const [visible, setVisible] = useState(false);
   const [fcuFilterDel, setFcuFilterDel] = useState([]);
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -34,13 +33,13 @@ const FcuMaterial = () => {
     const filter = {
       receivingDate: data.receiveDate,
       receivingQuantity: data.receiveQuantity,
-     remark: data.remark,
+      remark: data.remark,
       updaterName: user.displayName,
       updaterEmail: user.email,
       date: today,
     };
 
-    fetch(`http://localhost:5000/fcuFilter`, {
+    fetch(`https://bl-operation-server-production.up.railway.app/fcuFilter`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -73,7 +72,7 @@ const FcuMaterial = () => {
     isLoading,
     refetch,
   } = useQuery(["filterRecord"], () =>
-    fetch(" http://localhost:5000/fcuFilter", {
+    fetch(" https://bl-operation-server-production.up.railway.app/fcuFilter", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -94,12 +93,15 @@ const FcuMaterial = () => {
   const { data: fcuFilterReplace, isLoading2 } = useQuery(
     ["fcuFilterReplace"],
     () =>
-      fetch(" http://localhost:5000/fcuFilterChangeAllRecord", {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }).then((res) => {
+      fetch(
+        " https://bl-operation-server-production.up.railway.app/fcuFilterChangeAllRecord",
+        {
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      ).then((res) => {
         if (res.status === 401 || res.status === 403) {
           //  toast.error("Unauthorize Access")
           signOut(auth);
@@ -119,11 +121,13 @@ const FcuMaterial = () => {
     0
   );
 
-   const replaceFilter = fcuFilterReplace?.filter(replace=>replace.fcuFilterStatus==="Replace");
-    //console.log(replaceFilter)    
-    const totalReplace = replaceFilter?.length
+  const replaceFilter = fcuFilterReplace?.filter(
+    (replace) => replace.fcuFilterStatus === "Replace"
+  );
+  //console.log(replaceFilter)
+  const totalReplace = replaceFilter?.length;
   const Balance = totalFilter - totalReplace;
-//console.log(totalReplace)
+  //console.log(totalReplace)
   return (
     <div className="px-2 lg:px-4 my-4">
       <div className="grid grid-cols-1  md:grid-cols-3 gap-x-4">
@@ -137,7 +141,7 @@ const FcuMaterial = () => {
             <thead className="border-2 border-[#aef688]">
               <tr className="divide-x divide-blue-400 text-center">
                 <th>S/N</th>
-                <th>Action</th>
+
                 <th>
                   <div>Receive</div>
                   <div> Date</div>
@@ -146,6 +150,7 @@ const FcuMaterial = () => {
                   <div>Receive</div>
                   <div> Quantity</div>
                 </th>
+                <th>Action</th>
                 <th>Remarks</th>
               </tr>
             </thead>
@@ -160,13 +165,13 @@ const FcuMaterial = () => {
               ))}
             </tbody>
           </table>
-         {fcuFilterDel && (
+          {fcuFilterDel && (
             <FcuFilterDel
               fcuFilterDel={fcuFilterDel}
               setFcuFilterDel={setFcuFilterDel}
               refetch={refetch}
             />
-          )} 
+          )}
         </div>
         {/* 2nd Part */}
         <div className="mt-8 order-first md:order-last">
@@ -175,30 +180,38 @@ const FcuMaterial = () => {
               Filter Calculation
             </h2>
           </div>
-          {admin && (
-            <div className="stat-actions">
-              <button
-                className="btn btn-sm btn-outline btn-primary"
-                onClick={() => setVisible(true)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
+          <div className="flex justify-between items-center">
+            {admin && (
+              <Link to="/FcuAllData" className="btn btn-sm btn-outline">
+                {" "}
+                All FCU Data
+              </Link>
+            )}
+            {admin && (
+              <div className="stat-actions">
+                <button
+                  className="btn btn-sm btn-outline btn-primary"
+                  onClick={() => setVisible(true)}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                Filter
-              </button>
-            </div>
-          )}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  Filter
+                </button>
+              </div>
+            )}
+          </div>
 
           {visible && (
             <div>

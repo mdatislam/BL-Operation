@@ -18,12 +18,15 @@ const AllPgRunList = () => {
   const [filter, setFilter] = useState([]);
   const navigate = useNavigate();
   const { data: pgRunData, isLoading } = useQuery(["list"], () =>
-    fetch("http://localhost:5000/ApprovedAllPgRun", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
+    fetch(
+      "https://bl-operation-server-production.up.railway.app/ApprovedAllPgRun",
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);

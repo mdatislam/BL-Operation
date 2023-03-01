@@ -110,14 +110,17 @@ const FcuDataFromExcel = () => {
       latestFilterChangeDate: PresentChangingDate,
       nextPlanDate: NextChangingDate,
     };
-    fetch(`http://localhost:5000/fcuFilterChangeLatestRecord/${siteID}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(fcuData),
-    }).then((res) => {
+    fetch(
+      `https://bl-operation-server-production.up.railway.app/fcuFilterChangeLatestRecord/${siteID}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(fcuData),
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         // toast.error("Unauthorize access");
         signOut(auth);
@@ -144,43 +147,45 @@ const FcuDataFromExcel = () => {
               Upload Excel file
             </h5>
           </label>
-          <h4 className="text-xl text-center font-bold text-pink-600">**Heading of Excel sheet must contain bellow name**</h4>
-                   
-            <thead className="border-2 border-[#FFCB24]">
-            <tr className=" divide-x-4 px-4 divide-blue-400 text-start">
-              
-              <th>siteId</th>
-              <th>office</th>
-              <th>siteType</th>
-              <th>
-                <div>cooling</div>
-                <div>System</div>
-              </th>
-              <th>fcuBrand</th>
-              <th>
-                <div>installation</div>
-                <div>Date</div>
-              </th>
-              <th>
-                <div>PreFilter</div>
-                <div>ChangeDate</div>
-              </th>
-              <th>
-                <div>latestFilter</div>
-                <div>ChangeDate</div>
-              </th>
-              <th>
-                <div>nextPlan</div>
-                <div>Date</div>
-              </th>
-              <th>
-                <div>latest </div>
-                <div>Action</div>
-              </th>
-              <th>fcuCtrl</th>
-                </tr>
-              </thead>
-              
+          <h4 className="text-xl text-center font-bold text-pink-600 mt-2">
+            **Heading of Excel sheet must contain bellow name without space**
+          </h4>
+          <div className=" w-3/4 mx-auto border-2 m-4">
+            <thead className="">
+              <tr className="border-2 divide-x-2 px-4 divide-blue-400 text-start">
+                <th>siteId</th>
+                <th>office</th>
+                <th>siteType</th>
+                <th>
+                  <div>cooling</div>
+                  <div>System</div>
+                </th>
+                <th>fcuBrand</th>
+                <th>
+                  <div>installation</div>
+                  <div>Date</div>
+                </th>
+                <th>
+                  <div>PreFilter</div>
+                  <div>ChangeDate</div>
+                </th>
+                <th>
+                  <div>latestFilter</div>
+                  <div>ChangeDate</div>
+                </th>
+                <th>
+                  <div>nextPlan</div>
+                  <div>Date</div>
+                </th>
+                <th>
+                  <div>latest </div>
+                  <div>Action</div>
+                </th>
+                <th>fcuCtrl</th>
+              </tr>
+            </thead>
+          </div>
+
           <div className="flex flex-row gap-x-4 justify-start items-center">
             <div className="form-control w-full max-w-xs  mt-4">
               <input

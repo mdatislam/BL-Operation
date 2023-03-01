@@ -7,7 +7,10 @@ const FcuMaterialRow = ({ filter, index, setFcuFilterDel }) => {
   return (
     <tr className="border-2 border-[#F0D786]  hover divide-x divide-gray-300 text-center">
       <td>{index + 1}</td>
-      <td className="flex justify-items-center gap-x-2 text-center">
+
+      <td>{receivingDate} </td>
+      <td>{receivingQuantity}</td>
+      <td className=" text-center">
         {/* cancel button */}
         <label
           htmlFor="fcuFilterDel"
@@ -30,8 +33,6 @@ const FcuMaterialRow = ({ filter, index, setFcuFilterDel }) => {
           </svg>
         </label>
       </td>
-      <td>{receivingDate} </td>
-      <td>{receivingQuantity}</td>
       <td>{remark}</td>
     </tr>
   );

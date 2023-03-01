@@ -26,7 +26,9 @@ const SiteDataHome = () => {
   const handleSearch = (site) => {
     //console.log(site)
     if (search !== "") {
-      fetch(`http://localhost:5000/searchSite?site=${site}`)
+      fetch(
+        `https://bl-operation-server-production.up.railway.app/searchSite?site=${site}`
+      )
         .then((res) => res.json())
         .then((data) => {
           //console.log(data);
@@ -77,14 +79,17 @@ const SiteDataHome = () => {
       date: today,
     };
 
-    fetch(`http://localhost:5000/siteInfo/${data.siteId}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(newSiteInfo),
-    })
+    fetch(
+      `https://bl-operation-server-production.up.railway.app/siteInfo/${data.siteId}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(newSiteInfo),
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           toast.error("Unauthorize access");

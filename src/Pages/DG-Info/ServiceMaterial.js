@@ -1,14 +1,13 @@
-
 import React, { useState } from "react";
 
 import ServiceMaterialRow from "./ServiceMaterialRow";
-import { useAuthState } from 'react-firebase-hooks/auth';
-import auth from './../../firebase.init';
+import { useAuthState } from "react-firebase-hooks/auth";
+import auth from "./../../firebase.init";
 import { useNavigate } from "react-router-dom";
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { signOut } from 'firebase/auth';
-import { useQuery } from '@tanstack/react-query';
+import { signOut } from "firebase/auth";
+import { useQuery } from "@tanstack/react-query";
 import Loading from "../SharedPage/Loading";
 
 const ServiceMaterial = () => {
@@ -41,7 +40,7 @@ const ServiceMaterial = () => {
       date: today,
     };
 
-    fetch(`http://localhost:5000/lubOil`, {
+    fetch(`https://bl-operation-server-production.up.railway.app/lubOil`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -74,7 +73,7 @@ const ServiceMaterial = () => {
     isLoading,
     refetch,
   } = useQuery(["LubOilRecord"], () =>
-    fetch(" http://localhost:5000/lubOil", {
+    fetch(" https://bl-operation-server-production.up.railway.app/lubOil", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -95,12 +94,15 @@ const ServiceMaterial = () => {
   const { data: dgAllServiceInfo, isLoading2 } = useQuery(
     ["DgAllInfoList"],
     () =>
-      fetch(" http://localhost:5000/dgAllServiceInfo", {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }).then((res) => {
+      fetch(
+        " https://bl-operation-server-production.up.railway.app/dgAllServiceInfo",
+        {
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      ).then((res) => {
         if (res.status === 401 || res.status === 403) {
           //  toast.error("Unauthorize Access")
           signOut(auth);

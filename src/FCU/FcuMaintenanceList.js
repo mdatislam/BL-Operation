@@ -16,12 +16,15 @@ const FcuMaintenanceList = () => {
   const { data: fcuFilter, isLoading } = useQuery(
     ["fcuFilterChangeRecord"],
     () =>
-      fetch(" http://localhost:5000/fcuFilterChangeLatestRecord", {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }).then((res) => {
+      fetch(
+        " https://bl-operation-server-production.up.railway.app/fcuFilterChangeLatestRecord",
+        {
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      ).then((res) => {
         if (res.status === 401 || res.status === 403) {
           //  toast.error("Unauthorize Access")
           signOut(auth);
@@ -112,7 +115,7 @@ const FcuMaintenanceList = () => {
         </div>
 
         <h2 className="flex rounded-lg  text-white bg-[#d16bd8] mb-4 h-12 justify-center items-center text-2xl">
-          FCU Filter Changing Record
+          FCU Filter Changing Records
         </h2>
 
         <div className="overflow-x-auto  mt-4">
