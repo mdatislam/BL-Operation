@@ -9,11 +9,14 @@ import { signOut } from 'firebase/auth';
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../Pages/SharedPage/Loading";
 import FcuMaterialRow from "./FcuMaterialRow";
+import useAdmin from "../Pages/Hook/useAdmin";
+import FcuFilterDel from './FcuFilterDel';
 
 const FcuMaterial = () => {
   const [user] = useAuthState(auth);
+  const [admin]=useAdmin
   const [visible, setVisible] = useState(false);
-  const [lubOilDel, setLubOilDel] = useState([]);
+  const [fcuFilterDel, setFcuFilterDel] = useState([]);
    const navigate = useNavigate();
 
   const {
@@ -152,18 +155,18 @@ const FcuMaterial = () => {
                   key={filter._id}
                   filter={filter}
                   index={index}
-                  setLubOilDel={setLubOilDel}
+                  setFcuFilterDel={setFcuFilterDel}
                 />
               ))}
             </tbody>
           </table>
-          {/* {lubOilDel && (
-            <LubOilDel
-              lubOilDel={lubOilDel}
-              setLubOilDel={setLubOilDel}
+         {fcuFilterDel && (
+            <FcuFilterDel
+              fcuFilterDel={fcuFilterDel}
+              setFcuFilterDel={setFcuFilterDel}
               refetch={refetch}
             />
-          )} */}
+          )} 
         </div>
         {/* 2nd Part */}
         <div className="mt-8 order-first md:order-last">
@@ -172,28 +175,30 @@ const FcuMaterial = () => {
               Filter Calculation
             </h2>
           </div>
-          <div className="stat-actions">
-            <button
-              className="btn btn-sm btn-outline btn-primary"
-              onClick={() => setVisible(true)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
+          {admin && (
+            <div className="stat-actions">
+              <button
+                className="btn btn-sm btn-outline btn-primary"
+                onClick={() => setVisible(true)}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              Filter
-            </button>
-          </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                Filter
+              </button>
+            </div>
+          )}
 
           {visible && (
             <div>

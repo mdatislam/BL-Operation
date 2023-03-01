@@ -3,37 +3,39 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { CSVLink } from "react-csv";
 import { signOut } from "firebase/auth";
-import auth from './../firebase.init';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import useAdmin from './../Pages/Hook/useAdmin';
-import Loading from './../Pages/SharedPage/Loading';
-import FcuMaintenanceListRow from './FcuMaintenanceListRow';
+import auth from "./../firebase.init";
+import { useAuthState } from "react-firebase-hooks/auth";
+import useAdmin from "./../Pages/Hook/useAdmin";
+import Loading from "./../Pages/SharedPage/Loading";
+import FcuMaintenanceListRow from "./FcuMaintenanceListRow";
 
 const FcuMaintenanceList = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
   const navigate = useNavigate();
-  const { data: fcuFilter, isLoading } = useQuery(["fcuFilterChangeRecord"], () =>
-    fetch(" http://localhost:5000/fcuFilterChangeLatestRecord", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
+  const { data: fcuFilter, isLoading } = useQuery(
+    ["fcuFilterChangeRecord"],
+    () =>
+      fetch(" http://localhost:5000/fcuFilterChangeLatestRecord", {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }).then((res) => {
+        if (res.status === 401 || res.status === 403) {
+          //  toast.error("Unauthorize Access")
+          signOut(auth);
+          localStorage.removeItem("accessToken");
+          navigate("/Login");
+        }
+        return res.json();
+      })
   );
- 
+
   if (isLoading) {
     return <Loading />;
   }
-   //console.log(fcuFilter);
+  //console.log(fcuFilter);
   // console.log(dgServiceInfo);
   return (
     <div className="bg-teal-300 h-100 px-2">
@@ -64,14 +66,14 @@ const FcuMaintenanceList = () => {
           </Link>
 
           {/* FCU filter calcultion */}
-          {admin && (
-            <Link
-              to="/fcuMaterial"
-              className="flex btn btn-outline btn-primary btn-sm"
-            >
-              FCU Material
-            </Link>
-          )}
+
+          <Link
+            to="/fcuMaterial"
+            className="flex btn btn-outline btn-primary btn-sm"
+          >
+            FCU Material
+          </Link>
+
           {/* For Data upload button */}
           {admin && (
             <Link

@@ -144,6 +144,43 @@ const FcuDataFromExcel = () => {
               Upload Excel file
             </h5>
           </label>
+          <h4 className="text-xl text-center font-bold text-pink-600">**Heading of Excel sheet must contain bellow name**</h4>
+                   
+            <thead className="border-2 border-[#FFCB24]">
+            <tr className=" divide-x-4 px-4 divide-blue-400 text-start">
+              
+              <th>siteId</th>
+              <th>office</th>
+              <th>siteType</th>
+              <th>
+                <div>cooling</div>
+                <div>System</div>
+              </th>
+              <th>fcuBrand</th>
+              <th>
+                <div>installation</div>
+                <div>Date</div>
+              </th>
+              <th>
+                <div>PreFilter</div>
+                <div>ChangeDate</div>
+              </th>
+              <th>
+                <div>latestFilter</div>
+                <div>ChangeDate</div>
+              </th>
+              <th>
+                <div>nextPlan</div>
+                <div>Date</div>
+              </th>
+              <th>
+                <div>latest </div>
+                <div>Action</div>
+              </th>
+              <th>fcuCtrl</th>
+                </tr>
+              </thead>
+              
           <div className="flex flex-row gap-x-4 justify-start items-center">
             <div className="form-control w-full max-w-xs  mt-4">
               <input
@@ -163,50 +200,7 @@ const FcuDataFromExcel = () => {
               **File Type Should (.xls)**
             </span>
           </label>
-          <label className="label">
-            <h4>Heading of Excel sheet must contain bellow name</h4>
-            <div>
-              <tr className="divide-x  divide-blue-400 text-center">
-                <th>SNo</th>
-                <th>Site ID</th>
-                <th>Office</th>
-                <th>Site Type</th>
-                <th>
-                  <div>Cooling</div>
-                  <div>System</div>
-                </th>
-                <th>FCU Brand</th>
-                <th>
-                  <div>Installation</div>
-                  <div>Date</div>
-                </th>
-                <th>
-                  <div>Pre Filter</div>
-                  <div>Change Date</div>
-                </th>
-                <th>
-                  <div>Latest Filter</div>
-                  <div>Change Date</div>
-                </th>
-                <th>
-                  <div>Next Plan</div>
-                  <div>Date</div>
-                </th>
-                <th>
-                  <div>Latest </div>
-                  <div>Action</div>
-                </th>
-                <th>
-                  <div>Setting</div>
-                  <div>Check?</div>
-                </th>
-                <th>
-                  <div>Updated</div>
-                  <div>By</div>
-                </th>
-              </tr>
-            </div>
-          </label>
+          <label className="label"></label>
           {excelFileError && (
             <div
               className="font-bold text-red-600"
