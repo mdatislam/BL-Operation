@@ -56,7 +56,7 @@ const DgUseMaterial = () => {
     };
 
     fetch(
-      `https://bl-operation-server-production.up.railway.app/
+      `https://backend.bloperation.com/
 
 dgMaterialInfo/`,
       {

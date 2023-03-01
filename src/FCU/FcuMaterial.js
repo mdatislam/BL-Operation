@@ -39,7 +39,7 @@ const FcuMaterial = () => {
       date: today,
     };
 
-    fetch(`https://bl-operation-server-production.up.railway.app/fcuFilter`, {
+    fetch(`https://backend.bloperation.com/fcuFilter`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -72,7 +72,7 @@ const FcuMaterial = () => {
     isLoading,
     refetch,
   } = useQuery(["filterRecord"], () =>
-    fetch(" https://bl-operation-server-production.up.railway.app/fcuFilter", {
+    fetch(" https://backend.bloperation.com/fcuFilter", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -93,15 +93,12 @@ const FcuMaterial = () => {
   const { data: fcuFilterReplace, isLoading2 } = useQuery(
     ["fcuFilterReplace"],
     () =>
-      fetch(
-        " https://bl-operation-server-production.up.railway.app/fcuFilterChangeAllRecord",
-        {
-          method: "GET",
-          headers: {
-            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      ).then((res) => {
+      fetch(" https://backend.bloperation.com/fcuFilterChangeAllRecord", {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }).then((res) => {
         if (res.status === 401 || res.status === 403) {
           //  toast.error("Unauthorize Access")
           signOut(auth);

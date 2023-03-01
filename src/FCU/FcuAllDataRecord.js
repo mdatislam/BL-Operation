@@ -13,15 +13,12 @@ const FcuAllDataRecord = () => {
   const navigate = useNavigate();
 
   const { data: fcuAllData, isLoading } = useQuery(["fcuAllData"], () =>
-    fetch(
-      " https://bl-operation-server-production.up.railway.app/fcuFilterChangeAllRecord",
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch(" https://backend.bloperation.com/fcuFilterChangeAllRecord", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);

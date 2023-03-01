@@ -26,15 +26,12 @@ const FcuFilterChange = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(
-      "https://bl-operation-server-production.up.railway.app/fcuFilterChangeLatestRecord",
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch("https://backend.bloperation.com/fcuFilterChangeLatestRecord", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);
@@ -122,17 +119,14 @@ const FcuFilterChange = () => {
       remark: data.remark,
     };
 
-    fetch(
-      `https://bl-operation-server-production.up.railway.app/fcuFilterChangeAllRecord`,
-      {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(fcuFilterChangeData),
-      }
-    )
+    fetch(`https://backend.bloperation.com/fcuFilterChangeAllRecord`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(fcuFilterChangeData),
+    })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           // toast.error("Unauthorize access");
@@ -150,7 +144,7 @@ const FcuFilterChange = () => {
       });
 
     fetch(
-      `https://bl-operation-server-production.up.railway.app/fcuFilterChangeLatestRecord/${siteID}`,
+      `https://backend.bloperation.com/fcuFilterChangeLatestRecord/${siteID}`,
       {
         method: "PUT",
         headers: {

@@ -15,7 +15,7 @@ const ProfilePic = () => {
   const navigate = useNavigate();
   const { data: users, isLoading } = useQuery(["List", user], () =>
     fetch(
-      `https://bl-operation-server-production.up.railway.app/userList/users?email=${user.email}`,
+      `https://backend.bloperation.com/userList/users?email=${user.email}`,
       {
         method: "GET",
         headers: {

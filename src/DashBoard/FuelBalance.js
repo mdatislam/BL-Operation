@@ -11,15 +11,12 @@ const FuelBalance = () => {
   const navigate = useNavigate();
 
   const { data: pgRunData, isLoading2 } = useQuery(["list"], () =>
-    fetch(
-      "https://bl-operation-server-production.up.railway.app/ApprovedAllPgRun",
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
+    fetch("https://backend.bloperation.com/ApprovedAllPgRun", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
       if (res.status === 401 || res.status === 403) {
         signOut(auth);
         localStorage.removeItem("accessToken");
@@ -30,7 +27,7 @@ const FuelBalance = () => {
   );
 
   const { data: receiveFuel, isLoading3 } = useQuery(["fuel"], () =>
-    fetch("https://bl-operation-server-production.up.railway.app/fuelListAll", {
+    fetch("https://backend.bloperation.com/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -39,15 +36,12 @@ const FuelBalance = () => {
   );
 
   const { data: receiveFuelOncall, isLoading } = useQuery(["fuelOncall"], () =>
-    fetch(
-      "https://bl-operation-server-production.up.railway.app/fuelListAllOncall",
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => res.json())
+    fetch("https://backend.bloperation.com/fuelListAllOncall", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => res.json())
   );
   if (isLoading || isLoading2 || isLoading3) {
     return <Loading />;
