@@ -9,7 +9,7 @@ const usePgList = () => {
   const [PgList, setPgList] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-    fetch("http://localhost:5000/PgList", {
+    fetch("https://backend.bloperation.com/PgList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

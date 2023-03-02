@@ -28,12 +28,15 @@ const SiteDataInfo = () => {
     isLoading,
     refetch,
   } = useQuery(["siteInfo", [page, size]], () =>
-    fetch(`http://localhost:5000/siteData?page=${page}&size=${size}`, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
+    fetch(
+      `https://backend.bloperation.com/siteData?page=${page}&size=${size}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         //  toast.error("Unauthorize Access")
         signOut(auth);

@@ -112,14 +112,17 @@ const FcuDataFromExcel = () => {
       latestFilterChangeDate: PresentChangingDate,
       nextPlanDate: NextChangingDate,
     };
-    fetch(`http://localhost:5000/fcuFilterChangeLatestRecord/${siteID}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(fcuData),
-    }).then((res) => {
+    fetch(
+      `https://backend.bloperation.com/fcuFilterChangeLatestRecord/${siteID}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(fcuData),
+      }
+    ).then((res) => {
       if (res.status === 401 || res.status === 403) {
         // toast.error("Unauthorize access");
         signOut(auth);

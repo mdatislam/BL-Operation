@@ -15,7 +15,7 @@ const UseToken = (user) => {
         name: name,
         email: email,
       };
-      fetch(`http://localhost:5000/user/${email}`, {
+      fetch(`https://backend.bloperation.com/user/${email}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json",
