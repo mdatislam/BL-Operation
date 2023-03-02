@@ -16,7 +16,7 @@ const FcuMaintenanceList = () => {
   const { data: fcuFilter, isLoading } = useQuery(
     ["fcuFilterChangeRecord"],
     () =>
-      fetch(" https://backend.bloperation.com/fcuFilterChangeLatestRecord", {
+      fetch(" http://localhost:5000/fcuFilterChangeLatestRecord", {
         method: "GET",
         headers: {
           authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -116,7 +116,7 @@ const FcuMaintenanceList = () => {
         </h2>
 
         <div className="overflow-x-auto  mt-4">
-          <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
+          <table className=" table table-compact  border-spacing-2  border border-3 border-slate-600 ">
             <thead className="border-2 border-[#FFCB24]">
               <tr className="divide-x divide-blue-400 text-center">
                 <th className="w-12">SN</th>

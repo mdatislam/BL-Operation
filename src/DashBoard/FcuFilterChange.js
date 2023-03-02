@@ -26,7 +26,7 @@ const FcuFilterChange = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("https://backend.bloperation.com/fcuFilterChangeLatestRecord", {
+    fetch("http://localhost:5000/fcuFilterChangeLatestRecord", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -81,13 +81,14 @@ const FcuFilterChange = () => {
     let daPresentDate = new Intl.DateTimeFormat("en", {
       day: "2-digit",
     }).format(PresentDate);
-    let PresentChangingDate = `${daPresentDate}-${moPresentDate}-${yPresentDate}`;
+    let PresentChangingDate = `${moPresentDate}-${daPresentDate}-${yPresentDate}`;
 
     /*  next FCU filter change date calculation */
 
     let nextFilterChangeDateMsec = Date.parse(PresentChangingDate);
     //console.log(FilterChangeDateMsec);
     let NextDate = nextFilterChangeDateMsec + 120 * 3600 * 1000 * 24;
+    /*  const NextChangingDate = new Date(NextDate).toDateString(); */
     let yNextDate = new Intl.DateTimeFormat("en", {
       year: "numeric",
     }).format(NextDate);
@@ -119,7 +120,7 @@ const FcuFilterChange = () => {
       remark: data.remark,
     };
 
-    fetch(`https://backend.bloperation.com/fcuFilterChangeAllRecord`, {
+    fetch(`http://localhost:5000/fcuFilterChangeAllRecord`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -143,17 +144,14 @@ const FcuFilterChange = () => {
         }
       });
 
-    fetch(
-      `https://backend.bloperation.com/fcuFilterChangeLatestRecord/${siteID}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(fcuFilterChangeData),
-      }
-    )
+    fetch(`http://localhost:5000/fcuFilterChangeLatestRecord/${siteID}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(fcuFilterChangeData),
+    })
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           // toast.error("Unauthorize access");
