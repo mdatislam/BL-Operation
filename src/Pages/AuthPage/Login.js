@@ -4,27 +4,29 @@ import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import auth from "./../../firebase.init";
 import Loading from "./../SharedPage/Loading";
-import UseToken from "./../Hook/useToken";
 import PasswordReset from "./PasswordReset";
 //import useAdmin from "../Hook/useAdmin";
 import loginBack from "../../images/login.png";
+import useToken from "./../Hook/useToken";
 
 const Login = () => {
-   const {
-     register,
-     formState: { errors },
-     handleSubmit,
-   } = useForm();
-  const [password, setPassword] = useState(" ");
-  const [signInWithEmailAndPassword, user,loading,error] =
+  const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
- const location = useLocation();
- let from = location.state?.from.pathname || "/";
- const navigate = useNavigate();
-  const [token] = UseToken(user);
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+  const [password, setPassword] = useState(" ");
 
-  if (loading) return <Loading></Loading>;
+  const location = useLocation();
+  let from = location.state?.from?.pathname || "/";
+  const navigate = useNavigate();
+  const [token] = useToken(user);
+  console.log(token)
+  if (loading) { return <Loading></Loading>; }
 
+  //console.log(user)
   let signInError;
 
   if (error) {
@@ -35,14 +37,20 @@ const Login = () => {
     );
   }
 
+
+
   const onSubmit = (data) => {
     //console.log(data);
     signInWithEmailAndPassword(data.email, data.password);
+
   };
 
-   if (token) {
-     navigate(from, { replace: true });
-   }
+  if (token) {
+    navigate(from, { replace: true });
+  }
+
+
+
 
   return (
     <div
@@ -89,7 +97,7 @@ const Login = () => {
                 )}
               </label>
             </div>
-            {signInError}
+
             {/*  password field */}
             <div className="form-control">
               <label className="label">
@@ -123,17 +131,16 @@ const Login = () => {
                   </span>
                 )}
               </label>
-
-              <div className="flex flex-cols">
-                <div>
-                  <label
-                    htmlFor="reset"
-                    className=" btn-link label-text-alt link-hover"
-                    onClick={() => setPassword(user.email)}
-                  >
-                    Reset Password ?
-                  </label>
-                </div>
+            </div>
+            <div className="flex flex-cols">
+              <div>
+                <label
+                  htmlFor="reset"
+                  className=" btn-link label-text-alt link-hover"
+                  onClick={() => setPassword(user.email)}
+                >
+                  Reset Password ?
+                </label>
               </div>
             </div>
             {signInError}
@@ -141,6 +148,7 @@ const Login = () => {
               <input type="submit" className="btn btn-primary" value="Login" />
             </div>
           </div>
+
         </form>
 
         {/* <div className="divider mt-[-20px]">OR</div>

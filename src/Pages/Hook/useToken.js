@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 //import { useNavigate } from "react-router-dom";
 //import { toast } from "react-toastify";
 
-const UseToken = (user) => {
-  const [token, setToken] = useState(" ");
+const useToken = (user) => {
+  const [token, setToken] = useState("");
   //const navigate = useNavigate();
   useEffect(() => {
     if (user) {
@@ -39,8 +39,8 @@ const UseToken = (user) => {
           //console.log(data.accessToken);
         });
     }
-  });
+  },[user]);
 
   return [token];
 };
-export default UseToken;
+export default useToken;
