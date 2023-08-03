@@ -10,18 +10,18 @@ import loginBack from "../../images/login.png";
 import useToken from "./../Hook/useToken";
 
 const Login = () => {
-  const [signInWithEmailAndPassword, user, loading, error] =
-    useSignInWithEmailAndPassword(auth);
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
   const [password, setPassword] = useState(" ");
-
   const location = useLocation();
-  let from = location.state?.from?.pathname || "/";
   const navigate = useNavigate();
+  let from = location.state?.from?.pathname || "/";
+
   const [token] = useToken(user);
   //console.log(token)
   if (loading) { return <Loading></Loading>; }
@@ -37,21 +37,14 @@ const Login = () => {
     );
   }
 
-
-
+  if (token) {
+    navigate(from, { replace: true });
+  }
   const onSubmit = (data) => {
     //console.log(data);
     signInWithEmailAndPassword(data.email, data.password);
 
   };
-
-  if (user) {
-    navigate(from, { replace: true });
-  }
-
-
-
-
   return (
     <div
       className="hero h-screen bg-base-200 mt-[-30px]"
@@ -135,7 +128,7 @@ const Login = () => {
             <div className="flex flex-cols">
               <div>
                 <label
-                style={{color:"green"}}
+                  style={{ color: "green" }}
                   htmlFor="reset"
                   className=" btn-link label-text-alt link-hover"
                   onClick={() => setPassword(user.email)}

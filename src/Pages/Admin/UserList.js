@@ -17,7 +17,7 @@ const UserList = () => {
   const [profile, setProfile] = useState(" ");
 
   const navigate = useNavigate();
-  const { data: users, isLoading } = useQuery(["list"], () =>
+  const {isLoading , data: users } = useQuery(["list"], () =>
     fetch(" https://backend.bloperation.com/userList", {
       method: "GET",
       headers: {

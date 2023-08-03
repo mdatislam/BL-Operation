@@ -20,9 +20,9 @@ const AllFuelListOncall = () => {
   const navigate = useNavigate();
   const [delFuel, setDelFuel] = useState("");
   const {
-    data: receiveFuelOncall,
     isLoading,
-    refetch,
+    data: receiveFuelOncall,
+        refetch,
   } = useQuery(["fuelOnCall"], () =>
     fetch(" https://backend.bloperation.com/onCall/fuelListAll", {
       method: "GET",

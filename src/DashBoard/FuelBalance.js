@@ -10,7 +10,7 @@ const FuelBalance = () => {
   const [userList] = useUserList();
   const navigate = useNavigate();
 
-  const { data: pgRunData, isLoading2 } = useQuery(["list"], () =>
+  const { isLoading2,data: pgRunData  } = useQuery(["list"], () =>
     fetch("https://backend.bloperation.com/ApprovedAllPgRun", {
       method: "GET",
       headers: {
@@ -26,7 +26,7 @@ const FuelBalance = () => {
     })
   );
 
-  const { data: receiveFuel, isLoading3 } = useQuery(["fuel"], () =>
+  const {isLoading3, data: receiveFuel } = useQuery(["fuel"], () =>
     fetch("https://backend.bloperation.com/fuelListAll", {
       method: "GET",
       headers: {
@@ -35,7 +35,7 @@ const FuelBalance = () => {
     }).then((res) => res.json())
   );
 
-  const { data: receiveFuelOncall, isLoading } = useQuery(["fuelOncall"], () =>
+  const {isLoading , data: receiveFuelOncall } = useQuery(["fuelOncall"], () =>
     fetch("https://backend.bloperation.com/fuelListAllOncall", {
       method: "GET",
       headers: {

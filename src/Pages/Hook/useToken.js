@@ -7,7 +7,7 @@ const useToken = (user) => {
   //const navigate = useNavigate();
   useEffect(() => {
     if (user) {
-      //console.log(user);
+      console.log(user);
       const email = user?.user?.email;
       const name = user?.user?.displayName;
       //console.log(email)

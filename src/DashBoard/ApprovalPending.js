@@ -15,8 +15,8 @@ const ApprovalPending = () => {
   const navigate = useNavigate();
 
   const {
-    data: pgRunData,
-    isLoading,
+        isLoading,
+        data: pgRunData,
     refetch,
   } = useQuery(["list", user], () =>
     fetch(`https://backend.bloperation.com/ApprovalList?email=${user.email}`, {

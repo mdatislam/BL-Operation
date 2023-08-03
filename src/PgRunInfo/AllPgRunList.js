@@ -17,7 +17,7 @@ const AllPgRunList = () => {
   const [searchPgRun, setSearchPgRun] = useState("");
   const [filter, setFilter] = useState([]);
   const navigate = useNavigate();
-  const { data: pgRunData, isLoading } = useQuery(["list"], () =>
+  const { isLoading, data: pgRunData } = useQuery(["list"], () =>
     fetch("https://backend.bloperation.com/ApprovedAllPgRun", {
       method: "GET",
       headers: {

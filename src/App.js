@@ -63,7 +63,7 @@ function App() {
         {/*    <Route path="/" element={<Home />}></Route> */}
 
         <Route path="/Login" element={<Login />}></Route>
-        <Route path="*" element={<NotFound />}></Route>
+        
 
         {/*  private Route */}
         <Route element={<RequireAuth />}>
@@ -121,6 +121,7 @@ function App() {
 
           <Route path="/siteDataUpdate" element={<FetchExcelToJson />} />
         </Route>
+        <Route path="*" element={<NotFound />}></Route>
       </Routes>
       <Footer />
       {/* </NavBar> */}

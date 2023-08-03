@@ -13,7 +13,7 @@ const ProfilePic = () => {
   //const [userList] = useUserList();
 
   const navigate = useNavigate();
-  const { data: users, isLoading } = useQuery(["List", user], () =>
+  const { isLoading ,data: users } = useQuery(["List", user], () =>
     fetch(
       `https://backend.bloperation.com/userList/users?email=${user.email}`,
       {
@@ -53,7 +53,7 @@ const ProfilePic = () => {
           </figure>
         </div>
       )}
-      <h2 className="font-bold">{user.displayName}</h2>
+      <h2 className="font-bold">{user?.displayName}</h2>
     </div>
   );
 };

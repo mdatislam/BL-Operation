@@ -38,10 +38,9 @@ const PgRunList = () => {
       .then((data) => setReceiveFuel(data));
   },[]);
 
-  const {
+  const {isLoading,
     data: pgRunData,
-    isLoading,
-    refetch,
+        refetch,
   } = useQuery(["list"], () =>
     fetch(
       `  https://backend.bloperation.com/pgRunAllList?email=${user.email}`,
