@@ -18,7 +18,7 @@ const useToken = (user) => {
       fetch(`https://backend.bloperation.com/user/${email}`, {
         method: "PUT",
         headers: {
-          "content-type": "application/json",
+          "content-type": "application/json"
         },
         body: JSON.stringify(userInfo),
       })

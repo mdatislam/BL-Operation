@@ -23,7 +23,7 @@ const Login = () => {
   let from = location.state?.from?.pathname || "/";
   const navigate = useNavigate();
   const [token] = useToken(user);
-  console.log(token)
+  //console.log(token)
   if (loading) { return <Loading></Loading>; }
 
   //console.log(user)
@@ -45,7 +45,7 @@ const Login = () => {
 
   };
 
-  if (token) {
+  if (user) {
     navigate(from, { replace: true });
   }
 
@@ -135,6 +135,7 @@ const Login = () => {
             <div className="flex flex-cols">
               <div>
                 <label
+                style={{color:"green"}}
                   htmlFor="reset"
                   className=" btn-link label-text-alt link-hover"
                   onClick={() => setPassword(user.email)}
