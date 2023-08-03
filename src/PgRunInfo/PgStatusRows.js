@@ -4,7 +4,7 @@ import React from "react";
 const PgStatusRows = ({ pg, index, refetch, setPgEdit,setPgDel,admin }) => {
   
   const { pgNo, date, pgStatus, updaterName, pgDetail } = pg;
-  refetch();
+  //refetch();
   return (
     <>
       <tr className="border-2 border-[#F0D786]  hover divide-x divide-gray-300 text-center">

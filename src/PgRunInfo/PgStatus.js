@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -15,6 +15,7 @@ import useAdmin from "../Pages/Hook/useAdmin";
 const PgStatus = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
+  const [pgList,setPgList]=useState([])
   const [visible, setVisible] = useState(false);
   const [pgDel, setPgDel] = useState("");
   const [pgEdit, setPgEdit] = useState("");
@@ -40,7 +41,7 @@ const PgStatus = () => {
       date: today,
     };
 
-    fetch(`https://backend.bloperation.com/pgList/${data.pgno}`, {
+    fetch(`http://localhost:5000/pgList/${data.pgno}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -64,15 +65,13 @@ const PgStatus = () => {
         }
         reset();
         setVisible(null);
-        refetch();
+        //refetch();
       });
   };
-  const {
-    data: pgList,
-    isLoading,
-    refetch,
-  } = useQuery(["pgList"], () =>
-    fetch(" https://backend.bloperation.com/pgList", {
+  
+
+useEffect(()=>{
+  fetch(" http://localhost:5000/pgList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -86,11 +85,10 @@ const PgStatus = () => {
       }
       return res.json();
     })
-  );
-  // console.log(services)
-  if (isLoading) {
-    return <Loading />;
-  }
+    .then(data=>setPgList(data))
+
+
+},[])
 
   const goodCondition = pgList?.filter((good) => good.pgStatus === "Good");
   const goodPg = goodCondition?.length;
@@ -240,7 +238,7 @@ const PgStatus = () => {
                 key={pg._id}
                 pg={pg}
                 index={index}
-                refetch={refetch}
+                //refetch={refetch}
                 setPgDel={setPgDel}
                 setPgEdit={setPgEdit}
                 admin={admin}
@@ -249,9 +247,9 @@ const PgStatus = () => {
           </tbody>
         </table>
       </div>
-      {pgDel && <PgDel pgDel={pgDel} setPgDel={setPgDel} refetch={refetch} />}
+      {pgDel && <PgDel pgDel={pgDel} setPgDel={setPgDel} /* refetch={refetch}  *//>}
       {pgEdit && (
-        <EditPg pgEdit={pgEdit} setPgEdit={setPgEdit} refetch={refetch} />
+        <EditPg pgEdit={pgEdit} setPgEdit={setPgEdit} /* refetch={refetch} */ />
       )}
     </div>
   );
