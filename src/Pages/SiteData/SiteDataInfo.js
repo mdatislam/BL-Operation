@@ -29,7 +29,7 @@ const SiteDataInfo = () => {
     refetch,
   } = useQuery(["siteInfo", [page, size]], () =>
     fetch(
-      `http://localhost:5000/siteData?page=${page}&size=${size}`,
+      `https://backend.bloperation.com/siteData?page=${page}&size=${size}`,
       {
         method: "GET",
         headers: {

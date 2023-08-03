@@ -16,7 +16,7 @@ const FcuMaintenanceList = () => {
   const { data: fcuFilter, isLoading } = useQuery(
     ["fcuFilterChangeRecord"],
     () =>
-      fetch(" http://localhost:5000/fcuFilterChangeLatestRecord", {
+      fetch(" https://backend.bloperation.com/fcuFilterChangeLatestRecord", {
         method: "GET",
         headers: {
           authorization: `Bearer ${localStorage.getItem("accessToken")}`,
