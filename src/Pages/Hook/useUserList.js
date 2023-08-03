@@ -24,7 +24,7 @@ const useUserList = () => {
         return res.json();
       })
       .then((data) => setUserList(data));
-  });
+  },[]);
 
   return [userList];
 };

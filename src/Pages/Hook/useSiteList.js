@@ -23,7 +23,7 @@ const useSiteList = () => {
         return res.json();
       })
       .then((data) => setSiteList(data));
-  });
+  },[]);
 
   return [siteList];
 };

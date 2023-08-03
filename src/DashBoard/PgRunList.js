@@ -36,7 +36,7 @@ const PgRunList = () => {
         return res.json();
       })
       .then((data) => setReceiveFuel(data));
-  });
+  },[]);
 
   const {
     data: pgRunData,

@@ -25,7 +25,7 @@ const usePgList = () => {
         return res.json();
       })
       .then((data) => setPgList(data));
-  });
+  },[]);
 
   return [PgList];
 };
