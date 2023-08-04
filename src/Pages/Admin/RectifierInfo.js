@@ -5,7 +5,7 @@ import RectifierInfoRows from "./RectifierInfoRows";
 
 const RectifierInfo = () => {
   const { data: rectifiers, isLoading } = useQuery(["rectifierlist"], () =>
-    fetch(" https://backend.bloperation.com/rectifier", {
+    fetch(" https://server.bloperation.com/rectifier", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

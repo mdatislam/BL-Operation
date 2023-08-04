@@ -7,7 +7,7 @@ const DeleteReceiveFuel = ({ delFuel, refetch, setDelFuel }) => {
   const handleDelete = (id) => {
     console.log(id);
     fetch(
-      `https://backend.bloperation.com/
+      `https://server.bloperation.com/
 
 receivedFuel/${id}`,
       {

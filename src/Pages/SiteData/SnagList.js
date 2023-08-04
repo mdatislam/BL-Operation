@@ -29,7 +29,7 @@ const SnagList = () => {
     refetch,
   } = useQuery(["siteInfo", [page, size]], () =>
     fetch(
-      `https://backend.bloperation.com/siteData?page=${page}&size=${size}`,
+      `https://server.bloperation.com/siteData?page=${page}&size=${size}`,
       {
         method: "GET",
         headers: {

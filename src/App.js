@@ -7,7 +7,7 @@ import DashBoard from "./DashBoard/DashBoard";
 import SignUp from "./Pages/AuthPage/SignUp";
 import NotFound from "./Pages/SharedPage/NotFound";
 import { ToastContainer } from "react-toastify";
- import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css";
 import RequireAuth from './Pages/AuthPage/RequireAuth';
 import { privateRoute } from "./Route/privateRoute";
 import PgRunList from "./DashBoard/PgRunList";
@@ -59,12 +59,7 @@ function App() {
       {/*  <NavBar> */}
       <Navbar2 />
       <Routes>
-        {/*  Public Route */}
-        {/*    <Route path="/" element={<Home />}></Route> */}
-
         <Route path="/Login" element={<Login />}></Route>
-        
-
         {/*  private Route */}
         <Route element={<RequireAuth />}>
           <Route path="/Home" element={<Home />}></Route>
@@ -81,10 +76,6 @@ function App() {
             <Route path="DgServicingUpdate" element={<DGServicingUpdate />} />
             <Route path="DgRefuelingUpdate" element={<DgRefuelingUpdate />} />
             <Route path="DgUseMaterial" element={<DgUseMaterial />} />
-            {/*  <Route path="UserList" element={<RequireAdmin>
-                <UserList/></RequireAdmin>}>
-              </Route> */}
-
             <Route element={<RequireAdmin />}>
               <Route path="UserList" element={<UserList />} />
             </Route>
@@ -104,7 +95,7 @@ function App() {
           <Route path="/AllRefueling" element={<AllRefuelingList />} />
           <Route path="/FcuMaintenance" element={<FcuMaintenanceList />} />
           <Route path="/FcuDataUpload" element={<FcuDataFromExcel />} />
-          <Route path="/FcuAllData" element={<FcuAllDataRecord/>} />
+          <Route path="/FcuAllData" element={<FcuAllDataRecord />} />
           <Route path="/EmInfo" element={<EminfoList />} />
           <Route path="/fcuMaterial" element={<FcuMaterial />} />
           <Route path="/PgStatus" element={<PgStatus />} />

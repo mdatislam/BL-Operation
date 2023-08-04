@@ -37,12 +37,14 @@ const Login = () => {
     );
   }
 
-  if (token) {
-    navigate(from, { replace: true });
-  }
+  
   const onSubmit = (data) => {
     //console.log(data);
     signInWithEmailAndPassword(data.email, data.password);
+
+    if (token) {
+      navigate(from, { replace: true });
+    }
 
   };
   return (

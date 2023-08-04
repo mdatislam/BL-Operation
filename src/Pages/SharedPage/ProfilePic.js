@@ -15,7 +15,7 @@ const ProfilePic = () => {
   const navigate = useNavigate();
   const { isLoading ,data: users } = useQuery(["List", user], () =>
     fetch(
-      `https://backend.bloperation.com/userList/users?email=${user.email}`,
+      `https://server.bloperation.com/userList/users?email=${user.email}`,
       {
         method: "GET",
         headers: {
@@ -46,6 +46,7 @@ const ProfilePic = () => {
             {users?.map((p) => (
               <img
                 src={p.url}
+                key={p.email}
                 className="rounded-lg"
                 alt="Profile Pic download problem"
               />

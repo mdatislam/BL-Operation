@@ -19,7 +19,7 @@ const ApprovalPending = () => {
         data: pgRunData,
     refetch,
   } = useQuery(["list", user], () =>
-    fetch(`https://backend.bloperation.com/ApprovalList?email=${user.email}`, {
+    fetch(`https://server.bloperation.com/ApprovalList?email=${user.email}`, {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
