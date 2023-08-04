@@ -37,16 +37,18 @@ const Login = () => {
     );
   }
 
-  
+
+
+
   const onSubmit = (data) => {
     //console.log(data);
     signInWithEmailAndPassword(data.email, data.password);
 
-    if (token) {
-      navigate(from, { replace: true });
-    }
-
   };
+
+  if (token) {
+    navigate(from, { replace: true });
+  }
   return (
     <div
       className="hero h-screen bg-base-200 mt-[-30px]"
