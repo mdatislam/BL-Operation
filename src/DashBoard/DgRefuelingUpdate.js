@@ -25,7 +25,7 @@ const DgRefuelingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" https://server.bloperation.com/dgRefuelingInfo", {
+    fetch(" https://backend.bloperation.com/dgRefuelingInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -103,7 +103,7 @@ const DgRefuelingUpdate = () => {
     };
 
     fetch(
-      `https://server.bloperation.com/
+      `https://backend.bloperation.com/
 
 dgRefuelingInfo/${siteID}`,
       {
@@ -133,7 +133,7 @@ dgRefuelingInfo/${siteID}`,
 
     /* for posting all refueling data */
     fetch(
-      `https://server.bloperation.com/
+      `https://backend.bloperation.com/
 
 dgAllRefueling`,
       {

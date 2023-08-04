@@ -11,7 +11,7 @@ import auth from "../firebase.init";
 const ApprovalPendingList = () => {
   const navigate = useNavigate();
   const { data: pgRunData, isLoading } = useQuery(["list"], () =>
-    fetch(" https://server.bloperation.com/PendingAllPgRun", {
+    fetch(" https://backend.bloperation.com/PendingAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

@@ -54,7 +54,7 @@ const ProfileChange = ({ profile, setProfile }) => {
       url: imgUrl,
     };
 
-    fetch(`https://server.bloperation.com/profileChange/${email}`, {
+    fetch(`https://backend.bloperation.com/profileChange/${email}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

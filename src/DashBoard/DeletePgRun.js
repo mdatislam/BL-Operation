@@ -7,7 +7,7 @@ const DeletePgRun = ({ delPg, refetch, setDelPg }) => {
   const handleDelete = (id) => {
     //console.log(id);
     fetch(
-      `https://server.bloperation.com/
+      `https://backend.bloperation.com/
 
 pgRun/${id}`,
       {

@@ -24,7 +24,7 @@ const AllFuelListOncall = () => {
     data: receiveFuelOncall,
         refetch,
   } = useQuery(["fuelOnCall"], () =>
-    fetch(" https://server.bloperation.com/onCall/fuelListAll", {
+    fetch(" https://backend.bloperation.com/onCall/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

@@ -26,7 +26,7 @@ const DGServicingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("https://server.bloperation.com/dgServiceInfo", {
+    fetch("https://backend.bloperation.com/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -112,7 +112,7 @@ const DGServicingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`https://server.bloperation.com/dgAllServicing`, {
+    fetch(`https://backend.bloperation.com/dgAllServicing`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -136,7 +136,7 @@ const DGServicingUpdate = () => {
         }
       });
 
-    fetch(`https://server.bloperation.com/dgServiceInfo/${siteID}`, {
+    fetch(`https://backend.bloperation.com/dgServiceInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

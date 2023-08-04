@@ -18,7 +18,7 @@ const AllPgRunList = () => {
   const [filter, setFilter] = useState([]);
   const navigate = useNavigate();
   const { isLoading, data: pgRunData } = useQuery(["list"], () =>
-    fetch("https://server.bloperation.com/ApprovedAllPgRun", {
+    fetch("https://backend.bloperation.com/ApprovedAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

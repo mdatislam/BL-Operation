@@ -7,7 +7,7 @@ const useSiteList = () => {
   const [siteList, setSiteList] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-    fetch("https://server.bloperation.com/siteInfo", {
+    fetch("https://backend.bloperation.com/siteInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
