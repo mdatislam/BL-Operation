@@ -23,7 +23,7 @@ const Login = () => {
   let from = location.state?.from?.pathname || "/";
 
   const [token] = useToken(user);
-  //console.log(token)
+  console.log(token)
   if (loading) { return <Loading></Loading>; }
 
   //console.log(user)
@@ -38,7 +38,9 @@ const Login = () => {
   }
 
 
-
+  if (token) {
+    navigate(from, { replace: true });
+  }
 
   const onSubmit = (data) => {
     //console.log(data);
@@ -46,9 +48,7 @@ const Login = () => {
 
   };
 
-  if (token) {
-    navigate(from, { replace: true });
-  }
+  
   return (
     <div
       className="hero h-screen bg-base-200 mt-[-30px]"
