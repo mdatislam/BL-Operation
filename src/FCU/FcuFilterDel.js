@@ -6,7 +6,7 @@ const FcuFilterDel = ({ fcuFilterDel, setFcuFilterDel, refetch }) => {
   const handleFcuFilterDelete = (id) => {
     // console.log(id);
     fetch(
-      `https://blserver.bloperation.com/
+      `https://backend.bloperation.com/
 
 fcuFilter/${id}`,
       {

@@ -38,17 +38,17 @@ const Login = () => {
   }
 
 
+ 
+
+  const onSubmit = async(data) => {
+    //console.log(data);
+  await signInWithEmailAndPassword(data.email, data.password);
+  
+  };
+
   if (token) {
     navigate(from, { replace: true });
   }
-
-  const onSubmit = (data) => {
-    //console.log(data);
-    signInWithEmailAndPassword(data.email, data.password);
-
-  };
-
-  
   return (
     <div
       className="hero h-screen bg-base-200 mt-[-30px]"

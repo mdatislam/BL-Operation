@@ -1,4 +1,4 @@
-import NavBar from "./Pages/SharedPage/NavBar";
+//import NavBar from "./Pages/SharedPage/NavBar";
 import { Route, Routes } from "react-router-dom";
 import Home from "./Pages/HomePage/Home";
 import Footer from "./Pages/SharedPage/Footer";
@@ -9,7 +9,7 @@ import NotFound from "./Pages/SharedPage/NotFound";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RequireAuth from './Pages/AuthPage/RequireAuth';
-import { privateRoute } from "./Route/privateRoute";
+//import { privateRoute } from "./Route/privateRoute";
 import PgRunList from "./DashBoard/PgRunList";
 import PgRunUpdate from "./DashBoard/PgRunUpdate";
 import ApprovalPending from "./DashBoard/ApprovalPending";

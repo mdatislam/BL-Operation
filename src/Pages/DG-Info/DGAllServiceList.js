@@ -23,7 +23,7 @@ const DGAllServiceList = () => {
     isLoading,
     refetch,
   } = useQuery(["DgAllInfoList"], () =>
-    fetch(" https://blserver.bloperation.com/dgAllServiceInfo", {
+    fetch(" https://backend.bloperation.com/dgAllServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -48,7 +48,7 @@ const DGAllServiceList = () => {
     //console.log(isChecked)
 
     if (isChecked) {
-      fetch(`https://blserver.bloperation.com/dgAllServiceInfo/multiDelete`, {
+      fetch(`https://backend.bloperation.com/dgAllServiceInfo/multiDelete`, {
         method: "DELETE",
         headers: {
           "content-type": "application/json",

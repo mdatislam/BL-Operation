@@ -7,7 +7,7 @@ const useAdmin = (user) => {
   useEffect(() => {
     const email = user.email;
     if (email) {
-      fetch(`https://blserver.bloperation.com/user/admin/${email}`, {
+      fetch(`https://backend.bloperation.com/user/admin/${email}`, {
         method: "GET",
         headers: {
           authorization: `Bearer ${localStorage.getItem("accessToken")}`,

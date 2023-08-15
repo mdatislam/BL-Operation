@@ -24,7 +24,7 @@ const AllFuelList = () => {
     isLoading,
     refetch,
   } = useQuery(["fuel"], () =>
-    fetch(" https://blserver.bloperation.com/fuelListAll", {
+    fetch(" https://backend.bloperation.com/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
