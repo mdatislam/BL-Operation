@@ -8,6 +8,7 @@ import auth from "../../firebase.init";
 import DgServicePlanRows from "./DgServicePlanRows";
 import useAdmin from "../Hook/useAdmin";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { ArrowDownTrayIcon,ChevronDoubleLeftIcon } from '@heroicons/react/24/solid'
 
 const DgServicingPlan = () => {
   const [user] = useAuthState(auth);
@@ -45,20 +46,8 @@ const DgServicingPlan = () => {
           to="/DgServicing"
           className="flex btn btn-outline btn-primary btn-sm"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
-            />
-          </svg>
+          <ChevronDoubleLeftIcon className="h-6 w-6 text-blue-500" />
+          
         </Link>
 
         <Link
@@ -75,20 +64,8 @@ const DgServicingPlan = () => {
               filename="dgServiceInfo"
               className="flex btn btn-outline btn-primary btn-sm"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-                />
-              </svg>
+              <ArrowDownTrayIcon  className="h-6 w-6 text-blue-500" />
+              
             </CSVLink>
           </div>
         )}

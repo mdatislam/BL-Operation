@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -7,9 +7,11 @@ import Loading from "./../SharedPage/Loading";
 import PasswordReset from "./PasswordReset";
 //import useAdmin from "../Hook/useAdmin";
 import loginBack from "../../images/login.png";
-import useToken from "./../Hook/useToken";
+import axios from "axios";
+//import useToken from "./../Hook/useToken";
 
 const Login = () => {
+  const [token, setToken] = useState('')
   const {
     register,
     formState: { errors },
@@ -22,8 +24,7 @@ const Login = () => {
   const navigate = useNavigate();
   let from = location.state?.from?.pathname || "/";
 
-  const [token] = useToken(user);
-  console.log(token)
+
   if (loading) { return <Loading></Loading>; }
 
   //console.log(user)
@@ -37,15 +38,25 @@ const Login = () => {
     );
   }
 
-
  
 
-  const onSubmit = async(data) => {
-    //console.log(data);
-  await signInWithEmailAndPassword(data.email, data.password);
-  
-  };
+  if(user){
+    axios.post(`https://backend.bloperation.com/user/${user?.email}`)
+    .then(response => {
+      const accessToken = response.data.accessToken;
+      localStorage.setItem("accessToken", accessToken);
+      setToken(accessToken);
+    })
 
+  }
+  
+
+  const onSubmit = async (data) => {
+    //console.log(data);
+    await signInWithEmailAndPassword(data.email, data.password);
+
+  };
+  console.log(token)
   if (token) {
     navigate(from, { replace: true });
   }

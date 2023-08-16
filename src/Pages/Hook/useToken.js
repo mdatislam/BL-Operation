@@ -7,10 +7,7 @@ const useToken = (user) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (user) {
-
-      // const accessToken = user.user.accessToken;
-      // localStorage.setItem("accessToken", accessToken);
-      // setToken(accessToken);
+    
       console.log(user);
       const email = user?.user?.email;
       const name = user?.user?.displayName;

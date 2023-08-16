@@ -7,6 +7,7 @@ import EmInfoListRow from "./EmInfoListRow";
 import { CSVLink } from "react-csv";
 import { signOut } from "firebase/auth";
 import auth from "../firebase.init";
+import { ArrowDownTrayIcon} from '@heroicons/react/24/solid'
 
 const EminfoList = () => {
   const [searchEmInfo, setSearchEmInfo] = useState("");
@@ -112,6 +113,7 @@ const EminfoList = () => {
             filename="PgRunData"
             className="btn btn-outline btn-info mb-2 flex-auto"
           >
+            <ArrowDownTrayIcon  className="h-6 w-6 text-blue-500" />
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

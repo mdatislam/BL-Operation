@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Loading from "../Pages/SharedPage/Loading";
 import PgStatusRows from "./PgStatusRows";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
@@ -11,6 +10,7 @@ import { signOut } from "firebase/auth";
 import PgDel from "./PgDel";
 import EditPg from "./EditPg";
 import useAdmin from "../Pages/Hook/useAdmin";
+import { PlusCircleIcon} from '@heroicons/react/24/solid'
 
 const PgStatus = () => {
   const [user] = useAuthState(auth);
@@ -121,20 +121,8 @@ useEffect(()=>{
           className="btn btn-sm btn-outline btn-primary"
           onClick={() => setVisible(true)}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
+          <PlusCircleIcon  className="h-6 w-6" />
+          
           Add PG
         </button>
       </div>
