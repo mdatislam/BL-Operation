@@ -23,7 +23,7 @@ const ApprovalPendingRow = ({ pgRun, index, setReject, refetch }) => {
 
   const handleApprove = (id) => {
     fetch(
-      `http://localhost:5000/
+      `https://backend.bloperation.com/
 
 pgRunList/${id}`,
       {
