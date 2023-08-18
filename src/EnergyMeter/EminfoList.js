@@ -7,14 +7,14 @@ import EmInfoListRow from "./EmInfoListRow";
 import { CSVLink } from "react-csv";
 import { signOut } from "firebase/auth";
 import auth from "../firebase.init";
-import { ArrowDownTrayIcon} from '@heroicons/react/24/solid'
+import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
 
 const EminfoList = () => {
   const [searchEmInfo, setSearchEmInfo] = useState("");
   const [filter, setFilter] = useState([]);
   const navigate = useNavigate();
   const { data: EmInfo, isLoading } = useQuery(["EmInfoList"], () =>
-    fetch("https://backend.bloperation.com/emInfo", {
+    fetch("http://localhost:5000/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -67,37 +67,7 @@ const EminfoList = () => {
 
       {/* For filter input box */}
       <div className="flex  justify-between flex-wrap gap-4">
-        {/* <div className="form-control">
-          <div className="input-group">
-            <input
-              type="text"
-              placeholder="Search…"
-              className="input input-bordered"
-              onClick={(e) => {
-                handleSearch(e);
-              }}
-            />
-            <button
-              className="btn btn-square"
-              
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </button>
-          </div>
-        </div> */}
+        
         <input
           type="text"
           className="input input-bordered border-sky-400 w-full max-w-xs flex-auto"
@@ -113,21 +83,7 @@ const EminfoList = () => {
             filename="PgRunData"
             className="btn btn-outline btn-info mb-2 flex-auto"
           >
-            <ArrowDownTrayIcon  className="h-6 w-6 text-blue-500" />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-              />
-            </svg>
+            <ArrowDownTrayIcon className="h-6 w-6 text-blue-500" />
             &nbsp; Download
           </CSVLink>
         </div>
@@ -193,19 +149,19 @@ const EminfoList = () => {
           <tbody>
             {searchEmInfo.length > 1
               ? filter.map((emInfo, index) => (
-                  <EmInfoListRow
-                    key={emInfo._id}
-                    emInfo={emInfo}
-                    index={index}
-                  />
-                ))
+                <EmInfoListRow
+                  key={emInfo._id}
+                  emInfo={emInfo}
+                  index={index}
+                />
+              ))
               : EmInfo?.map((emInfo, index) => (
-                  <EmInfoListRow
-                    key={emInfo._id}
-                    emInfo={emInfo}
-                    index={index}
-                  />
-                ))}
+                <EmInfoListRow
+                  key={emInfo._id}
+                  emInfo={emInfo}
+                  index={index}
+                />
+              ))}
           </tbody>
         </table>
       </div>

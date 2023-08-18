@@ -7,12 +7,10 @@ import Loading from "./../SharedPage/Loading";
 import PasswordReset from "./PasswordReset";
 //import useAdmin from "../Hook/useAdmin";
 import loginBack from "../../images/login.png";
-import axios from "axios";
-//import useToken from "./../Hook/useToken";
+import useCreateToken from "../Hook/useCreateToken";
 
 const Login = () => {
-  const [token, setToken] = useState('')
-  const {
+    const {
     register,
     formState: { errors },
     handleSubmit,
@@ -23,43 +21,34 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   let from = location.state?.from?.pathname || "/";
+  const [token]=useCreateToken(user)
 
+  useEffect(()=>{
+    if (token) {
+      navigate(from, { replace: true });
+   }
+  },[token])
 
   if (loading) { return <Loading></Loading>; }
 
-  //console.log(user)
   let signInError;
-
   if (error) {
     signInError = (
-      <p className="text-red-500">
+      <p className="text-red-500 font-bold text-lg">
         <small>{error?.message}</small>
       </p>
     );
   }
 
- 
-
-  if(user){
-    axios.post(`https://backend.bloperation.com/user/${user?.email}`)
-    .then(response => {
-      const accessToken = response.data.accessToken;
-      localStorage.setItem("accessToken", accessToken);
-      setToken(accessToken);
-    })
-
-  }
   
-
   const onSubmit = async (data) => {
     //console.log(data);
     await signInWithEmailAndPassword(data.email, data.password);
-
   };
-  console.log(token)
-  if (token) {
-    navigate(from, { replace: true });
-  }
+  //console.log(token)
+
+  
+  
   return (
     <div
       className="hero h-screen bg-base-200 mt-[-30px]"

@@ -8,51 +8,51 @@ import { toast } from "react-toastify";
 import useToken from './../Hook/useToken';
 
 const SignUp = () => {
-
-    const [createUserWithEmailAndPassword, user, loading, error] =
-    useCreateUserWithEmailAndPassword(auth);
-   const [updateProfile, updating, uError] = useUpdateProfile(auth);
   const {
     register,
     formState: { errors },
-    handleSubmit,reset
+    handleSubmit, reset
   } = useForm();
-  const navigate=useNavigate()
-  
-const [token] = useToken(user)
-    
-    if (loading || updating) {
-      return <Loading />;
-  }
-  
-   let signInError;
-   if (error || uError) {
-     signInError = (
-       <p className=" text-red-500">
-         <small>
-           {error?.message || uError?.message}
-         </small>
-       </p>
-     );
-   }
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
+  const [updateProfile, updating, uError] = useUpdateProfile(auth);
 
-    const onSubmit =async (data) => {
-        console.log(data);
-        const name = data.name
-        const password= data.password
-        const email = data.email
-      await createUserWithEmailAndPassword(email, password);
-       await updateProfile({ displayName:name });
-      toast.success(`user ${name} successfully done`);
-      reset()
-      
+  const navigate = useNavigate()
+
+  const [token] = useToken(user)
+
+  if (loading || updating) {
+    return <Loading />;
+  }
+
+  let signInError;
+  if (error || uError) {
+    signInError = (
+      <p className=" text-red-500">
+        <small>
+          {error?.message || uError?.message}
+        </small>
+      </p>
+    );
+  }
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    const name = data.name
+    const password = data.password
+    const email = data.email
+    await createUserWithEmailAndPassword(email, password);
+    await updateProfile({ displayName: name });
+    toast.success(`user ${name} successfully done`);
+    reset()
+
   };
-  
+
   if (token) {
     navigate('/Home')
   }
-    
-    
+
+
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
