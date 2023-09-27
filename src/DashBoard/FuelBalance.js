@@ -5,13 +5,14 @@ import auth from "../firebase.init";
 import useUserList from "../Pages/Hook/useUserList";
 import Loading from "../Pages/SharedPage/Loading";
 import FuelBalanceRow from "./FuelBalanceRow";
+import FuelBalanceInfo from "./FuelBalanceInfo";
 
 const FuelBalance = () => {
   const [userList] = useUserList();
   const navigate = useNavigate();
 
   const { isLoading2,data: pgRunData  } = useQuery(["list"], () =>
-    fetch("https://backend.bloperation.com/ApprovedAllPgRun", {
+    fetch("http://localhost:5000/ApprovedAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -27,7 +28,7 @@ const FuelBalance = () => {
   );
 
   const {isLoading3, data: receiveFuel } = useQuery(["fuel"], () =>
-    fetch("https://backend.bloperation.com/fuelListAll", {
+    fetch("http://localhost:5000/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -36,7 +37,7 @@ const FuelBalance = () => {
   );
 
   const {isLoading , data: receiveFuelOncall } = useQuery(["fuelOncall"], () =>
-    fetch("https://backend.bloperation.com/fuelListAllOncall", {
+    fetch("http://localhost:5000/fuelListAllOncall", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -159,6 +160,7 @@ const FuelBalance = () => {
           </tfoot>
         </table>
       </div>
+      <FuelBalanceInfo/>
     </div>
   );
 };

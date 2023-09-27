@@ -2,7 +2,7 @@ import React from "react";
 //import FuelBalance from './FuelBalance';
 
 const FuelBalanceRow = ({ u,index }) => {
-  const { fuelConsume, name, fuelQuantity,fuelQuantityOncall} = u;
+  const { fuelConsume, name, fuelQuantity,fuelQuantityOncall=0} = u;
 //console.log(fuelConsume)
  
     /* const fuelBalance = (fuelQuantity - fuelConsume).toFixed(2) */
@@ -12,7 +12,8 @@ const FuelBalanceRow = ({ u,index }) => {
     <tr className="border-2 border-[#F0D786]  hover divide-x divide-gray-300 text-center">
       <th>
         <label>
-          <input type="checkbox" className="checkbox" />
+          {/* <input type="checkbox" className="checkbox" /> */}
+          {index+1}
         </label>
       </th>
       <td className="text-start">{name}</td>

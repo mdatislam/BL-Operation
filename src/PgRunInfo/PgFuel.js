@@ -1,8 +1,8 @@
 import React from "react";
-import FuelBalance from "../DashBoard/FuelBalance";
 import PG from "../../src/images/PG.jpg";
 import { Link } from "react-router-dom";
 import PgStatus from "./PgStatus";
+import FuelBalanceInfo from "../DashBoard/FuelBalanceInfo";
 
 const PgFuel = () => {
   return (
@@ -16,7 +16,7 @@ const PgFuel = () => {
                 Fuel Balance Summary
               </h2>
             </div>
-            <FuelBalance />
+            <FuelBalanceInfo />
           </div>
         </div>
         <div className="grid grid-cols-1 gap-y-4 ">
