@@ -11,8 +11,8 @@ const FuelBalance = () => {
   const [userList] = useUserList();
   const navigate = useNavigate();
 
-  const { isLoading2,data: pgRunData  } = useQuery(["list"], () =>
-    fetch("http://localhost:5000/ApprovedAllPgRun", {
+  const { isLoading2, data: pgRunData } = useQuery(["list"], () =>
+    fetch("https://backend.bloperation.com/ApprovedAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -27,8 +27,8 @@ const FuelBalance = () => {
     })
   );
 
-  const {isLoading3, data: receiveFuel } = useQuery(["fuel"], () =>
-    fetch("http://localhost:5000/fuelListAll", {
+  const { isLoading3, data: receiveFuel } = useQuery(["fuel"], () =>
+    fetch("https://backend.bloperation.com/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -36,8 +36,8 @@ const FuelBalance = () => {
     }).then((res) => res.json())
   );
 
-  const {isLoading , data: receiveFuelOncall } = useQuery(["fuelOncall"], () =>
-    fetch("http://localhost:5000/fuelListAllOncall", {
+  const { isLoading, data: receiveFuelOncall } = useQuery(["fuelOncall"], () =>
+    fetch("https://backend.bloperation.com/fuelListAllOncall", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -160,7 +160,7 @@ const FuelBalance = () => {
           </tfoot>
         </table>
       </div>
-      <FuelBalanceInfo/>
+      <FuelBalanceInfo />
     </div>
   );
 };

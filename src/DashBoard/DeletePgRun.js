@@ -1,13 +1,15 @@
 import React from "react";
 import { toast } from "react-toastify";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 
 const DeletePgRun = ({ delPg, refetch, setDelPg }) => {
+  const [axiosSecure] = useAxiosSecure()
   const { _id } = delPg;
 
   const handleDelete = (id) => {
     //console.log(id);
     fetch(
-      `http://localhost:5000/
+      `https://backend.bloperation.com/
 
 pgRun/${id}`,
       {

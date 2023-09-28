@@ -3,37 +3,23 @@ import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
 import Loading from "../Pages/SharedPage/Loading";
-import { signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 import ApprovalPendingRow from "./ApprovalPendingRow";
 import RejectApproval from "./RejectApproval";
-import { toast } from "react-toastify";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 
 const ApprovalPending = () => {
   const [user] = useAuthState(auth);
+  const [axiosSecure] = useAxiosSecure()
   const [reject, setReject] = useState(" ");
-  const navigate = useNavigate();
 
-  const {
-        isLoading,
-        data: pgRunData,
-    refetch,
-  } = useQuery(["list", user], () =>
-    fetch(`http://localhost:5000/ApprovalList?email=${user.email}`, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
+
+  const { isLoading, refetch, data: pgRunData = [] } = useQuery({
+    queryKey: ['pgRunData', user],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`ApprovalList?email=${user.email}`)
+      return res.data
+    }
+  })
 
   if (isLoading) {
     return <Loading />;

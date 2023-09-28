@@ -2,81 +2,70 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 //import React, { PureComponent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import auth from '../firebase.init';
-import { signOut } from 'firebase/auth';
 import Loading from '../Pages/SharedPage/Loading';
 import FuelBalanceRow from './FuelBalanceRow';
 
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LabelList } from 'recharts';
+import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LabelList, ComposedChart, Line } from 'recharts';
+import useAxiosSecure from '../Pages/Hook/useAxiosSecure';
 
 
 
 const FuelBalanceInfo = () => {
-  const navigate= useNavigate()
-  const { isLoading,data:balanceInfo  } = useQuery(["balanceInfo"], () =>
-  fetch("http://localhost:5000/fuelBalance", {
-    method: "GET",
-    headers: {
-      authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    },
-  }).then((res) => {
-    if (res.status === 401 || res.status === 403) {
-      signOut(auth);
-      localStorage.removeItem("accessToken");
-      navigate("/Login");
-    }
-    return res.json();
-  })
-);
-if (isLoading ) {
-  return <Loading />;
-}
+  const [axiosSecure] = useAxiosSecure()
+  const navigate = useNavigate()
 
-const totalFuel= balanceInfo.reduce((pre,item)=>pre+item.fuelQuantity,0)
-    //console.log(balanceInfo)
-    return (
-      <div>
-      <Link
+  const { isLoading2, data: receiveFuelOnCall = [] } = useQuery({
+    queryKey: ['receiveFuelOnCall'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/receiveFuelOncall")
+      return res.data
+    }
+  })
+ // console.log(receiveFuelOnCall)
+  const totalFuelOnCall = receiveFuelOnCall?.reduce((pre, item) => pre + item.receiveOnCall, 0)
+   const { isLoading, data: balanceInfo } = useQuery({
+    queryKey: ['balanceInfo'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/fuelBalance")
+      return res.data
+    }
+  })
+
+  if (isLoading2 || isLoading) {
+    return <Loading />;
+  }
+
+  const totalFuel = balanceInfo?.reduce((pre, item) => pre + item.fuelQuantity, 0)
+  //console.log(balanceInfo)
+  
+// Combine the two arrays using the spread operator and map
+
+const combinedArray = balanceInfo?.map((item) => {
+  const matchingBalance =  receiveFuelOnCall.find((balanceItem) => balanceItem.name === item.name);
+  return {
+    ...item,
+    receiveOnCall: matchingBalance ? matchingBalance.receiveOnCall : 0, // Set a default value if no match found
+  };
+});
+
+//console.log(combinedArray);
+
+  return (
+    <div>
+      {/* <Link
         className="btn btn-sm btn-outline btn-secondary mb-3"
         to="/Dashboard/fuelUpdateOnCall"
       >
         Fuel Update_OnCall
-      </Link>
-      {/* For Bar chart start */}
-      <div className='my-4 w-full  border-4 px-2'>
-        
-      {/* <ResponsiveContainer width="100%" height="100%"> */}
-        <BarChart 
-          width={500}
-          height={300}
-          data={balanceInfo}
-          margin={{
-            top: 20,
-            right: 10,
-            left: 0,
-            bottom: 5,
-          }}
-        >
-         {/*  <CartesianGrid strokeDasharray="3 3" /> */}
-          <XAxis dataKey="name" />
-          {/* <YAxis /> */}
-          {/* <Tooltip /> */}
-          <Legend />
-          <Bar dataKey="fuelConsume" stackId="a" fill="#FF0000">
-          
-            </Bar> 
-          <Bar dataKey="fuelQuantity" stackId="a" fill="#82ca9d">
-          <LabelList dataKey="fuelQuantity" position="top" />
-          </Bar>
-           
-           
-        </BarChart>
-     {/*  </ResponsiveContainer> */}
+      </Link> */}
+
+
+      <div className="grid h-12 card bg-[#6495ED] rounded-box place-items-center mb-4">
+        <h2 className=" card-title font-bold text-white">
+          Fuel Balance Summary
+        </h2>
       </div>
 
-      {/* Bar Chart End */}
-     
-     
       <div className="overflow-x-auto">
         <table className="table table-compact w-full border-3 border-[#ffcb24]">
           <thead className="border-2 border-[#ffcb24] bg-[#ffcb24] !important">
@@ -103,9 +92,11 @@ const totalFuel= balanceInfo.reduce((pre,item)=>pre+item.fuelQuantity,0)
             </tr>
           </thead>
           <tbody>
-            {balanceInfo?.map((u, index) => (
+            {combinedArray?.map((u, index) => (
               <FuelBalanceRow key={u._name} index={index} u={u}></FuelBalanceRow>
             ))}
+
+            
           </tbody>
           <tfoot>
             <tr className="border-collapse border-2 border-[#F0D786] text-center">
@@ -114,7 +105,7 @@ const totalFuel= balanceInfo.reduce((pre,item)=>pre+item.fuelQuantity,0)
                 Total Fuel Issued ={" "}
               </th>
               <th className=" text-xl font-bold">
-                <span className="text-pink-700">0 </span>
+                <span className="text-pink-700">{totalFuelOnCall} </span>
                 || <span className="text-blue-600">{totalFuel}</span>
                 <span className="stat-desc"> &nbsp;liter</span>
               </th>
@@ -124,9 +115,38 @@ const totalFuel= balanceInfo.reduce((pre,item)=>pre+item.fuelQuantity,0)
           </tfoot>
         </table>
       </div>
-      
+      {/* vertical bar chart */}
+      <div className='border-4 w-full my-12 py-2 '>
+        <ComposedChart
+          layout="vertical"
+          width={650}
+          height={550}
+          data={balanceInfo}
+          margin={{
+            top: 10,
+            right: 10,
+            bottom: 10,
+            left: 60
+          }}
+        >
+          <CartesianGrid stroke="#f5f5f5" />
+          <XAxis type="number" />
+          <YAxis padding={{ top: 10, right: 20 }} dataKey="name" type="category" scale="band" />
+          <Tooltip />
+          {/* <Legend /> */}
+          <Bar dataKey="fuelConsume" barSize={30} stackId="a" fill="#FF0000">
+            {/*  <LabelList dataKey="fuelConsume" position="insideTopRight"  /> */}
+          </Bar>
+          <Bar dataKey="fuelQuantity" barSize={30} stackId="a" fill="#056608">
+            <LabelList dataKey="fuelQuantity" position="insideTopRight" />
+          </Bar>
+
+
+        </ComposedChart>
+      </div>
+
     </div>
-    );
+  );
 };
 
 export default FuelBalanceInfo;

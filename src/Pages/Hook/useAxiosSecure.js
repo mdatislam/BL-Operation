@@ -8,7 +8,7 @@ import { signOut } from "firebase/auth"
 
 
 const axiosSecure = axios.create({
-    baseURL: 'http://localhost:5000',
+    baseURL: 'https://backend.bloperation.com',
 })
 
 const useAxiosSecure = () => {
@@ -36,9 +36,9 @@ const useAxiosSecure = () => {
                 }
                 return Promise.reject(error);
             });
-        return [axiosSecure]
-    }, [navigate])
-   
 
+    }, [navigate])
+
+    return [axiosSecure]
 }
 export default useAxiosSecure

@@ -18,7 +18,7 @@ const PgRunList = () => {
 
   const [receiveFuel, setReceiveFuel] = useState([]);
   useEffect(() => {
-    const url = ` http://localhost:5000/fuelList?email=${user.email}`;
+    const url = ` https://backend.bloperation.com/fuelList?email=${user.email}`;
     //console.log(url)
     fetch(url, {
       method: "GET",
@@ -43,7 +43,7 @@ const PgRunList = () => {
         refetch,
   } = useQuery(["list"], () =>
     fetch(
-      `  http://localhost:5000/pgRunAllList?email=${user.email}`,
+      `  https://backend.bloperation.com/pgRunAllList?email=${user.email}`,
       {
         method: "GET",
         headers: {
