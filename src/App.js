@@ -48,6 +48,7 @@ import FcuFilterChange from './DashBoard/FcuFilterChange';
 import FcuDataFromExcel from "./FCU/FcuDataFromExcel";
 import FcuMaterial from './FCU/FcuMaterial';
 import FcuAllDataRecord from './FCU/FcuAllDataRecord';
+import Login2 from "./Pages/AuthPage/Login2";
 
 
 
@@ -59,7 +60,8 @@ function App() {
       {/*  <NavBar> */}
       <Navbar2 />
       <Routes>
-        <Route path="/Login" element={<Login />}></Route>
+       {/*  <Route path="/Login" element={<Login />}></Route> */}
+        <Route path="/Login" element={<Login2 />}></Route>
         {/*  private Route */}
         <Route element={<RequireAuth />}>
           <Route path="/Home" element={<Home />}></Route>

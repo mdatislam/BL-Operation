@@ -14,7 +14,7 @@ const FcuAllDataRecord = () => {
   const navigate = useNavigate();
 
   const { data: fcuAllData, isLoading } = useQuery(["fcuAllData"], () =>
-    fetch(" https://backend.bloperation.com/fcuFilterChangeAllRecord", {
+    fetch(" http://localhost:5000/fcuFilterChangeAllRecord", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
