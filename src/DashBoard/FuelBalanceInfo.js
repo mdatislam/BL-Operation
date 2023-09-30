@@ -93,7 +93,7 @@ const combinedArray = balanceInfo?.map((item) => {
           </thead>
           <tbody>
             {combinedArray?.map((u, index) => (
-              <FuelBalanceRow key={u._name} index={index} u={u}></FuelBalanceRow>
+              <FuelBalanceRow key={u._id} index={index} u={u}></FuelBalanceRow>
             ))}
 
             
