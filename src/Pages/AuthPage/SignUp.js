@@ -245,7 +245,7 @@ const handleImageUpload=(event)=>{
             {errorMsg}
             <div className="form-control mt-2">
               <input
-              disabled={imageUrl ? false:true}
+              /* disabled={imageUrl ? false:true} */
                 type="submit"
                 className="btn btn-primary"
                 value="Register"

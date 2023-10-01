@@ -8,9 +8,9 @@ import Loading from '../SharedPage/Loading';
 
 
 const Login2 = () => {
-    const { loginUser,loading } = useContext(AuthContext)
-      const [error, setError] = useState("")
-      const navigate = useNavigate()
+    const { loginUser, loading } = useContext(AuthContext)
+    const [error, setError] = useState("")
+    const navigate = useNavigate()
     const location = useLocation()
 
     let from = location.state?.from?.pathname || "/";
@@ -27,7 +27,7 @@ const Login2 = () => {
                 if (user) {
                     navigate(from, { replace: true })
                     Swal.fire({
-                        title: `welcome-${user.displayName} `,
+                        title: `welcome-BL-Tiger `,
                         width: 500,
                         padding: '3em',
                         color: '#FFCB24',
@@ -44,24 +44,24 @@ const Login2 = () => {
 
             })
             .catch((error) => {
-              const errorMessage= error.message
+                const errorMessage = error.message
                 if (errorMessage.toLowerCase().includes("password")) {
                     // If the error message contains the word "password"
                     // Display your custom error message for wrong password
                     setError("Error: Incorrect password. Please try again.");
-                  }
-                  else if (errorMessage.toLowerCase().includes("user")){
+                }
+                else if (errorMessage.toLowerCase().includes("user")) {
                     // For other errors, display the original error message
                     setError("Error:  Incorrect User-Id. Please try again.");
-                  }
-                
+                }
+
 
             })
 
     }
-    if(loading && !error){
-        return <Loading/>
-    }
+    /* if (loading) {
+        return <Loading />
+    } */
 
 
     return (
@@ -81,25 +81,25 @@ const Login2 = () => {
                                 <label className="label">
                                     <span className="label-text">Email</span>
                                 </label>
-                                <input type="text" placeholder="email" className="input input-bordered" name='email' />
+                                <input type="text" placeholder="email" className="input input-bordered" name='email' required />
                             </div>
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Password</span>
                                 </label>
-                                <input type="password" placeholder="password" className="input input-bordered" name='password' />
+                                <input type="password" placeholder="password" className="input input-bordered" name='password'required />
                                 <label className="label">
                                     <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
                                 </label>
                                 {/* For login Error Message show  */}
-                                <label  className="label">
-                                <strong className='text-red-500 label-text-alt'>{error}</strong>
-                                {/* { admin && <p >New here?<Link className="label-text-alt link link-hover" to="/Signup" >Create New account</Link></p>} */}
+                                <label className="label">
+                                    <strong className='text-red-500 label-text-alt'>{error}</strong>
+                                    {/* { admin && <p >New here?<Link className="label-text-alt link link-hover" to="/Signup" >Create New account</Link></p>} */}
                                 </label>
-                                
+
                             </div>
 
-                             
+
                             <div className="form-control mt-6">
                                 <input disabled={false} className="btn btn-primary" type="submit" value="Login" />
                             </div>

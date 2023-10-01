@@ -56,6 +56,7 @@ const AuthProvider = ({ children }) => {
 
             }
             else {
+                console.log('dont get current user')
                 localStorage.removeItem('accessToken')
             }
         })
