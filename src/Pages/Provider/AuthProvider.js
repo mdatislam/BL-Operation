@@ -41,23 +41,25 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unSubsCriber = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser)
-            //console.log('current user', currentUser)
+            console.log('current user', currentUser)
             //jwt token save to loacal storage
             if (currentUser) {
                 axios.post('https://backend.bloperation.com/jwt', {
                     email: currentUser.email
                 })
                     .then(data => {
-                        //console.log(data)
+                        console.log(data)
                         const token = data.data.token
                         localStorage.setItem('accessToken', token)
                         setLoading(false)
                     })
-
-            }
-            else {
-                console.log('dont get current user')
-                localStorage.removeItem('accessToken')
+                    .catch(error => {
+                        console.error('Error generating JWT token:', error);
+                        setLoading(false); // Set loading to false even if token generation fails
+                    });
+            } else {
+                localStorage.removeItem('accessToken');
+                setLoading(false); // Set loading to false if there is no user
             }
         })
         return () => {

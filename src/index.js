@@ -10,15 +10,15 @@ import AuthProvider from './Pages/Provider/AuthProvider';
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  < React.StrictMode >
-    <AuthProvider>
+  <AuthProvider>
+    < React.StrictMode >
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <App />
         </BrowserRouter>
       </QueryClientProvider>
-    </AuthProvider>
-  </React.StrictMode >
+    </React.StrictMode >
+  </AuthProvider>
 
 );
 

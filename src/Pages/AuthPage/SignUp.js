@@ -63,7 +63,7 @@ const handleImageUpload=(event)=>{
               .then(result => {
                 const userInfo = {
                   name, email, password,
-                  photoURL: imageUrl || "https://i.ibb.co/kmXfZgh/profile.png", role: "general"
+                  url: imageUrl || "https://i.ibb.co/kmXfZgh/profile.png", role: "general"
                 }
                 fetch('https://backend.bloperation.com/user', {
                   method: 'PUT',
@@ -171,7 +171,7 @@ const handleImageUpload=(event)=>{
               <input
                 type="email"
                 placeholder="enter a email"
-              
+              required
                 className="input input-bordered"
                 {...register("email", {
                   required: {
@@ -206,7 +206,7 @@ const handleImageUpload=(event)=>{
               <input
                 type="password"
                 placeholder="password"
-              
+              required
                 autoComplete="off"
                 className="input input-bordered"
                 {...register("password", {

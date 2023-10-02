@@ -1,67 +1,64 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import loginBack from "../../images/authentication2.png";
 import { AuthContext } from '../Provider/AuthProvider';
 import Swal from 'sweetalert2';
 import Loading from '../SharedPage/Loading';
+import axios from 'axios';
 
 
 
 const Login2 = () => {
-    const { loginUser, loading } = useContext(AuthContext)
-    const [error, setError] = useState("")
-    const navigate = useNavigate()
-    const location = useLocation()
+    const { loginUser, loading: authLoading } = useContext(AuthContext);
+    const [loading, setLoading] = useState(false); // Local loading state for login operation
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+    const location = useLocation();
 
     let from = location.state?.from?.pathname || "/";
 
-    const handleSubmit = (event) => {
-        event.preventDefault()
-        const email = event.target.email.value
-        const password = event.target.password.value
-        //console.log(email,password)
-        loginUser(email, password)
-            .then(result => {
-                // console.log(result.user)
-                const user = result.user
-                if (user) {
-                    navigate(from, { replace: true })
-                    Swal.fire({
-                        title: `welcome-BL-Tiger `,
-                        width: 500,
-                        padding: '3em',
-                        color: '#FFCB24',
-                        background: '#fff url(/images/trees.png)',
-                        backdrop: `
+    useEffect(() => {
+        setLoading(authLoading);
+    }, [authLoading]);
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const email = event.target.email.value;
+        const password = event.target.password.value;
+
+        setLoading(true); // Set loading state to true when form is submitted
+
+        try {
+            const result = await loginUser(email, password);
+            const user = result.user;
+
+            if (user && ! loading) {
+                navigate(from, { replace: true });
+                Swal.fire({
+                    title: `welcome-BL-Tiger `,
+                    width: 500,
+                    padding: '3em',
+                    color: '#FFCB24',
+                    background: '#fff url(/images/trees.png)',
+                    backdrop: `
                         rgba(0,0,123,0.4)
                       url("/images/nyan-cat.gif")
                       left top
                       no-repeat
                     `
-                    })
-
-                }
-
-            })
-            .catch((error) => {
-                const errorMessage = error.message
-                if (errorMessage.toLowerCase().includes("password")) {
-                    // If the error message contains the word "password"
-                    // Display your custom error message for wrong password
-                    setError("Error: Incorrect password. Please try again.");
-                }
-                else if (errorMessage.toLowerCase().includes("user")) {
-                    // For other errors, display the original error message
-                    setError("Error:  Incorrect User-Id. Please try again.");
-                }
-
-
-            })
-
-    }
-    /* if (loading) {
-        return <Loading />
-    } */
+                });
+            }
+        } catch (error) {
+            const errorMessage = error.message;
+            if (errorMessage.toLowerCase().includes("password")) {
+                setError("Error: Incorrect password. Please try again.");
+            } else if (errorMessage.toLowerCase().includes("user")) {
+                setError("Error: Incorrect User-Id. Please try again.");
+            }
+        } finally {
+            setLoading(false); // Ensure loading state is set to false regardless of success or failure
+        }
+    };
 
 
     return (
@@ -87,7 +84,7 @@ const Login2 = () => {
                                 <label className="label">
                                     <span className="label-text">Password</span>
                                 </label>
-                                <input type="password" placeholder="password" className="input input-bordered" name='password'required />
+                                <input type="password" placeholder="password" className="input input-bordered" name='password' required />
                                 <label className="label">
                                     <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
                                 </label>
@@ -101,7 +98,7 @@ const Login2 = () => {
 
 
                             <div className="form-control mt-6">
-                                <input disabled={false} className="btn btn-primary" type="submit" value="Login" />
+                                <input disabled={loading} className="btn btn-primary" type="submit" value="Login" />
                             </div>
                         </div>
                     </form>
