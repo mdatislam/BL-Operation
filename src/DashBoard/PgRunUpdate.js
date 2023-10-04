@@ -9,10 +9,14 @@ import auth from "../firebase.init";
 import usePgList from "../Pages/Hook/usePgList";
 import Loading from "../Pages/SharedPage/Loading";
 import useSiteList from "./../Pages/Hook/useSiteList";
+import useUserList from "../Pages/Hook/useUserList";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 
 const PgRunUpdate = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
+  const [userList]=useUserList()
+  const [axiosSecure]=useAxiosSecure()
   const [search, setSearch] = useState("");
   const [PgList] = usePgList();
   const navigate = useNavigate();
@@ -22,34 +26,16 @@ const PgRunUpdate = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
-
-  const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("https://backend.bloperation.com/userList", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        /*  toast.error("Unauthorize Access") */
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
+    
+  const { data: rectifiers, isLoading } = useQuery(["rectifierList"], () =>
+    axiosSecure("/rectifier")
+    .then((res) =>{
+      return res.data
     })
-  );
-  const { data: rectifiers, isLoading3 } = useQuery(["rectifierList"], () =>
-    fetch("https://backend.bloperation.com/rectifier", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => res.json())
   );
 
   // console.log(services)
-  if (isLoading || isLoading3) {
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -76,7 +62,7 @@ const PgRunUpdate = () => {
   //console.log(today);
   /* today & previous date calculation */
 
-  const availableUser = users?.filter((u) => u.name !== user.displayName);
+  const availableUser = userList?.filter((u) => u.name !== user.displayName);
 
   const onSubmit = async (data) => {
     let mod = data.capacity;

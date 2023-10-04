@@ -7,9 +7,13 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import Loading from "../Pages/SharedPage/Loading";
+import useUserList from "../Pages/Hook/useUserList";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 
 const FuelUpdateOncall = () => {
   const [user] = useAuthState(auth);
+  const [userList] = useUserList()
+  const [axiosSecure] = useAxiosSecure()
   const navigate = useNavigate();
   const {
     register,
@@ -18,34 +22,17 @@ const FuelUpdateOncall = () => {
     handleSubmit,
   } = useForm();
 
-  const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("https://backend.bloperation.com/userList", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
-  // console.log(services)
-  if (isLoading) {
-    return <Loading />;
-  }
+
+
   /*  today find code */
   let date = new Date();
   date.setDate(date.getDate());
   let today = date.toLocaleDateString("en-CA");
 
-  const availableUser = users?.filter((u) => u.name !== user.displayName);
+  const availableUser = userList?.filter((u) => u.name !== user.displayName);
 
   const onSubmit = (data) => {
-    const receive = users?.filter((x) => x.name === data.fuelReceiver);
+    const receive = userList?.filter((x) => x.name === data.fuelReceiver);
 
     const fuelData = {
       date: data.date,
@@ -59,29 +46,12 @@ const FuelUpdateOncall = () => {
     };
 
     //console.log(receive);
-    fetch("https://backend.bloperation.com/fuelDataOncall", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(fuelData),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-
-        return res.json();
-      })
-      .then((fuelData) => {
+    axiosSecure.post("/fuelDataOncall", fuelData)
+      .then((fuelRes) => {
         //console.log(fuelData)
-        if (fuelData.insertedId) {
+        if (fuelRes.data.insertedId) {
           toast.success("Fuel Data Successfully Update");
-        } else if (fuelData.msg) {
+        } else if (fuelRes.data.msg) {
           toast.error(`Warning: ${fuelData.msg}`);
         }
         reset();
@@ -210,7 +180,7 @@ const FuelUpdateOncall = () => {
               type="submit"
               className="btn btn-accent w-full max-w-xs m-2"
               value="Submit-Data"
-              /*   <button className="btn btn-success">Success</button> */
+            /*   <button className="btn btn-success">Success</button> */
             />
           </form>
         </div>

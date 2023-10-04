@@ -8,20 +8,9 @@ const DeletePgRun = ({ delPg, refetch, setDelPg }) => {
 
   const handleDelete = (id) => {
     //console.log(id);
-    fetch(
-      `https://backend.bloperation.com/
-
-pgRun/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.deletedCount > 0) {
+    axiosSecure.delete(`/pgRun/${id}`)
+      .then((res) => {
+        if (res.data.deletedCount > 0) {
           toast.success(" Delete done ");
         }
         refetch();

@@ -3,57 +3,42 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
 import Loading from "../Pages/SharedPage/Loading";
 import PgRunRows from "./PgRunRows";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, } from "react";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 import DeletePgRun from "./DeletePgRun";
-import { signOut } from "firebase/auth";
-import { toast } from "react-toastify";
+
 
 const PgRunList = () => {
+  const [user] = useAuthState(auth);
+  const [axiosSecure]=useAxiosSecure()
   const [searchPgRun, setSearchPgRun] = useState("");
   const [filter, setFilter] = useState([]);
   const [delPg, setDelPg] = useState("");
-  const [user] = useAuthState(auth);
-  const navigate = useNavigate();
+   
 
-  const [receiveFuel, setReceiveFuel] = useState([]);
-  useEffect(() => {
-    const url = ` https://backend.bloperation.com/fuelList?email=${user.email}`;
-    //console.log(url)
-    fetch(url, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          //  toast.error("Unauthorize Access")
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((data) => setReceiveFuel(data));
-  },[]);
+  const {isLoading2,
+    data: receiveFuel,
+  } = useQuery({
+    queryKey:["receiveFuel",user?.email],
+    queryFn:async()=>{
+      const res= await axiosSecure.get(`/fuelList?email=${user.email}`)
+      return res.data
+    }
+  })
+
 
   const {isLoading,
     data: pgRunData,
         refetch,
-  } = useQuery(["list"], () =>
-    fetch(
-      `  https://backend.bloperation.com/pgRunAllList?email=${user.email}`,
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => res.json())
-  );
-
-  if (isLoading) {
+  } = useQuery({
+    queryKey:["pgRunList",user?.email],
+    queryFn:async()=>{
+      const res= await axiosSecure.get(`/pgRunAllList?email=${user.email}`)
+      return res.data
+    }
+  })
+    
+  if (isLoading || isLoading2) {
     return <Loading />;
   }
 

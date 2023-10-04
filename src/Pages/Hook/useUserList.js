@@ -1,31 +1,14 @@
-import { signOut } from "firebase/auth";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import auth from "../../firebase.init";
+
+import { useState } from "react";
+import useAxiosSecure from "./useAxiosSecure";
 
 const useUserList = () => {
+  const [axiosSecure]=useAxiosSecure()
   const [userList, setUserList] = useState([]);
-  const navigate = useNavigate();
-  useEffect(() => {
-    fetch("https://backend.bloperation.com/userList/pgRunner", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          //  toast.error("Unauthorize Access")
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((data) => setUserList(data));
-  },[]);
+  
 
-  return [userList];
+  axiosSecure.get("/userList")
+  .then(res=> setUserList(res.data))
+    return [userList];
 };
 export default useUserList;

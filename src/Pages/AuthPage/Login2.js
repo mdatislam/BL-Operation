@@ -3,8 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import loginBack from "../../images/authentication2.png";
 import { AuthContext } from '../Provider/AuthProvider';
 import Swal from 'sweetalert2';
-import Loading from '../SharedPage/Loading';
-import axios from 'axios';
+
 
 
 
@@ -32,12 +31,12 @@ const Login2 = () => {
             const result = await loginUser(email, password);
             const user = result.user;
 
-            if (user && ! loading) {
+            if (user) {
                 navigate(from, { replace: true });
                 Swal.fire({
                     title: `welcome-BL-Tiger `,
-                    width: 500,
-                    padding: '3em',
+                    width: 400,
+                    padding: '2em',
                     color: '#FFCB24',
                     background: '#fff url(/images/trees.png)',
                     backdrop: `
@@ -98,7 +97,7 @@ const Login2 = () => {
 
 
                             <div className="form-control mt-6">
-                                <input disabled={loading} className="btn btn-primary" type="submit" value="Login" />
+                                <input  className={loading ? "btn btn-primary loading":"btn btn-success"} type="submit" value="Login" />
                             </div>
                         </div>
                     </form>

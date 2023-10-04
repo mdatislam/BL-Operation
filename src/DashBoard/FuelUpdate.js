@@ -1,23 +1,23 @@
-import { useQuery } from "@tanstack/react-query";
-import { signOut } from "firebase/auth";
+
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import usePgList from "../Pages/Hook/usePgList";
-import Loading from "../Pages/SharedPage/Loading";
-//import useAdmin from "./../Pages/Hook/useAdmin";
 import useSiteList from "./../Pages/Hook/useSiteList";
+import useUserList from "../Pages/Hook/useUserList";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 
 const FuelUpdate = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
+  const [userList]=useUserList()
+  const [axiosSecure]=useAxiosSecure()
   const [search, setSearch] = useState("");
   //const [admin] = useAdmin(user);
   const [PgList] = usePgList();
-  const navigate = useNavigate();
+  
   const {
     register,
     reset,
@@ -25,45 +25,16 @@ const FuelUpdate = () => {
     handleSubmit,
   } = useForm();
 
-  const { data: users, isLoading } = useQuery(["userList", user], () =>
-    fetch("https://backend.bloperation.com/userList", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
-  // console.log(services)
-  if (isLoading) {
-    return <Loading />;
-  }
+  
   /*  today find code */
   let date = new Date();
   date.setDate(date.getDate());
   let today = date.toLocaleDateString("en-CA");
 
-  const availableUser = users?.filter((u) => u.name !== user.displayName);
+  const availableUser = userList?.filter((u) => u.name !== user.displayName);
 
   const onSubmit = (data) => {
-    /* const fuelIssuer = availableUser.filter((x) => x.name === data.fuelIssuer);
-     */
-    /*  let x = [];
-    if (admin) {
-      x.push(data.fuelReceiver);
-      x.push(data.fuelReceiverEmail);
-    } else {
-      x.push(user.displayName);
-      x.push(user.email);
-    }
- */
-    //console.log(x)
+   
     const fuelData = {
       siteId: search,
       date: data.date,
@@ -81,31 +52,16 @@ const FuelUpdate = () => {
     };
 
     //console.log(fuelData);
-    fetch("https://backend.bloperation.com/fuelData", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(fuelData),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((fuelData) => {
-        if (fuelData.insertedId) {
+    axiosSecure.post("/fuelDataOncall", fuelData)
+      .then((fuelRes) => {
+        //console.log(fuelData)
+        if (fuelRes.data.insertedId) {
           toast.success("Fuel Data Successfully Update");
-        } else if (fuelData.msg) {
+        } else if (fuelRes.data.msg) {
           toast.error(`Warning: ${fuelData.msg}`);
         }
         reset();
-        setSearch("");
+
         //console.log(pgData)
       });
   };

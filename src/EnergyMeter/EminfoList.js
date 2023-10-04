@@ -8,27 +8,22 @@ import { CSVLink } from "react-csv";
 import { signOut } from "firebase/auth";
 import auth from "../firebase.init";
 import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 
 const EminfoList = () => {
+  const [axiosSecure] = useAxiosSecure()
   const [searchEmInfo, setSearchEmInfo] = useState("");
   const [filter, setFilter] = useState([]);
   const navigate = useNavigate();
-  const { data: EmInfo, isLoading } = useQuery(["EmInfoList"], () =>
-    fetch("https://backend.bloperation.com/emInfo", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
+  const { data: EmInfo, isLoading } = useQuery({
+    queryKey: ['EmInfo'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/emInfo")
+      return res.data
+    }
+  })
+
+
   // console.log(services)
   if (isLoading) {
     return <Loading />;
@@ -67,7 +62,7 @@ const EminfoList = () => {
 
       {/* For filter input box */}
       <div className="flex  justify-between flex-wrap gap-4">
-        
+
         <input
           type="text"
           className="input input-bordered border-sky-400 w-full max-w-xs flex-auto"
@@ -80,7 +75,7 @@ const EminfoList = () => {
         <div>
           <CSVLink
             data={EmInfo}
-            filename="PgRunData"
+            filename="EnergyMeterInfo"
             className="btn btn-outline btn-info mb-2 flex-auto"
           >
             <ArrowDownTrayIcon className="h-6 w-6 text-blue-500" />

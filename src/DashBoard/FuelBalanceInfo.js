@@ -5,15 +5,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import Loading from '../Pages/SharedPage/Loading';
 import FuelBalanceRow from './FuelBalanceRow';
 
-import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LabelList, ComposedChart, Line } from 'recharts';
+import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, LabelList, ComposedChart,} from 'recharts';
 import useAxiosSecure from '../Pages/Hook/useAxiosSecure';
 
 
 
 const FuelBalanceInfo = () => {
   const [axiosSecure] = useAxiosSecure()
-  const navigate = useNavigate()
-
+  
   const { isLoading2, data: receiveFuelOnCall = [] } = useQuery({
     queryKey: ['receiveFuelOnCall'],
     queryFn: async () => {

@@ -11,38 +11,27 @@ import FuelDataListRow from "./FuelDataListRow";
 import { useState } from "react";
 import DeleteReceiveFuel from "./DeleteReceiveFuel";
 import useAdmin from "../Pages/Hook/useAdmin";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 
 const FuelDataList = () => {
   const [user] = useAuthState(auth);
-
   const [admin] = useAdmin(user);
+  const [axiosSecure]=useAxiosSecure()
   const navigate = useNavigate();
   const [delFuel, setDelFuel] = useState("");
 
   const {
     data: fuelData,
-    isLoading,
-    refetch,
-  } = useQuery(["list", user], () =>
-    fetch(`https://backend.bloperation.com/fuelList?email=${user.email}`, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
+       refetch,
+  } = useQuery({
+    queryKey:["fuelData",user?.email],
+    queryFn:async()=>{
+      const res= await axiosSecure.get(`/fuelList?email=${user?.email}`)
+      return res.data
+    }
+  })
+      
+   
   const totalFuel = fuelData?.map((fuelValue, index) => {
     const x = parseFloat(fuelValue.fuelQuantity);
     return x;

@@ -1,11 +1,10 @@
-import { signOut } from "firebase/auth";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import auth from "../firebase.init";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 
 const RejectApproval = ({ reject, setReject, refetch }) => {
+  const [axiosSecure] = useAxiosSecure()
   const { _id } = reject;
   const {
     register,
@@ -13,32 +12,12 @@ const RejectApproval = ({ reject, setReject, refetch }) => {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const navigate = useNavigate();
-
+ 
   const onSubmit = (data, id) => {
-    fetch(`https://backend.bloperation.com/pgRunList/${_id}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify({
-        status: "Reject",
-        remark: data.rejectMsg,
-      }),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
+    axiosSecure.put(`/pgRunList/${_id}`)
       .then((approveData) => {
         console.log(approveData);
-        if (approveData.modifiedCount > 0) {
+        if (approveData.data.modifiedCount > 0) {
           toast.info(" Data has been Rejected");
         }
       });
@@ -85,7 +64,7 @@ const RejectApproval = ({ reject, setReject, refetch }) => {
                 value="confirm"
                 htmlFor="rejectApproval"
                 className="btn btn-warning"
-                /* onClick={() => handleReject(_id)} */
+              /* onClick={() => handleReject(_id)} */
               />
             </div>
           </form>

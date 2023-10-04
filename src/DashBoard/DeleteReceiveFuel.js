@@ -1,25 +1,16 @@
 import React from "react";
 import { toast } from "react-toastify";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 
 const DeleteReceiveFuel = ({ delFuel, refetch, setDelFuel }) => {
+  const [axiosSecure]=useAxiosSecure()
   const { _id } = delFuel;
 
   const handleDelete = (id) => {
-    console.log(id);
-    fetch(
-      `https://backend.bloperation.com/
-
-receivedFuel/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.deletedCount > 0) {
+    //console.log(id);
+    axiosSecure.delete(`/receivedFuel/${id}`)
+        .then((deleteRes) => {
+        if (deleteRes.data.deletedCount > 0) {
           toast.success(" Delete successfully done ");
         }
         refetch();
