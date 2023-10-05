@@ -65,7 +65,7 @@ const handleImageUpload=(event)=>{
                   name, email, password,
                   url: imageUrl || "https://i.ibb.co/kmXfZgh/profile.png", role: "general"
                 }
-                fetch('http://localhost:5000/user', {
+                fetch('https://backend.bloperation.com/user', {
                   method: 'PUT',
                   headers: {
                     'content-type': 'application/json'
