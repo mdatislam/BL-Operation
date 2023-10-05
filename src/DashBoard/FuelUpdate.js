@@ -13,6 +13,7 @@ const FuelUpdate = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
   const [userList]=useUserList()
+  const [pgList]=usePgList()
   const [axiosSecure]=useAxiosSecure()
   const [search, setSearch] = useState("");
   //const [admin] = useAdmin(user);
@@ -35,7 +36,7 @@ const FuelUpdate = () => {
 
   const onSubmit = (data) => {
    
-    const fuelData = {
+    const fuelInfo = {
       siteId: search,
       date: data.date,
       slipNo: data.slipNo,
@@ -52,13 +53,13 @@ const FuelUpdate = () => {
     };
 
     //console.log(fuelData);
-    axiosSecure.post("/fuelDataOncall", fuelData)
+    axiosSecure.post("/fuelData", fuelInfo)
       .then((fuelRes) => {
         //console.log(fuelData)
         if (fuelRes.data.insertedId) {
           toast.success("Fuel Data Successfully Update");
         } else if (fuelRes.data.msg) {
-          toast.error(`Warning: ${fuelData.msg}`);
+          toast.error(`Warning: ${fuelRes.data.msg}`);
         }
         reset();
 
