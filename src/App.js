@@ -49,6 +49,9 @@ import FcuDataFromExcel from "./FCU/FcuDataFromExcel";
 import FcuMaterial from './FCU/FcuMaterial';
 import FcuAllDataRecord from './FCU/FcuAllDataRecord';
 import Login2 from "./Pages/AuthPage/Login2";
+import DashboardOncall from "./DashboardOncall/DashboardOncall";
+import OnCallHomePage from "./DashboardOncall/OnCallHomePage";
+import FcuServiceList from "./DashboardOncall/FcuServiceList";
 
 
 
@@ -82,6 +85,13 @@ function App() {
               <Route path="UserList" element={<UserList />} />
             </Route>
           </Route>
+          {/* on call Dashboard components start */}
+          <Route path="OnCall" element={<DashboardOncall />}>
+            <Route index element={<OnCallHomePage/>}></Route>
+            <Route path="FcuService" element={<FcuServiceList/>}></Route>
+
+          </Route>
+          {/* on call Dashboard components End */}
         </Route>
 
         <Route element={<RequireAuth />}>
@@ -104,6 +114,7 @@ function App() {
           <Route path="/siteDataHome" element={<SiteDataHome />} />
           <Route path="/siteDataInfo" element={<SiteDataInfo />} />
           <Route path="/snagList" element={<SnagList />} />
+          
         </Route>
 
         <Route element={<RequireAdmin />}>

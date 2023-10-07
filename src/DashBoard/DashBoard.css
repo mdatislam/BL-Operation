@@ -1,0 +1,32 @@
+/* CSS to hide the sidebar */
+.drawer-contentt {
+    width: 0; /* Set the width to 0 to hide the sidebar */
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #020203; /* Sidebar background color */
+    transition: 0.3s; /* Add smooth transition */
+    z-index: 1; /* Set a higher z-index to overlay other elements */
+  }
+  
+  /* Styles for visible sidebar content */
+  .drawer-content-visible {
+    width: 70px; /* Set the width to the desired width when sidebar is visible */
+    /* Add other styles as needed */
+  }
+  
+  /* Add a transition effect when changing the width of the sidebar */
+  .drawer-content, .drawer-content-visible {
+    transition: 0.3s;
+  }
+  In this example, the .drawer-content class sets the width of the sidebar to 0 initially, making it hidden. When the .drawer-content-visible class is applied (by toggling the sidebarVisible state), the sidebar width is set to 70px (or your desired width), making it visible.
+  
+  Make sure to adjust the width and other styles in the .drawer-content-visible class to match your design requirements. You can also customize other properties such as background color, padding, margins, etc., according to your application's design.
+  
+  
+  
+  
+  
+  
