@@ -5,10 +5,12 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../../firebase.init";
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 const ProfileChange = ({ profile, setProfile }) => {
   const { name, email } = profile;
   const [user] = useAuthState(auth);
+  const [axiosSecure] = useAxiosSecure()
   const navigate = useNavigate();
 
   const [imgUrl, setImageUrl] = useState("");
@@ -54,25 +56,10 @@ const ProfileChange = ({ profile, setProfile }) => {
       url: imgUrl,
     };
 
-    fetch(`https://backend.bloperation.com/profileChange/${email}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(profileData),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
+    axiosSecure.put(`/profileChange/${email}`, profileData)
+
       .then((profileData) => {
-        console.log(profileData);
+        //console.log(profileData);
         if (profileData.upsertedCount || profileData.modifiedCount) {
           toast.success("Data Successfully Update");
         }
@@ -82,26 +69,24 @@ const ProfileChange = ({ profile, setProfile }) => {
       });
   };
   return (
-    <div className="mt-4">
+    <div className="">
       <input type="checkbox" id="profileChange" className="modal-toggle" />
       <div className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box relative mt-4 border-4 border-sky-500 p-2">
+        <div className="modal-box relative mt-28 border-4 border-sky-500 p-2">
           <label
             htmlFor="profileChange"
             className="btn btn-sm btn-circle absolute right-2 top-2"
           >
             ✕
           </label>
-          <h3 className="font-bold text-lg text-center mt-2">Update user!</h3>
+          <h3 className="font-bold text-lg text-center text-purple-700 my-1">Update user!</h3>
           <p className="py-2">
             {/*Data entry part start  */}
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* Date input field */}
 
               <div className="form-control w-full max-w-xs">
-                <label className="label">
-                  <span className="label-text">Name:</span>
-                </label>
+
                 <input
                   type="text"
                   disabled
@@ -113,9 +98,7 @@ const ProfileChange = ({ profile, setProfile }) => {
 
               {/* email id */}
               <div className="form-control w-full max-w-xs">
-                <label className="label">
-                  <span className="label-text">E-mail:</span>
-                </label>
+
                 <input
                   type="email"
                   disabled
@@ -162,7 +145,7 @@ const ProfileChange = ({ profile, setProfile }) => {
               <div className="form-control w-full max-w-xs">
                 <label
                   htmlFor="image"
-                  className={loading ? "btn  loading  mt-5" : "btn  mt-5"}
+                  className={loading ? "btn  loading  mt-2" : "btn  mt-2"}
                 >
                   Upload-Photo
                 </label>

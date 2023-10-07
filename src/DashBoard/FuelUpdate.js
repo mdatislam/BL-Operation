@@ -8,13 +8,14 @@ import usePgList from "../Pages/Hook/usePgList";
 import useSiteList from "./../Pages/Hook/useSiteList";
 import useUserList from "../Pages/Hook/useUserList";
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
+import useVehicleList from "../Pages/Hook/useVehicleList";
 
 const FuelUpdate = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
   const [userList]=useUserList()
-  const [pgList]=usePgList()
-  const [axiosSecure]=useAxiosSecure()
+  const [vehicleList]=useVehicleList()
+   const [axiosSecure]=useAxiosSecure()
   const [search, setSearch] = useState("");
   //const [admin] = useAdmin(user);
   const [PgList] = usePgList();
@@ -31,7 +32,7 @@ const FuelUpdate = () => {
   let date = new Date();
   date.setDate(date.getDate());
   let today = date.toLocaleDateString("en-CA");
-
+//console.log(userList)
   const availableUser = userList?.filter((u) => u.name !== user.displayName);
 
   const onSubmit = (data) => {
@@ -167,22 +168,15 @@ const FuelUpdate = () => {
                   },
                 })}
               >
-                <option value=""> --------Select vehicle No-------- </option>
-                <option value="11-7415">11-7415</option>
-                <option value="13-5629">13-5629</option>
-                <option value="15-2171">15-2171</option>
-                <option value="13-0233">13-0233</option>
-                <option value="11-0201">11-0201</option>
-                <option value="02-4608">02-4608</option>
-
-                {/* {PgList?.map((pg) => (
-                  <option value={pg.pgNo}>{pg.pgNo}</option>
-                ))} */}
+                <option>--------Pick Car No----------</option>
+                {vehicleList?.map((car) => (
+                  <option value={car.vehicleNo}>{car.vehicleNo}</option>
+                ))} 
               </select>
               <label className="label">
-                {errors.pgNo?.type === "required" && (
+                {errors.carNo?.type === "required" && (
                   <span className="label-text-alt text-red-500">
-                    {errors.pgNo.message}
+                    {errors.carNo.message}
                   </span>
                 )}
               </label>

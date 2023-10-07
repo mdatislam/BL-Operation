@@ -44,7 +44,7 @@ const AuthProvider = ({ children }) => {
             console.log('current user', currentUser)
             //jwt token save to loacal storage
             if (currentUser) {
-                axios.post('https://backend.bloperation.com/jwt', {
+                axios.post('http://localhost:5000/jwt', {
                     email: currentUser.email
                 })
                     .then(data => {

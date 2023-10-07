@@ -16,15 +16,15 @@ const SignUp = () => {
   } = useForm()
   const [errorMsg, setError] = useState("")
   const [imageUrl, setImageUrl] = useState("")
-  const [imgLoading,setImgLoading]=useState(false)
+  const [imgLoading, setImgLoading] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
 
   let from = location.state?.from?.pathname || "/";
 
 
-const handleImageUpload=(event)=>{
-  setImgLoading(true);
+  const handleImageUpload = (event) => {
+    setImgLoading(true);
     const imageFile = event.target.files[0];
     const formData = new FormData();
     formData.set("image", imageFile);
@@ -44,7 +44,7 @@ const handleImageUpload=(event)=>{
         setImgLoading(false)
       })
 
-}
+  }
   const onSubmit = async (data) => {
     //console.log(data);
     const name = data.name
@@ -63,9 +63,9 @@ const handleImageUpload=(event)=>{
               .then(result => {
                 const userInfo = {
                   name, email, password,
-                  url: imageUrl || "https://i.ibb.co/kmXfZgh/profile.png", role: "general"
+                  url: imageUrl || "https://i.ibb.co/kmXfZgh/profile.png" , role: "general"
                 }
-                fetch('https://backend.bloperation.com/user', {
+                fetch('http://localhost:5000/user', {
                   method: 'PUT',
                   headers: {
                     'content-type': 'application/json'
@@ -97,9 +97,11 @@ const handleImageUpload=(event)=>{
         })
         .catch((error) => {
           const errorMsg = error.message
-          console.log(errorMsg)
           setError(errorMsg)
+          console.log(errorMsg)
+          
         })
+        
     }
 
 
@@ -107,9 +109,9 @@ const handleImageUpload=(event)=>{
   };
 
 
-  if (loading) {
+ /*  if (loading) {
     return <Loading />;
-  }
+  } */
 
   return (
     <div className="hero min-h-screen bg-base-200">
@@ -171,7 +173,7 @@ const handleImageUpload=(event)=>{
               <input
                 type="email"
                 placeholder="enter a email"
-              required
+                required
                 className="input input-bordered"
                 {...register("email", {
                   required: {
@@ -206,7 +208,7 @@ const handleImageUpload=(event)=>{
               <input
                 type="password"
                 placeholder="password"
-              required
+                required
                 autoComplete="off"
                 className="input input-bordered"
                 {...register("password", {
@@ -242,10 +244,11 @@ const handleImageUpload=(event)=>{
                 </p>
               </label>
             </div>
-            {errorMsg}
+            <strong className="text-red-500">{errorMsg}</strong>
+            
             <div className="form-control mt-2">
               <input
-              /* disabled={imageUrl ? false:true} */
+                /* disabled={imageUrl ? false:true} */
                 type="submit"
                 className="btn btn-primary"
                 value="Register"

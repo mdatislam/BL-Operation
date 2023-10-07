@@ -10,12 +10,12 @@ import { signOut } from "firebase/auth";
 import PgDel from "./PgDel";
 import EditPg from "./EditPg";
 import useAdmin from "../Pages/Hook/useAdmin";
-import { PlusCircleIcon} from '@heroicons/react/24/solid'
+import { PlusCircleIcon } from '@heroicons/react/24/solid'
 
 const PgStatus = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
-  const [pgList,setPgList]=useState([])
+  const [pgList, setPgList] = useState([])
   const [visible, setVisible] = useState(false);
   const [pgDel, setPgDel] = useState("");
   const [pgEdit, setPgEdit] = useState("");
@@ -41,7 +41,7 @@ const PgStatus = () => {
       date: today,
     };
 
-    fetch(`https://backend.bloperation.com/pgList/${data.pgno}`, {
+    fetch(`http://localhost:5000/pgList/${data.pgno}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -68,10 +68,10 @@ const PgStatus = () => {
         //refetch();
       });
   };
-  
 
-useEffect(()=>{
-  fetch(" https://backend.bloperation.com/pgList", {
+
+  useEffect(() => {
+    fetch(" http://localhost:5000/pgList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -85,10 +85,10 @@ useEffect(()=>{
       }
       return res.json();
     })
-    .then(data=>setPgList(data))
+      .then(data => setPgList(data))
 
 
-},[])
+  }, [])
 
   const goodCondition = pgList?.filter((good) => good.pgStatus === "Good");
   const goodPg = goodCondition?.length;
@@ -121,8 +121,8 @@ useEffect(()=>{
           className="btn btn-sm btn-outline btn-primary"
           onClick={() => setVisible(true)}
         >
-          <PlusCircleIcon  className="h-6 w-6" />
-          
+          <PlusCircleIcon className="h-6 w-6" />
+
           Add PG
         </button>
       </div>
@@ -235,7 +235,7 @@ useEffect(()=>{
           </tbody>
         </table>
       </div>
-      {pgDel && <PgDel pgDel={pgDel} setPgDel={setPgDel} /* refetch={refetch}  *//>}
+      {pgDel && <PgDel pgDel={pgDel} setPgDel={setPgDel} /* refetch={refetch}  */ />}
       {pgEdit && (
         <EditPg pgEdit={pgEdit} setPgEdit={setPgEdit} /* refetch={refetch} */ />
       )}

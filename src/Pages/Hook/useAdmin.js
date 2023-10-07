@@ -10,7 +10,7 @@ const useAdmin = (user) => {
         const email = user?.email;
     if (email) {
       axiosSecure.get(`/user/admin/${email}`)
-      /* fetch(`https://backend.bloperation.com/user/admin/${email}`, {
+      /* fetch(`http://localhost:5000/user/admin/${email}`, {
         method: "GET",
         headers: {
           authorization: `Bearer ${localStorage.getItem("accessToken")}`,

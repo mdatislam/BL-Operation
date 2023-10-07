@@ -2,14 +2,15 @@ import { signOut } from "firebase/auth";
 import React from "react";
 //import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import auth from "../../firebase.init";
 import huawei from "../../images/Huawei.png";
+import useAxiosSecure from "../Hook/useAxiosSecure";
+import { BackwardIcon } from "@heroicons/react/24/solid";
 
 const RectifierInfoUpdate = () => {
-  // const [user] = useAuthState(auth);
-  const navigate = useNavigate();
+
+  const [axiosSecure] = useAxiosSecure()
   const {
     register,
     reset,
@@ -26,26 +27,11 @@ const RectifierInfoUpdate = () => {
       consumeFuel: data.consume,
     };
     //console.log(PgRunData);
-    fetch(`https://backend.bloperation.com/rectifier?brand=${brand}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(RectifierInfo),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
+    axiosSecure.put(`/rectifier?brand=${brand}`, RectifierInfo)
+
       .then((rectifierData) => {
-        console.log(rectifierData);
-        if (rectifierData.upsertedCount || rectifierData.modifiedCount) {
+        console.log(rectifierData.data);
+        if (rectifierData.data.upsertedCount || rectifierData.data.modifiedCount) {
           toast.success("Data Successfully Update");
         }
         reset();
@@ -55,14 +41,19 @@ const RectifierInfoUpdate = () => {
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row-reverse">
-        <figure className="px-10 pt-10">
+        <figure className=" hidden md:block px-10 pt-10">
           <img src={huawei} alt="PG Pic" className="rounded-xl" />
         </figure>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <div className="card-body">
-            <h2 className="text-center text-2xl font-bold mb-3">
-              Add Rectifier Info !
-            </h2>
+            <div className="flex justify-between">
+              <button className="btn btn-accent btn-sm btn-outline">
+                <Link to="/Dashboard/UserList"> <BackwardIcon className="w-6 h-6 text-blue-500" /></Link>
+              </button>
+              <h2 className="text-center text-pink-600 text-2xl font-bold mb-3">
+                Add Rectifier Info !
+              </h2>
+            </div>
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* Brand input field */}
 
@@ -70,7 +61,7 @@ const RectifierInfoUpdate = () => {
                 <label className="label">
                   <span className="label-text">Brand:</span>
                 </label>
-                <input
+                <select
                   type="text"
                   placeholder="Put Rectifier Brand"
                   className="input input-bordered w-full max-w-xs"
@@ -80,7 +71,16 @@ const RectifierInfoUpdate = () => {
                       message: " Brand is required",
                     },
                   })}
-                />
+                >
+                  <option >---Select Rectifier Brand----</option>
+                  <option value="Huawei-3000"> Huawei-3000</option>
+                  <option value="Huawei-400"> Huawei-4000</option>
+                  <option value="ZTE-2000"> ZTE-2000</option>
+                  <option value="ZTE-4000"> ZTE-4000</option>
+                  <option value="Emerson-1800"> Emerson-1800</option>
+                  <option value="DPC-2000"> DPC-2000</option>
+                </select>
+
                 <label className="label">
                   {errors.brand?.type === "required" && (
                     <span className="label-text-alt text-red-500">
@@ -95,7 +95,7 @@ const RectifierInfoUpdate = () => {
                 <label className="label">
                   <span className="label-text">Module Capacity:</span>
                 </label>
-                <input
+                <select
                   type="text"
                   placeholder="Put Module capacity"
                   className="input input-bordered w-full max-w-xs"
@@ -106,10 +106,12 @@ const RectifierInfoUpdate = () => {
                     },
                   })}
                 >
-                  {/* {availableUser.map((user) => (
-                  <option value={user.name}>{user.name} </option>
-                ))} */}
-                </input>
+                  <option >----Select Module capacity----</option>
+                  <option value="1.8 KW"> 1.8 KW</option>
+                  <option value="2 KW"> 2.0 KW</option>
+                  <option value="3 KW"> 3.0 KW</option>
+                  <option value="4 KW">4.0 KW</option>
+                </select>
                 <label className="label">
                   {errors.capacity?.type === "required" && (
                     <span className="label-text-alt text-red-500">
@@ -151,7 +153,7 @@ const RectifierInfoUpdate = () => {
                 type="submit"
                 className="btn btn-accent w-full max-w-xs m-2"
                 value="Submit-Info"
-                /*   <button className="btn btn-success">Success</button> */
+              /*   <button className="btn btn-success">Success</button> */
               />
             </form>
           </div>
