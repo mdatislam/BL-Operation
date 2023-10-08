@@ -94,7 +94,7 @@ const Navbar2 = () => {
 
         <ul className="menu  menu-horizontal ">
           <li>
-            <NavLink className=" btn btn-ghost rounded-lg"to="/Home">
+            <NavLink className=" btn btn-ghost rounded-lg" to="/Home">
               Home
             </NavLink>
           </li>
@@ -114,38 +114,38 @@ const Navbar2 = () => {
       </div>
 
       <div className="navbar-end">
-      <ul className="menu px-2 menu-horizontal  ">
-        {pathname.includes("OnCall") &&
-         <li>
-          <label htmlFor="my-drawer" className="mt-5 drawer-button lg:hidden btn btn-accent rounded-lg">
-            <HomeModernIcon className="  w-8 h-8 text-pink-400 " />
-          </label>
-        </li>}
-        <li>
-          {!user ? (
-            <NavLink className=" btn btn-ghost rounded-lg" to="/Login">
-              Login
-            </NavLink>
-          ) : (
-            <div className="rounded-lg" onClick={logout}>
-              <button  className=" rounded-lg">
-                <ArrowRightOnRectangleIcon className="h-6 w-6 text-blue-500" />
-              </button>
-              <div className="avatar">
-                {user.photoURL ? <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                  <img src={user.photoURL}  alt="pho"/> 
+        <ul className="menu px-2 menu-horizontal  ">
+          {pathname.includes("OnCall") &&
+            <li>
+              <label htmlFor="my-drawer" className="mt-5 drawer-button lg:hidden btn btn-accent rounded-lg">
+                <HomeModernIcon className="  w-8 h-8 text-pink-400 " />
+              </label>
+            </li>}
+          <li>
+            {!user ? (
+              <NavLink className=" btn btn-ghost rounded-lg" to="/Login">
+                Login
+              </NavLink>
+            ) : (
+              <div className="rounded-lg" onClick={logout}>
+                <div className="avatar">
+                  {user.photoURL ? <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                    <img src={user.photoURL} alt="pho" />
+                  </div>
+                    :
+                    <h2 className="text-pink-400 font-bold">{user.displayName}</h2>
+                  }
                 </div>
-                :
-                <h2 className="text-pink-400 font-bold">{user.displayName}</h2>
-                }
-                </div>
-                
+                <button className=" rounded-lg">
+                  <ArrowRightOnRectangleIcon className="h-6 w-6 text-blue-500" />
+                </button>
+
 
               </div>
 
-          )}
-            </li>
-      </ul>
+            )}
+          </li>
+        </ul>
       </div>
       {/*  <ProfilePic/> */}
       {/* For mobile device */}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 
 const DashboardOncall = () => {
     return (
@@ -15,10 +15,10 @@ const DashboardOncall = () => {
                 <ul className="menu p-4  overflow-y-auto w-70  bg-[#3f3f6d] text-[#ffba24]">
                     {/* Sidebar content here */}
                     <li>
-                        <Link to="/OnCall"> OnCall Issue</Link>
+                        <NavLink to="/OnCall"> OnCall Issue</NavLink >
                     </li>
                     <li>
-                        <Link to="/OnCall/FcuService" >Required FCU Service</Link>
+                        <NavLink  to="/OnCall/FcuService" >Required FCU Service</NavLink >
                     </li>
 
                 </ul>

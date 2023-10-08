@@ -10,7 +10,8 @@ import OutstandingTask from './OutstandingTask';
 const Home = () => {
     return (
       <div className="h-full">
-         <ProfilePic />  
+       {/* 
+        */} 
        {/*  <HomeBanner /> */}
         <NavbarItem />
         {/*  <Employee /> */}
