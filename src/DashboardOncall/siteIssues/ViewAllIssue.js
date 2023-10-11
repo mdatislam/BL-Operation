@@ -54,17 +54,17 @@ const ViewAllIssue = () => {
         }
     }
     return (
-        <div className='card px-3 bg-slate-300 py-2 w-full'>
-            <div className="overflow-x-auto ">
+        <div className=' px-3 bg-slate-300 py-2 w-full'>
+            <div className="card bg-base-100 shadow-xl overflow-x-auto ">
                 <table className="table table-xs table-pin-rows table-pin-cols
-                border border-slate-200 ">
-                    <caption class=" caption-top py-5 ">
+                border-2 border-slate-200 px-2 ">
+                    <caption class=" caption-top py-5 bg-pink-300">
                         <div className='text center font-bold text-pink-700'>
                             <h2 className='text-2xl'>All Site's Issue List </h2>
                         </div>
                     </caption>
 
-                    <thead className='border-2 font-bold border-slate-300 headers rounded-lg'>
+                    <thead className='border font-bold border-slate-300 headers rounded-lg'>
                         <tr className='text-center divide-x-2 divide-yellow-400 divide-y-2 '>
                            
                             <th>S.No</th>
@@ -82,7 +82,7 @@ const ViewAllIssue = () => {
                     <tbody>
                         {
                             allIssues?.map((issue, index) => (
-                                <tr className='border border-slate-300 divide-x-2 divide-y-2'>
+                                <tr className='border border-slate-300 divide-x-2 divide-y-2 hover'>
                                 <td className='border border-slate-300'> {index+1}</td>
                                     <td className='border border-slate-300'>{issue.siteId}</td>
                                     <td className='border border-slate-300'>{issue.date}</td>
