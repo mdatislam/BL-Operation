@@ -1,6 +1,7 @@
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ViewIssues from './siteIssues/ViewIssues';
 
 const OnCallHomePage = () => {
     return (
@@ -16,7 +17,7 @@ const OnCallHomePage = () => {
                                 </Link>
                             </div> 
                             <div className="divider mt-[-5px]"></div>
-                            
+                            <ViewIssues/>
                         </div>
                     </div>
                     {/* 2nd side  part  */}

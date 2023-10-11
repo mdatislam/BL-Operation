@@ -18,6 +18,9 @@ const DashboardOncall = () => {
                         <NavLink to="/OnCall"> OnCall Issue</NavLink >
                     </li>
                     <li>
+                        <NavLink to="/OnCall/siteAllIssues">All Issue</NavLink >
+                    </li>
+                    <li>
                         <NavLink  to="/OnCall/FcuService" >Required FCU Service</NavLink >
                     </li>
 

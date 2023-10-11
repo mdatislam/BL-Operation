@@ -1,0 +1,8 @@
+.whitespace-pre-line {
+    white-space: pre-line;
+  }
+
+  .header {
+    background-color: rgb(255, 0, 234);
+    border-radius: 10px;
+  }

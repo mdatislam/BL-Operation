@@ -1,7 +1,6 @@
 
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import usePgList from "../Pages/Hook/usePgList";
@@ -9,6 +8,7 @@ import useSiteList from "./../Pages/Hook/useSiteList";
 import useUserList from "../Pages/Hook/useUserList";
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 import useVehicleList from "../Pages/Hook/useVehicleList";
+import { useForm } from "react-hook-form";
 
 const FuelUpdate = () => {
   const [user] = useAuthState(auth);
@@ -23,7 +23,7 @@ const FuelUpdate = () => {
   const {
     register,
     reset,
-    formState: { errors },
+    formState: {errors},
     handleSubmit,
   } = useForm();
 
@@ -34,6 +34,16 @@ const FuelUpdate = () => {
   let today = date.toLocaleDateString("en-CA");
 //console.log(userList)
   const availableUser = userList?.filter((u) => u.name !== user.displayName);
+
+  
+  /*  For site list auto suggestion */
+  const handleSiteSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleSearchItem = (searchItem) => {
+    setSearch(searchItem);
+  };
 
   const onSubmit = (data) => {
    
@@ -68,14 +78,6 @@ const FuelUpdate = () => {
       });
   };
 
-  /*  For site list auto suggestion */
-  const handleSiteSearch = (e) => {
-    setSearch(e.target.value);
-  };
-
-  const handleSearchItem = (searchItem) => {
-    setSearch(searchItem);
-  };
   return (
     <div className="flex  justify-center justify-items-center mt-8">
       <div className="card w-96 bg-base-100 shadow-2xl">
@@ -102,7 +104,7 @@ const FuelUpdate = () => {
                 })}
               />
               <label className="label">
-                {errors.date?.type === "required" && (
+                {errors.date?.type ==="required" && (
                   <span className="label-text-alt text-red-500">
                     {errors.date.message}
                   </span>
@@ -114,6 +116,7 @@ const FuelUpdate = () => {
               <input
                 type="number"
                 placeholder=" Fuel Slip No"
+                required
                 className="input input-bordered w-full max-w-xs"
                 {...register("slipNo", {
                   required: {
@@ -123,7 +126,7 @@ const FuelUpdate = () => {
                 })}
               />
               <label className="label">
-                {errors.slipNo?.type === "required" && (
+                {errors.slipNo?.type ==="required" && (
                   <span className="label-text-alt text-red-500">
                     {errors.slipNo.message}
                   </span>
@@ -222,6 +225,7 @@ const FuelUpdate = () => {
               <input
                 type="text"
                 placeholder="Fuel Quantity"
+                required
                 className="input input-bordered w-full max-w-xs"
                 {...register("fuel", {
                   required: {

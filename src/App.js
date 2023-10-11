@@ -52,7 +52,9 @@ import Login2 from "./Pages/AuthPage/Login2";
 import DashboardOncall from "./DashboardOncall/DashboardOncall";
 import OnCallHomePage from "./DashboardOncall/OnCallHomePage";
 import FcuServiceList from "./DashboardOncall/FcuServiceList";
-import AddIssues from "./DashboardOncall/AddIssues";
+import AddIssues from "./DashboardOncall/siteIssues/AddIssues";
+import ViewAllIssue from "./DashboardOncall/siteIssues/ViewAllIssue";
+
 
 
 
@@ -91,6 +93,7 @@ function App() {
             <Route index element={<OnCallHomePage/>}></Route>
             <Route path="FcuService" element={<FcuServiceList/>}></Route>
             <Route path="AddIssues" element={<AddIssues/>} />
+            <Route path="siteAllIssues" element={<ViewAllIssue/>} />
 
           </Route>
           {/* on call Dashboard components End */}
