@@ -44,7 +44,6 @@ import SnagList from './Pages/SiteData/SnagList';
 import SiteDataInfo from "./Pages/SiteData/SiteDataInfo";
 import SiteDataHome from "./Pages/SiteData/SiteDataHome";
 import ServiceMaterial from "./Pages/DG-Info/ServiceMaterial";
-import FcuFilterChange from './DashBoard/FcuFilterChange';
 import FcuDataFromExcel from "./FCU/FcuDataFromExcel";
 import FcuMaterial from './FCU/FcuMaterial';
 import FcuAllDataRecord from './FCU/FcuAllDataRecord';
@@ -54,6 +53,7 @@ import OnCallHomePage from "./DashboardOncall/OnCallHomePage";
 import FcuServiceList from "./DashboardOncall/FcuServiceList";
 import AddIssues from "./DashboardOncall/siteIssues/AddIssues";
 import ViewAllIssue from "./DashboardOncall/siteIssues/ViewAllIssue";
+import FcuUpdate from "./DashBoard/FcuUpdate";
 
 
 
@@ -66,7 +66,7 @@ function App() {
       {/*  <NavBar> */}
       <Navbar2 />
       <Routes>
-       {/*  <Route path="/Login" element={<Login />}></Route> */}
+        {/*  <Route path="/Login" element={<Login />}></Route> */}
         <Route path="/Login" element={<Login2 />}></Route>
         {/*  private Route */}
         <Route element={<RequireAuth />}>
@@ -77,7 +77,7 @@ function App() {
             <Route path="ApprovalPending" element={<ApprovalPending />} />
             <Route path="PgRunUpdate" element={<PgRunUpdate />} />
             <Route path="FuelUpdate" element={<FuelUpdate />} />
-            <Route path="FcuFilterChange" element={<FcuFilterChange />} />
+            <Route path="FcuServiceUpdate" element={<FcuUpdate />} />
             <Route path="FuelUpdateOnCall" element={<FuelUpdateOncall />} />
             <Route path="FuelData" element={<FuelDataList />} />
             <Route path="EMDataUpdate" element={<EMDataUpdate />} />
@@ -90,10 +90,10 @@ function App() {
           </Route>
           {/* on call Dashboard components start */}
           <Route path="OnCall" element={<DashboardOncall />}>
-            <Route index element={<OnCallHomePage/>}></Route>
-            <Route path="FcuService" element={<FcuServiceList/>}></Route>
-            <Route path="AddIssues" element={<AddIssues/>} />
-            <Route path="siteAllIssues" element={<ViewAllIssue/>} />
+            <Route index element={<OnCallHomePage />}></Route>
+            <Route path="FcuService" element={<FcuServiceList />}></Route>
+            <Route path="AddIssues" element={<AddIssues />} />
+            <Route path="siteAllIssues" element={<ViewAllIssue />} />
 
           </Route>
           {/* on call Dashboard components End */}
@@ -119,8 +119,8 @@ function App() {
           <Route path="/siteDataHome" element={<SiteDataHome />} />
           <Route path="/siteDataInfo" element={<SiteDataInfo />} />
           <Route path="/snagList" element={<SnagList />} />
-          
-          
+
+
         </Route>
 
         <Route element={<RequireAdmin />}>

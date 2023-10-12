@@ -31,7 +31,7 @@ const FcuAllDataRecordRow = ({data,index}) => {
        <td className=" ">{fcuFilterStatus}</td>
        <td className=" ">{fcuCtrl}</td>
        <td className=" ">{updaterName}</td>
-       <td>{remark}</td>
+       <td className='whitespace-pre-line border border-slate-300 '>{remark}</td>
      </tr>
    );
 };

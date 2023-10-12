@@ -7,10 +7,14 @@ import * as XLSX from "xlsx";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useAuthState } from "react-firebase-hooks/auth";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 
 const FcuDataFromExcel = () => {
   // const [admin]=useAdmin()
   // on change states
+  const [user] = useAuthState(auth)
+  const [axiosSecure] = useAxiosSecure()
   const [excelFile, setExcelFile] = useState(null);
   const [excelFileError, setExcelFileError] = useState(null);
 
@@ -137,6 +141,11 @@ const FcuDataFromExcel = () => {
           toast.success("Data Successfully Update");
         }
       }); */
+/* axiosSecure.put(`/fcuFilterChangeLatestRecord/${siteID}`,fcuData)
+.then(putRes=>{
+  return putRes.data
+}) */
+      
     return fcuData;
   });
 
@@ -168,12 +177,12 @@ const FcuDataFromExcel = () => {
                   <div>Date</div>
                 </th>
                 <th>
-                  <div>PreFilter</div>
-                  <div>ChangeDate</div>
+                  <div>PreService</div>
+                  <div>Date</div>
                 </th>
                 <th>
-                  <div>latestFilter</div>
-                  <div>ChangeDate</div>
+                  <div>latestService</div>
+                  <div>Date</div>
                 </th>
                 <th>
                   <div>nextPlan</div>
@@ -183,7 +192,7 @@ const FcuDataFromExcel = () => {
                   <div>latest </div>
                   <div>Action</div>
                 </th>
-                <th>fcuCtrl</th>
+                <th>fcuStatus</th>
               </tr>
             </thead>
           </div>
@@ -242,12 +251,16 @@ const FcuDataFromExcel = () => {
                       <div>Date</div>
                     </th>
                     <th>
-                      <div>Pre Filter</div>
-                      <div>Change Date</div>
+                      <div>Service</div>
+                      <div>Type</div>
                     </th>
                     <th>
-                      <div>Latest Filter</div>
-                      <div>Change Date</div>
+                      <div>Pre Service</div>
+                      <div>Date</div>
+                    </th>
+                    <th>
+                      <div>Latest Service</div>
+                      <div>Date</div>
                     </th>
                     <th>
                       <div>Next Plan</div>
@@ -258,8 +271,8 @@ const FcuDataFromExcel = () => {
                       <div>Action</div>
                     </th>
                     <th>
-                      <div>Setting</div>
-                      <div>Check?</div>
+                      <div>FCU</div>
+                      <div>Status</div>
                     </th>
                     <th>
                       <div>Updated</div>

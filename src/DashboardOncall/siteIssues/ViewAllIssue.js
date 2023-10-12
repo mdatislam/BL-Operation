@@ -71,6 +71,7 @@ const ViewAllIssue = () => {
                             <th>Site ID</th>
                             <th>Issue Date</th>
                             <th>Status</th>
+                            <th>Category</th>
                             <th>Issue Detail</th>
                             <th>Issue Finder</th>
                             <th>Solved Feedback</th>
@@ -87,6 +88,7 @@ const ViewAllIssue = () => {
                                     <td className='border border-slate-300'>{issue.siteId}</td>
                                     <td className='border border-slate-300'>{issue.date}</td>
                                     <td className='border border-slate-300'>{issue.status}</td>
+                                    <td className='border border-slate-300'>{issue.category}</td>
                                     <td className='whitespace-pre-line border border-slate-300 '>{issue.issueDetail}</td>
                                     <td className='border border-slate-300'>{issue.updateBy}</td>
                                     <td className='border border-slate-300'>{issue.finalFeedback}</td>

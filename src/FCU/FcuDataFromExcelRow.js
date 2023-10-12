@@ -7,12 +7,12 @@ const FcuDataFromExcelRow = ({data,index}) => {
         siteType,
         coolingSystem,
         installationDate,
-      latestFilterChangeDate,
+      latestServiceDate,
       fcuBrand,
       nextPlanDate,
-      preFilterChangeDate,
-      fcuFilterStatus,
-      fcuCtrl,
+      preServiceDate,
+      serviceType,
+      fcuStatus,
       updaterName,
       remark,
     } = data;
@@ -25,11 +25,11 @@ const FcuDataFromExcelRow = ({data,index}) => {
         <td>{coolingSystem}</td>
         <td className=" ">{fcuBrand} </td>
         <td>{installationDate}</td>
-        <td className=" ">{preFilterChangeDate}</td>
-        <td className=" ">{latestFilterChangeDate}</td>
+        <td>{serviceType}</td>
+        <td className=" ">{preServiceDate}</td>
+        <td className=" ">{latestServiceDate}</td>
         <td className="text-[#e41fe4f6] font-bold">{nextPlanDate}</td>
-        <td className=" ">{fcuFilterStatus}</td>
-        <td className=" ">{fcuCtrl}</td>
+               <td className=" ">{fcuStatus}</td>
         <td className=" ">{updaterName}</td>
         <td>{remark}</td>
       </tr>

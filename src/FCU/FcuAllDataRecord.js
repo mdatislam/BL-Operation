@@ -7,7 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Loading from "./../Pages/SharedPage/Loading";
 import FcuAllDataRecordRow from "./FcuAllDataRecordRow";
 import { CSVLink } from "react-csv";
-import { ArrowDownTrayIcon} from '@heroicons/react/24/solid'
+import { ArrowDownTrayIcon, BackwardIcon} from '@heroicons/react/24/solid'
 
 const FcuAllDataRecord = () => {
   const [user] = useAuthState(auth);
@@ -40,7 +40,7 @@ const FcuAllDataRecord = () => {
           to="/FcuMaintenance"
           className="flex btn btn-outline btn-primary btn-sm"
         >
-          <ArrowDownTrayIcon  className="h-6 w-6 text-blue-500" />
+          <BackwardIcon  className="h-6 w-6 text-blue-500" />
           
         </Link>
 

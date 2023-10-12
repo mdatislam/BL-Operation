@@ -116,6 +116,8 @@ const AddIssues = () => {
                                     <option value="BTS"> BTS</option>
                                     <option value="DG"> DG</option>
                                     <option value="MW"> MW</option>
+                                    <option value="PG"> PG</option>
+                                    <option value="FCU"> FCU</option>
                                     <option value="Power"> Power</option>
                                 </select>
                                 <label className="label"></label>
