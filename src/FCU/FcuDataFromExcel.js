@@ -1,14 +1,12 @@
 import React from "react";
 import FcuDataFromExcelRow from "./FcuDataFromExcelRow";
-import { Link } from "react-router-dom";
-import { signOut } from "firebase/auth";
 import auth from "./../firebase.init";
 import * as XLSX from "xlsx";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
+import {  format } from "date-fns";
+import Swal from "sweetalert2";
 
 const FcuDataFromExcel = () => {
   // const [admin]=useAdmin()
@@ -22,7 +20,7 @@ const FcuDataFromExcel = () => {
   const [excelData, setExcelData] = useState(null);
   // it will contain array of objects
   // console.log(excelData);
-  const navigate = useNavigate();
+
   // handle File
   const fileType = ["application/vnd.ms-excel"];
   const handleFile = (e) => {
@@ -58,52 +56,38 @@ const FcuDataFromExcel = () => {
       setExcelData(null);
     }
   };
+  //console.log(excelData)
+
+  const ExcelDateToJSDate = (serial) => {
+    const utcDays = Math.floor(serial - 25569);
+    const utcValue = utcDays * 86400;
+    const dateInfo = new Date(utcValue * 1000);
+    const year = dateInfo.getFullYear();
+    const month = dateInfo.getMonth() + 1;
+    const day = dateInfo.getDate();
+
+    return format(new Date(year, month - 1, day), 'dd-MMM-yy');
+  };
 
   excelData?.map((fcuInfo) => {
     const siteID = fcuInfo.siteId;
 
-    const installDate = fcuInfo.installationDate;
-    let d = new Date(Math.round((installDate - 25569) * 86400 * 1000));
-    let ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(d);
-    let mo = new Intl.DateTimeFormat("en", { month: "short" }).format(d);
-    let da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
-    let installation = `${da}-${mo}-${ye}`;
+    const installationDate = fcuInfo.installationDate;
+    const formattedInstallDate = ExcelDateToJSDate(installationDate);
+   // console.log(formattedInstallDate)
 
-    const preDate = fcuInfo.preFilterChangeDate;
-    let pre = new Date(Math.round((preDate - 25569) * 86400 * 1000));
-    let yPre = new Intl.DateTimeFormat("en", { year: "numeric" }).format(pre);
-    let moPre = new Intl.DateTimeFormat("en", { month: "short" }).format(pre);
-    let daPre = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(pre);
-    let preChangingDate = `${daPre}-${moPre}-${yPre}`;
+    const preDate = fcuInfo.preServiceDate;
+    const formattedPreDate = ExcelDateToJSDate(preDate);
+   // console.log(formattedPreDate)
+    const latestDate = fcuInfo.latestServiceDate;
+    const formattedLatestDate = ExcelDateToJSDate(latestDate);
 
-    const latestDate = fcuInfo.latestFilterChangeDate;
-    let PresentDate = new Date(Math.round((latestDate - 25569) * 86400 * 1000));
-    let yPresentDate = new Intl.DateTimeFormat("en", {
-      year: "numeric",
-    }).format(PresentDate);
-    let moPresentDate = new Intl.DateTimeFormat("en", {
-      month: "short",
-    }).format(PresentDate);
-    let daPresentDate = new Intl.DateTimeFormat("en", {
-      day: "2-digit",
-    }).format(PresentDate);
-    let PresentChangingDate = `${moPresentDate}-${daPresentDate}-${yPresentDate}`;
+    //console.log(formattedLatestDate)
+    const planDate = fcuInfo.nextPlanDate;
+    const formattedNextServiceDate = ExcelDateToJSDate(planDate);
 
-    let nextFilterChangeDateMsec = Date.parse(PresentChangingDate);
-    //console.log(FilterChangeDateMsec);
-    let NextDate = nextFilterChangeDateMsec + 120 * 3600 * 1000 * 24;
-    /*     let NextChangingDate = new Date(NextDate).toDateString(); */
+    //console.log(formattedNextServiceDate)
 
-    let yNextDate = new Intl.DateTimeFormat("en", {
-      year: "numeric",
-    }).format(NextDate);
-    let moNextDate = new Intl.DateTimeFormat("en", {
-      month: "short",
-    }).format(NextDate);
-    let daNextDate = new Intl.DateTimeFormat("en", {
-      day: "2-digit",
-    }).format(NextDate);
-    let NextChangingDate = `${daNextDate}-${moNextDate}-${yNextDate}`;
 
     const fcuData = {
       siteId: fcuInfo.siteId,
@@ -111,42 +95,30 @@ const FcuDataFromExcel = () => {
       siteType: fcuInfo.siteType,
       coolingSystem: fcuInfo.coolingSystem,
       fcuBrand: fcuInfo.fcuBrand,
-      installationDate: installation,
-      preFilterChangeDate: preChangingDate,
-      latestFilterChangeDate: PresentChangingDate,
-      nextPlanDate: NextChangingDate,
+      installationDate: formattedInstallDate,
+      preServiceDate: formattedPreDate,
+      latestServiceDate: formattedLatestDate,
+      nextPlanDate: formattedNextServiceDate,
+      serviceType:fcuInfo.serviceType,
+      fcuStatus:fcuInfo.fcuStatus
     };
-    fetch(
-      `http://localhost:5000/fcuFilterChangeLatestRecord/${siteID}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(fcuData),
-      }
-    ).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        // toast.error("Unauthorize access");
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    });
-    /* .then((fcuData) => {
-        //console.log(fcuData);
-        if (fcuData.upsertedId || fcuData.modifiedCount) {
-          toast.success("Data Successfully Update");
-        }
-      }); */
-/* axiosSecure.put(`/fcuFilterChangeLatestRecord/${siteID}`,fcuData)
-.then(putRes=>{
-  return putRes.data
-}) */
+
+    axiosSecure.post("/fcuFilterChangeAllRecord", fcuData)
       
-    return fcuData;
+
+    axiosSecure.put(`/fcuFilterChangeLatestRecord/${siteID}`, fcuData)
+      .then(putRes => {
+        if(putRes.data.acknowledge){
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Fcu data has been saved',
+            showConfirmButton: false,
+            timer: 2000
+        })
+        }
+      })
+    return fcuData
   });
 
   return (
@@ -189,8 +161,8 @@ const FcuDataFromExcel = () => {
                   <div>Date</div>
                 </th>
                 <th>
-                  <div>latest </div>
-                  <div>Action</div>
+                  <div>service </div>
+                  <div>Type</div>
                 </th>
                 <th>fcuStatus</th>
               </tr>
@@ -267,8 +239,8 @@ const FcuDataFromExcel = () => {
                       <div>Date</div>
                     </th>
                     <th>
-                      <div>Latest </div>
-                      <div>Action</div>
+                      <div>Service</div>
+                      <div>Type</div>
                     </th>
                     <th>
                       <div>FCU</div>

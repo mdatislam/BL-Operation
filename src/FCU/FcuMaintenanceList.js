@@ -1,46 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { CSVLink } from "react-csv";
-import { signOut } from "firebase/auth";
 import auth from "./../firebase.init";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useAdmin from "./../Pages/Hook/useAdmin";
-import Loading from "./../Pages/SharedPage/Loading";
 import FcuMaintenanceListRow from "./FcuMaintenanceListRow";
 import { ArrowDownTrayIcon, ChevronDoubleLeftIcon } from '@heroicons/react/24/solid'
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
+import FcuFilterDel from "./FcuFilterDel";
+
 
 const FcuMaintenanceList = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
-  const navigate = useNavigate();
-  const { data: fcuFilter, isLoading } = useQuery(
-    ["fcuFilterChangeRecord"],
-    () =>
-      fetch(" http://localhost:5000/fcuFilterChangeLatestRecord", {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }).then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          //  toast.error("Unauthorize Access")
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-  );
+  const [axiosSecure]=useAxiosSecure()
+  const [del,setDel]=useState("")
+ 
+  const { data: fcuFilterRecord=[],refetch} = useQuery({
+    queryKey:["fcuFilterRecord"],
+    queryFn:async()=>{
+      const res= await axiosSecure.get("/fcuFilterChangeLatestRecord")
+      return res.data
+    }
+  })
 
-  if (isLoading) {
-    return <Loading />;
-  }
-  //console.log(fcuFilter);
-  // console.log(dgServiceInfo);
+  //console.log(del)
+    
   return (
-    <div className="bg-teal-300 h-100 px-2">
-      <div className="lg:w-3/4 mx-auto ">
+    <div className="bg-teal-300 h-100 px-8">
+      <div className=" mx-auto ">
         <div className=" flex flex-col md:flex-row justify-between px-2 gap-y-2 mb-2 rounded-lg border-2 py-4">
           <Link to="/Home" className="flex btn btn-outline btn-primary btn-sm">
             <ChevronDoubleLeftIcon className="h-6 w-6 text-blue-500" />
@@ -77,8 +66,8 @@ const FcuMaintenanceList = () => {
           {admin && (
             <div>
               <CSVLink
-                data={fcuFilter}
-                filename="fcuFilerChangeRecord"
+                data={fcuFilterRecord}
+                filename="fcuServiceRecord"
                 className="flex btn btn-outline btn-primary btn-sm"
               >
                 <ArrowDownTrayIcon className="h-6 w-6 text-blue-500" />
@@ -93,10 +82,11 @@ const FcuMaintenanceList = () => {
         </h2>
 
         <div className="overflow-x-auto  mt-4">
-          <table className=" table w-full border-spacing-2  border border-3 border-slate-600 ">
+          <table className=" table table-auto w-full  border border-3 border-slate-600 ">
             <thead className="border-2 border-[#FFCB24]">
               <tr className="divide-x divide-blue-400 text-center">
-                <th className="w-12">SN</th>
+                <th className="">SN</th>
+              {admin &&  <th>Action</th> }
                 <th>Site ID</th>
                 <th>
                   <div>FCU </div>
@@ -129,18 +119,25 @@ const FcuMaintenanceList = () => {
                   <div>By</div>
                 </th>
                 <th>Remarks</th>
+                        
               </tr>
             </thead>
             <tbody>
-              {fcuFilter?.map((fcuInfo, index) => (
+              {fcuFilterRecord?.map((fcuInfo, index) => (
                 <FcuMaintenanceListRow
                   key={fcuInfo._id}
                   fcuInfo={fcuInfo}
                   index={index}
+                  setDel={setDel}
+                  admin={admin}
                 />
               ))}
             </tbody>
           </table>
+          { del && <FcuFilterDel id={del} setDel={setDel} refetch={refetch}
+          
+          />
+          }
         </div>
       </div>
     </div>

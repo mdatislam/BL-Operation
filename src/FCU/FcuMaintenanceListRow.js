@@ -1,7 +1,8 @@
+import { TrashIcon } from "@heroicons/react/24/solid";
 import React from "react";
 
-const FcuMaintenanceListRow = ({ fcuInfo, index }) => {
-  const {
+const FcuMaintenanceListRow = ({ fcuInfo, index, setDel, admin }) => {
+  const { _id,
     siteId,
     latestServiceDate,
     fcuBrand,
@@ -14,7 +15,12 @@ const FcuMaintenanceListRow = ({ fcuInfo, index }) => {
   } = fcuInfo;
   return (
     <tr className="border-2 border-[#F0D786]  hover divide-x divide-gray-300 text-center">
-      <td className="w-12">{index + 1}</td>
+      <td className="">{index + 1}</td>
+     {admin && <td className=" ">
+        <label htmlFor="Del" className="btn btn-link" onClick={() => setDel(_id)}>
+          <TrashIcon className="h-6 w-6 text-red-500" />
+        </label>
+      </td>}
       <td>{siteId}</td>
       <td className=" ">{fcuBrand} </td>
       <td className=" ">{serviceType} </td>

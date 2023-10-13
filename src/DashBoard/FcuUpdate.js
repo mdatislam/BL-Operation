@@ -38,10 +38,10 @@ const FcuUpdate = () => {
         const serviceDate = new Date(data.date2)
         const formattedServiceDate = format(serviceDate, "dd-MM-yyyy")
         const nextServiceDate = addDays(serviceDate, 120)
-        const formattedNextServiceDate = format(nextServiceDate, 'dd-MMMM-yyyy');
+        const formattedNextServiceDate = format(nextServiceDate, 'dd-MMM-yy');
 
         const presentServiceDate = FcuRecord?.find(fcu => fcu.siteId === search)
-        console.log(presentServiceDate)
+        //console.log(presentServiceDate)
 
         const serviceInfo = {
             siteId: search,
@@ -55,7 +55,7 @@ const FcuUpdate = () => {
             onCallerName: data.onCallerName,
             remark: data.remark,
         }
-        console.log(serviceInfo)
+       // console.log(serviceInfo)
 
         axiosSecure.post("/fcuFilterChangeAllRecord", serviceInfo)
             .then(postRes => {

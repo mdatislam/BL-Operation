@@ -1,38 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { signOut } from "firebase/auth";
-import auth from "./../firebase.init";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuthState } from "react-firebase-hooks/auth";
-import Loading from "./../Pages/SharedPage/Loading";
+import { Link, } from "react-router-dom";
 import FcuAllDataRecordRow from "./FcuAllDataRecordRow";
 import { CSVLink } from "react-csv";
 import { ArrowDownTrayIcon, BackwardIcon} from '@heroicons/react/24/solid'
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 
 const FcuAllDataRecord = () => {
-  const [user] = useAuthState(auth);
-  const navigate = useNavigate();
+ 
+  const [axiosSecure]=useAxiosSecure()
 
-  const { data: fcuAllData, isLoading } = useQuery(["fcuAllData"], () =>
-    fetch(" http://localhost:5000/fcuFilterChangeAllRecord", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  const { data: fcuServiceAllRecord=[]} = useQuery({
+    queryKey:["fcuServiceAllRecord"],
+    queryFn:async()=>{
+      const res= await axiosSecure.get("/fcuFilterChangeAllRecord")
+      return res.data
+    }
+  })
+
+  
   return (
     <div className="px-2">
       <div className=" flex flex-col md:flex-row justify-between px-2 gap-y-2 mb-2 rounded-lg border-2 py-4 mt-2">
@@ -48,7 +35,7 @@ const FcuAllDataRecord = () => {
 
         <div>
           <CSVLink
-            data={fcuAllData}
+            data={fcuServiceAllRecord}
             filename="fcuFilterChangeAllRecord"
             className="flex btn btn-outline btn-primary btn-sm"
           >
@@ -58,7 +45,7 @@ const FcuAllDataRecord = () => {
         </div>
       </div>
       <h2 className="flex rounded-lg  text-white bg-[#746bd8] mb-4 mt-4 h-12 justify-center items-center text-2xl">
-        FCU Filter Changing All Records
+        FCU Service All Records
       </h2>
       <div className="overflow-x-auto  mt-4">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
@@ -78,24 +65,24 @@ const FcuAllDataRecord = () => {
                 <div>Date</div>
               </th>
               <th>
-                <div>Pre Filter</div>
-                <div>Change Date</div>
+                <div>Pre Service</div>
+                <div> Date</div>
               </th>
               <th>
-                <div>Latest Filter</div>
-                <div>Change Date</div>
+                <div>Latest Service</div>
+                <div> Date</div>
               </th>
               <th>
                 <div>Next Plan</div>
                 <div>Date</div>
               </th>
               <th>
-                <div>Latest </div>
-                <div>Action</div>
+                <div>Service </div>
+                <div>Type</div>
               </th>
               <th>
-                <div>Setting</div>
-                <div>Check?</div>
+                <div>Fcu</div>
+                <div>Status</div>
               </th>
               <th>
                 <div>Updated</div>
@@ -105,7 +92,7 @@ const FcuAllDataRecord = () => {
             </tr>
           </thead>
           <tbody>
-            {fcuAllData?.map((data, index) => (
+            {fcuServiceAllRecord?.map((data, index) => (
               <FcuAllDataRecordRow key={index} data={data} index={index} />
             ))}
           </tbody>

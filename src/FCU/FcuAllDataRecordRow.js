@@ -7,12 +7,12 @@ const FcuAllDataRecordRow = ({data,index}) => {
      siteType,
      coolingSystem,
      installationDate,
-     latestFilterChangeDate,
+     latestServiceDate,
      fcuBrand,
      nextPlanDate,
-     preFilterChangeDate,
-     fcuFilterStatus,
-     fcuCtrl,
+     preServiceDate,
+     fcuStatus,
+     serviceType,
      updaterName,
      remark,
    } = data;
@@ -25,11 +25,11 @@ const FcuAllDataRecordRow = ({data,index}) => {
        <td>{coolingSystem}</td>
        <td className=" ">{fcuBrand} </td>
        <td>{installationDate}</td>
-       <td className=" ">{preFilterChangeDate}</td>
-       <td className=" ">{latestFilterChangeDate}</td>
+       <td className=" ">{preServiceDate}</td>
+       <td className=" ">{latestServiceDate}</td>
        <td className="text-[#e41fe4f6] font-bold">{nextPlanDate}</td>
-       <td className=" ">{fcuFilterStatus}</td>
-       <td className=" ">{fcuCtrl}</td>
+       <td className=" ">{serviceType}</td>
+       <td className=" ">{fcuStatus}</td>
        <td className=" ">{updaterName}</td>
        <td className='whitespace-pre-line border border-slate-300 '>{remark}</td>
      </tr>
