@@ -78,10 +78,24 @@ const Navbar2 = () => {
 
   return (
     <div className=" navbar  sticky top-0  z-20 bg-[#ffcb24]  text-lg lg:px-4">
-      <div className="navbar-end ">
+      <div className="navbar-end  ">
         {/* <div className=" flex-1 px-2 mx-2 font-bold text-2xl text-white">
           <h3 className="md:hidden"> Rangpur O&amp;M</h3>
         </div> */}
+        
+
+        <ul className="menu  menu-horizontal ms-2">
+        <li>
+            <NavLink className=" btn btn-ghost rounded-lg" to="/OnCall">
+              Oncall
+            </NavLink>
+          </li>
+          <li>
+            <NavLink className=" btn btn-ghost rounded-lg" to="/Home">
+              Home
+            </NavLink>
+          </li>
+                  </ul>
         {pathname.includes("Dashboard") && (
           <label
             htmlFor="dashboard-drawer"
@@ -91,19 +105,6 @@ const Navbar2 = () => {
 
           </label>
         )}
-
-        <ul className="menu  menu-horizontal ">
-          <li>
-            <NavLink className=" btn btn-ghost rounded-lg" to="/Home">
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink className=" btn btn-ghost rounded-lg" to="/OnCall">
-              Oncall
-            </NavLink>
-          </li>
-        </ul>
       </div>
       {/* For large screen */}
       <div className="navbar-start w-full hidden lg:flex justify-around">
@@ -115,13 +116,7 @@ const Navbar2 = () => {
 
       <div className="navbar-end">
         <ul className="menu px-2 menu-horizontal  ">
-          {pathname.includes("OnCall") &&
-            <li>
-              <label htmlFor="my-drawer" className="mt-5 drawer-button lg:hidden btn btn-accent rounded-lg">
-                <HomeModernIcon className="  w-8 h-8 text-pink-400 " />
-              </label>
-            </li>}
-          <li>
+          
             {!user ? (
               <NavLink className=" btn btn-ghost rounded-lg" to="/Login">
                 Login
@@ -144,13 +139,20 @@ const Navbar2 = () => {
               </div>
 
             )}
+            {pathname.includes("OnCall") &&
+            <li>
+              <label htmlFor="my-drawer" className="mt-5 drawer-button lg:hidden btn btn-link">
+                <HomeModernIcon className="  w-8 h-8 text-blue-500 " />
+              </label>
+            </li>}
+          <li>
           </li>
         </ul>
       </div>
       {/*  <ProfilePic/> */}
       {/* For mobile device */}
-      <div className="navbar-end">
-        <div className="dropdown dropdown-end px-2">
+      {/* <div className="navbar-end">
+        <div className="dropdown dropdown-end ms-2">
           <label tabIndex={0} className="btn btn-ghost  lg:hidden">
             <Bars3Icon className="h-6 w-6 text-red-500" />
           </label>
@@ -160,7 +162,7 @@ const Navbar2 = () => {
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-200 rounded-box w-56"
           >
             {menuItem}
-            <div className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box">
+            <div className="collapse collapse-arrow border border-base-300 bg-blue-300 rounded-box">
               <input type="checkbox" className="peer" />
               <div className="collapse-title">
                 DG Part
@@ -185,7 +187,7 @@ const Navbar2 = () => {
             </div>
           </ul>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

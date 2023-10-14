@@ -35,7 +35,7 @@ const AddIssues = () => {
             category: data.category,
             date: data.date,
             issueDetail: data.detail,
-            status:"pending",
+            status: "pending",
             onCallerName: data.onCallerName,
             updateBy: user.displayName
 
@@ -59,7 +59,7 @@ const AddIssues = () => {
     }
     return (
         <div className='py-4'>
-            <div className="card w-1/2 mx-auto bg-base-100 shadow-xl">
+            <div className="card lg:w-1/2 mx-auto bg-base-100 shadow-xl">
                 <div className='card-body'>
                     <h2 className='card-title text-fuchsia-400'>Issue Input Form</h2>
                     <div className="divider"></div>
@@ -73,7 +73,8 @@ const AddIssues = () => {
                                     onChange={handleSiteSearch}
                                     value={search}
                                     required
-                                    placeholder="Type only site number" className="input input-bordered w-full max-w-xs"
+                                    placeholder="Type only site number"
+                                     className="input input-bordered w-full max-w-xs"
 
                                 />
                                 {/*  For site list auto suggestion */}
@@ -107,7 +108,7 @@ const AddIssues = () => {
                                     <span className="label-text">Category*</span>
                                 </label>
                                 <select type="text" placeholder="Type here"
-                                required
+                                    required
                                     className="input input-bordered w-full max-w-xs"
                                     {...register("category")}
 
