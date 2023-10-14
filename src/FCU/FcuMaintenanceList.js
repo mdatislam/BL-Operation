@@ -13,12 +13,13 @@ import FcuFilterDel from "./FcuFilterDel";
 
 const FcuMaintenanceList = () => {
   const [user] = useAuthState(auth);
-  const [admin] = useAdmin(user);
+  const [admin,adminLoading] = useAdmin(user);
   const [axiosSecure]=useAxiosSecure()
   const [del,setDel]=useState("")
  
   const { data: fcuFilterRecord=[],refetch} = useQuery({
     queryKey:["fcuFilterRecord"],
+    enabled: !adminLoading,
     queryFn:async()=>{
       const res= await axiosSecure.get("/fcuFilterChangeLatestRecord")
       return res.data

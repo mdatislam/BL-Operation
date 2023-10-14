@@ -69,9 +69,9 @@ const DashBoard = () => {
           </li>
 
           <li>
-            <Link to="/Dashboard/FcuFilterChange" onClick={handleSidebar}>
+            <Link to="/Dashboard/FcuServiceUpdate" onClick={handleSidebar}>
               {subMenu}
-              FCU Filter Update
+              FCU Service Update
             </Link>
           </li>
 

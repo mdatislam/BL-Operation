@@ -15,7 +15,7 @@ const DashboardOncall = () => {
                 <ul className="menu p-4  overflow-y-auto w-70  bg-[#3f3f6d] text-[#ffba24]">
                     {/* Sidebar content here */}
                     <li>
-                        <NavLink to="/OnCall"> OnCall Issue</NavLink >
+                        <NavLink to="/OnCall"> OnCall Dashboard</NavLink >
                     </li>
                     <li>
                         <NavLink to="/OnCall/siteAllIssues">Record All Issue</NavLink >

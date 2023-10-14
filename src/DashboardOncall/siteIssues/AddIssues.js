@@ -18,18 +18,8 @@ const AddIssues = () => {
 
     const { register, reset, handleSubmit } = useForm()
 
-
-    /*  For site list auto suggestion */
-    const handleSiteSearch = (e) => {
-        setSearch(e.target.value);
-    };
-
-    const handleSearchItem = (searchItem) => {
-        setSearch(searchItem);
-    };
-
     const onSubmit = (data) => {
-        console.log(data)
+        //console.log(data)
         const issueInfo = {
             siteId: search,
             category: data.category,
@@ -47,16 +37,26 @@ const AddIssues = () => {
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
-                        title: 'Your work has been saved',
+                        title: 'Issue has been saved',
                         showConfirmButton: false,
                         timer: 2000
                     })
+                    reset()
+                    setSearch("")
+                    navigate("/onCall")
                 }
             })
-        reset()
-        setSearch("")
-        navigate("/onCall")
+
     }
+
+    /*  For site list auto suggestion */
+    const handleSiteSearch = (e) => {
+        setSearch(e.target.value);
+    };
+
+    const handleSearchItem = (searchItem) => {
+        setSearch(searchItem);
+    };
     return (
         <div className='py-4'>
             <div className="card lg:w-1/2 mx-auto bg-base-100 shadow-xl">
@@ -74,7 +74,7 @@ const AddIssues = () => {
                                     value={search}
                                     required
                                     placeholder="Type only site number"
-                                     className="input input-bordered w-full max-w-xs"
+                                    className="input input-bordered w-full max-w-xs"
 
                                 />
                                 {/*  For site list auto suggestion */}
