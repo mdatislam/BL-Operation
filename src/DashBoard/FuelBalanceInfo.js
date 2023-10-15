@@ -5,14 +5,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import Loading from '../Pages/SharedPage/Loading';
 import FuelBalanceRow from './FuelBalanceRow';
 
-import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, LabelList, ComposedChart,} from 'recharts';
+import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, LabelList, ComposedChart, BarChart } from 'recharts';
 import useAxiosSecure from '../Pages/Hook/useAxiosSecure';
 
 
 
 const FuelBalanceInfo = () => {
   const [axiosSecure] = useAxiosSecure()
-  
+
   const { isLoading2, data: receiveFuelOnCall = [] } = useQuery({
     queryKey: ['receiveFuelOnCall'],
     queryFn: async () => {
@@ -20,9 +20,9 @@ const FuelBalanceInfo = () => {
       return res.data
     }
   })
- // console.log(receiveFuelOnCall)
+  // console.log(receiveFuelOnCall)
   const totalFuelOnCall = receiveFuelOnCall?.reduce((pre, item) => pre + item.receiveOnCall, 0)
-   const { isLoading, data: balanceInfo } = useQuery({
+  const { isLoading, data: balanceInfo } = useQuery({
     queryKey: ['balanceInfo'],
     queryFn: async () => {
       const res = await axiosSecure.get("/fuelBalance")
@@ -36,18 +36,18 @@ const FuelBalanceInfo = () => {
 
   const totalFuel = balanceInfo?.reduce((pre, item) => pre + item.fuelQuantity, 0)
   //console.log(balanceInfo)
-  
-// Combine the two arrays using the spread operator and map
 
-const combinedArray = balanceInfo?.map((item) => {
-  const matchingBalance =  receiveFuelOnCall.find((balanceItem) => balanceItem.name === item.name);
-  return {
-    ...item,
-    receiveOnCall: matchingBalance ? matchingBalance.receiveOnCall : 0, // Set a default value if no match found
-  };
-});
+  // Combine the two arrays using the spread operator and map
 
-//console.log(combinedArray);
+  const combinedArray = balanceInfo?.map((item) => {
+    const matchingBalance = receiveFuelOnCall.find((balanceItem) => balanceItem.name === item.name);
+    return {
+      ...item,
+      receiveOnCall: matchingBalance ? matchingBalance.receiveOnCall : 0, // Set a default value if no match found
+    };
+  });
+
+  //console.log(combinedArray);
 
   return (
     <div>
@@ -95,7 +95,7 @@ const combinedArray = balanceInfo?.map((item) => {
               <FuelBalanceRow key={u._id} index={index} u={u}></FuelBalanceRow>
             ))}
 
-            
+
           </tbody>
           <tfoot>
             <tr className="border-collapse border-2 border-[#F0D786] text-center">
@@ -114,37 +114,40 @@ const combinedArray = balanceInfo?.map((item) => {
           </tfoot>
         </table>
       </div>
-      {/* vertical bar chart */}
+      {/* StackedBar Chart start */}
       <div className='border-4 w-full my-12 py-2 '>
-        <ComposedChart
-          layout="vertical"
-          width={650}
-          height={550}
+        <BarChart
+          width={800}
+          height={500}
           data={balanceInfo}
           margin={{
-            top: 10,
-            right: 10,
-            bottom: 10,
-            left: 60
+            top: 2,
+            right: 5,
+            left: 10,
+            bottom: 5,
           }}
         >
-          <CartesianGrid stroke="#f5f5f5" />
-          <XAxis type="number" />
-          <YAxis padding={{ top: 10, right: 20 }} dataKey="name" type="category" scale="band" />
-          <Tooltip />
-          {/* <Legend /> */}
-          <Bar dataKey="fuelConsume" barSize={30} stackId="a" fill="#FF0000">
-            {/*  <LabelList dataKey="fuelConsume" position="insideTopRight"  /> */}
-          </Bar>
-          <Bar dataKey="fuelQuantity" barSize={30} stackId="a" fill="#056608">
-            <LabelList dataKey="fuelQuantity" position="insideTopRight" />
+          {/* <CartesianGrid strokeDasharray="3 3" /> */}
+          <XAxis dataKey="name" />
+         {/*  <YAxis /> */}
+          {/* <Tooltip /> */}
+          
+          <Bar dataKey="fuelConsume" barSize={40} stackId="a" fill="#FF0000" />
+          <Bar dataKey="fuelQuantity" barSize={40} stackId="a" fill="#82ca9d">
+          <LabelList dataKey="fuelQuantity" position="insideTopRight" />
           </Bar>
 
-
-        </ComposedChart>
+        </BarChart>
       </div>
+      {/* StackedBar Chart end */}
 
+
+
+      {/* vertical bar chart */}
+
+      
     </div>
+
   );
 };
 

@@ -43,7 +43,7 @@ const AddIssues = () => {
                     })
                     reset()
                     setSearch("")
-                    navigate("/onCall")
+                    navigate("/onCall/PendingIssues")
                 }
             })
 

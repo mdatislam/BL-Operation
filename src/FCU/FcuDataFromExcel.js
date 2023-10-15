@@ -66,7 +66,7 @@ const FcuDataFromExcel = () => {
     const month = dateInfo.getMonth() + 1;
     const day = dateInfo.getDate();
 
-    return format(new Date(year, month - 1, day), 'dd-MMM-yy');
+    return format(new Date(year, month - 1, day), 'dd-MM-yyyy');
   };
 
   excelData?.map((fcuInfo) => {

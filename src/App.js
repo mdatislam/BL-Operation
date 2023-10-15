@@ -50,10 +50,12 @@ import FcuAllDataRecord from './FCU/FcuAllDataRecord';
 import Login2 from "./Pages/AuthPage/Login2";
 import DashboardOncall from "./DashboardOncall/DashboardOncall";
 import OnCallHomePage from "./DashboardOncall/OnCallHomePage";
-import FcuServiceList from "./DashboardOncall/FcuServiceList";
 import AddIssues from "./DashboardOncall/siteIssues/AddIssues";
 import ViewAllIssue from "./DashboardOncall/siteIssues/ViewAllIssue";
 import FcuUpdate from "./DashBoard/FcuUpdate";
+import FcuServicePlanSites from "./DashboardOncall/FCU Service Plan/FcuServicePlanSites";
+import OnCallPlanSite from "./DashboardOncall/DgServiceIssue/OnCallPlanSite";
+import ViewIssues from "./DashboardOncall/siteIssues/ViewIssues";
 
 
 
@@ -91,8 +93,10 @@ function App() {
           {/* on call Dashboard components start */}
           <Route path="OnCall" element={<DashboardOncall />}>
             <Route index element={<OnCallHomePage />}></Route>
-            <Route path="FcuService" element={<FcuServiceList />}></Route>
+            <Route path="FcuService" element={<FcuServicePlanSites />}/>
+            <Route path="DgService" element={<OnCallPlanSite/>}/>
             <Route path="AddIssues" element={<AddIssues />} />
+            <Route path="PendingIssues" element={<ViewIssues />} />
             <Route path="siteAllIssues" element={<ViewAllIssue />} />
 
           </Route>

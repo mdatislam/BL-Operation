@@ -33,7 +33,7 @@ const OnCallPlanSite = () => {
     //console.log(planDgServiceSite)
 
     return (
-        <div className=''>
+        <div className="card w-full px-2 md:w-3/4 md:px-6 mx-auto bg-base-100 shadow-xl mt-4 py-2">
             <div className='py-4 mb-2'>
                 <h2 className='text-xl font-semibold py-2 text-purple-500'>
                    ** Till How long day you have seen DG Service Plan?**
@@ -41,7 +41,7 @@ const OnCallPlanSite = () => {
                 <form onSubmit={handleTillDate}>
                     <div className='flex items-center justify-center'>
                         <div className="form-control w-full max-w-xs">
-                            <input type="text" placeholder="Mention only - number (like -220)"
+                            <input type="text" placeholder="Mention only number (Default have 7 days)"
                                 className="input input-bordered w-full max-w-xs"
                                 name='tillDate'
                             />

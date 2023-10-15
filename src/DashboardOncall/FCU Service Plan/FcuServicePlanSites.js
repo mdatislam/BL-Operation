@@ -31,18 +31,18 @@ const FcuServicePlanSites = () => {
             return res.data
         }
     })
-    console.log(planFcuServiceSite)
+   // console.log(planFcuServiceSite)
 
     return (
-        <div className=''>
-            <div className='py-2 mb-2'>
-                <h2 className='text-xl font-semibold py-2 text-purple-500'>
-                   ** Till How long day you have seen DG Service Plan?**
+        <div className="card w-full px-2 md:w-3/4 md:px-6 mx-auto bg-base-100 shadow-xl mt-4 py-2">
+            <div className='py-2 mb-2 px-4'>
+                <h2 className='text-md md:text-xl font-semibold py-2 text-purple-500'>
+                   ** Till How long future day you have seen FCU Service Plan?**
                 </h2>
                 <form onSubmit={handleTillDate}>
                     <div className='flex items-center justify-center'>
                         <div className="form-control w-full max-w-xs">
-                            <input type="text" placeholder="Mention only - number (like -220)"
+                            <input type="text" placeholder="Mention only number (default have 7 days)"
                                 className="input input-bordered w-full max-w-xs"
                                 name='tillDate'
                             />
@@ -78,7 +78,7 @@ const FcuServicePlanSites = () => {
                     <tbody>
                         {
                             planFcuServiceSite?.map((fcuService, index) =>
-                                <tr className='divide-y-2 divide-orange-300 text-center'>
+                                <tr className='divide-y-2 divide-orange-300 text-center' key={index}>
                                     <th className='border-b-2 border-orange-300 '>{index + 1}</th>
                                     <td>{fcuService.siteId}</td>
                                     <td>{fcuService.latestServiceDate}</td>

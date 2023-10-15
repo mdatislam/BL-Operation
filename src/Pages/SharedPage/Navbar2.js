@@ -3,7 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
 import Loading from "./Loading";
-import { BeakerIcon, Bars3Icon, ArrowRightOnRectangleIcon, Bars2Icon, HomeModernIcon } from '@heroicons/react/24/solid'
+import { BeakerIcon, Bars3Icon, ArrowRightOnRectangleIcon, Bars2Icon, HomeModernIcon, WindowIcon } from '@heroicons/react/24/solid'
 //import ProfilePic from "./ProfilePic";
 
 const Navbar2 = () => {
@@ -16,6 +16,7 @@ const Navbar2 = () => {
     navigate("/Login");
   };
   if (loading) { return <Loading /> }
+
   const menuItem = (
     <>
       <li>
@@ -82,29 +83,37 @@ const Navbar2 = () => {
         {/* <div className=" flex-1 px-2 mx-2 font-bold text-2xl text-white">
           <h3 className="md:hidden"> Rangpur O&amp;M</h3>
         </div> */}
-        
 
-        <ul className="menu  menu-horizontal ms-2">
-        <li>
+
+        <ul className="menu  menu-horizontal ms-6 ps-2">
+          <li>
             <NavLink className=" btn btn-ghost rounded-lg" to="/OnCall">
               Oncall
             </NavLink>
           </li>
+          {pathname.includes("OnCall") &&
+            <li>
+              <label htmlFor="my-drawer"
+                className="drawer-button  lg:hidden btn btn-link rounded-lg p-2">
+                <WindowIcon className="  w-8 h-8 text-blue-500 " />
+              </label>
+            </li>}
           <li>
             <NavLink className=" btn btn-ghost rounded-lg" to="/Home">
               Home
             </NavLink>
           </li>
-                  </ul>
-        {pathname.includes("Dashboard") && (
-          <label
-            htmlFor="dashboard-drawer"
-            className="drawer-button  lg:hidden btn-info rounded-lg p-2 "
-          >
-            <Bars3Icon className="h-6 w-6 text-red-500" />
+          {pathname.includes("Dashboard") && (
+            <label
+              htmlFor="dashboard-drawer"
+              className="drawer-button  lg:hidden btn-info rounded-lg p-2 "
+            >
+              <Bars3Icon className="h-6 w-6 text-red-500" />
 
-          </label>
-        )}
+            </label>
+          )}
+        </ul>
+
       </div>
       {/* For large screen */}
       <div className="navbar-start w-full hidden lg:flex justify-around">
@@ -115,37 +124,30 @@ const Navbar2 = () => {
       </div>
 
       <div className="navbar-end">
-        <ul className="menu px-2 menu-horizontal  ">
-          
+        <ul className="menu  menu-horizontal  ">
+          <li>
             {!user ? (
               <NavLink className=" btn btn-ghost rounded-lg" to="/Login">
                 Login
               </NavLink>
             ) : (
-              <div className="rounded-lg" onClick={logout}>
-                <div className="avatar">
-                  {user.photoURL ? <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                    <img src={user.photoURL} alt="pho" />
-                  </div>
-                    :
-                    <h2 className="text-pink-400 font-bold">{user.displayName}</h2>
-                  }
-                </div>
-                <button className=" rounded-lg">
-                  <ArrowRightOnRectangleIcon className="h-6 w-6 text-blue-500" />
-                </button>
-
-
-              </div>
+              <button className="btn btn-link rounded-lg"
+              onClick={logout}
+              >
+                <ArrowRightOnRectangleIcon className="h-6 w-6 text-blue-500" />
+              </button>
 
             )}
-            {pathname.includes("OnCall") &&
-            <li>
-              <label htmlFor="my-drawer" className="mt-5 drawer-button lg:hidden btn btn-link">
-                <HomeModernIcon className="  w-8 h-8 text-blue-500 " />
-              </label>
-            </li>}
+          </li>
           <li>
+            <div className="avatar">
+              {user?.photoURL ? <div className="w-16 rounded-full ring  ring-accent ring-offset-base-100 ring-offset-2">
+                <img src={user.photoURL} alt="pho" />
+              </div>
+                :
+                <h2 className="text-pink-400 ">{user?.displayName}</h2>
+              }
+            </div>
           </li>
         </ul>
       </div>
