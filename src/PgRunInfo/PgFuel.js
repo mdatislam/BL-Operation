@@ -6,17 +6,11 @@ import FuelBalanceInfo from "../DashBoard/FuelBalanceInfo";
 
 const PgFuel = () => {
   return (
-    <div className="px-2 lg:px-8 my-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-4">
+    <div className="px-2 lg:px-8 my-2">
+      <div className="w-full md:w-3/4 mx-auto">
         <div className="lg:card w-full bg-base-100 shadow-xl">
           <div className="lg:card-body">
-            {/*  <h2 className="card-title">Card title!</h2> */}
-            {/* <div className="grid h-12 card bg-[#6495ED] rounded-box place-items-center mb-4">
-              <h2 className=" card-title font-bold text-white">
-                Fuel Balance Summary
-              </h2>
-            </div> */}
-            <FuelBalanceInfo />
+            
           </div>
         </div>
         <div className="grid grid-cols-1 gap-y-4 ">

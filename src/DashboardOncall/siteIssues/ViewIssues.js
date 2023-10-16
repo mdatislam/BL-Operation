@@ -38,16 +38,16 @@ const ViewIssues = () => {
                                 :
                                 <div className="overflow-x-auto ">
                                     <table className="table table-xs table-pin-rows table-pin-cols
-                                     border border-slate-200 w-full ">
-                                        <caption class=" caption-top py-2 ">
-                                            <div className=' flex text-xl justify-center text-pink-700'>
-                                                <MegaphoneIcon className='w-8 h-8 ' />
-                                                <h2>Total Pending Issue = {issues?.length}</h2>
+                                     border border-slate-500 w-full ">
+                                        <caption class=" caption-top py-2 bg-zinc-600 rounded-t-lg ">
+                                            <div className=' '>
+                                                <h2 className='text-center text-xl font-bold  text-white'> Pending Issue List</h2>
+                                               
                                             </div>
                                         </caption>
 
-                                        <thead className='border border-slate-300 headers'>
-                                            <tr className='text-center divide-x divide-slate-400'>
+                                        <thead className='border border-slate-400  '>
+                                            <tr className='text-center text-pink-500 '>
                                                 <th>Action</th>
                                                 <th>Site ID</th>
                                                 <th>Date</th>
@@ -57,8 +57,8 @@ const ViewIssues = () => {
                                         <tbody>
                                             {
                                                 issues?.map((issue, index) => (
-                                                    <tr className='border border-slate-300' key={index}>
-                                                        <th className='border border-slate-300'>
+                                                    <tr className='divide-y-2 divide-x divide-slate-500 text-left' key={index}>
+                                                        <th className='border-b-2 border-slate-500'>
                                                             <label
                                                                 htmlFor="my_modal_6"
                                                                 className='btn btn-link'
@@ -68,9 +68,9 @@ const ViewIssues = () => {
 
                                                             </label>
                                                         </th>
-                                                        <td className='border border-slate-300'>{issue.siteId}</td>
-                                                        <td className='border border-slate-300'>{issue.date}</td>
-                                                        <td className='whitespace-pre-line border border-slate-300 '>{issue.issueDetail}</td>
+                                                        <td>{issue.siteId}</td>
+                                                        <td >{issue.date}</td>
+                                                        <td className='whitespace-pre-line '>{issue.issueDetail}</td>
                                                         
                                                     </tr>
                                                 ))

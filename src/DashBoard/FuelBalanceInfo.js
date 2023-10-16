@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Loading from '../Pages/SharedPage/Loading';
 import FuelBalanceRow from './FuelBalanceRow';
 
-import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, LabelList, ComposedChart, BarChart } from 'recharts';
+import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, LabelList, ComposedChart, BarChart, PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
 import useAxiosSecure from '../Pages/Hook/useAxiosSecure';
 
 
@@ -49,6 +49,26 @@ const FuelBalanceInfo = () => {
 
   //console.log(combinedArray);
 
+  /* pie chart */
+
+
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+  const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, payload }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    const angle = -midAngle;
+    return (
+
+      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'}
+        dominantBaseline="central" transform={`rotate(${angle}, ${x}, ${y})`}>
+        {`${payload.name}: ${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  }
+
   return (
     <div>
       {/* <Link
@@ -58,94 +78,90 @@ const FuelBalanceInfo = () => {
         Fuel Update_OnCall
       </Link> */}
 
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-x-2'>
+        {/* Left side start */}
+        <div className="overflow-x-auto">
+          <table className="table table-compact  border-3 border-[#ffcb24]">
+            <caption class=" caption-top py-2 bg-slate-600 rounded-t-lg ">
+              <div className=' '>
+                <h2 className='text-center text-xl font-bold  text-white'> Fuel Balance Summary</h2>
 
-      <div className="grid h-12 card bg-[#6495ED] rounded-box place-items-center mb-4">
-        <h2 className=" card-title font-bold text-white">
-          Fuel Balance Summary
-        </h2>
+              </div>
+            </caption>
+            <thead className="border-2 border-[#ffcb24]">
+              <tr className="divide-x divide-blue-400 text-center">
+
+                <th>Name</th>
+                <th>
+                  Received Fuel
+                  <p className="text-pink-400">
+                    (Oncall &nbsp;&nbsp;&nbsp; ||&nbsp;&nbsp;&nbsp; Self)
+                  </p>{" "}
+                </th>
+
+                <th>
+                  Fuel <p>Consume</p>
+                </th>
+                <th> Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              {combinedArray?.map((u, index) => (
+                <FuelBalanceRow key={u._id} index={index} u={u}></FuelBalanceRow>
+              ))}
+
+
+            </tbody>
+            <tfoot>
+              <tr className="border-collapse border-2 border-[#F0D786] text-center">
+                <th></th>
+                <th className=" font-bold text-[#008080]">
+                  Total Fuel Issued ={" "}
+                </th>
+                <th className=" text-xl font-bold">
+                  <span className="text-pink-700">{totalFuelOnCall} </span>
+                  || <span className="text-blue-600">{totalFuel}</span>
+                  <span className="stat-desc"> &nbsp;liter</span>
+                </th>
+                <th></th>
+                <th></th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        {/* Left side  End  */}
+
+        {/* Right side / Pie Chart start */}
+        <div className='border-2  border-slate-300 rounded-lg w-full'>
+          <div>
+            <div className='text-2xl font-semibold py-2 bg-slate-500 text-center rounded-t-lg'>
+              <h2 className='text-white' > % of Receive Fuel </h2>
+            </div>
+
+            <PieChart width={600} height={600}>
+              <Pie
+                data={balanceInfo}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={renderCustomizedLabel}
+                outerRadius={250}
+                fill="#8884d8"
+                dataKey="fuelQuantity"
+              >
+                {balanceInfo.map((entry, index) => (
+                  <Cell key={`cell-${index} `} fill={COLORS[index % COLORS.length]} />
+
+                ))}
+
+              </Pie>
+            </PieChart>
+          </div>
+        </div>
+
+        {/* Right side end */}
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="table table-compact w-full border-3 border-[#ffcb24]">
-          <thead className="border-2 border-[#ffcb24] bg-[#ffcb24] !important">
-            <tr className="divide-x divide-blue-400 text-center">
-              <th>
-                <label>
-                  <input type="checkbox" className="checkbox" />
-                </label>
-              </th>
-              <th>Name</th>
-              <th>
-                Received Fuel
-                <p className="text-pink-400">
-                  (Oncall &nbsp;&nbsp;&nbsp; ||&nbsp;&nbsp;&nbsp; Self)
-                </p>{" "}
-              </th>
-              {/*  <th>
-                Fuel<p>Receive</p>{" "}
-              </th> */}
-              <th>
-                Fuel <p>Consume</p>
-              </th>
-              <th> Balance</th>
-            </tr>
-          </thead>
-          <tbody>
-            {combinedArray?.map((u, index) => (
-              <FuelBalanceRow key={u._id} index={index} u={u}></FuelBalanceRow>
-            ))}
-
-
-          </tbody>
-          <tfoot>
-            <tr className="border-collapse border-2 border-[#F0D786] text-center">
-              <th></th>
-              <th className=" font-bold text-[#008080]">
-                Total Fuel Issued ={" "}
-              </th>
-              <th className=" text-xl font-bold">
-                <span className="text-pink-700">{totalFuelOnCall} </span>
-                || <span className="text-blue-600">{totalFuel}</span>
-                <span className="stat-desc"> &nbsp;liter</span>
-              </th>
-              <th></th>
-              <th></th>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-      {/* StackedBar Chart start */}
-      <div className='border-4 w-full my-12 py-2 '>
-        <BarChart
-          width={800}
-          height={500}
-          data={balanceInfo}
-          margin={{
-            top: 2,
-            right: 5,
-            left: 10,
-            bottom: 5,
-          }}
-        >
-          {/* <CartesianGrid strokeDasharray="3 3" /> */}
-          <XAxis dataKey="name" />
-         {/*  <YAxis /> */}
-          {/* <Tooltip /> */}
-          
-          <Bar dataKey="fuelConsume" barSize={40} stackId="a" fill="#FF0000" />
-          <Bar dataKey="fuelQuantity" barSize={40} stackId="a" fill="#82ca9d">
-          <LabelList dataKey="fuelQuantity" position="insideTopRight" />
-          </Bar>
-
-        </BarChart>
-      </div>
-      {/* StackedBar Chart end */}
-
-
-
-      {/* vertical bar chart */}
-
-      
     </div>
 
   );

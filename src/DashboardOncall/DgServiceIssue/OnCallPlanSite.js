@@ -63,7 +63,7 @@ const OnCallPlanSite = () => {
                         </div>
                     </caption>
                     <thead>
-                        <tr className=' text-center text-xl font-bold border-2 border-green-500 divide-x-2 divide-green-700'>
+                        <tr className=' text-center text-xl font-bold border-b-2 border-orange-300 divide-x-2 divide-green-700'>
                             <th>
                                 <label>
                                     <input type="checkbox" className="checkbox" />
@@ -78,7 +78,7 @@ const OnCallPlanSite = () => {
                         {
                             planDgServiceSite?.map((dgService, index) =>
                                 <tr className='divide-y-2 divide-orange-300 text-center'>
-                                    <th className='border-b-2 border-orange-300 '>{index + 1}</th>
+                                    <td className='border-b-2 border-orange-300 '>{index + 1}</td>
                                     <td>{dgService.siteId}</td>
                                     <td>{dgService.date}</td>
                                     <td>{dgService.nextPlanDate}</td>

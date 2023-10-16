@@ -124,7 +124,7 @@ const Navbar2 = () => {
       </div>
 
       <div className="navbar-end">
-        <ul className="menu  menu-horizontal  ">
+        <ul className="menu  menu-horizontal flex items-center px-2 ">
           <li>
             {!user ? (
               <NavLink className=" btn btn-ghost rounded-lg" to="/Login">
@@ -141,7 +141,7 @@ const Navbar2 = () => {
           </li>
           <li>
             <div className="avatar">
-              {user?.photoURL ? <div className="w-16 rounded-full ring  ring-accent ring-offset-base-100 ring-offset-2">
+              {user?.photoURL ? <div className="w-16 rounded">
                 <img src={user.photoURL} alt="pho" />
               </div>
                 :
