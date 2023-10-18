@@ -23,7 +23,7 @@ const DgServicingInfo = () => {
     isLoading,
     refetch,
   } = useQuery(["DgInfoList"], () =>
-    fetch(" https://backend.bloperation.com/dgServiceInfo", {
+    fetch("https://backend.bloperation.com/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

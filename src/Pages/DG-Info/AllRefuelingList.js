@@ -12,7 +12,7 @@ import { ArrowDownTrayIcon,ChevronDoubleLeftIcon} from '@heroicons/react/24/soli
 const AllRefuelingList = () => {
   const navigate = useNavigate();
   const { data: dgRefueling, isLoading } = useQuery(["DgRefueling"], () =>
-    fetch(" https://backend.bloperation.com/dgAllRefueling", {
+    fetch("https://backend.bloperation.com/dgAllRefueling", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

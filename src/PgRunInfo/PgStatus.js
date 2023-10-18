@@ -71,7 +71,7 @@ const PgStatus = () => {
 
 
   useEffect(() => {
-    fetch(" https://backend.bloperation.com/pgList", {
+    fetch("https://backend.bloperation.com/pgList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

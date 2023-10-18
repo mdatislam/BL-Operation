@@ -25,7 +25,7 @@ const DgRefuelingUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch(" https://backend.bloperation.com/dgRefuelingInfo", {
+    fetch("https://backend.bloperation.com/dgRefuelingInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

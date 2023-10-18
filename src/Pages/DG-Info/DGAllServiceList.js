@@ -24,7 +24,7 @@ const DGAllServiceList = () => {
     isLoading,
     refetch,
   } = useQuery(["DgAllInfoList"], () =>
-    fetch(" https://backend.bloperation.com/dgAllServiceInfo", {
+    fetch("https://backend.bloperation.com/dgAllServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
