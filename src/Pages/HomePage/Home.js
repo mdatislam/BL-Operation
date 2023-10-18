@@ -11,7 +11,7 @@ import Employee from './Employee';
 const Home = () => {
     return (
       <div className="h-full">
-       <ProfilePic/>
+     {/*   <ProfilePic/> */}
        {/*  <HomeBanner /> */}
         <NavbarItem />
         {/*  <Employee /> */}
