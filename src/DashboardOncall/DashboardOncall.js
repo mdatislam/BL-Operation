@@ -6,7 +6,19 @@ const DashboardOncall = () => {
         <div className="drawer drawer-mobile bg-slate-300">
             <input id="my-drawer" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content">
-                <Outlet />
+                <div className='tabs py-2'>
+                <NavLink to="/OnCall" className="tab tab-lifted tab-active text-pink-600">
+                    OnCall Dashboard
+                </NavLink>
+                <NavLink to="/OnCall/AllPgRunList" className="tab tab-lifted text-pink-600  ">All Pg Run Record</NavLink>
+                <NavLink to="/OnCall/AllFuelList" className="tab tab-lifted text-pink-600 ">All Received Fuel Record</NavLink>
+                <NavLink to="/OnCall/AllFuelListOnCall" className="tab tab-lifted text-pink-600 ">All Received Fuel Record_OnCall</NavLink>
+                </div>
+                
+                <div>
+                    <Outlet />
+                </div>
+
                 {/* Page content here */}
 
             </div>

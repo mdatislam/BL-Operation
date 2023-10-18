@@ -17,7 +17,7 @@ const FcuUpdate = () => {
     const [siteList] = useSiteList();
     const [axiosSecure] = useAxiosSecure()
     const [search, setSearch] = useState("");
-    const navigate= useNavigate()
+    const navigate = useNavigate()
     const { register, reset, handleSubmit, formState: { errors }, } = useForm()
 
     const { data: FcuRecord, refetch } = useQuery({
@@ -57,7 +57,7 @@ const FcuUpdate = () => {
             onCallerName: data.onCallerName,
             remark: data.remark,
         }
-       // console.log(serviceInfo)
+        // console.log(serviceInfo)
 
         axiosSecure.post("/fcuFilterChangeAllRecord", serviceInfo)
             .then(postRes => {
@@ -82,9 +82,10 @@ const FcuUpdate = () => {
                         showConfirmButton: false,
                         timer: 3000
                     })
+                    reset()
+                    navigate("/FcuMaintenance")
                 }
-                reset()
-                navigate("/FcuMaintenance")
+
             })
 
     }

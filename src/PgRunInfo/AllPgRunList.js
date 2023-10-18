@@ -57,18 +57,8 @@ const AllPgRunList = () => {
   };
 
   return (
-    <div className="px-2 lg:px-16 mt-12 mb-8">
-      <div className="grid grid-cols-4 lg:grid-cols-8 h-12 gap-x-3 card bg-[#6934e3] rounded-lg justify-self-start mb-8">
-        <Link to="/PgFuel" className="btn btn-secondary">
-          Go BACK
-        </Link>
-        <h2 className="text-white  lg:card-title font-bold col-start-2 col-span-2 lg:col-span-6 justify-self-center self-center">
-          All Approved <p>PG-Run List</p>
-        </h2>
-        <Link to="/Dashboard/PgRunUpdate" className="btn btn-secondary">
-          GO PG RUN UPDATE
-        </Link>
-      </div>
+    <div className=" card w-full bg-base-100 shadow-xl px-2 lg:px-16 py-4 mt-4 mb-8">
+
       {/* For filter input box */}
       <div className="flex  justify-between flex-wrap gap-4">
         <input
@@ -88,14 +78,17 @@ const AllPgRunList = () => {
               className="btn btn-outline btn-info mb-2 flex-auto"
             >
               <ArrowDownTrayIcon className="h-6 w-6 text-blue-500" />
-
-              &nbsp; Download
+              Download
             </CSVLink>
           </div>
         )}
       </div>
-      <div className="overflow-x-auto  mt-4">
+      <div className="overflow-x-auto  mt-2">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
+          <caption class=" caption-top bg-[#7e4f9ef5]  rounded-t-lg py-4">
+            <h2 className='text-center text-xl font-bold  text-white'>All Approved PG Run Record</h2>
+
+          </caption>
           <thead className="border-2 border-[#FFCB24]">
             <tr className="divide-x divide-blue-400 text-center">
               <th>SN</th>

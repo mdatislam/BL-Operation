@@ -1,11 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-//import React, { PureComponent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import Loading from '../Pages/SharedPage/Loading';
 import FuelBalanceRow from './FuelBalanceRow';
-
-import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, LabelList, ComposedChart, BarChart, PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
+import { PieChart, Pie, Cell, Legend } from 'recharts';
 import useAxiosSecure from '../Pages/Hook/useAxiosSecure';
 
 

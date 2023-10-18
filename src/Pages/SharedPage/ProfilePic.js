@@ -1,37 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
-import { signOut } from "firebase/auth";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import auth from "../../firebase.init";
-//import useUserList from "../Hook/useUserList";
 import Loading from "./Loading";
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 const ProfilePic = () => {
   const [user] = useAuthState(auth);
-  //const [userList] = useUserList();
-
-  const navigate = useNavigate();
-  const { isLoading ,data: users } = useQuery(["List", user], () =>
-    fetch(
-      `http://localhost:5000/userList/users?email=${user.email}`,
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    ).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
+ const [axiosSecure]=useAxiosSecure()
+  
+ const { isLoading, data: users = [] } = useQuery({
+  queryKey: ['users',user?.email],
+  queryFn: async () => {
+    const res = await axiosSecure.get(`/userList/users?email=${user.email}`)
+    return res.data
+  }
+})
+  
 
   if (isLoading) {
     return <Loading />;

@@ -56,6 +56,7 @@ import FcuUpdate from "./DashBoard/FcuUpdate";
 import FcuServicePlanSites from "./DashboardOncall/FCU Service Plan/FcuServicePlanSites";
 import OnCallPlanSite from "./DashboardOncall/DgServiceIssue/OnCallPlanSite";
 import ViewIssues from "./DashboardOncall/siteIssues/ViewIssues";
+import FuelBalanceInfo from "./DashBoard/FuelBalanceInfo";
 
 
 
@@ -93,8 +94,12 @@ function App() {
           {/* on call Dashboard components start */}
           <Route path="OnCall" element={<DashboardOncall />}>
             <Route index element={<OnCallHomePage />}></Route>
-            <Route path="FcuService" element={<FcuServicePlanSites />}/>
-            <Route path="DgService" element={<OnCallPlanSite/>}/>
+            <Route path="" element={<FuelBalanceInfo />}></Route>
+            <Route path="AllPgRunList" element={<AllPgRunList />} />
+            <Route path="AllFuelList" element={<AllFuelList />} />
+            <Route path="AllFuelListOncall" element={<AllFuelListOncall />} />
+            <Route path="FcuService" element={<FcuServicePlanSites />} />
+            <Route path="DgService" element={<OnCallPlanSite />} />
             <Route path="AddIssues" element={<AddIssues />} />
             <Route path="PendingIssues" element={<ViewIssues />} />
             <Route path="siteAllIssues" element={<ViewAllIssue />} />
@@ -105,9 +110,6 @@ function App() {
 
         <Route element={<RequireAuth />}>
           <Route path="/PgFuel" element={<PgFuel />} />
-          <Route path="/AllPgRunList" element={<AllPgRunList />} />
-          <Route path="/AllFuelList" element={<AllFuelList />} />
-          <Route path="/AllFuelListOncall" element={<AllFuelListOncall />} />
           <Route path="/DgMaterial" element={<DgUseMaterialList />} />
           <Route path="/DgServicing" element={<DgServicingInfo />} />
           <Route path="/DgAllServicing" element={<DGAllServiceList />} />
