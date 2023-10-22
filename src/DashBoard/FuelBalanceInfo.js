@@ -129,7 +129,7 @@ const FuelBalanceInfo = () => {
         {/* Left side  End  */}
 
         {/* Right side / Pie Chart start */}
-        <div className='border-2  border-slate-300 rounded-lg w-full'>
+        <div className='border-2 hidden lg:block border-slate-300 rounded-lg w-full'>
           <div>
             <div className='text-2xl font-semibold py-2 bg-slate-500 text-center rounded-t-lg'>
               <h2 className='text-white' > % of Receive Fuel </h2>
@@ -146,7 +146,7 @@ const FuelBalanceInfo = () => {
                 fill="#8884d8"
                 dataKey="fuelQuantity"
               >
-                {balanceInfo.map((entry, index) => (
+                {balanceInfo?.map((entry, index) => (
                   <Cell key={`cell-${index} `} fill={COLORS[index % COLORS.length]} />
 
                 ))}

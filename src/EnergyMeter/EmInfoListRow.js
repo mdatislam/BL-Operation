@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const EmInfoListRow = ({ emInfo, index }) => {
+  
   const {
     siteId,
     date,
@@ -17,6 +18,31 @@ const EmInfoListRow = ({ emInfo, index }) => {
     url,
     remark,
   } = emInfo;
+
+  //console.log(url)
+
+  const handlePicView=(imgUrl)=>{
+    console.log(url)  
+    if(imgUrl){
+      window.open(imgUrl, '_blank');
+    }
+    else{
+      Swal.fire({
+        title: `Sorry, Picture Not Found !! `,
+        width: 400,
+        padding: '2em',
+        color: '#FFCB24',
+        background: '#fff url(/images/trees.png)',
+        backdrop: `
+            rgba(0,0,123,0.4)
+          url("/images/nyan-cat.gif")
+          left top
+          no-repeat
+        `
+
+    });
+    }
+  }
   return (
     <tr className="border-2 border-[#F0D786] hover divide-x divide-gray-300 text-center">
       <td>{index + 1}</td>
@@ -33,13 +59,14 @@ const EmInfoListRow = ({ emInfo, index }) => {
       <td>
         <div className="flex items-center space-x-3">
           <div className="avatar">
-            <a
-              href={url}
+            {/* <Link
+              to="url"
               className="mask mask-squircle w-12 h-12 "
               target="_blank"
             >
               <img src={url} alt="pic of EM Reading" />
-            </a>
+            </Link> */}
+            <button className="btn btn-link" onClick={()=>handlePicView(url)}>View Pic</button>
           </div>
         </div>
       </td>

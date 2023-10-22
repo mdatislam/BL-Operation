@@ -25,12 +25,6 @@ const Navbar2 = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink className=" btn btn-ghost rounded-lg" to="/PgFuel">
-          PG-Fuel-Info
-        </NavLink>
-      </li>
-
-      <li>
         <NavLink className=" btn btn-ghost rounded-lg" to="/EmInfo">
           EM-Info
         </NavLink>
@@ -78,14 +72,9 @@ const Navbar2 = () => {
   );
 
   return (
-    <div className=" navbar  sticky top-0  z-20 bg-[#ffcb24]  text-lg lg:px-4">
-      <div className="navbar-end  ">
-        {/* <div className=" flex-1 px-2 mx-2 font-bold text-2xl text-white">
-          <h3 className="md:hidden"> Rangpur O&amp;M</h3>
-        </div> */}
-
-
-        <ul className="menu  menu-horizontal ms-6 ps-2">
+    <div className=" navbar  sticky top-0  z-20 bg-[#ffcb24]  text-lg  lg:px-4">
+      <div className="navbar-start lg:hidden">
+        <ul className="menu  menu-horizontal ms-8 lg:ps-12">
           <li>
             <NavLink className=" btn btn-ghost rounded-lg" to="/OnCall">
               Oncall
@@ -117,7 +106,33 @@ const Navbar2 = () => {
       </div>
       {/* For large screen */}
       <div className="navbar-start w-full hidden lg:flex justify-around">
-        <ul className="menu  menu-horizontal ">
+        <ul className="menu  menu-horizontal mx-12">
+          <li>
+            <NavLink className=" btn btn-ghost rounded-lg" to="/OnCall">
+              Oncall
+            </NavLink>
+          </li>
+          {pathname.includes("OnCall") &&
+            <li>
+              <label htmlFor="my-drawer"
+                className="drawer-button  lg:hidden btn btn-link rounded-lg p-2">
+                <WindowIcon className="  w-8 h-8 text-blue-500 " />
+              </label>
+            </li>}
+          <li>
+            <NavLink className=" btn btn-ghost rounded-lg" to="/Home">
+              Home
+            </NavLink>
+          </li>
+          {pathname.includes("Dashboard") && (
+            <label
+              htmlFor="dashboard-drawer"
+              className="drawer-button  lg:hidden btn-info rounded-lg p-2 "
+            >
+              <Bars3Icon className="h-6 w-6 text-red-500" />
+
+            </label>
+          )}
           {menuItem}
           {dgSubMenu}
         </ul>
@@ -132,7 +147,7 @@ const Navbar2 = () => {
               </NavLink>
             ) : (
               <button className="btn btn-link rounded-lg"
-              onClick={logout}
+                onClick={logout}
               >
                 <ArrowRightOnRectangleIcon className="h-6 w-6 text-blue-500" />
               </button>

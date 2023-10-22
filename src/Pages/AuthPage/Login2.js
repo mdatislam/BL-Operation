@@ -28,13 +28,16 @@ const Login2 = () => {
         setLoading(true); // Set loading state to true when form is submitted
 
         try {
+           
             const result = await loginUser(email, password);
             const user = result.user;
+            setLoading(true)
+            const updateToken =  localStorage.getItem('accessToken')
 
-            if (user) {
+            if (user && updateToken) {
                 navigate(from, { replace: true });
                 Swal.fire({
-                    title: `welcome-BL-Tiger `,
+                    title: `welcome-To-Rangpur,O&M `,
                     width: 400,
                     padding: '2em',
                     color: '#FFCB24',
@@ -45,7 +48,9 @@ const Login2 = () => {
                       left top
                       no-repeat
                     `
+
                 });
+                setLoading(false);
             }
         } catch (error) {
             const errorMessage = error.message;
@@ -53,6 +58,9 @@ const Login2 = () => {
                 setError("Error: Incorrect password. Please try again.");
             } else if (errorMessage.toLowerCase().includes("user")) {
                 setError("Error: Incorrect User-Id. Please try again.");
+            }
+            else if (errorMessage.toLowerCase().includes("querySrv ETIMEOUT")) {
+                setError("Error: Please Check your net connection.");
             }
         } finally {
             setLoading(false); // Ensure loading state is set to false regardless of success or failure
@@ -97,7 +105,7 @@ const Login2 = () => {
 
 
                             <div className="form-control mt-6">
-                                <input  className={loading ? "btn btn-primary loading":"btn btn-success"} type="submit" value="Login" />
+                                <input className={loading ? "btn btn-warning" : "btn btn-success"} type="submit" value="Login" />
                             </div>
                         </div>
                     </form>

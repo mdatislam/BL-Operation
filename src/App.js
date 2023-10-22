@@ -94,7 +94,7 @@ function App() {
           {/* on call Dashboard components start */}
           <Route path="OnCall" element={<DashboardOncall />}>
             <Route index element={<OnCallHomePage />}></Route>
-            <Route path="" element={<FuelBalanceInfo />}></Route>
+          {/*   <Route path="" element={<FuelBalanceInfo />}></Route> */}
             <Route path="AllPgRunList" element={<AllPgRunList />} />
             <Route path="AllFuelList" element={<AllFuelList />} />
             <Route path="AllFuelListOncall" element={<AllFuelListOncall />} />
@@ -103,6 +103,7 @@ function App() {
             <Route path="AddIssues" element={<AddIssues />} />
             <Route path="PendingIssues" element={<ViewIssues />} />
             <Route path="siteAllIssues" element={<ViewAllIssue />} />
+            <Route path="pgStatus" element={<PgStatus />} />
 
           </Route>
           {/* on call Dashboard components End */}

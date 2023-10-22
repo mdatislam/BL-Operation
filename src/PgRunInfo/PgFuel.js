@@ -10,12 +10,12 @@ const PgFuel = () => {
       <div className="w-full md:w-3/4 mx-auto">
         <div className="lg:card w-full bg-base-100 shadow-xl">
           <div className="lg:card-body">
-            
+
           </div>
         </div>
         <div className="grid grid-cols-1 gap-y-4 ">
           <div className="">
-            <div className=" text-primary-content flex flex-col lg:flex-row gap-y-4 lg:gap-x-4">
+            {/* <div className=" text-primary-content flex flex-col lg:flex-row gap-y-4 lg:gap-x-4">
               <div className="stat bg-[#6495ED] rounded-lg  ">
                 <div className="stat-value">To Show</div>
                 <div className="stat-title text-white font-bold"> All PG Run List </div>
@@ -42,15 +42,8 @@ const PgFuel = () => {
                   </Link>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="card w-full bg-base-100 shadow-xl">
-              {/* <figure className="px-10 pt-10">
-              <img
-                src={PG}
-                alt="PG Pic"
-                className="rounded-xl"
-              />
-            </figure> */}
               <PgStatus />
             </div>
           </div>

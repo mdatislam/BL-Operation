@@ -41,7 +41,7 @@ const PgStatus = () => {
       date: today,
     };
 
-    fetch(`https://backend.bloperation.com/pgList/${data.pgno}`, {
+    fetch(`http://localhost:5000/pgList/${data.pgno}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -71,7 +71,7 @@ const PgStatus = () => {
 
 
   useEffect(() => {
-    fetch("https://backend.bloperation.com/pgList", {
+    fetch("http://localhost:5000/pgList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -95,10 +95,8 @@ const PgStatus = () => {
   const faultyPg = pgList?.length - goodPg;
 
   return (
-    <div className="mt-8 px-4 mb-4">
-      <h2 className="grow  bg-[#7fed64] rounded-lg text-center h-12 py-2 align-text-bottom text-lg font-bold text-white">
-        Available PG Status.
-      </h2>
+    <div className="mt-2 mb-4 w-full px-2 md:w-3/4 mx-auto">
+
       {/*  Status Summary */}
       <div className="text-center">
         <div className="stats shadow-lg bg-base-300 mt-4 mb-2">
@@ -127,8 +125,8 @@ const PgStatus = () => {
         </button>
       </div>
       {visible && (
-        <div>
-          <div className="card w-full bg-base-300 shadow-xl mt-2">
+        <div className="w-full px-2 md:px-8">
+          <div className="card  bg-base-300 shadow-xl mt-2">
             <div className="card-body">
               <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
                 {/* PgNo input field */}
@@ -203,17 +201,22 @@ const PgStatus = () => {
           </div>
         </div>
       )}
-      <div className="overflow-x-auto  mt-4">
-        <table className=" table table-compact  border-spacing-2  border border-3 border-slate-600 ">
+      <div className="overflow-x-auto  mt-2">
+        <table className=" table  border-spacing-2  border border-3 border-slate-600 ">
+          <caption class=" caption-top py-2 bg-zinc-600 rounded-t-lg ">
+            <div className='w-full px-2 '>
+              <h2 className='text-center text-xl font-bold  text-white'> Available Pg Status</h2>
+
+            </div>
+          </caption>
           <thead className="border-2 border-[#FFCB24]">
             <tr className="divide-x divide-blue-400">
-              <th className="w-8">SN</th>
-              <th className="w-20">Action</th>
-              <th className=" w-20">PG NO</th>
-              <th className="w-24">Date</th>
+              <th className="">Action</th>
+              <th className="">PG NO</th>
+              <th className="">Date</th>
               <th className="">Condition</th>
 
-              <th className="w-48">Fault Detail</th>
+              <th className="">Fault Detail</th>
 
               <th className="">
                 <div>Updated By</div>
