@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 
 const DashboardOncall = () => {
+    const [isChecked, setIsChecked] = useState(false);
+
+    const handleSidebar = () => {
+      setIsChecked(!isChecked)
+    }
     return (
         <div className="drawer drawer-mobile bg-slate-300">
-            <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+           {! isChecked ? <input id="dashboard-drawer" type="checkbox"  className="drawer-toggle"/>:
+      <input id="dashboard-drawer" type="checkbox" checked={isChecked} className="drawer-toggle"/>}
             <div className="drawer-content">
                 <div className='tabs py-2'>
                     <NavLink to="/OnCall/AllPgRunList" className="tab tab-lifted text-pink-600  ">All Pg Run Record</NavLink>
@@ -20,26 +26,26 @@ const DashboardOncall = () => {
 
             </div>
             <div className="drawer-side">
-                <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
+            <label htmlFor="dashboard-drawer" className="drawer-overlay "></label>
                 <ul className="menu p-4  overflow-y-auto w-70  bg-[#106d3f] text-[#ffba24]">
                     {/* Sidebar content here */}
                     <li>
                         <NavLink to="/OnCall/PendingIssues">Pending Issues</NavLink >
                     </li>
                     {/* <li>
-                        <NavLink to="/OnCall">OnCall Dashboard</NavLink >
+                        <NavLink to="/OnCall" onClick={handleSidebar}>OnCall Dashboard</NavLink >
                     </li> */}
                     <li>
-                        <NavLink to="/OnCall/DgService"> Required DG Service</NavLink >
+                        <NavLink to="/OnCall/DgService" onClick={handleSidebar} > Required DG Service</NavLink >
                     </li>
                     <li>
-                        <NavLink to="/OnCall/FcuService" >Required FCU Service</NavLink >
+                        <NavLink to="/OnCall/FcuService" onClick={handleSidebar} >Required FCU Service</NavLink >
                     </li>
                     <li>
-                        <NavLink to="/OnCall/siteAllIssues">Record All Issue</NavLink >
+                        <NavLink to="/OnCall/siteAllIssues" onClick={handleSidebar}>Record All Issue</NavLink >
                     </li>
                     <li>
-                        <NavLink to="/OnCall/pgStatus">All PG Status</NavLink >
+                        <NavLink to="/OnCall/pgStatus" onClick={handleSidebar}>All PG Status</NavLink >
                     </li>
 
                 </ul>

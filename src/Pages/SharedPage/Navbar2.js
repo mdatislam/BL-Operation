@@ -82,7 +82,7 @@ const Navbar2 = () => {
           </li>
           {pathname.includes("OnCall") &&
             <li>
-              <label htmlFor="my-drawer"
+              <label htmlFor="dashboard-drawer"
                 className="drawer-button  lg:hidden btn btn-link rounded-lg p-2">
                 <WindowIcon className="  w-8 h-8 text-blue-500 " />
               </label>
@@ -154,7 +154,7 @@ const Navbar2 = () => {
 
             )}
           </li>
-          <li>
+          <li className="hidden md:block">
             <div className="avatar">
               {user?.photoURL ? <div className="w-16 rounded">
                 <img src={user.photoURL} alt="pho" />
