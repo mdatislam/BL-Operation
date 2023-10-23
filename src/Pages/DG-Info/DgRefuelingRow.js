@@ -1,4 +1,5 @@
 import React from 'react';
+import Swal from 'sweetalert2';
 
 const DgRefuelingRow = ({ refuel, index }) => {
 
@@ -16,6 +17,36 @@ const DgRefuelingRow = ({ refuel, index }) => {
        consumption,
      url
    } = refuel;
+
+   const handlePicView = (imgUrl) => {
+    console.log(url)
+    if (imgUrl) {
+      window.open(imgUrl, '_blank');
+
+      //alternative way
+
+      /* const anchor = document.createElement('a');
+      anchor.href = imageUrl;
+      anchor.download = 'image.jpg'; // Specify the desired file name
+      anchor.click(); */
+    }
+    else {
+      Swal.fire({
+        title: `Sorry, Picture Not Found !! `,
+        width: 400,
+        padding: '2em',
+        color: '#FFCB24',
+        background: '#fff url(/images/trees.png)',
+        backdrop: `
+            rgba(0,0,123,0.4)
+          url("/images/nyan-cat.gif")
+          left top
+          no-repeat
+        `
+
+      });
+    }
+  }
     
     
     return (
@@ -34,7 +65,7 @@ const DgRefuelingRow = ({ refuel, index }) => {
         <td>{updaterName} </td>
         <td>
           <div className="flex items-center space-x-3">
-            <div className="avatar">
+            {/* <div className="avatar">
               <a
                 href={url}
                 className="mask mask-squircle w-12 h-12 "
@@ -42,7 +73,8 @@ const DgRefuelingRow = ({ refuel, index }) => {
               >
                 <img src={url} alt="pic of EM Reading" />
               </a>
-            </div>
+            </div> */}
+            <button className="btn btn-link" onClick={() => handlePicView(url)}>View Pic</button>
           </div>
         </td>
 

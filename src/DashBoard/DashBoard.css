@@ -1,5 +1,5 @@
 /* CSS to hide the sidebar */
-.drawer-contentt {
+.drawer-content {
     width: 0; /* Set the width to 0 to hide the sidebar */
     overflow-x: hidden; /* Hide horizontal scrollbar */
     position: fixed;

@@ -82,7 +82,7 @@ const Navbar2 = () => {
           </li>
           {pathname.includes("OnCall") &&
             <li>
-              <label htmlFor="dashboard-drawer"
+              <label htmlFor="dashboardOnCall-drawer"
                 className="drawer-button  lg:hidden btn btn-link rounded-lg p-2">
                 <WindowIcon className="  w-8 h-8 text-blue-500 " />
               </label>

@@ -223,7 +223,7 @@ const FuelUpdate = () => {
             {/*  Fuel Quantity*/}
             <div className="form-control w-full max-w-xs">
               <input
-                type="text"
+                type="number"
                 placeholder="Fuel Quantity"
                 required
                 className="input input-bordered w-full max-w-xs"

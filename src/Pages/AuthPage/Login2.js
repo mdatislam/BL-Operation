@@ -33,9 +33,13 @@ const Login2 = () => {
             const user = result.user;
             setLoading(true)
             const updateToken =  localStorage.getItem('accessToken')
-
-            if (user && updateToken) {
+            if(user){
                 navigate(from, { replace: true });
+                setLoading(false);
+            }
+
+            if (updateToken) {
+                
                 Swal.fire({
                     title: `welcome-To-Rangpur,O&M `,
                     width: 400,
@@ -50,7 +54,7 @@ const Login2 = () => {
                     `
 
                 });
-                setLoading(false);
+                
             }
         } catch (error) {
             const errorMessage = error.message;

@@ -1,4 +1,5 @@
 import React from 'react';
+import Swal from 'sweetalert2';
 
 const DgServicingInfoRow = ({ dgInfo, index ,setIsChecked,isChecked}) => {
   
@@ -28,6 +29,36 @@ const DgServicingInfoRow = ({ dgInfo, index ,setIsChecked,isChecked}) => {
       setIsChecked(isChecked.filter((e) => e !== value));
     }
   }
+
+  const handlePicView = (imgUrl) => {
+    console.log(url)
+    if (imgUrl) {
+      window.open(imgUrl, '_blank');
+
+      //alternative way
+
+      /* const anchor = document.createElement('a');
+      anchor.href = imageUrl;
+      anchor.download = 'image.jpg'; // Specify the desired file name
+      anchor.click(); */
+    }
+    else {
+      Swal.fire({
+        title: `Sorry, Picture Not Found !! `,
+        width: 400,
+        padding: '2em',
+        color: '#FFCB24',
+        background: '#fff url(/images/trees.png)',
+        backdrop: `
+            rgba(0,0,123,0.4)
+          url("/images/nyan-cat.gif")
+          left top
+          no-repeat
+        `
+
+      });
+    }
+  }
  
     return (
       <tr className="border-2 border-[#F0D786]  hover divide-x divide-gray-300 text-center">
@@ -46,14 +77,15 @@ const DgServicingInfoRow = ({ dgInfo, index ,setIsChecked,isChecked}) => {
        
         <td>
           <div className="flex items-center space-x-3">
-            <div className="avatar">
+            {/* <div className="avatar">
               <a target="_blank" rel="noreferrer"
                 href={url}
                 className="mask mask-squircle w-12 h-12 ">
                
                 <img src={url} alt="pic of EM Reading" />
               </a>
-            </div>
+            </div> */}
+            <button className="btn btn-link" onClick={() => handlePicView(url)}>View Pic</button>
           </div>
         </td>
         <td>{updaterName} </td>

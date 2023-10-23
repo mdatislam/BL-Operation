@@ -6,9 +6,9 @@ const FuelBalanceRow = ({ u, index }) => {
   //console.log(fuelConsume)
 
   return (
-    <tr className="border-2 border-[#F0D786]  hover divide-y divide-blue-300 text-center">
+    <tr className=" border-2 border-[#F0D786]  hover divide-y divide-blue-300 text-center">
       
-      <td className="text-start border-b-2 border-blue-300">{name}</td>
+      <td className="text-start border-b-2 border-[#F0D786]">{name}</td>
       <td>
         {receiveOnCall} || {fuelQuantity}{" "}
       </td>

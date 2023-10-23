@@ -20,8 +20,17 @@ code {
 
 .drawer-side a.active {
   color: white;
+
 }
 
 .drawer-side a {
+  background-color: transparent;
+}
+
+.tab-part a.active {
+  color: purple;
+}
+
+.tab-part a {
   background-color: transparent;
 }

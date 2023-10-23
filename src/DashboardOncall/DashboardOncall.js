@@ -5,17 +5,17 @@ const DashboardOncall = () => {
     const [isChecked, setIsChecked] = useState(false);
 
     const handleSidebar = () => {
-      setIsChecked(!isChecked)
+        setIsChecked(!isChecked)
     }
     return (
         <div className="drawer drawer-mobile bg-slate-300">
-           {! isChecked ? <input id="dashboard-drawer" type="checkbox"  className="drawer-toggle"/>:
-      <input id="dashboard-drawer" type="checkbox" checked={isChecked} className="drawer-toggle"/>}
+            {!isChecked ? <input id="dashboardOnCall-drawer" type="checkbox" className="drawer-toggle" /> :
+                <input id="dashboardOnCall-drawer" type="checkbox" checked={isChecked} className="drawer-toggle" />}
             <div className="drawer-content">
-                <div className='tabs py-2'>
-                    <NavLink to="/OnCall/AllPgRunList" className="tab tab-lifted text-pink-600  ">All Pg Run Record</NavLink>
-                    <NavLink to="/OnCall/AllFuelList" className="tab tab-lifted text-pink-600 ">All Received Fuel Record</NavLink>
-                    <NavLink to="/OnCall/AllFuelListOnCall" className="tab tab-lifted text-pink-600 ">All Received Fuel Record_OnCall</NavLink>
+                <div className='tabs py-2  bg-green-600 px-2 rounded-lg tab-part'>
+                    <NavLink to="/OnCall/AllPgRunList" className="tab  text-white  ">All Pg Run Record</NavLink>
+                    <NavLink to="/OnCall/AllFuelList" className="tab  text-white ">All Received Fuel Record</NavLink>
+                    <NavLink to="/OnCall/AllFuelListOnCall" className="tab  text-white ">All Received Fuel Record_OnCall</NavLink>
                 </div>
 
                 <div>
@@ -26,7 +26,7 @@ const DashboardOncall = () => {
 
             </div>
             <div className="drawer-side">
-            <label htmlFor="dashboard-drawer" className="drawer-overlay "></label>
+                <label htmlFor="dashboardOnCall-drawer" className="drawer-overlay "></label>
                 <ul className="menu p-4  overflow-y-auto w-70  bg-[#106d3f] text-[#ffba24]">
                     {/* Sidebar content here */}
                     <li>

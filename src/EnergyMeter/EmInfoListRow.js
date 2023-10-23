@@ -2,7 +2,7 @@ import React from "react";
 import Swal from "sweetalert2";
 
 const EmInfoListRow = ({ emInfo, index }) => {
-  
+
   const {
     siteId,
     date,
@@ -21,12 +21,19 @@ const EmInfoListRow = ({ emInfo, index }) => {
 
   //console.log(url)
 
-  const handlePicView=(imgUrl)=>{
-    console.log(url)  
-    if(imgUrl){
+  const handlePicView = (imgUrl) => {
+    console.log(url)
+    if (imgUrl) {
       window.open(imgUrl, '_blank');
+
+      //alternative way
+
+      /* const anchor = document.createElement('a');
+      anchor.href = imageUrl;
+      anchor.download = 'image.jpg'; // Specify the desired file name
+      anchor.click(); */
     }
-    else{
+    else {
       Swal.fire({
         title: `Sorry, Picture Not Found !! `,
         width: 400,
@@ -40,7 +47,7 @@ const EmInfoListRow = ({ emInfo, index }) => {
           no-repeat
         `
 
-    });
+      });
     }
   }
   return (
@@ -66,7 +73,7 @@ const EmInfoListRow = ({ emInfo, index }) => {
             >
               <img src={url} alt="pic of EM Reading" />
             </Link> */}
-            <button className="btn btn-link" onClick={()=>handlePicView(url)}>View Pic</button>
+            <button className="btn btn-link" onClick={() => handlePicView(url)}>View Pic</button>
           </div>
         </div>
       </td>

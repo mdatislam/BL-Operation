@@ -92,7 +92,7 @@ const FuelBalanceInfo = () => {
                 <th>
                   Received Fuel
                   <p className="text-pink-400">
-                    (Oncall &nbsp;&nbsp;&nbsp; ||&nbsp;&nbsp;&nbsp; Self)
+                    (Oncall &nbsp; ||&nbsp; Self)
                   </p>{" "}
                 </th>
 
