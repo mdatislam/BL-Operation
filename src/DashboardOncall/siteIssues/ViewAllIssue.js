@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import useAdmin from '../../Pages/Hook/useAdmin';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
+import Loading from '../../Pages/SharedPage/Loading';
 
 const ViewAllIssue = () => {
     const [user]=useAuthState(auth)
@@ -13,12 +14,16 @@ const ViewAllIssue = () => {
     const [axiosSecure] = useAxiosSecure()
     const { data: allIssues, refetch } = useQuery({
         queryKey: ["allIssues"],
-        enabled:!adminLoading,
+        //enabled:!adminLoading,
         queryFn: async () => {
             const res = await axiosSecure.get("/siteIssues")
             return res.data
         }
     })
+
+    if(adminLoading){
+        <Loading/>
+    }
 
     //console.log(admin)
 
@@ -58,8 +63,8 @@ const ViewAllIssue = () => {
             <div className="card bg-base-100 shadow-xl overflow-x-auto ">
                 <table className="table table-xs table-pin-rows table-pin-cols
                 border-2 border-slate-200 px-2 ">
-                    <caption class=" caption-top py-5 bg-pink-300">
-                        <div className='text center font-bold text-pink-700'>
+                    <caption class=" caption-top py-5 bg-brown-400">
+                        <div className='text center font-bold text-blue-700'>
                             <h2 className='text-2xl'>All Site's Issue List </h2>
                         </div>
                     </caption>

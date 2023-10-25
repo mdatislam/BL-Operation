@@ -9,10 +9,12 @@ import FcuMaintenanceListRow from "./FcuMaintenanceListRow";
 import { ArrowDownTrayIcon, ChevronDoubleLeftIcon } from '@heroicons/react/24/solid'
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 import FcuFilterDel from "./FcuFilterDel";
+import Loading from "../Pages/SharedPage/Loading";
+import TableCaption from "../Pages/SharedPage/TableCaption";
 
 
 const FcuMaintenanceList = () => {
-  const [user] = useAuthState(auth);
+  const [user,loading] = useAuthState(auth);
   const [admin, adminLoading] = useAdmin(user);
   const [axiosSecure] = useAxiosSecure()
   const [del, setDel] = useState("")
@@ -21,12 +23,16 @@ const FcuMaintenanceList = () => {
 
   const { data: fcuFilterRecord = [], refetch } = useQuery({
     queryKey: ["fcuFilterRecord"],
-    enabled: !adminLoading,
+   // enabled: !adminLoading,
     queryFn: async () => {
       const res = await axiosSecure.get("/fcuFilterChangeLatestRecord")
       return res.data
     }
   })
+
+  if(loading || adminLoading){
+    <Loading/>
+  }
 
   //console.log(del)
 
@@ -109,12 +115,11 @@ const FcuMaintenanceList = () => {
           )}
         </div>
 
-        <h2 className="flex rounded-lg  text-white bg-[#d16bd8] mb-4 h-12 justify-center items-center text-2xl">
-          FCU Filter Changing Records
-        </h2>
+        
 
         <div className="overflow-x-auto  mt-4">
-          <table className=" table table-auto w-full  border border-3 border-slate-600 ">
+          <table className=" table table-auto w-full  border border-3 border-slate-600 mt-2">
+            <TableCaption tableHeading="FCU Filter Changing Records" bgColor="#74992f"/>
             <thead className="border-2 border-[#FFCB24]">
               <tr className="divide-x divide-blue-400 text-center">
                 <th className="">SN</th>

@@ -28,7 +28,9 @@ code {
 }
 
 .tab-part a.active {
-  color: purple;
+ color:rgba(223, 231, 233, 0.959);
+  background-color: rgb(180, 178, 37);
+  border-radius: 10px ;
 }
 
 .tab-part a {

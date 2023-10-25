@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
 import auth from '../../firebase.init';
@@ -26,26 +26,27 @@ const ModifyIssue = ({ siteCode, refetch, setModifyIssue }) => {
         if (siteCode) {
             const url = `/siteIssues/${siteCode}`
             console.log(url)
-            axiosSecure.put(url, updateInfo)
-                .then(putRes => {
-                    //console.log(putRes.data)
-                    if (putRes.data.modifiedCount > 0) {
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Your work has been saved',
-                            showConfirmButton: false,
-                            timer: 2000
-                        })
-                    }
-                })
-                reset()
-                setModifyIssue(null)
-                refetch()
-
+            const dataUpdate = async () => {
+                const { data } = await axiosSecure.put(url, updateInfo)
+                if (data.modifiedCount > 0) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your data has been updated',
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                    reset()
+                    setModifyIssue(null)
+                    refetch()
+                }
+            }
+            dataUpdate()
+                
+            }
         }
 
-    }
+    
 
     return (
         <div className='py-10'>

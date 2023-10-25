@@ -87,12 +87,8 @@ const Navbar2 = () => {
                 <WindowIcon className="  w-8 h-8 text-blue-500 " />
               </label>
             </li>}
-          <li>
-            <NavLink className=" btn btn-ghost rounded-lg" to="/Home">
-              Home
-            </NavLink>
-          </li>
-          {pathname.includes("Dashboard") && (
+
+            {pathname.includes("Dashboard") && (
             <label
               htmlFor="dashboard-drawer"
               className="drawer-button  lg:hidden btn-info rounded-lg p-2 "
@@ -101,6 +97,12 @@ const Navbar2 = () => {
 
             </label>
           )}
+          <li>
+            <NavLink className=" btn btn-ghost rounded-lg" to="/Home">
+              Home
+            </NavLink>
+          </li>
+          
         </ul>
 
       </div>

@@ -71,7 +71,7 @@ const AllFuelListOncall = () => {
         <h2 className="text-white lg:card-title font-bold col-start-2 col-span-2 lg:col-span-6 justify-self-center self-center">
           All Issued <p>Fuel Record_Oncall</p>
         </h2>
-        <Link to="/Dashboard/FuelUpdate" className="btn btn-secondary">
+        <Link to="/Dashboard/FuelUpdateOnCall" className="btn btn-secondary">
           GO FUEL UPDATE
         </Link>
       </div>
