@@ -28,7 +28,7 @@ const EMDataUpdate = () => {
   } = useForm();
 
   const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("https://backend.bloperation.com/emInfo", {
+    fetch("https://blserver.bloperation.com/emInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -103,7 +103,7 @@ const EMDataUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(`https://backend.bloperation.com/emInfo/${siteID}`, {
+    fetch(`https://blserver.bloperation.com/emInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

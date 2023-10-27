@@ -7,7 +7,7 @@ const useDeleteItem = ({ del, refetch, setDel }) => {
     const handleDelete = (id) => {
         console.log(id);
         fetch(
-            `https://backend.bloperation.com/receivedFuel/${id}`,
+            `https://blserver.bloperation.com/receivedFuel/${id}`,
             {
                 method: "DELETE",
                 headers: {

@@ -12,7 +12,7 @@ import { ArrowDownTrayIcon} from '@heroicons/react/24/solid'
 const DgUseMaterialList = () => {
   const navigate = useNavigate();
   const { data: dgMaterialInfo, isLoading } = useQuery(["DgInfoList"], () =>
-    fetch("https://backend.bloperation.com/dgMaterialInfo", {
+    fetch("https://blserver.bloperation.com/dgMaterialInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
