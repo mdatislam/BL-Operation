@@ -112,7 +112,7 @@ const PgRunUpdate = () => {
       remark: data.remark,
     };
     //console.log(PgRunData);
-    fetch("  https://blserver.bloperation.com/pgRunData", {
+    fetch("  http://localhost:5000/pgRunData", {
       method: "POST",
       headers: {
         "content-type": "application/json",
