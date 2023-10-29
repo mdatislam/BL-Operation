@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../Pages/SharedPage/Loading";
 import EmInfoListRow from "./EmInfoListRow";
@@ -7,24 +7,49 @@ import { CSVLink } from "react-csv";
 import auth from "../firebase.init";
 import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
+import Pagination from "../Pages/SharedPage/Pagination";
+import TableCaption from "../Pages/SharedPage/TableCaption";
 
 const EminfoList = () => {
   const [axiosSecure] = useAxiosSecure()
   const [searchEmInfo, setSearchEmInfo] = useState("");
   const [filter, setFilter] = useState([]);
-    const { data: EmInfo, isLoading } = useQuery({
-    queryKey: ['EmInfo'],
+
+  /* For Pagination code */
+  const [selectPage, setSelectPage] = useState("0")
+  const [pageSize, setPageSize] = useState("30");
+  const [totalPage, setTotalPage] = useState(2)
+  const [actualDataLength, setDataLength] = useState("10")
+
+
+  useEffect(() => {
+    const getLengthData = async () => {
+      const { data } = await axiosSecure.get("/emInfo/count")
+      const page = data.lengthOfData
+      setDataLength(page)
+      const pageCount = Math.ceil(page / pageSize)
+      setTotalPage(pageCount)
+      if (pageCount < selectPage) {
+        setSelectPage(1)
+      }
+    }
+    getLengthData()
+
+  }, [pageSize, selectPage, totalPage, actualDataLength, axiosSecure])
+
+
+  const { isLoading, data: EmInfo = [] } = useQuery({
+    queryKey: ["EmInfo", pageSize, selectPage],
     queryFn: async () => {
-      const res = await axiosSecure.get("/emInfo")
+      const res = await axiosSecure.get(`/emInfo?size=${pageSize}&page=${selectPage}`)
       return res.data
     }
   })
 
-
-  // console.log(services)
   if (isLoading) {
     return <Loading />;
   }
+
 
   /* For filtering purpose */
   const handleSearch = (e) => {
@@ -44,7 +69,7 @@ const EminfoList = () => {
     }
   };
   return (
-    <div className="mt-8 px-4 mb-4">
+    <div className="mt-4 px-2  md:px-8 mb-4">
       <div className="grid grid-cols-4 lg:grid-cols-8 h-12 card bg-[#008282] rounded-lg justify-self-start mb-8 gap-x-16">
         <Link to="/Home" className="btn btn-secondary">
           Go Home
@@ -80,8 +105,17 @@ const EminfoList = () => {
           </CSVLink>
         </div>
       </div>
+
+      {/* Pagination */}
+
+      <Pagination pageSize={pageSize} setPageSize={setPageSize}
+        selectPage={selectPage} setSelectPage={setSelectPage}
+        totalPage={totalPage} actualDataLength={actualDataLength}
+      />
+
       <div className="overflow-x-auto  mt-4">
-        <table className="table table-compact w-full  ">
+        <table className="table table-compact ">
+          <TableCaption tableHeading="All Energy Meter updated Record" />
           <thead className="border-2 border-[#FFCB24] ">
             <tr className="divide-x divide-sky-400">
               <th>SN</th>

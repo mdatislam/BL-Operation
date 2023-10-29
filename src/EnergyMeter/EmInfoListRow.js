@@ -79,7 +79,7 @@ const EmInfoListRow = ({ emInfo, index }) => {
       </td>
       <td>{updaterName} </td>
 
-      <td>{remark}</td>
+      <td className='whitespace-pre-line '>{remark}</td>
     </tr>
   );
 };

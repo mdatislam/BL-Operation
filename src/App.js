@@ -57,6 +57,7 @@ import FcuServicePlanSites from "./DashboardOncall/FCU Service Plan/FcuServicePl
 import OnCallPlanSite from "./DashboardOncall/DgServiceIssue/OnCallPlanSite";
 import ViewIssues from "./DashboardOncall/siteIssues/ViewIssues";
 import FuelBalanceInfo from "./DashBoard/FuelBalanceInfo";
+import EmShortInfo from "./EnergyMeter/EmShortInfo";
 
 
 
@@ -120,7 +121,8 @@ function App() {
           <Route path="/FcuMaintenance" element={<FcuMaintenanceList />} />
           <Route path="/FcuDataUpload" element={<FcuDataFromExcel />} />
           <Route path="/FcuAllData" element={<FcuAllDataRecord />} />
-          <Route path="/EmInfo" element={<EminfoList />} />
+          <Route path="/EmInfo/Detail" element={<EminfoList />} />
+          <Route path="/EmInfo" element={<EmShortInfo />} />
           <Route path="/fcuMaterial" element={<FcuMaterial />} />
           <Route path="/PgStatus" element={<PgStatus />} />
           <Route path="/siteDataHome" element={<SiteDataHome />} />

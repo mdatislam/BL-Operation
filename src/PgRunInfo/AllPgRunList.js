@@ -9,17 +9,20 @@ import useAdmin from "../Pages/Hook/useAdmin";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
+import Pagination from "../Pages/SharedPage/Pagination";
 
 const AllPgRunList = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
   const [axiosSecure] = useAxiosSecure()
   const [selectPage, setSelectPage] = useState("0")
-  const [pageSize, setPageSize] = useState("50");
-  const [totalPage, setTotalPage] = useState("10")
-  const [actualDataLength,setDataLength]=useState("0")
-  const [searchPgRun, setSearchPgRun] = useState("1");
+  const [pageSize, setPageSize] = useState("30");
+  const [totalPage, setTotalPage] = useState("1")
+  const [actualDataLength, setDataLength] = useState("10")
+  const [searchPgRun, setSearchPgRun] = useState("");
   const [filter, setFilter] = useState([]);
+
+  /* For Pagination code */
 
   useEffect(() => {
     const getLengthData = async () => {
@@ -28,14 +31,15 @@ const AllPgRunList = () => {
       setDataLength(page)
       const pageCount = Math.ceil(page / pageSize)
       setTotalPage(pageCount)
-      if(pageCount<selectPage){
+      if (pageCount < selectPage) {
         setSelectPage(1)
       }
     }
     getLengthData()
 
-  }, [pageSize])
-  console.log(totalPage)
+  }, [pageSize, selectPage, totalPage, actualDataLength, axiosSecure])
+
+  //console.log(selectPage,pageSize,actualDataLength,totalPage)
 
 
   const { isLoading, data: pgRunData = [] } = useQuery({
@@ -92,45 +96,22 @@ const AllPgRunList = () => {
                 className="btn btn-outline btn-info mb-2 flex-auto"
               >
                 <ArrowDownTrayIcon className="h-6 w-6 text-blue-500" />
-                Download
+
               </CSVLink>
             </div>
           )}
         </div>
       </div>
       {/* Pagination part */}
-      <div className="mt-5 flex items-center justify-between">
-        <div className=" flex items-center justify-start gap-1">
-          <h2>Show</h2>
-          <div className="border border-slate-300 p-2 w-20">
-            <select  onChange={(e) => setPageSize(e.target.value)}>
-              <option value="10"> 10</option>
-              <option value="50" selected> 50</option>
-              <option value="30"> 30</option>
-              <option value={actualDataLength}>All</option>
-            </select>
-          </div>
-          <h2>entries</h2>
-        </div>
-        <div className=" ">
-          <h2>Showing {(+selectPage*pageSize)+1} to {(+selectPage*(+pageSize))+(+pageSize)} of {actualDataLength} entries</h2>
-          <div className="border border-slate-300 p-2 rounded-lg">
-            {
-              [...Array(totalPage).keys()].map(number => (<button
-                onClick={() => setSelectPage(number)}
-                className={selectPage === number ? "btn btn-xs btn-warning" : " btn btn-xs btn-outline"}
-              >{number + 1}</button>))
-            }
-          </div>
-        </div>
-
-
-      </div>
+      <Pagination pageSize={pageSize} setPageSize={setPageSize}
+        selectPage={selectPage} setSelectPage={setSelectPage}
+        totalPage={totalPage} actualDataLength={actualDataLength}
+      />
 
       {/* Table part */}
       <div className="overflow-x-auto  mt-4 py-2">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
-          <caption class=" caption-top bg-[#7e4f9ef5]  rounded-t-lg py-4">
+          <caption className=" caption-top bg-[#7e4f9ef5]  rounded-t-lg py-4">
             <h2 className='text-center text-xl font-bold  text-white'>All Approved PG Run Record</h2>
 
           </caption>
@@ -177,6 +158,26 @@ const AllPgRunList = () => {
               ))}
           </tbody>
         </table>
+
+        {/* show pages nos */}
+        <div className="text-end">
+          <h2>{
+            ((+selectPage) * (+pageSize)) + (+pageSize) < actualDataLength ? `Showing ${((+selectPage) * (+pageSize)) + 1} to ${((+selectPage) * (+pageSize)) + (+pageSize)} of ${actualDataLength} entries`
+              : `Showing ${((+selectPage) * (+pageSize)) + 1} to ${actualDataLength} of ${actualDataLength} entries}`
+          }</h2>
+
+          <div className="mt-2">
+            <span><strong>Pages</strong></span>
+            <span className="border border-slate-300 p-1 rounded-lg">
+              {
+                [...Array(totalPage).keys()].map(number => (<button
+                  onClick={() => setSelectPage(number)}
+                  className={+selectPage === number ? "btn btn-xs btn-secondary" : " btn btn-xs btn-outline"}
+                >{number + 1}</button>))
+              }
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );

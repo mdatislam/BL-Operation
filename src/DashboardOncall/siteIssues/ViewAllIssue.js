@@ -7,6 +7,7 @@ import useAdmin from '../../Pages/Hook/useAdmin';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import Loading from '../../Pages/SharedPage/Loading';
+import TableCaption from '../../Pages/SharedPage/TableCaption';
 
 const ViewAllIssue = () => {
     const [user]=useAuthState(auth)
@@ -63,12 +64,7 @@ const ViewAllIssue = () => {
             <div className="card bg-base-100 shadow-xl overflow-x-auto ">
                 <table className="table table-xs table-pin-rows table-pin-cols
                 border-2 border-slate-200 px-2 ">
-                    <caption class=" caption-top py-5 bg-brown-400">
-                        <div className='text center font-bold text-blue-700'>
-                            <h2 className='text-2xl'>All Site's Issue List </h2>
-                        </div>
-                    </caption>
-
+                    <TableCaption tableHeading="All Site's Issue List"/>
                     <thead className='border font-bold border-slate-300 headers rounded-lg'>
                         <tr className='text-center divide-x-2 divide-yellow-400 divide-y-2 '>
                            
