@@ -105,14 +105,7 @@ const DashBoard = () => {
               Fuel Update_Oncall
             </Link>
           </li>
-          {admin && (
-            <li>
-              <Link to="/Dashboard/UserList" onClick={handleSidebar}>
-                <UserCircleIcon className="h-6 w-6 text-blue-500" />
-                Admin Items
-              </Link>
-            </li>
-          )}
+          
         </ul>
       </div>
     </div>

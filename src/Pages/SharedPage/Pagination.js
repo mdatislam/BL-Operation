@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Pagination = ({pageSize,setPageSize,selectPage,setSelectPage,totalPage,actualDataLength}) => {
-   
+const Pagination = ({ pageSize, setPageSize, selectPage, setSelectPage, totalPage, actualDataLength }) => {
+
 
     /* For Pagination code */
     // const [selectPage, setSelectPage] = useState("0")
@@ -10,38 +10,37 @@ const Pagination = ({pageSize,setPageSize,selectPage,setSelectPage,totalPage,act
     // const [actualDataLength, setDataLength] = useState("10")
 
 
-  // useEffect(() => {
-  //   const getLengthData = async () => {
-  //     const { data } = await axiosSecure.get("/ApprovedAllPgRun/pageCount")
-  //     const page = data.lengthPgRunData
-  //     setDataLength(page)
-  //     const pageCount = Math.ceil(page / pageSize)
-  //     setTotalPage(pageCount)
-  //     if (pageCount < selectPage) {
-  //       setSelectPage(1)
-  //     }
-  //   }
-  //   getLengthData()
+    // useEffect(() => {
+    //   const getLengthData = async () => {
+    //     const { data } = await axiosSecure.get("/ApprovedAllPgRun/count")
+    //     const page = data.lengthOfData
+    //     setDataLength(page)
+    //     const pageCount = Math.ceil(page / pageSize)
+    //     setTotalPage(pageCount)
+    //     if (pageCount < selectPage) {
+    //       setSelectPage(1)
+    //     }
+    //   }
+    //   getLengthData()
 
-  // }, [pageSize, selectPage, totalPage, actualDataLength, axiosSecure])
+    // }, [pageSize, selectPage, totalPage, actualDataLength, axiosSecure])
 
 
-//   const { isLoading, data: pgRunData = [] } = useQuery({
-//     queryKey: ["pgRunData", pageSize, selectPage],
-//     // enabled: !adminLoading,
-//     queryFn: async () => {
-//       const res = await axiosSecure.get(`/ApprovedAllPgRun?size=${pageSize}&page=${selectPage}`)
-//       return res.data
-//     }
-//   })
+    //   const { isLoading, data: pgRunData = [] } = useQuery({
+    //     queryKey: ["pgRunData", pageSize, selectPage],
+    //     //     queryFn: async () => {
+    //       const res = await axiosSecure.get(`/ApprovedAllPgRun?size=${pageSize}&page=${selectPage}`)
+    //       return res.data
+    //     }
+    //   })
 
-//   if (isLoading) {
-//     return <Loading />;
-//   }
+    //   if (isLoading) {
+    //     return <Loading />;
+    //   }
 
-//Reuse this pagination component  by bellow code
+    //Reuse this pagination component  by bellow code
 
-{/* <Pagination pageSize={pageSize} setPageSize={setPageSize}
+    {/* <Pagination pageSize={pageSize} setPageSize={setPageSize}
 selectPage={selectPage} setSelectPage={setSelectPage}
 totalPage={totalPage} actualDataLength={actualDataLength}
 /> */}
@@ -53,7 +52,7 @@ totalPage={totalPage} actualDataLength={actualDataLength}
                 <h2>Show</h2>
                 <div className="relative inline-block text-left">
                     <select value={pageSize} onChange={(e) => setPageSize(e.target.value)}
-                     className="block appearance-none w-full bg-white border border-gray-300
+                        className="block appearance-none w-full bg-white border border-gray-300
                       text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500"
                     >
                         <option value="10">10</option>

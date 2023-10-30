@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { signOut } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
 import Loading from "../SharedPage/Loading";
@@ -11,117 +10,93 @@ import "./SiteDataInfo.css";
 import SiteDataInfoRows from "./SiteDataInfoRows";
 import EditSiteData from "./EditSiteData";
 import { CSVLink } from "react-csv";
+import useAxiosSecure from "../Hook/useAxiosSecure";
+import Pagination from "../SharedPage/Pagination";
+import TableCaption from "../SharedPage/TableCaption";
+
 
 const SiteDataInfo = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
   const [siteDataEdit, setSiteDataEdit] = useState([]);
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState(50);
-  //const [count,setCount]= useState(1)
+  const [axiosSecure] = useAxiosSecure()
 
-  const navigate = useNavigate();
 
-  // For Existing site upload
-  const {
-    data: siteData,
-    isLoading,
-    refetch,
-  } = useQuery(["siteInfo", [page, size]], () =>
-    fetch(
-      `http://localhost:5000/siteData?page=${page}&size=${size}`,
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+
+  /* For Pagination code */
+  const [selectPage, setSelectPage] = useState("0")
+  const [pageSize, setPageSize] = useState("50");
+  const [totalPage, setTotalPage] = useState("1")
+  const [actualDataLength, setDataLength] = useState("10")
+
+
+  useEffect(() => {
+    const getLengthData = async () => {
+      const { data } = await axiosSecure.get("/siteData/count")
+      const page = data.lengthOfData
+      setDataLength(page)
+      const pageCount = Math.ceil(page / pageSize)
+      setTotalPage(pageCount)
+      if (pageCount < selectPage) {
+        setSelectPage(1)
       }
-    ).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
+    }
+    getLengthData()
+
+  }, [pageSize, selectPage, totalPage, actualDataLength, axiosSecure])
+
+
+  const { isLoading, data: siteData = [], refetch } = useQuery({
+    queryKey: ["siteData", pageSize, selectPage],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/siteData?size=${pageSize}&page=${selectPage}`)
+      return res.data
+    }
+  })
 
   if (isLoading) {
     return <Loading />;
   }
-  //console.log(siteData)
 
-  const pages = Math.ceil(siteData.count / size);
-  //console.log(siteDataEdit)
-
-  //console.log(selectSite)
 
   return (
-    <>
-      <div className="px-3 mb-2">
-        <h5 className="flex justify-center items-center text-white text-xl font-bold h-12 mt-2 p-4 rounded-lg bg-[#6e3790] px-2">
-          Existing Site Data Record
-        </h5>
-        <div className="flex flex-col justify-start lg:justify-end  lg:items-center lg:flex-row  gap-2 mt-1">
-          <div className="flex flex-cols justify-between lg:gap-x-4 lg:justify-start mt-2">
-            <NavLink
-              to="/siteDataHome"
-              className="btn btn-secondary  btn-outline btn-sm mt-3"
-            >
-              Back
-            </NavLink>
-
-            {/* For Data Export */}
-            {admin && (
-              <div className="mt-3">
-                <CSVLink
-                  data={siteData.result}
-                  filename="SiteDataInfo"
-                  className="btn btn-outline btn-accent btn-sm mb-2"
-                >
-                  <ArrowDownTrayIcon className="h-6 w-6 text-blue-500" />
-
-
-                </CSVLink>
-              </div>
-            )}
-          </div>
-          <div className="font-bold text-lg pagination  rounded-lg mt-2 px-2">
-            <div className="">
-              Pages: &nbsp;
-              {[...Array(pages).keys()]?.map((number) => (
-                <button
-                  key={number}
-                  onClick={() => setPage(number)}
-                  className={
-                    page === number
-                      ? " btn btn-active text-lg btn-accent text-white"
-                      : ""
-                  }
-                >
-                  {number + 1}
-                </button>
-              ))}
+    <div className=" py-2 bg-slate-300">
+      <div className="card bg-base-100 shadow-xl px-2 w-full mt-4 px-2 py-2 md:px-16 mx-auto">
+        <div className=" border border-slate-400 p-4 flex flex-wrap mt-4 
+       justify-between rounded-lg">
+          {/* For filter input box */}
+          
+          <input
+              type="text"
+              className="input input-bordered border-orange-400 bg-white w-full max-w-xs flex-auto"
+              placeholder="Enter search Keyword"
+              
+             
+            />
+          {/* For Data Export */}
+          {admin && (
+            <div className="mt-3">
+              <CSVLink
+                data={siteData}
+                filename="SiteDataInfo"
+                className="btn btn-outline btn-accent btn-sm mb-2"
+              >
+                <ArrowDownTrayIcon className="h-6 w-6 text-blue-500" />
+              </CSVLink>
             </div>
-            <div>
-              <span className="text-pink-700">Size: &nbsp; </span>
-              {
-                <select onChange={(e) => setSize(e.target.value)}>
-                  <option value="50">50</option>
-                  <option value="10">10</option>
-                  <option value="100">100</option>
-                  <option value="1000">All</option>
-                </select>
-              }
-            </div>
-          </div>
+          )}
+
         </div>
+        <Pagination pageSize={pageSize} setPageSize={setPageSize}
+          selectPage={selectPage} setSelectPage={setSelectPage}
+          totalPage={totalPage} actualDataLength={actualDataLength}
+        />
 
-        <div className="overflow-x-scroll">
-          <table className="table table-compact w- border-spacing-2 border border-3 border-slate-600">
-            <thead className="border-2 border-[#FFCB24]">
-              <tr className="divide-x divide-blue-400 text-center">
+        <div className="overflow-x-scroll mt-4">
+          <table className="table table-compact w-full border border-slate-300">
+            <TableCaption tableHeading=" Existing Site Info " />
+            <thead className="border-2 border-blue-300 bg-slate-500 ">
+              <tr className="divide-x divide-blue-300 text-start ">
                 <th>SNo</th>
                 <th>Action</th>
                 <th>Site ID</th>
@@ -156,7 +131,7 @@ const SiteDataInfo = () => {
               </tr>
             </thead>
             <tbody>
-              {siteData.result?.map((data, index) => (
+              {siteData.map((data, index) => (
                 <SiteDataInfoRows
                   key={index._id}
                   data={data}
@@ -176,7 +151,7 @@ const SiteDataInfo = () => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

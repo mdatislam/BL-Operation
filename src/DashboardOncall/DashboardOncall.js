@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
+import auth from "../firebase.init";
+import useAdmin from "./../Pages/Hook/useAdmin";
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { UserCircleIcon } from '@heroicons/react/24/solid';
 
 const DashboardOncall = () => {
+    const [user] = useAuthState(auth);
+    const [admin] = useAdmin(user);
     const [isChecked, setIsChecked] = useState(false);
 
     const handleSidebar = () => {
@@ -47,6 +53,14 @@ const DashboardOncall = () => {
                     <li>
                         <NavLink to="/OnCall/pgStatus" onClick={handleSidebar}>All PG Status</NavLink >
                     </li>
+                    {admin && (
+                        <li>
+                            <NavLink to="/Dashboard/UserList" onClick={handleSidebar}>
+                                <UserCircleIcon className="h-6 w-6 text-[#106d3f]-500" />
+                                Admin Items
+                            </NavLink>
+                        </li>
+                    )}
 
                 </ul>
             </div>

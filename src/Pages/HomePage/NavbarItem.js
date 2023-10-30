@@ -21,7 +21,7 @@ const NavbarItem = () => {
           </NavLink>
 
           {/* 2nd item */}
-          <NavLink className="rounded-lg my-4 px-4" to="/PgFuel">
+          {/* <NavLink className="rounded-lg my-4 px-4" to="/PgFuel">
             <div className="card w-64  bg-base-100 shadow-xl   outline-offset-4 outline hover:outline-blue-400 ">
               <div className="card-body">
                 <h3 className="card-title text-secondary-focus">
@@ -30,7 +30,7 @@ const NavbarItem = () => {
                 <p>View PG Run & Fuel Info</p>
               </div>
             </div>
-          </NavLink>
+          </NavLink> */}
 
           {/* 3rd Item */}
           <NavLink className="rounded-lg my-4 px-4" to="/EmInfo">
