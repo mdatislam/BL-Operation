@@ -4,20 +4,22 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Loading from "../Pages/SharedPage/Loading";
 import background from "../../src/images/bb.jpg";
-import { signOut } from "firebase/auth";
 import auth from "../firebase.init";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useSiteList from "./../Pages/Hook/useSiteList";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const DGServicingUpdate = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
+  const [axiosSecure] = useAxiosSecure()
   const [search, setSearch] = useState("");
   const [imgUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
-  const navigate = useNavigate();
   const {
     register,
     reset,
@@ -25,24 +27,17 @@ const DGServicingUpdate = () => {
     handleSubmit,
   } = useForm();
 
-  const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("http://localhost:5000/dgServiceInfo", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
+
+  const { data: sites = [], isLoading2 } = useQuery({
+    queryKey: ["sites"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/dgServiceInfo")
+      return res.data
+    }
+  })
+
   // console.log(sites)
-  if (isLoading) {
+  if (isLoading || isLoading2 || loading) {
     return <Loading />;
   }
 
@@ -69,24 +64,15 @@ const DGServicingUpdate = () => {
   //console.log(imgUrl)
 
   const onSubmit = (data) => {
+    setIsLoading(true)
     /*  next DG servicing date calculation */
     const date3 = data.date2;
     let presentServiceDate = new Date(date3).toDateString();
-
-    /*  const nextPlan = new Date(
-      presentServiceDate.setDate(presentServiceDate.getDate() + 180)
-    ).toDateString(); */
 
     let serviceDateMsec = Date.parse(presentServiceDate);
     //console.log(serviceDateMsec);
     let next = serviceDateMsec + 180 * 3600 * 1000 * 24;
     const nextPlan = new Date(next).toDateString();
-
-    /* const year = nextPlan.getFullYear();
-    const month = nextPlan.getMonth()+1;
-    const day = nextPlan.getDate();
-    let planDate = year + "-" + month + "-" + day; */
-    //console.log(nextPlan);
 
     const siteID = search;
     const presentSite = sites?.filter((site) => site.siteId === siteID);
@@ -97,6 +83,7 @@ const DGServicingUpdate = () => {
     const PreDate = presentSite.map((s) => s.date);
 
     const dgServicingData = {
+
       siteId: siteID,
       date: data.date2,
       batterySerialNo: data.dgBatteryNo,
@@ -111,57 +98,44 @@ const DGServicingUpdate = () => {
       url: imgUrl,
       remark: data.remark,
     };
+    const updateDgServicing = async () => {
+      const { data } = await axiosSecure.post("/dgAllServicing", dgServicingData)
+      if (data.insertedId) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'DG Service Data has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+      else {
+        toast.error(`Warning: ${data.msg}`);
+      }
+      
+    }
+    updateDgServicing()
 
-    fetch(`http://localhost:5000/dgAllServicing`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(dgServicingData),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          // toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((dgData) => {
-        //console.log(dgData);
-        if (dgData.insertedId) {
-          toast.success("Data Post Successfully");
-        }
-      });
+    const updateDgServicingAll = async () => {
+      const { data } = await axiosSecure.put(`dgServiceInfo/${siteID}`, dgServicingData)
+      if (data.acknowledged) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'DG service Data has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+      else {
+        toast.error(`Warning: ${data.msg}`);
+      }
+      reset()
+      setImageUrl("");
+      setIsLoading(false)
+    }
+    updateDgServicingAll()
 
-    fetch(`http://localhost:5000/dgServiceInfo/${siteID}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(dgServicingData),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          // toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((dgData) => {
-        //console.log(dgData);
-        if (dgData.upsertedCount || dgData.modifiedCount) {
-          toast.success("Data Successfully Update");
-        }
-        setImageUrl("");
-        reset();
-        //console.log(pgData)
-      });
   };
   /*  today find code */
   let date = new Date();
@@ -225,7 +199,7 @@ const DGServicingUpdate = () => {
                     message: " Date is required",
                   },
                 })}
-                //defaultValue={vv}
+              //defaultValue={vv}
               />
               <label className="label">
                 {errors.date?.type === "required" && (

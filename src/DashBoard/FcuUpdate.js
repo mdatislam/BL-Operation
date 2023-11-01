@@ -10,6 +10,7 @@ import { addDays, format } from 'date-fns';
 import useAxiosSecure from '../Pages/Hook/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
 
 const FcuUpdate = () => {
     const [user, loading] = useAuthState(auth);
@@ -18,9 +19,10 @@ const FcuUpdate = () => {
     const [axiosSecure] = useAxiosSecure()
     const [search, setSearch] = useState("");
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
     const { register, reset, handleSubmit, formState: { errors }, } = useForm()
 
-    const { data: FcuRecord, refetch } = useQuery({
+    const { data: FcuRecord=[] } = useQuery({
         queryKey: ["FcuRecord"],
         enabled: !loading,
         queryFn: async () => {
@@ -35,6 +37,7 @@ const FcuUpdate = () => {
     let today = date.toLocaleDateString("en-CA");
 
     const onSubmit = (data) => {
+        setIsLoading(true)
         const serviceDate = new Date(data.date2)
         const formattedServiceDate = format(serviceDate, "dd-MM-yyyy")
         const nextServiceDate = addDays(serviceDate, 120)
@@ -59,19 +62,25 @@ const FcuUpdate = () => {
         }
         // console.log(serviceInfo)
 
-        axiosSecure.post("/fcuFilterChangeAllRecord", serviceInfo)
-            .then(postRes => {
-                if (postRes.data.insertedId) {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Fcu data has been saved',
-                        showConfirmButton: false,
-                        timer: 2000
-                    })
-                }
-            })
-
+        const updateFuel = async () => {
+            const { data } = await axiosSecure.post("/fcuFilterChangeAllRecord", serviceInfo)
+            if (data.insertedId) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'FCU Data has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
+            else {
+                toast.error(`Warning: ${data.msg}`);
+            }
+            reset()
+            setIsLoading(false)
+        }
+        updateFuel()
+        
         axiosSecure.put(`/fcuFilterChangeLatestRecord/${search}`, serviceInfo)
             .then(putRes => {
                 if (putRes.data.upsertedCount || putRes.data.modifiedCount) {
@@ -311,8 +320,9 @@ const FcuUpdate = () => {
 
                         <input
                             type="submit"
-                            className="btn btn-accent w-full max-w-xs m-2"
-                            /*  disabled={!imgUrl ? true : false} */
+                            className={isLoading ? "btn btn-accent btn-wide loading loading-spinner max-w-xs m-2"
+                                : "btn btn-accent  btn-wide max-w-xs m-2"}
+                            disabled={isLoading ? true : false}
                             value="Submit-Data"
                         />
                     </form>

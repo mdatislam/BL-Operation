@@ -1,32 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Link} from "react-router-dom";
 import Loading from "../SharedPage/Loading";
 import AllRefuelingRows from "./AllRefuelingRows";
 import { CSVLink } from "react-csv";
-import { signOut } from "firebase/auth";
-import auth from "../../firebase.init";
 import { ArrowDownTrayIcon,ChevronDoubleLeftIcon} from '@heroicons/react/24/solid'
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 const AllRefuelingList = () => {
-  const navigate = useNavigate();
-  const { data: dgRefueling, isLoading } = useQuery(["DgRefueling"], () =>
-    fetch("http://localhost:5000/dgAllRefueling", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
+  const [axiosSecure]=useAxiosSecure()
+
+
+  const { data: dgRefueling=[],isLoading } = useQuery({
+    queryKey: ["dgRefueling"],
+    queryFn: async () => {
+        const res = await axiosSecure.get("/dgAllRefueling")
+        return res.data
+    }
+})
+  
   // console.log(services)
   if (isLoading) {
     return <Loading />;

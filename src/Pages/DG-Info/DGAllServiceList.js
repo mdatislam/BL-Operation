@@ -4,41 +4,30 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loading from "../SharedPage/Loading";
 import { CSVLink } from "react-csv";
-import { ArrowDownTrayIcon,ChevronDoubleLeftIcon} from '@heroicons/react/24/solid'
+import { ArrowDownTrayIcon, ChevronDoubleLeftIcon } from '@heroicons/react/24/solid'
 import { signOut } from "firebase/auth";
 import auth from "../../firebase.init";
 import DgAllServiceRows from "./DgAllServiceRows";
 import useAdmin from "./../Hook/useAdmin";
 import { useAuthState } from "react-firebase-hooks/auth";
+import useAxiosSecure from "../Hook/useAxiosSecure";
+import Swal from "sweetalert2";
 
 
 const DGAllServiceList = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
+  const [axiosSecure] = useAxiosSecure()
   const [isChecked, setIsChecked] = useState("");
-
-  const navigate = useNavigate();
   /*  All DG service record */
-  const {
-    data: dgAllServiceInfo,
-    isLoading,
-    refetch,
-  } = useQuery(["DgAllInfoList"], () =>
-    fetch("http://localhost:5000/dgAllServiceInfo", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
+
+  const { data: dgAllServiceInfo, refetch, isLoading } = useQuery({
+    queryKey: ["dgAllServiceInfo"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/dgAllServiceInfo")
+      return res.data
+    }
+  })
 
   // console.log(services)
   if (isLoading) {
@@ -49,26 +38,36 @@ const DGAllServiceList = () => {
     //console.log(isChecked)
 
     if (isChecked) {
-      fetch(`http://localhost:5000/dgAllServiceInfo/multiDelete`, {
-        method: "DELETE",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(isChecked),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          //console.log(data);
-          if (data.deletedCount > 0) {
-            toast.success(
-              ` ${data.deletedCount} Nos record delete successfully`
-            );
-          }
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosSecure.delete(`/dgAllServiceInfo/multiDelete`)
+            .then(deleteRes => {
+              if (deleteRes.data.deletedCount > 0) {
+                refetch()
+                Swal.fire(
+                  'Deleted!',
+                  'Your file has been deleted.',
+                  'success'
+                )
+
+              }
+            })
           refetch();
           setIsChecked("");
-        });
-    } else {
+        }
+
+      })
+      
+    }
+    else {
       toast.error(" Please select min 1 row");
     }
   };
@@ -85,7 +84,7 @@ const DGAllServiceList = () => {
           to="/DgServicing"
           className="flex btn btn-outline btn-primary btn-sm"
         >
-          <ChevronDoubleLeftIcon  className="h-6 w-6 text-blue-500" />
+          <ChevronDoubleLeftIcon className="h-6 w-6 text-blue-500" />
         </Link>
 
         <Link
@@ -102,8 +101,8 @@ const DGAllServiceList = () => {
               filename="dgServiceInfo"
               className="flex btn btn-outline btn-primary btn-sm"
             >
-              <ArrowDownTrayIcon  className="h-6 w-6 text-blue-500" />
-              
+              <ArrowDownTrayIcon className="h-6 w-6 text-blue-500" />
+
             </CSVLink>
           </div>
         )}

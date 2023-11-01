@@ -9,6 +9,7 @@ import useUserList from "../Pages/Hook/useUserList";
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 import useVehicleList from "../Pages/Hook/useVehicleList";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 const FuelUpdate = () => {
   const [user] = useAuthState(auth);
@@ -16,6 +17,7 @@ const FuelUpdate = () => {
   const [userList]=useUserList()
   const [vehicleList]=useVehicleList()
    const [axiosSecure]=useAxiosSecure()
+   const [isLoading, setIsLoading] = useState(false)
   const [search, setSearch] = useState("");
   //const [admin] = useAdmin(user);
   const [PgList] = usePgList();
@@ -57,26 +59,29 @@ const FuelUpdate = () => {
       fuelIssuer: data.fuelIssuer,
       fuelReceiverName: user.displayName,
       fuelReceiverEmail: user.email,
-      /*   //fuelIssuerEmail: fuelIssuer[0].email,
-      // fuelReceiverName: x[0],
-      //fuelReceiverEmail: x[1], */
-      remark: data.remark,
+         remark: data.remark,
     };
 
-    //console.log(fuelData);
-    axiosSecure.post("/fuelData", fuelInfo)
-      .then((fuelRes) => {
-        //console.log(fuelData)
-        if (fuelRes.data.insertedId) {
-          toast.success("Fuel Data Successfully Update");
-        } else if (fuelRes.data.msg) {
-          toast.error(`Warning: ${fuelRes.data.msg}`);
-        }
-        reset();
+    const updateFuel = async () => {
+      const { data } = await axiosSecure.post("/fuelData", fuelInfo)
+      if (data.insertedId) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Fuel Data has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+      else{
+        toast.error(`Warning: ${data.msg}`);
+      }
+      reset()
+      setIsLoading(false)
+    }
+    updateFuel()
 
-        //console.log(pgData)
-      });
-  };
+      };
 
   return (
     <div className="flex  justify-center justify-items-center mt-8">
@@ -244,49 +249,7 @@ const FuelUpdate = () => {
             </div>
             {/*  On Fuel receiver   Name */}
 
-            {/*  {admin && (
-              <div className="form-control w-full max-w-xs">
-                <select
-                  type="text"
-                  placeholder=" Fuel Receiver Name"
-                  className="input input-bordered border-purple-600 border-4 w-full max-w-xs"
-                  {...register("fuelReceiver")}
-                >
-                  <option value="">
-                    {" "}
-                    --------Select Fuel Receiver Name-------{" "}
-                  </option>
-                  {users.map((user) => (
-                    <option value={user.name}>{user.name} </option>
-                  ))}
-                </select>
-                <label className="label"></label>
-              </div>
-            )}  */}
-
-            {/*  On Fuel receiver email */}
-
-            {/* {admin && (
-              <div className="form-control w-full max-w-xs">
-                <select
-                  type="text"
-                  placeholder=" Fuel Receiver Name"
-                  className="input input-bordered border-purple-600 border-4 w-full max-w-xs"
-                  {...register("fuelReceiverEmail")}
-                >
-                  <option value="">
-                    {" "}
-                    --------Select Receiver email-------{" "}
-                  </option>
-                  {users.map((user) => (
-                    <option value={user.email}>{user.email} </option>
-                  ))}
-                </select>
-                <label className="label"></label>
-              </div>
-            )}
-              */}
-
+            
             {/*  On Call Engineer  Name */}
             <div className="form-control w-full max-w-xs">
               <select
@@ -328,9 +291,11 @@ const FuelUpdate = () => {
             </div>
             <input
               type="submit"
-              className="btn btn-accent w-full max-w-xs m-2"
+              className={isLoading ?"btn btn-accent btn-wide loading loading-spinner max-w-xs m-2"
+              :"btn btn-accent  btn-wide max-w-xs m-2"}
+              disabled={isLoading ? true:false}
               value="Submit-Data"
-              /*   <button className="btn btn-success">Success</button> */
+             
             />
           </form>
         </div>

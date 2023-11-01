@@ -11,28 +11,30 @@ import Loading from "../Pages/SharedPage/Loading";
 import useSiteList from "./../Pages/Hook/useSiteList";
 import useUserList from "../Pages/Hook/useUserList";
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
+import Swal from "sweetalert2";
 
 
 const PgRunUpdate = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
-  const [userList]=useUserList()
-    const [axiosSecure]=useAxiosSecure()
+  const [userList] = useUserList()
+  const [axiosSecure] = useAxiosSecure()
   const [search, setSearch] = useState("");
   const [PgList] = usePgList();
   const navigate = useNavigate();
+  const [isLoading2, setIsLoading] = useState(false)
   const {
     register,
     reset,
     formState: { errors },
     handleSubmit,
   } = useForm();
-    
-  const { data: rectifiers, isLoading } = useQuery(["rectifierList"], () =>
+
+  const { data: rectifiers = [], isLoading } = useQuery(["rectifiers"], () =>
     axiosSecure("/rectifier")
-    .then((res) =>{
-      return res.data
-    })
+      .then((res) => {
+        return res.data
+      })
   );
 
   // console.log(services)
@@ -66,6 +68,7 @@ const PgRunUpdate = () => {
   const availableUser = userList?.filter((u) => u.name !== user.displayName);
 
   const onSubmit = async (data) => {
+    setIsLoading(true)
     let mod = data.capacity;
     let consumeFuel = rectifiers?.filter((rec) => rec.capacity === mod);
     const consumePerModule = consumeFuel.map((ff) => ff.consumeFuel);
@@ -112,30 +115,25 @@ const PgRunUpdate = () => {
       remark: data.remark,
     };
     //console.log(PgRunData);
-    fetch("  http://localhost:5000/pgRunData", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(PgRunData),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((pgData) => {
-        if (pgData.insertedId) {
-          toast.success("Data Successfully Update");
-        }
-        reset();
-        setSearch("");
-        //console.log(pgData)
-      });
+    const updatePgRun = async () => {
+      const { data } = await axiosSecure.post("/pgRunData", PgRunData)
+      if (data.insertedId) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'PgRun Data has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+      else {
+        toast.error(`Warning: ${data.msg}`);
+      }
+      reset()
+      setSearch("");
+      setIsLoading(false)
+    }
+    updatePgRun()
   };
 
   /*  For site list auto suggestion */
@@ -375,9 +373,11 @@ const PgRunUpdate = () => {
 
             <input
               type="submit"
-              className="btn btn-accent w-full max-w-xs m-2"
+              className={isLoading ? "btn btn-accent btn-wide loading loading-spinner max-w-xs m-2"
+                : "btn btn-accent  btn-wide max-w-xs m-2"}
+              disabled={isLoading2 ? true : false}
               value="Submit-Data"
-              /*   <button className="btn btn-success">Success</button> */
+            /*   <button className="btn btn-success">Success</button> */
             />
           </form>
         </div>

@@ -1,23 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import useUserList from "../Pages/Hook/useUserList";
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const FuelUpdateOncall = () => {
   const [user] = useAuthState(auth);
   const [userList] = useUserList()
   const [axiosSecure] = useAxiosSecure()
-   const {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const {
     register,
     reset,
     formState: { errors },
     handleSubmit,
   } = useForm();
-
-
 
   /*  today find code */
   let date = new Date();
@@ -27,6 +28,7 @@ const FuelUpdateOncall = () => {
   const availableUser = userList?.filter((u) => u.name !== user.displayName);
 
   const onSubmit = (data) => {
+    setIsLoading(true)
     const receive = userList?.filter((x) => x.name === data.fuelReceiver);
 
     const fuelData = {
@@ -40,19 +42,24 @@ const FuelUpdateOncall = () => {
       remark: data.remark,
     };
 
-    //console.log(receive);
-    axiosSecure.post("/fuelDataOncall", fuelData)
-      .then((fuelRes) => {
-        //console.log(fuelData)
-        if (fuelRes.data.insertedId) {
-          toast.success("Fuel Data Successfully Update");
-        } else if (fuelRes.data.msg) {
-          toast.error(`Warning: ${fuelData.msg}`);
-        }
-        reset();
-
-        //console.log(pgData)
-      });
+    const updateFuel = async () => {
+      const { data } = await axiosSecure.post("/fuelDataOncall", fuelData)
+      if (data.insertedId) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Fuel Data has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+      else{
+        toast.error(`Warning: ${data.msg}`);
+      }
+      reset()
+      setIsLoading(false)
+    }
+    updateFuel()
   };
 
   return (
@@ -173,7 +180,9 @@ const FuelUpdateOncall = () => {
             </div>
             <input
               type="submit"
-              className="btn btn-accent w-full max-w-xs m-2"
+              className={isLoading ?"btn btn-accent btn-wide loading loading-spinner max-w-xs m-2"
+              :"btn btn-accent  btn-wide max-w-xs m-2"}
+              disabled={isLoading ? true:false}
               value="Submit-Data"
             /*   <button className="btn btn-success">Success</button> */
             />

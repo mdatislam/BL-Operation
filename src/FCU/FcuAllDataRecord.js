@@ -5,20 +5,23 @@ import FcuAllDataRecordRow from "./FcuAllDataRecordRow";
 import { CSVLink } from "react-csv";
 import { ArrowDownTrayIcon, BackwardIcon} from '@heroicons/react/24/solid'
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
+import Loading from "../Pages/SharedPage/Loading";
 
 const FcuAllDataRecord = () => {
  
   const [axiosSecure]=useAxiosSecure()
 
 
-  const { data: fcuServiceAllRecord=[]} = useQuery({
+  const { data: fcuServiceAllRecord=[],isLoading} = useQuery({
     queryKey:["fcuServiceAllRecord"],
     queryFn:async()=>{
       const res= await axiosSecure.get("/fcuFilterChangeAllRecord")
       return res.data
     }
   })
-
+  if (isLoading) {
+    return <Loading />;
+  }
   
   return (
     <div className="px-2">

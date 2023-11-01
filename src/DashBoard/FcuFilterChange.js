@@ -9,13 +9,17 @@ import auth from "../firebase.init";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useSiteList from "./../Pages/Hook/useSiteList";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const FcuFilterChange = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
+  const [axiosSecure]=useAxiosSecure()
   const [search, setSearch] = useState("");
   const [imgUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   const navigate = useNavigate();
   const {
@@ -25,24 +29,17 @@ const FcuFilterChange = () => {
     handleSubmit,
   } = useForm();
 
-  const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("http://localhost:5000/fcuFilterChangeLatestRecord", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
+  const { data:sites=[],isLoading2 } = useQuery({
+    queryKey: ["sites"],
+    queryFn: async () => {
+        const res = await axiosSecure.get("/fcuFilterChangeLatestRecord")
+        return res.data
+    }
+})
+
+  
   // console.log(sites)
-  if (isLoading) {
+  if (isLoading || isLoading2 || loading) {
     return <Loading />;
   }
 
@@ -73,16 +70,7 @@ const FcuFilterChange = () => {
     let PresentDate = new Date(currentDate);
     //console.log(PresentDate);
     const PresentChangingDate = new Date(PresentDate).toDateString();
-    /*   let yPresentDate = new Intl.DateTimeFormat("en", {
-      year: "numeric",
-    }).format(PresentDate);
-    let moPresentDate = new Intl.DateTimeFormat("en", {
-      month: "short",
-    }).format(PresentDate);
-    let daPresentDate = new Intl.DateTimeFormat("en", {
-      day: "2-digit",
-    }).format(PresentDate);
-    let PresentChangingDate = `${moPresentDate}-${daPresentDate}-${yPresentDate}`; */
+    
 
     /*  next FCU filter change date calculation */
 
@@ -121,58 +109,45 @@ const FcuFilterChange = () => {
       remark: data.remark,
     };
 
-    fetch(`http://localhost:5000/fcuFilterChangeAllRecord`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(fcuFilterChangeData),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          // toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((dgData) => {
-        //console.log(dgData);
-        if (dgData.insertedId) {
-          toast.success("Data Post Successfully");
-        }
-      });
-
-    fetch(
-      `http://localhost:5000/fcuFilterChangeLatestRecord/${siteID}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(fcuFilterChangeData),
+    const fcuFilterChange = async () => {
+      const { data } = await axiosSecure.post("/fcuFilterChangeAllRecord",fcuFilterChangeData)
+      if (data.insertedId) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'FCU Data has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
       }
-    )
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          // toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((fcuData) => {
-        //console.log(fcuData);
-        if (fcuData.upsertedCount || fcuData.modifiedCount) {
-          toast.success("Data Successfully Update");
-        }
-        setImageUrl("");
-        reset();
-      });
+      else{
+        toast.error(`Warning: ${data.msg}`);
+      }
+      
+    }
+    fcuFilterChange()
+
+    const fcuFilterChangeLatest = async () => {
+      const { data } = await axiosSecure.put(`/fcuFilterChangeLatestRecord/${siteID}`,fcuFilterChangeData)
+      if (data.acknowledged) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'FCU Data has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+      else{
+        toast.error(`Warning: ${data.msg}`);
+      }
+      reset()
+      setImageUrl("");
+      setIsLoading(false)
+    }
+    fcuFilterChangeLatest()
+
+    
   };
   /*  today find code */
   let date = new Date();
@@ -394,8 +369,9 @@ const FcuFilterChange = () => {
 
             <input
               type="submit"
-              className="btn btn-accent w-full max-w-xs m-2"
-              /*  disabled={!imgUrl ? true : false} */
+              className={isLoading ?"btn btn-accent btn-wide loading loading-spinner max-w-xs m-2"
+              :"btn btn-accent  btn-wide max-w-xs m-2"}
+              disabled={isLoading ? true:false}
               value="Submit-Data"
             />
           </form>

@@ -10,13 +10,16 @@ import Loading from "../Pages/SharedPage/Loading";
 import FcuMaterialRow from "./FcuMaterialRow";
 import useAdmin from "../Pages/Hook/useAdmin";
 import FcuFilterDel from "./FcuFilterDel";
-
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
+import Swal from "sweetalert2";
 const FcuMaterial = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
+  const [axiosSecure] = useAxiosSecure()
   const [visible, setVisible] = useState(false);
   const [fcuFilterDel, setFcuFilterDel] = useState([]);
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false)
+
 
   const {
     register,
@@ -30,6 +33,7 @@ const FcuMaterial = () => {
   let today = date.toLocaleDateString("en-CA");
 
   const onSubmit = (data) => {
+    setIsLoading(true)
     const filter = {
       receivingDate: data.receiveDate,
       receivingQuantity: data.receiveQuantity,
@@ -39,76 +43,49 @@ const FcuMaterial = () => {
       date: today,
     };
 
-    fetch(`http://localhost:5000/fcuFilter`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(filter),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((filter) => {
-        //console.log(filter);
-        if (filter.insertedCount) {
-          toast.success("Data Successfully Update");
-        }
-        reset();
-        setVisible(null);
-        refetch();
-      });
+    const fcuFilter = async () => {
+      const { data } = await axiosSecure.post("/fcuFilter", filter)
+      if (data.insertedId) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Fuel Data has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+      else {
+        toast.error(`Warning: ${data.msg}`);
+      }
+      reset()
+      setVisible(null);
+      refetch();
+      setIsLoading(false)
+    }
+    fcuFilter()
+
   };
 
-  const {
-    data: filterRecord,
-    isLoading,
-    refetch,
-  } = useQuery(["filterRecord"], () =>
-    fetch("http://localhost:5000/fcuFilter", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
+  const { data: filterRecord = [], refetch,loading } = useQuery({
+    queryKey: ["filterRecord"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/fcuFilter")
+      return res.data
+    }
+  })
   //console.log(filterRecord);
 
   /*  All filter Replace record */
-  const { data: fcuFilterReplace, isLoading2 } = useQuery(
-    ["fcuFilterReplace"],
-    () =>
-      fetch("http://localhost:5000/fcuFilterChangeAllRecord", {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }).then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          //  toast.error("Unauthorize Access")
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-  );
-  if (isLoading || isLoading2) {
+
+  const { data: fcuFilterReplace = [], isLoading2 } = useQuery({
+    queryKey: ["fcuFilterReplace"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/fcuFilterChangeAllRecord")
+      return res.data
+    }
+  })
+
+  if (isLoading || isLoading2 || loading) {
     return <Loading />;
   }
 

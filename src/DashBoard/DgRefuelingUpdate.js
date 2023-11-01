@@ -4,44 +4,37 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Loading from "../Pages/SharedPage/Loading";
 import background from "../../src/images/bb.jpg";
-import { signOut } from "firebase/auth";
 import auth from "../firebase.init";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useSiteList from "./../Pages/Hook/useSiteList";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const DgRefuelingUpdate = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
+  const [axiosSecure] = useAxiosSecure()
+  const [isLoading, setIsLoading] = useState(false)
   const [search, setSearch] = useState("");
   const [imgUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const {
+   const {
     register,
     reset,
     formState: { errors },
     handleSubmit,
   } = useForm();
 
-  const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("http://localhost:5000/dgRefuelingInfo", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
-  //console.log(siteList)
-  if (isLoading) {
+  const { data: sites = [], isLoading2 } = useQuery({
+    queryKey: ["sites"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/dgRefuelingInfo")
+      return res.data
+    }
+  })
+   //console.log(siteList)
+  if (isLoading || isLoading2 || loading) {
     return <Loading />;
   }
 
@@ -54,7 +47,6 @@ const DgRefuelingUpdate = () => {
       "https://api.imgbb.com/1/upload?key=1b570ca2c45d58b767860a466c63580e",
       {
         method: "POST",
-
         body: formData,
       }
     )
@@ -68,6 +60,7 @@ const DgRefuelingUpdate = () => {
   //console.log(imgUrl)
 
   const onSubmit = (data) => {
+    setIsLoading(true)
     const siteID = search;
     const presentSite = sites?.filter((site) => site.siteId === siteID);
     //console.log(presentSite)
@@ -102,70 +95,45 @@ const DgRefuelingUpdate = () => {
       remark: data.remark,
     };
 
-    fetch(
-      `http://localhost:5000/
-
-dgRefuelingInfo/${siteID}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(dgRefuelingData),
+    const updateDgRefueling = async () => {
+      const { data } = await axiosSecure.put(`dgRefuelingInfo/${siteID}`, dgRefuelingData)
+      if (data.acknowledged) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Fuel Data has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
       }
-    )
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((refuelData) => {
-        console.log(refuelData);
-        if (refuelData.upsertedCount || refuelData.modifiedCount) {
-          toast.success("Data Successfully Update");
-        }
-      });
+      else {
+        toast.error(`Warning: ${data.msg}`);
+      }
 
+    }
+    updateDgRefueling()
+    
     /* for posting all refueling data */
-    fetch(
-      `http://localhost:5000/
-
-dgAllRefueling`,
-      {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(dgRefuelingData),
+    const updateDgRefuelingAll = async () => {
+      const { data } = await axiosSecure.put(`dgAllRefueling`, dgRefuelingData)
+      if (data.insertedId) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Fuel Data has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
       }
-    )
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((refuelData) => {
-        console.log(refuelData);
-        if (refuelData.insertedId) {
-          toast.success(" 2nd Data Successfully Update", {
-            position: "top-center",
-          });
-        }
-        setImageUrl("");
-        reset();
-        setSearch("");
-        //console.log(pgData)
-      });
+      else {
+        toast.error(`Warning: ${data.msg}`);
+      }
+      reset()
+      setImageUrl("");
+      setIsLoading(false)
+    }
+    updateDgRefuelingAll()
+
   };
   /*  today find code */
   let date = new Date();
@@ -229,7 +197,7 @@ dgAllRefueling`,
                     message: " Date is required",
                   },
                 })}
-                //defaultValue={vv}
+              //defaultValue={vv}
               />
               <label className="label">
                 {errors.date?.type === "required" && (

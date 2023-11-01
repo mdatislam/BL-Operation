@@ -9,17 +9,19 @@ import auth from "../firebase.init";
 import Loading from "../Pages/SharedPage/Loading";
 import background from "../../src/images/bb.jpg";
 import useSiteList from "./../Pages/Hook/useSiteList";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const EMDataUpdate = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
   const [search, setSearch] = useState("");
+  const [axiosSecure]=useAxiosSecure()
   const navigate = useNavigate();
-  /*  const [preEmNo, setPreEmNo]= useState("")
-  const [preReading, setPreReading]= useState("")
-    */
-  const [imgUrl, setImageUrl] = useState("");
+   const [imgUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
+
   const {
     register,
     reset,
@@ -27,19 +29,7 @@ const EMDataUpdate = () => {
     handleSubmit,
   } = useForm();
 
-  const { data: sites, isLoading } = useQuery(["siteList"], () =>
-    fetch("http://localhost:5000/emInfo", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => res.json())
-  );
-  // console.log(services)
-  if (isLoading) {
-    return <Loading />;
-  }
-  //console.log(preEmNo)
+    //console.log(preEmNo)
 
   const handleImageUpload = (event) => {
     setLoading(true);
@@ -63,22 +53,12 @@ const EMDataUpdate = () => {
   };
   //console.log(imgUrl)
 
-  /*  const image = data.image[0];
-        const formData = new FormData();
-        formData.append('image', image);
-        const url = `https://api.imgbb.com/1/upload?key=${imageStorageKey}`;
-        fetch(url, {
-            method: 'POST',
-            body: formData
-        })
-        .then(res=>res.json())
-        .then(result =>{
-            if(result.success){
-                const img = result.data.url; */
+ 
   const onSubmit = (data) => {
+    setIsLoading(true)
     //console.log(" click me");
     const siteID = search;
-    const presentSite = sites.filter((site) => site.siteId === siteID);
+    const presentSite = siteList.filter((site) => site.siteId === siteID);
     //console.log(presentSite)
 
     const EmPreReading = presentSite.map((s) => s.EmReading);
@@ -99,37 +79,31 @@ const EMDataUpdate = () => {
       loadCurrent: data.loadCurrent,
       updaterName: user.displayName,
       updaterEmail: user.email,
-      url: imgUrl,
+      url: imgUrl || "",
       remark: data.remark,
     };
 
-    fetch(`http://localhost:5000/emInfo/${siteID}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(EMData),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((emData) => {
-        console.log(emData);
-        if (emData.upsertedCount || emData.modifiedCount) {
-          toast.success("Data Successfully Update");
-        }
-        setImageUrl("");
-        reset();
-        setSearch("");
-        //console.log(pgData)
-      });
+    const updateEm = async () => {
+      const { data } = await axiosSecure.put(`/emInfo/${siteID}`, EMData)
+      //console.log(data)
+      if (data.acknowledged) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'EM Data has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+      else{
+        toast.error(`Warning: ${data.msg}`);
+      }
+      reset()
+      setIsLoading(false)
+    }
+    updateEm()
+
+   
   };
   /*  today find code */
   let date = new Date();
@@ -156,6 +130,7 @@ const EMDataUpdate = () => {
             to="/EmInfo"
             className="btn btn-outline btn-primary font-semiBold text-xl mb-2"
           >
+          
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -362,11 +337,11 @@ const EMDataUpdate = () => {
 
             <input
               type="submit"
-              className="btn btn-accent w-full max-w-xs m-2"
-              /* disabled={!imgUrl ? true : false} */
+              className={isLoading ?"btn btn-accent btn-wide loading loading-spinner max-w-xs m-2"
+              :"btn btn-accent  btn-wide max-w-xs m-2"}
+              disabled={isLoading ? true:false}
               value="Submit-Data"
-              /*   <button className="btn btn-success">Success</button> */
-            />
+                          />
           </form>
         </div>
       </div>

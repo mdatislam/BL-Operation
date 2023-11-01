@@ -1,22 +1,24 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-
 import background from "../../src/images/bb.jpg";
-import { signOut } from "firebase/auth";
 import auth from "../firebase.init";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useSiteList from "./../Pages/Hook/useSiteList";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const DgUseMaterial = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
+  const [axiosSecure] = useAxiosSecure()
   const [search, setSearch] = useState("");
   const [isBattery, setIsBattery] = useState(false);
   const [isOther, setIsOther] = useState(false);
   const [material, setMaterial] = useState("");
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false)
+
   const {
     register,
     reset,
@@ -42,6 +44,7 @@ const DgUseMaterial = () => {
   };
 
   const onSubmit = (data) => {
+    setIsLoading(true)
     const useDgMaterial = {
       siteId: search,
       date: data.date2,
@@ -55,37 +58,27 @@ const DgUseMaterial = () => {
       remark: data.remark,
     };
 
-    fetch(
-      `http://localhost:5000/
-
-dgMaterialInfo/`,
-      {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(useDgMaterial),
+    const updateDgMeterials = async () => {
+      const { data } = await axiosSecure.post("/dgMaterialInfo", useDgMaterial)
+      if (data.insertedId) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Use material has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
       }
-    )
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((dgData) => {
-        console.log(dgData);
-        if (dgData.insertedId) {
-          toast.success("Data Successfully Update");
-        }
-        setMaterial("");
-        reset();
-        setSearch("");
-      });
+      else {
+        toast.error(`Warning: ${data.msg}`);
+      }
+      reset()
+      setMaterial("");
+      setSearch("");
+      setIsLoading(false)
+    }
+    updateDgMeterials()
+
   };
 
   /*  today find code */
@@ -213,7 +206,7 @@ dgMaterialInfo/`,
                 <option value="DG Battery">DG Battery</option>
                 <option value="RVD Timer">RVD Timer</option>
                 <option value="Relay">Relay</option>
-                <option value=" ">Other</option>
+                <option value="">Other</option>
               </select>
               <label className="label"></label>
             </div>
@@ -289,7 +282,9 @@ dgMaterialInfo/`,
 
             <input
               type="submit"
-              className="btn btn-accent w-full max-w-xs m-2"
+              className={isLoading ? "btn btn-accent btn-wide loading loading-spinner max-w-xs m-2"
+                : "btn btn-accent  btn-wide max-w-xs m-2"}
+              disabled={isLoading ? true : false}
               value="Submit-Data"
             />
           </form>
