@@ -9,8 +9,12 @@ import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 import Pagination from "../Pages/SharedPage/Pagination";
 import TableCaption from "../Pages/SharedPage/TableCaption";
+import { useAuthState } from "react-firebase-hooks/auth";
+import useAdmin from "../Pages/Hook/useAdmin";
 
 const EminfoList = () => {
+  const [user] = useAuthState(auth)
+  const [admin] = useAdmin(user)
   const [axiosSecure] = useAxiosSecure()
   const [searchEmInfo, setSearchEmInfo] = useState("");
   const [filter, setFilter] = useState([]);
@@ -38,7 +42,7 @@ const EminfoList = () => {
   }, [pageSize, selectPage, totalPage, actualDataLength, axiosSecure])
 
 
-  const { isLoading, data: EmInfo = [] } = useQuery({
+  const { isLoading, data: EmInfo = [],refetch } = useQuery({
     queryKey: ["EmInfo", pageSize, selectPage],
     queryFn: async () => {
       const res = await axiosSecure.get(`/emInfo?size=${pageSize}&page=${selectPage}`)
@@ -170,6 +174,7 @@ const EminfoList = () => {
               </th>
 
               <th>Remarks</th>
+              { admin && <th>Action</th>}
             </tr>
           </thead>
           <tbody>
@@ -179,6 +184,9 @@ const EminfoList = () => {
                   key={emInfo._id}
                   emInfo={emInfo}
                   index={index}
+                  admin={admin}
+                  axiosSecure={axiosSecure}
+                  refetch={refetch}
                 />
               ))
               : EmInfo?.map((emInfo, index) => (
@@ -186,6 +194,9 @@ const EminfoList = () => {
                   key={emInfo._id}
                   emInfo={emInfo}
                   index={index}
+                  admin={admin}
+                  axiosSecure={axiosSecure}
+                  refetch={refetch}
                 />
               ))}
           </tbody>

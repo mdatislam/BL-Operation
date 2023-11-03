@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
-import Loading from "../Pages/SharedPage/Loading";
 import background from "../../src/images/bb.jpg";
 import useSiteList from "./../Pages/Hook/useSiteList";
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
@@ -16,9 +15,8 @@ const EMDataUpdate = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
   const [search, setSearch] = useState("");
-  const [axiosSecure]=useAxiosSecure()
-  const navigate = useNavigate();
-   const [imgUrl, setImageUrl] = useState("");
+  const [axiosSecure] = useAxiosSecure()
+  const [imgUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
 
@@ -29,7 +27,7 @@ const EMDataUpdate = () => {
     handleSubmit,
   } = useForm();
 
-    //console.log(preEmNo)
+  //console.log(preEmNo)
 
   const handleImageUpload = (event) => {
     setLoading(true);
@@ -53,7 +51,7 @@ const EMDataUpdate = () => {
   };
   //console.log(imgUrl)
 
- 
+
   const onSubmit = (data) => {
     setIsLoading(true)
     //console.log(" click me");
@@ -95,7 +93,7 @@ const EMDataUpdate = () => {
           timer: 1500
         })
       }
-      else{
+      else {
         toast.error(`Warning: ${data.msg}`);
       }
       reset()
@@ -103,7 +101,7 @@ const EMDataUpdate = () => {
     }
     updateEm()
 
-   
+
   };
   /*  today find code */
   let date = new Date();
@@ -130,7 +128,7 @@ const EMDataUpdate = () => {
             to="/EmInfo"
             className="btn btn-outline btn-primary font-semiBold text-xl mb-2"
           >
-          
+
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -168,7 +166,7 @@ const EMDataUpdate = () => {
                     message: " Date is required",
                   },
                 })}
-                //defaultValue={vv}
+              //defaultValue={vv}
               />
               <label className="label">
                 {errors.date?.type === "required" && (
@@ -337,11 +335,11 @@ const EMDataUpdate = () => {
 
             <input
               type="submit"
-              className={isLoading ?"btn btn-accent btn-wide loading loading-spinner max-w-xs m-2"
-              :"btn btn-accent  btn-wide max-w-xs m-2"}
+              className={isLoading ? "btn btn-warning btn-wide loading max-w-xs m-2"
+                : "btn btn-success  btn-wide max-w-xs m-2"}
               /* disabled={isLoading ? true:false} */
               value="Submit-Data"
-                          />
+            />
           </form>
         </div>
       </div>

@@ -13,7 +13,7 @@ const ViewAllIssue = () => {
     const [user]=useAuthState(auth)
     const [admin,adminLoading]=useAdmin(user)
     const [axiosSecure] = useAxiosSecure()
-    const { data: allIssues, refetch } = useQuery({
+    const {isLoading, data: allIssues, refetch } = useQuery({
         queryKey: ["allIssues"],
         //enabled:!adminLoading,
         queryFn: async () => {
@@ -22,7 +22,7 @@ const ViewAllIssue = () => {
         }
     })
 
-    if(adminLoading){
+    if(adminLoading || isLoading){
         <Loading/>
     }
 

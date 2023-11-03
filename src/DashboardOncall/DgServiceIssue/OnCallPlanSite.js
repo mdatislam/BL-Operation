@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import useAxiosSecure from '../../Pages/Hook/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import { addDays, format } from 'date-fns';
+import Loading from '../../Pages/SharedPage/Loading';
 
 const OnCallPlanSite = () => {
     const [axiosSecure] = useAxiosSecure()
@@ -17,26 +18,28 @@ const OnCallPlanSite = () => {
 
     //console.log(futureDay)
 
-    
+
     let date = new Date()
     const targetDate = addDays(date, futureDay)
     const formattedTargetDate = format(targetDate, "yyyy-MM-dd")
     //console.log(formattedTargetDate)
-    
-    const { data: planDgServiceSite=[] } = useQuery({
-        queryKey: ["planDgServiceSite",formattedTargetDate],
+
+    const { isLoading, data: planDgServiceSite = [] } = useQuery({
+        queryKey: ["planDgServiceSite", formattedTargetDate],
         queryFn: async () => {
             const res = await axiosSecure.get(`/dgServiceInfo/planSite/${formattedTargetDate}`)
             return res.data
         }
     })
     //console.log(planDgServiceSite)
-
+    if (isLoading) {
+        return <Loading />;
+    }
     return (
         <div className="card w-full px-2 md:w-3/4 md:px-6 mx-auto bg-base-100 shadow-xl mt-4 py-2">
             <div className='py-4 mb-2'>
                 <h2 className='text-xl font-semibold py-2 text-purple-500'>
-                   ** Till How long day you have seen DG Service Plan?**
+                    ** Till How long day you have seen DG Service Plan?**
                 </h2>
                 <form onSubmit={handleTillDate}>
                     <div className='flex items-center justify-center'>

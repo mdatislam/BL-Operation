@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import useAxiosSecure from '../../Pages/Hook/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import './ViewIssues.css'
-import { DocumentCheckIcon, MegaphoneIcon, PlusCircleIcon } from '@heroicons/react/24/solid';
+import { DocumentCheckIcon, PlusCircleIcon } from '@heroicons/react/24/solid';
 import Swal from 'sweetalert2';
 import ModifyIssue from './ModifyIssue';
 import { Link } from 'react-router-dom';
+import Loading from '../../Pages/SharedPage/Loading';
 
 const ViewIssues = () => {
     const [axiosSecure] = useAxiosSecure()
     const [modifyIssue, setModifyIssue] = useState("")
-    const { data: issues, refetch } = useQuery({
+    const { isLoading, data: issues = [], refetch, } = useQuery({
         queryKey: ["issues"],
         queryFn: async () => {
             const res = await axiosSecure.get("/siteIssues/pending")
@@ -18,6 +19,10 @@ const ViewIssues = () => {
         }
     })
     refetch()
+
+    if (isLoading) {
+        return <Loading />;
+    }
 
     return (
         <div>
@@ -42,7 +47,7 @@ const ViewIssues = () => {
                                         <caption class=" caption-top py-2 bg-zinc-600 rounded-t-lg ">
                                             <div className=' '>
                                                 <h2 className='text-center text-xl font-bold  text-white'> Pending Issue List</h2>
-                                               
+
                                             </div>
                                         </caption>
 
@@ -71,7 +76,7 @@ const ViewIssues = () => {
                                                         <td>{issue.siteId}</td>
                                                         <td >{issue.date}</td>
                                                         <td className='whitespace-pre-line '>{issue.issueDetail}</td>
-                                                        
+
                                                     </tr>
                                                 ))
                                             }

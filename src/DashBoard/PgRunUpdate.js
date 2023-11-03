@@ -21,8 +21,7 @@ const PgRunUpdate = () => {
   const [axiosSecure] = useAxiosSecure()
   const [search, setSearch] = useState("");
   const [PgList] = usePgList();
-  const navigate = useNavigate();
-  const [isLoading2, setIsLoading] = useState(false)
+   const [isLoading2, setIsLoading] = useState(false)
   const {
     register,
     reset,
@@ -38,7 +37,7 @@ const PgRunUpdate = () => {
   );
 
   // console.log(services)
-  if (isLoading) {
+  if (isLoading || isLoading2 ) {
     return <Loading />;
   }
 
@@ -372,8 +371,8 @@ const PgRunUpdate = () => {
 
             <input
               type="submit"
-              className={isLoading ? "btn btn-accent btn-wide loading loading-spinner max-w-xs m-2"
-                : "btn btn-accent  btn-wide max-w-xs m-2"}
+              className={isLoading ? "btn btn-warning btn-wide loading  max-w-xs m-2"
+                : "btn btn-success  btn-wide max-w-xs m-2"}
               /* disabled={isLoading2 ? true : false} */
               value="Submit-Data"
             /*   <button className="btn btn-success">Success</button> */

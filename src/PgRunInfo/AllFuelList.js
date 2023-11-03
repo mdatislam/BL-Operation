@@ -24,7 +24,7 @@ const AllFuelList = () => {
 
   /* For Pagination code */
   const [selectPage, setSelectPage] = useState("0")
-  const [pageSize, setPageSize] = useState("30");
+  const [pageSize, setPageSize] = useState("50");
   const [totalPage, setTotalPage] = useState("1")
   const [actualDataLength, setDataLength] = useState("10")
 

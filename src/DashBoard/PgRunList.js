@@ -31,7 +31,7 @@ const PgRunList = () => {
     data: pgRunData,
         refetch,
   } = useQuery({
-    queryKey:["pgRunList",user?.email],
+    queryKey:["pgRunData",user?.email],
     queryFn:async()=>{
       const res= await axiosSecure.get(`/pgRunAllList?email=${user.email}`)
       return res.data
@@ -163,7 +163,7 @@ const PgRunList = () => {
           </thead>
           <tbody>
             {searchPgRun.length > 0
-              ? filter.map((pgRun, index) => (
+              ? filter?.map((pgRun, index) => (
                   <PgRunRows
                     key={pgRun._id}
                     pgRun={pgRun}
@@ -172,7 +172,7 @@ const PgRunList = () => {
                     //fuelConsume={fuelConsume}
                   ></PgRunRows>
                 ))
-              : pgRunData.map((pgRun, index) => (
+              : pgRunData?.map((pgRun, index) => (
                   <PgRunRows
                     key={pgRun._id}
                     pgRun={pgRun}

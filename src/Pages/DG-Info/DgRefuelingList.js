@@ -1,32 +1,34 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Link,} from "react-router-dom";
 import Loading from "../SharedPage/Loading";
 import DgRefuelingRow from "./DgRefuelingRow";
 import { CSVLink } from "react-csv";
-import { signOut } from "firebase/auth";
 import auth from "../../firebase.init";
 import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
+import useAxiosSecure from "../Hook/useAxiosSecure";
+import { useAuthState } from "react-firebase-hooks/auth";
+import useAdmin from "../Hook/useAdmin";
 
 const DgRefuelingList = () => {
-  const navigate = useNavigate();
-  const {data:dgRefueling, isLoading  } = useQuery(["DgRefueling"], () =>
-    fetch("https://backend.bloperation.com/dgRefuelingInfo", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
+const [axiosSecure]=useAxiosSecure()
+const [user] = useAuthState(auth)
+  const [admin] = useAdmin(user)
+
+const { data: dgRefueling=[],isLoading,refetch } = useQuery({
+  queryKey: ["dgRefueling"],
+  queryFn: async () => {
+      const res = await axiosSecure.get("/dgRefuelingInfo")
+      return res.data
+  }
+})
+
+// console.log(services)
+if (isLoading) {
+  return <Loading />;
+}
+
+  
   // console.log(services)
   if (isLoading) {
     return <Loading />;
@@ -114,11 +116,18 @@ const DgRefuelingList = () => {
               </th>
 
               <th>Remarks</th>
+             {admin && <th>Action</th>}
+
             </tr>
           </thead>
           <tbody>
             {dgRefueling?.map((refuel, index) => (
-              <DgRefuelingRow key={refuel._id} refuel={refuel} index={index} />
+              <DgRefuelingRow key={refuel._id} 
+              refuel={refuel} index={index}
+              admin={admin}
+                  axiosSecure={axiosSecure}
+                  refetch={refetch}
+               />
             ))}
           </tbody>
         </table>

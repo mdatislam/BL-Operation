@@ -8,6 +8,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import useSiteList from "./../Pages/Hook/useSiteList";
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 import Swal from "sweetalert2";
+import { BackwardIcon } from "@heroicons/react/24/solid";
 
 const DgUseMaterial = () => {
   const [user] = useAuthState(auth);
@@ -106,20 +107,8 @@ const DgUseMaterial = () => {
             to="/DgMaterial"
             className="btn  btn-primary font-semiBold text-xl mb-2"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
-              />
-            </svg>
+            <BackwardIcon className="h-6 w-6 text-blue-400" />
+            
             &nbsp; Back to Materials List
           </Link>
           <h2 className="text-center text-secondary-focus text-2xl font-bold mb-3">
@@ -193,12 +182,14 @@ const DgUseMaterial = () => {
             {/* Name of Use Materials */}
             <div className="form-control w-full max-w-xs">
               <select
+              value={material}
                 className="input input-bordered w-full max-w-xs"
                 type="text"
                 name="material"
                 placeholder=" select Use material "
                 onChange={handleMaterialUpdate}
               >
+                <option value="">----Select Items----</option>
                 <option value="MC-100A">MC-100A</option>
                 <option value="MC-80A">MC-80A</option>
                 <option value="MC-60A">MC-60A</option>
@@ -251,19 +242,10 @@ const DgUseMaterial = () => {
                 type="text"
                 placeholder=" If applicable, present DG RunHour,  "
                 className="input input-bordered w-full max-w-xs"
-                {...register("rhReading", {
-                  required: {
-                    value: true,
-                    message: " DG servicing RH Required",
-                  },
-                })}
+                {...register("rhReading")}
               />
               <label className="label">
-                {errors.rhReading?.type === "required" && (
-                  <span className="label-text-alt text-red-500">
-                    {errors.rhReading.message}
-                  </span>
-                )}
+                
               </label>
             </div>
 
@@ -282,8 +264,8 @@ const DgUseMaterial = () => {
 
             <input
               type="submit"
-              className={isLoading ? "btn btn-accent btn-wide loading loading-spinner max-w-xs m-2"
-                : "btn btn-accent  btn-wide max-w-xs m-2"}
+              className={isLoading ? "btn btn-warning btn-wide loading  max-w-xs m-2"
+                : "btn  btn-success btn-wide max-w-xs m-2"}
               /* disabled={isLoading ? true : false} */
               value="Submit-Data"
             />

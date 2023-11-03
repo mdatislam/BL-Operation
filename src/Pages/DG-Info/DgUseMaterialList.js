@@ -1,36 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Link, } from "react-router-dom";
 import Loading from "../SharedPage/Loading";
 import DgMaterialRows from "./DgMaterialRows";
 import { CSVLink } from "react-csv";
-import { signOut } from "firebase/auth";
-import auth from "../../firebase.init";
-import { ArrowDownTrayIcon} from '@heroicons/react/24/solid'
+import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 const DgUseMaterialList = () => {
-  const navigate = useNavigate();
-  const { data: dgMaterialInfo, isLoading } = useQuery(["DgInfoList"], () =>
-    fetch("https://backend.bloperation.com/dgMaterialInfo", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
+
+  const [axiosSecure] = useAxiosSecure()
+
+
+  const { data: dgMaterialInfo = [], isLoading,refetch } = useQuery({
+    queryKey: ["dgMaterialInfo"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/dgMaterialInfo")
+      return res.data
+    }
+  })
+
   // console.log(services)
   if (isLoading) {
     return <Loading />;
   }
+
   return (
     <div className="mt-8 px-4 mb-4">
       <div className="grid grid-cols-4 lg:grid-cols-8 h-12 card bg-[#008282] rounded-lg justify-self-start mb-8 gap-x-16">
@@ -51,8 +45,8 @@ const DgUseMaterialList = () => {
           filename="dgMaterialInfo"
           className="btn btn-outline btn-info mb-2"
         >
-          <ArrowDownTrayIcon  className="h-6 w-6 text-blue-500" />
-          
+          <ArrowDownTrayIcon className="h-6 w-6 text-blue-500" />
+
           &nbsp; Download
         </CSVLink>
       </div>
@@ -84,11 +78,14 @@ const DgUseMaterialList = () => {
               </th>
 
               <th>Remarks</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {dgMaterialInfo?.map((dgInfo, index) => (
-              <DgMaterialRows key={dgInfo._id} dgInfo={dgInfo} index={index} />
+              <DgMaterialRows key={dgInfo._id}
+               dgInfo={dgInfo} index={index} 
+               refetch={refetch}/>
             ))}
           </tbody>
         </table>

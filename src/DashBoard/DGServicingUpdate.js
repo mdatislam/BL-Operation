@@ -98,7 +98,7 @@ const DGServicingUpdate = () => {
       url: imgUrl,
       remark: data.remark,
     };
-    const updateDgServicing = async () => {
+    const updateDgServicingAll = async () => {
       const { data } = await axiosSecure.post("/dgAllServicing", dgServicingData)
       if (data.insertedId) {
         Swal.fire({
@@ -114,9 +114,9 @@ const DGServicingUpdate = () => {
       }
       
     }
-    updateDgServicing()
+    updateDgServicingAll()
 
-    const updateDgServicingAll = async () => {
+    const updateDgServicing = async () => {
       const { data } = await axiosSecure.put(`dgServiceInfo/${siteID}`, dgServicingData)
       if (data.acknowledged) {
         Swal.fire({
@@ -134,7 +134,7 @@ const DGServicingUpdate = () => {
       setImageUrl("");
       setIsLoading(false)
     }
-    updateDgServicingAll()
+    updateDgServicing()
 
   };
   /*  today find code */
@@ -352,7 +352,8 @@ const DGServicingUpdate = () => {
 
             <input
               type="submit"
-              className="btn btn-accent w-full max-w-xs m-2"
+              className={isLoading ? "btn btn-warning btn-wide loading max-w-xs m-2"
+              : "btn btn-accent btn-wide max-w-xs m-2"}
               /*  disabled={!imgUrl ? true : false} */
               value="Submit-Data"
             />

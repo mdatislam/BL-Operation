@@ -320,8 +320,8 @@ const FcuUpdate = () => {
 
                         <input
                             type="submit"
-                            className={isLoading ? "btn btn-accent btn-wide loading loading-spinner max-w-xs m-2"
-                                : "btn btn-accent  btn-wide max-w-xs m-2"}
+                            className={isLoading ? "btn btn-warning btn-wide loading max-w-xs m-2"
+                                : "btn btn-success  btn-wide max-w-xs m-2"}
                            /*  disabled={isLoading ? true : false} */
                             value="Submit-Data"
                         />

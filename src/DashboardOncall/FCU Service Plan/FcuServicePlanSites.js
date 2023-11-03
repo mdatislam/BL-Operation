@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import useAxiosSecure from '../../Pages/Hook/useAxiosSecure';
 import { addDays, format } from 'date-fns';
 import { useQuery } from '@tanstack/react-query';
+import Loading from '../../Pages/SharedPage/Loading';
 
 const FcuServicePlanSites = () => {
 
@@ -24,7 +25,7 @@ const FcuServicePlanSites = () => {
     const formattedTargetDate = format(targetDate, "dd-MMM-yy")
  console.log(formattedTargetDate)
     
-    const { data: planFcuServiceSite=[] } = useQuery({
+    const {isLoading, data: planFcuServiceSite=[] } = useQuery({
         queryKey: ["planFcuServiceSite",formattedTargetDate],
         queryFn: async () => {
             const res = await axiosSecure.get(`/fcuFilterChangeLatestRecord/plan/${formattedTargetDate}`)
@@ -32,7 +33,9 @@ const FcuServicePlanSites = () => {
         }
     })
    // console.log(planFcuServiceSite)
-
+if (isLoading) {
+  return <Loading />;
+}
     return (
         <div className="card w-full px-2 md:w-3/4 md:px-6 mx-auto bg-base-100 shadow-xl mt-4 py-2">
             <div className='py-2 mb-2 px-4'>
