@@ -195,8 +195,7 @@ const PgRunUpdate = () => {
               {/*  For site list auto suggestion */}
 
               <div className=" border-0 rounded-lg w-3/4 max-w-xs mt-2">
-                {siteList
-                  .filter((item) => {
+                {siteList?.filter((item) => {
                     const searchItem = search.toLowerCase();
                     const name1 = item.siteId.toLowerCase();
                     return (
@@ -375,7 +374,7 @@ const PgRunUpdate = () => {
               type="submit"
               className={isLoading ? "btn btn-accent btn-wide loading loading-spinner max-w-xs m-2"
                 : "btn btn-accent  btn-wide max-w-xs m-2"}
-              disabled={isLoading2 ? true : false}
+              /* disabled={isLoading2 ? true : false} */
               value="Submit-Data"
             /*   <button className="btn btn-success">Success</button> */
             />

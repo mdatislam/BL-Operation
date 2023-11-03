@@ -284,7 +284,7 @@ const DgUseMaterial = () => {
               type="submit"
               className={isLoading ? "btn btn-accent btn-wide loading loading-spinner max-w-xs m-2"
                 : "btn btn-accent  btn-wide max-w-xs m-2"}
-              disabled={isLoading ? true : false}
+              /* disabled={isLoading ? true : false} */
               value="Submit-Data"
             />
           </form>

@@ -21,7 +21,7 @@ const FcuMaintenanceList = () => {
   const [searchFCU, setSearchFCU] = useState("");
   const [filter, setFilter] = useState([]);
 
-  const { data: fcuFilterRecord = [], refetch } = useQuery({
+  const { data: fcuFilterRecord = [], refetch,isLoading } = useQuery({
     queryKey: ["fcuFilterRecord"],
    // enabled: !adminLoading,
     queryFn: async () => {
@@ -30,7 +30,7 @@ const FcuMaintenanceList = () => {
     }
   })
 
-  if(loading || adminLoading){
+  if(loading || adminLoading ||isLoading){
     <Loading/>
   }
 

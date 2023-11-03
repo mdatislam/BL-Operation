@@ -52,12 +52,13 @@ const FuelUpdateOncall = () => {
           showConfirmButton: false,
           timer: 1500
         })
+        reset()
+        setIsLoading(false)
       }
-      else{
+      else {
         toast.error(`Warning: ${data.msg}`);
       }
-      reset()
-      setIsLoading(false)
+
     }
     updateFuel()
   };
@@ -178,14 +179,16 @@ const FuelUpdateOncall = () => {
               />
               <label className="label"></label>
             </div>
+
             <input
               type="submit"
-              className={isLoading ?"btn btn-accent btn-wide loading loading-spinner max-w-xs m-2"
-              :"btn btn-accent  btn-wide max-w-xs m-2"}
-              disabled={isLoading ? true:false}
+              className={isLoading ? "btn btn-warning btn-wide loading  max-w-xs m-2"
+                : "btn btn-accent  btn-wide max-w-xs m-2"}
+              /* disabled={isLoading ? true:false} */
               value="Submit-Data"
-            /*   <button className="btn btn-success">Success</button> */
+
             />
+
           </form>
         </div>
       </div>

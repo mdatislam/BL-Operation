@@ -75,6 +75,7 @@ totalPage={totalPage} actualDataLength={actualDataLength}
                         {
                             [...Array(totalPage).keys()].map(number => (<button
                                 onClick={() => setSelectPage(number)}
+                                key={number}
                                 className={+selectPage === number ? "btn btn-sm btn-secondary mr-1" : " btn btn-sm btn-outline mr-1"}
                             >{number + 1}</button>))
                         }
