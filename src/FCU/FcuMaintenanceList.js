@@ -23,15 +23,14 @@ const FcuMaintenanceList = () => {
 
   const {isLoading , data: fcuFilterRecord = [], refetch} = useQuery({
     queryKey: ["fcuFilterRecord"],
-   // enabled: !adminLoading,
-    queryFn: async () => {
+       queryFn: async () => {
       const res = await axiosSecure.get("/fcuFilterChangeLatestRecord")
       return res.data
     }
   })
 
   if(loading || adminLoading ||isLoading){
-    <Loading/>
+    <Loading />
   }
 
   //console.log(del)
@@ -78,7 +77,7 @@ const FcuMaintenanceList = () => {
             to="/Dashboard/FcuServiceUpdate"
             className="flex btn btn-outline btn-primary btn-sm"
           >
-            Data UPDATEEE
+            Data UPDATE
           </Link>
 
           {/* FCU filter calcultion */}

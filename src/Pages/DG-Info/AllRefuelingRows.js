@@ -75,7 +75,7 @@ const AllRefuelingRows = ({ refuel, index}) => {
         </div>
       </td>
 
-      <td>{remark}</td>
+      <td className='whitespace-pre-line border border-slate-300 '>{remark}</td>
     </tr>
   );
 };

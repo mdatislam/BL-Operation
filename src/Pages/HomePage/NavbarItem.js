@@ -7,7 +7,7 @@ const NavbarItem = () => {
         <h2 className="text-[#ed38c0e4] text-2xl font-bold text-center py-4">
           Query Items
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-items-center ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center ">
           {/* 1st Item */}
           <NavLink className="rounded-lg my-4 px-4" to="/Dashboard">
             <div className="card w-64  bg-base-100 shadow-xl   outline-offset-4 outline hover:outline-blue-400 ">

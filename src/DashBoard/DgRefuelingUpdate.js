@@ -16,10 +16,10 @@ const DgRefuelingUpdate = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
   const [axiosSecure] = useAxiosSecure()
-  const [isLoading, setIsLoading] = useState(false)
-  const [search, setSearch] = useState("");
+    const [search, setSearch] = useState("");
   const [imgUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  
    const {
     register,
     reset,
@@ -27,7 +27,7 @@ const DgRefuelingUpdate = () => {
     handleSubmit,
   } = useForm();
 
-  const { data: sites = [], isLoading2 } = useQuery({
+  const {isLoading, data: sites = [],  } = useQuery({
     queryKey: ["sites"],
     queryFn: async () => {
       const res = await axiosSecure.get("/dgRefuelingInfo")
@@ -35,7 +35,7 @@ const DgRefuelingUpdate = () => {
     }
   })
    //console.log(siteList)
-  if (isLoading || isLoading2 || loading) {
+  if (isLoading|| loading) {
     return <Loading />;
   }
 
@@ -61,7 +61,7 @@ const DgRefuelingUpdate = () => {
   //console.log(imgUrl)
 
   const onSubmit = (data) => {
-    setIsLoading(true)
+ 
     const siteID = search;
     const presentSite = sites?.filter((site) => site.siteId === siteID);
     //console.log(presentSite)
@@ -106,7 +106,7 @@ const DgRefuelingUpdate = () => {
           showConfirmButton: false,
           timer: 1500
         })
-      }
+              }
       else {
         toast.error(`Warning: ${data.msg}`);
       }
@@ -116,7 +116,7 @@ const DgRefuelingUpdate = () => {
     
     /* for posting all refueling data */
     const updateDgRefuelingAll = async () => {
-      const { data } = await axiosSecure.put(`dgAllRefueling`, dgRefuelingData)
+      const { data } = await axiosSecure.post(`dgAllRefueling`, dgRefuelingData)
       if (data.insertedId) {
         Swal.fire({
           position: 'top-end',
@@ -125,13 +125,14 @@ const DgRefuelingUpdate = () => {
           showConfirmButton: false,
           timer: 1500
         })
+        reset()
+        setImageUrl("");
+      
       }
       else {
         toast.error(`Warning: ${data.msg}`);
       }
-      reset()
-      setImageUrl("");
-      setIsLoading(false)
+     
     }
     updateDgRefuelingAll()
 

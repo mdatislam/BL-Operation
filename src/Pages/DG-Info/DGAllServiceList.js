@@ -21,7 +21,7 @@ const DGAllServiceList = () => {
   const [isChecked, setIsChecked] = useState("");
   /*  All DG service record */
 
-  const { data: dgAllServiceInfo, refetch, isLoading } = useQuery({
+  const {isLoading , data: dgAllServiceInfo, refetch, } = useQuery({
     queryKey: ["dgAllServiceInfo"],
     queryFn: async () => {
       const res = await axiosSecure.get("/dgAllServiceInfo")
@@ -48,7 +48,7 @@ const DGAllServiceList = () => {
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.isConfirmed) {
-          axiosSecure.delete(`/dgAllServiceInfo/multiDelete`)
+          axiosSecure.delete("/dgAllServiceInfo/multiDelete",isChecked)
             .then(deleteRes => {
               if (deleteRes.data.deletedCount > 0) {
                 refetch()

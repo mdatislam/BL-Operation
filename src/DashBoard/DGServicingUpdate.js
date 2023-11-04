@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import Loading from "../Pages/SharedPage/Loading";
 import background from "../../src/images/bb.jpg";
 import auth from "../firebase.init";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useSiteList from "./../Pages/Hook/useSiteList";
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
@@ -18,7 +18,8 @@ const DGServicingUpdate = () => {
   const [search, setSearch] = useState("");
   const [imgUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState(false)
+  const navigate= useNavigate()
+ 
 
   const {
     register,
@@ -28,7 +29,7 @@ const DGServicingUpdate = () => {
   } = useForm();
 
 
-  const { data: sites = [], isLoading2 } = useQuery({
+  const {isLoading, data: sites = [], } = useQuery({
     queryKey: ["sites"],
     queryFn: async () => {
       const res = await axiosSecure.get("/dgServiceInfo")
@@ -37,7 +38,7 @@ const DGServicingUpdate = () => {
   })
 
   // console.log(sites)
-  if (isLoading || isLoading2 || loading) {
+  if (isLoading || loading) {
     return <Loading />;
   }
 
@@ -64,7 +65,7 @@ const DGServicingUpdate = () => {
   //console.log(imgUrl)
 
   const onSubmit = (data) => {
-    setIsLoading(true)
+   
     /*  next DG servicing date calculation */
     const date3 = data.date2;
     let presentServiceDate = new Date(date3).toDateString();
@@ -126,13 +127,14 @@ const DGServicingUpdate = () => {
           showConfirmButton: false,
           timer: 1500
         })
+        reset()
+        setImageUrl("");
+        navigate("/DgServicing")
       }
       else {
         toast.error(`Warning: ${data.msg}`);
       }
-      reset()
-      setImageUrl("");
-      setIsLoading(false)
+         
     }
     updateDgServicing()
 
