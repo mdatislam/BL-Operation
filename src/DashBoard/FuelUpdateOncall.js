@@ -7,11 +7,12 @@ import useUserList from "../Pages/Hook/useUserList";
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 import Swal from "sweetalert2";
 
+
 const FuelUpdateOncall = () => {
   const [user] = useAuthState(auth);
   const [userList] = useUserList()
   const [axiosSecure] = useAxiosSecure()
-  const [isLoading, setIsLoading] = useState(false)
+  
 
   const {
     register,
@@ -20,6 +21,7 @@ const FuelUpdateOncall = () => {
     handleSubmit,
   } = useForm();
 
+ 
   /*  today find code */
   let date = new Date();
   date.setDate(date.getDate());
@@ -28,7 +30,7 @@ const FuelUpdateOncall = () => {
   const availableUser = userList?.filter((u) => u.name !== user.displayName);
 
   const onSubmit = (data) => {
-    setIsLoading(true)
+    
     const receive = userList?.filter((x) => x.name === data.fuelReceiver);
 
     const fuelData = {
@@ -53,7 +55,7 @@ const FuelUpdateOncall = () => {
           timer: 1500
         })
         reset()
-        setIsLoading(false)
+    
       }
       else {
         toast.error(`Warning: ${data.msg}`);
@@ -157,7 +159,7 @@ const FuelUpdateOncall = () => {
                   {" "}
                   -------- Select Fuel Receiver Name-------{" "}
                 </option>
-                {availableUser.map((user) => (
+                {availableUser?.map((user) => (
                   <option value={user.name}>{user.name} </option>
                 ))}
               </select>
@@ -182,8 +184,7 @@ const FuelUpdateOncall = () => {
 
             <input
               type="submit"
-              className={isLoading ? "btn btn-warning btn-wide loading  max-w-xs m-2"
-                : "btn btn-accent  btn-wide max-w-xs m-2"}
+              className= "btn btn-success btn-wide max-w-xs m-2"
               /* disabled={isLoading ? true:false} */
               value="Submit-Data"
 

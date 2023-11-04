@@ -17,7 +17,6 @@ const FuelUpdate = () => {
   const [userList]=useUserList()
   const [vehicleList]=useVehicleList()
    const [axiosSecure]=useAxiosSecure()
-   const [isLoading, setIsLoading] = useState(false)
   const [search, setSearch] = useState("");
   //const [admin] = useAdmin(user);
   const [PgList] = usePgList();
@@ -72,12 +71,13 @@ const FuelUpdate = () => {
           showConfirmButton: false,
           timer: 1500
         })
+        reset()
+     
       }
       else{
         toast.error(`Warning: ${data.msg}`);
       }
-      reset()
-      setIsLoading(false)
+      
     }
     updateFuel()
 
@@ -291,8 +291,7 @@ const FuelUpdate = () => {
             </div>
             <input
               type="submit"
-              className={isLoading ?"btn btn-accent btn-wide loading loading-spinner max-w-xs m-2"
-              :"btn btn-accent  btn-wide max-w-xs m-2"}
+              className="btn btn-success btn-wide max-w-xs m-2"
              /*  disabled={isLoading ? true:false} */
               value="Submit-Data"
              

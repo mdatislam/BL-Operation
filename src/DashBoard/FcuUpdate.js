@@ -19,10 +19,9 @@ const FcuUpdate = () => {
     const [axiosSecure] = useAxiosSecure()
     const [search, setSearch] = useState("");
     const navigate = useNavigate()
-    const [isLoading, setIsLoading] = useState(false)
     const { register, reset, handleSubmit, formState: { errors }, } = useForm()
 
-    const { data: FcuRecord=[] } = useQuery({
+    const { data: FcuRecord = [] } = useQuery({
         queryKey: ["FcuRecord"],
         enabled: !loading,
         queryFn: async () => {
@@ -37,7 +36,7 @@ const FcuUpdate = () => {
     let today = date.toLocaleDateString("en-CA");
 
     const onSubmit = (data) => {
-        setIsLoading(true)
+
         const serviceDate = new Date(data.date2)
         const formattedServiceDate = format(serviceDate, "dd-MM-yyyy")
         const nextServiceDate = addDays(serviceDate, 120)
@@ -77,10 +76,10 @@ const FcuUpdate = () => {
                 toast.error(`Warning: ${data.msg}`);
             }
             reset()
-            setIsLoading(false)
+
         }
         updateFuel()
-        
+
         axiosSecure.put(`/fcuFilterChangeLatestRecord/${search}`, serviceInfo)
             .then(putRes => {
                 if (putRes.data.upsertedCount || putRes.data.modifiedCount) {
@@ -320,9 +319,8 @@ const FcuUpdate = () => {
 
                         <input
                             type="submit"
-                            className={isLoading ? "btn btn-warning btn-wide loading max-w-xs m-2"
-                                : "btn btn-success  btn-wide max-w-xs m-2"}
-                           /*  disabled={isLoading ? true : false} */
+                            className="btn btn-success  btn-wide max-w-xs m-2"
+                            /*  disabled={isLoading ? true : false} */
                             value="Submit-Data"
                         />
                     </form>

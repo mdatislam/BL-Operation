@@ -1,9 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { signOut } from "firebase/auth";
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
 import usePgList from "../Pages/Hook/usePgList";
@@ -21,7 +19,7 @@ const PgRunUpdate = () => {
   const [axiosSecure] = useAxiosSecure()
   const [search, setSearch] = useState("");
   const [PgList] = usePgList();
-   const [isLoading2, setIsLoading] = useState(false)
+  const [isLoading2, setIsLoading] = useState(false)
   const {
     register,
     reset,
@@ -29,7 +27,7 @@ const PgRunUpdate = () => {
     handleSubmit,
   } = useForm();
 
-  const { data: rectifiers = [], isLoading } = useQuery(["rectifiers"], () =>
+  const { isLoading, data: rectifiers = [] } = useQuery(["rectifiers"], () =>
     axiosSecure("/rectifier")
       .then((res) => {
         return res.data
@@ -37,7 +35,7 @@ const PgRunUpdate = () => {
   );
 
   // console.log(services)
-  if (isLoading || isLoading2 ) {
+  if (isLoading || isLoading2) {
     return <Loading />;
   }
 
@@ -67,7 +65,7 @@ const PgRunUpdate = () => {
   const availableUser = userList?.filter((u) => u.name !== user.displayName);
 
   const onSubmit = async (data) => {
-    setIsLoading(true)
+
     let mod = data.capacity;
     let consumeFuel = rectifiers?.filter((rec) => rec.capacity === mod);
     const consumePerModule = consumeFuel.map((ff) => ff.consumeFuel);
@@ -124,13 +122,13 @@ const PgRunUpdate = () => {
           showConfirmButton: false,
           timer: 1500
         })
+        reset()
+        setSearch("");
       }
       else {
         toast.error(`Warning: ${data.msg}`);
       }
-      reset()
-      setSearch("");
-      setIsLoading(false)
+
     }
     updatePgRun()
   };
@@ -195,14 +193,14 @@ const PgRunUpdate = () => {
 
               <div className=" border-0 rounded-lg w-3/4 max-w-xs mt-2">
                 {siteList?.filter((item) => {
-                    const searchItem = search.toLowerCase();
-                    const name1 = item.siteId.toLowerCase();
-                    return (
-                      searchItem &&
-                      name1.includes(searchItem) &&
-                      searchItem !== name1
-                    );
-                  })
+                  const searchItem = search.toLowerCase();
+                  const name1 = item.siteId.toLowerCase();
+                  return (
+                    searchItem &&
+                    name1.includes(searchItem) &&
+                    searchItem !== name1
+                  );
+                })
                   .slice(0, 10)
                   .map((item, index) => (
                     <ul

@@ -7,12 +7,14 @@ const useUserList = () => {
   const [userList, setUserList] = useState([]);
   
 useEffect(()=>{
-  axiosSecure.get("/userList")
-  .then(res=> {
-    const userInfo= res.data
+  const userData= async()=>{
+    const {data}= await axiosSecure.get("/userList")
+    const userInfo= data
     //console.log(userInfo)
     setUserList(userInfo)
-  })
+  }
+  userData() 
+  
 },[])
   return [userList]
     

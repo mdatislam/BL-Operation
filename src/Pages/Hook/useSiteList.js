@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
 import useAxiosSecure from "./useAxiosSecure";
 
+
 const useSiteList = () => {
   const [axiosSecure]=useAxiosSecure()
   const [siteList, setSiteList] = useState([]);
-  
+
+
+   
   useEffect(()=>{
-    axiosSecure.get("/siteInfo")
-    .then(res=> {
-      const siteData= res.data
-      //console.log(siteData)
-      setSiteList(siteData)
-    })
-  },[])
+
+    const siteData= async()=>{
+      const {data}= await axiosSecure.get("/siteInfo")
+      const pgInfo= data
+      //console.log(userInfo)
+      setSiteList(pgInfo)
+    }
+    siteData() 
+    
+  },[axiosSecure])
   
   
   return [siteList];
