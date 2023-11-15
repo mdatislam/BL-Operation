@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Loading from "../Pages/SharedPage/Loading";
 import EmInfoListRow from "./EmInfoListRow";
 import { CSVLink } from "react-csv";
@@ -123,6 +123,7 @@ const EminfoList = () => {
           <thead className="border-2 border-[#FFCB24] ">
             <tr className="divide-x divide-sky-400">
               <th>SN</th>
+              { admin && <th>Action</th>}
               <th>Site ID</th>
 
               <th>
@@ -174,7 +175,7 @@ const EminfoList = () => {
               </th>
 
               <th>Remarks</th>
-              { admin && <th>Action</th>}
+             
             </tr>
           </thead>
           <tbody>

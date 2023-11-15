@@ -40,10 +40,10 @@ const Pagination = ({ pageSize, setPageSize, selectPage, setSelectPage, totalPag
 
     //Reuse this pagination component  by bellow code
 
-    {/* <Pagination pageSize={pageSize} setPageSize={setPageSize}
-selectPage={selectPage} setSelectPage={setSelectPage}
-totalPage={totalPage} actualDataLength={actualDataLength}
-/> */}
+//  <Pagination pageSize={pageSize} setPageSize={setPageSize}
+// selectPage={selectPage} setSelectPage={setSelectPage}
+// totalPage={totalPage} actualDataLength={actualDataLength}
+// /> 
 
 
     return (

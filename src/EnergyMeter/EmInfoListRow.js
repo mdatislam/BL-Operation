@@ -2,7 +2,7 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 import React from "react";
 import Swal from "sweetalert2";
 
-const EmInfoListRow = ({ emInfo, index,refetch,admin,axiosSecure }) => {
+const EmInfoListRow = ({ emInfo, index, refetch, admin, axiosSecure }) => {
 
   const {
     siteId,
@@ -20,37 +20,37 @@ const EmInfoListRow = ({ emInfo, index,refetch,admin,axiosSecure }) => {
     remark,
   } = emInfo;
 
-   /*  To delete the issue */
-  const handleDelete=id=>{
+  /*  To delete the issue */
+  const handleDelete = id => {
     //console.log(id)
-    if(id){
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-          }).then((result) => {
-            if (result.isConfirmed) {
-                axiosSecure.delete(`/emInfo/${id}`)
-                .then(deleteRes=>{
-                    if(deleteRes.data.deletedCount >0){
-                        refetch()
-                        Swal.fire(
-                            'Deleted!',
-                            'Your file has been deleted.',
-                            'success'
-                          )
-                          
-                    }
-                })
-             
-            }
-          })
+    if (id) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosSecure.delete(`/emInfo/${id}`)
+            .then(deleteRes => {
+              if (deleteRes.data.deletedCount > 0) {
+                refetch()
+                Swal.fire(
+                  'Deleted!',
+                  'Your file has been deleted.',
+                  'success'
+                )
+
+              }
+            })
+
+        }
+      })
     }
-}
+  }
 
 
   //console.log(url)
@@ -87,6 +87,11 @@ const EmInfoListRow = ({ emInfo, index,refetch,admin,axiosSecure }) => {
   return (
     <tr className="border-2 border-[#F0D786] hover divide-x divide-gray-300 text-center">
       <td>{index + 1}</td>
+      {admin && <td className='border border-slate-300'>
+        <button className='btn btn-link' onClick={() => handleDelete(emInfo._id)}>
+          <TrashIcon className='w-6 h-6 text-red-400' />
+        </button>
+      </td>}
       <td>{siteId}</td>
       <td>{preDate} </td>
       <td>{EmPreSerialNo} </td>
@@ -114,11 +119,7 @@ const EmInfoListRow = ({ emInfo, index,refetch,admin,axiosSecure }) => {
       <td>{updaterName} </td>
 
       <td className='whitespace-pre-line '>{remark}</td>
-      {admin && <td className='border border-slate-300'>
-                                        <button className='btn btn-link' onClick={()=>handleDelete(emInfo._id)}>
-                                        <TrashIcon className='w-6 h-6 text-red-400'/>
-                                        </button>
-                                      </td>} 
+
     </tr>
   );
 };

@@ -48,7 +48,7 @@ const EmShortInfoRow = ({ emInfo, index }) => {
     }
     return (
         <tr className="border-2 border-[#F0D786] hover divide-x divide-gray-300 text-center">
-            <td>{index + 1}</td>
+            <td>{index+1}</td>
             <td>{siteId}</td>
             <td>{date} </td>
             <td >{EmSerialNo} </td>

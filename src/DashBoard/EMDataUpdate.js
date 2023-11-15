@@ -1,5 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
-import { signOut } from "firebase/auth";
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
@@ -18,7 +16,8 @@ const EMDataUpdate = () => {
   const [axiosSecure] = useAxiosSecure()
   const [imgUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState(false)
+  const navigate=useNavigate()
+  
 
   const {
     register,
@@ -53,7 +52,6 @@ const EMDataUpdate = () => {
 
 
   const onSubmit = (data) => {
-    setIsLoading(true)
     //console.log(" click me");
     const siteID = search;
     const presentSite = siteList.filter((site) => site.siteId === siteID);
@@ -90,14 +88,15 @@ const EMDataUpdate = () => {
           icon: 'success',
           title: 'EM Data has been saved',
           showConfirmButton: false,
-          timer: 1500
+          timer: 2000
         })
+        reset()
+        navigate("/EmInfo")
       }
       else {
         toast.error(`Warning: ${data.msg}`);
       }
-      reset()
-      setIsLoading(false)
+
     }
     updateEm()
 
@@ -128,6 +127,7 @@ const EMDataUpdate = () => {
             to="/EmInfo"
             className="btn btn-outline btn-primary font-semiBold text-xl mb-2"
           >
+
 
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -335,9 +335,10 @@ const EMDataUpdate = () => {
 
             <input
               type="submit"
-              className={isLoading ? "btn btn-warning btn-wide loading max-w-xs m-2"
-                : "btn btn-success  btn-wide max-w-xs m-2"}
+              /* className={isLoading ? "btn btn-warning btn-wide loading max-w-xs m-2"
+                : "btn btn-success  btn-wide max-w-xs m-2"} */
               /* disabled={isLoading ? true:false} */
+              className="btn btn-info btn-wide  max-w-xs m-2"
               value="Submit-Data"
             />
           </form>

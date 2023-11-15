@@ -70,18 +70,7 @@ const EmShortInfo = () => {
     return (
         <div className="bg-slate-200 mt-[-20px]">
             <div className="mt-6 py-2 px-2 w-full md:w-3/4 mx-auto mb-4 card bg-base-100 shadow-xl">
-                {/* <div className="grid grid-cols-4 lg:grid-cols-8 h-12 card bg-[#008282] rounded-lg justify-self-start mb-8 gap-x-16">
-                <Link to="/Home" className="btn btn-secondary">
-                    Go Home
-                </Link>
-                <h2 className="stat-title lg:card-title font-bold col-start-2 col-span-2 lg:col-span-6 justify-self-center self-center text-white">
-                    All Energy Meter <p>updated Record</p>
-                </h2>
-                <Link to="/Dashboard/EMDataUpdate" className="btn btn-Primary">
-                    GO EM Info UPDATE
-                </Link>
-            </div> */}
-
+               
                 {/* For filter input box */}
                 <div className="flex  justify-between flex-wrap gap-4 border border-slate-400 mt-2 p-4 rounded-lg">
 
@@ -166,7 +155,7 @@ const EmShortInfo = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {searchEmInfo.length > 1
+                            {searchEmInfo.length > 0
                                 ? filter.map((emInfo, index) => (
                                     <EmShortInfoRow
                                         key={emInfo._id}
