@@ -18,7 +18,7 @@ const DgUseMaterial = () => {
   const [isBattery, setIsBattery] = useState(false);
   const [isOther, setIsOther] = useState(false);
   const [material, setMaterial] = useState("");
-  const [isLoading, setIsLoading] = useState(false)
+  //const [isLoading, setIsLoading] = useState(false)
 
   const {
     register,
@@ -40,27 +40,29 @@ const DgUseMaterial = () => {
       setIsBattery(false);
       setIsOther(false);
     }
-    //console.log(MaterialName)
+    console.log(MaterialName)
     setMaterial(MaterialName);
   };
 
   const onSubmit = (data) => {
-    setIsLoading(true)
-    const useDgMaterial = {
+    //setIsLoading(true)
+    const dgMaterial = {
       siteId: search,
       date: data.date2,
       material: material,
-      oldBatterySerialNo: data.oldBatteryNo,
-      newBatterySerialNo: data.newBatteryNo,
+      oldBatterySerialNo: data.oldBatteryNo || "",
+      newBatterySerialNo: data.newBatteryNo || "",
       other: data.other,
       rhReading: data.rhReading,
       updaterName: user.displayName,
       updaterEmail: user.email,
       remark: data.remark,
     };
+    //console.log(dgMaterial)
 
     const updateDgMeterials = async () => {
-      const { data } = await axiosSecure.post("/dgMaterialInfo", useDgMaterial)
+      const { data } = await axiosSecure.post("/dgMaterialInfo", dgMaterial)
+       // console.log(data)
       if (data.insertedId) {
         Swal.fire({
           position: 'top-end',
@@ -76,7 +78,7 @@ const DgUseMaterial = () => {
       reset()
       setMaterial("");
       setSearch("");
-      setIsLoading(false)
+    
     }
     updateDgMeterials()
 
@@ -264,8 +266,7 @@ const DgUseMaterial = () => {
 
             <input
               type="submit"
-              className={isLoading ? "btn btn-warning btn-wide loading  max-w-xs m-2"
-                : "btn  btn-success btn-wide max-w-xs m-2"}
+              className="btn  btn-success btn-wide max-w-xs m-2"
               /* disabled={isLoading ? true : false} */
               value="Submit-Data"
             />
