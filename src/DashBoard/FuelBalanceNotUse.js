@@ -12,7 +12,7 @@ const FuelBalance = () => {
   const navigate = useNavigate();
 
   const { isLoading2, data: pgRunData } = useQuery(["list"], () =>
-    fetch("https://backend.bloperation.com/ApprovedAllPgRun", {
+    fetch("https://bl-operation-server-mdatislam.vercel.app/ApprovedAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -28,7 +28,7 @@ const FuelBalance = () => {
   );
 
   const { isLoading3, data: receiveFuel } = useQuery(["fuel"], () =>
-    fetch("https://backend.bloperation.com/fuelListAll", {
+    fetch("https://bl-operation-server-mdatislam.vercel.app/fuelListAll", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -37,7 +37,7 @@ const FuelBalance = () => {
   );
 
   const { isLoading, data: receiveFuelOncall } = useQuery(["fuelOncall"], () =>
-    fetch("https://backend.bloperation.com/fuelListAllOncall", {
+    fetch("https://bl-operation-server-mdatislam.vercel.app/fuelListAllOncall", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
