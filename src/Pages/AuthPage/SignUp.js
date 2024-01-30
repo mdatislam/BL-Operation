@@ -65,7 +65,7 @@ const SignUp = () => {
                   name, email, password,
                   url: imageUrl || "https://i.ibb.co/kmXfZgh/profile.png" , role: "general"
                 }
-                fetch('https://backend.bloperation.com/user', {
+                fetch('https://bl-operation-server-8udwslvjt-mdatislam.vercel.app/user', {
                   method: 'PUT',
                   headers: {
                     'content-type': 'application/json'

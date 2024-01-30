@@ -12,24 +12,25 @@ const RejectApproval = ({ reject, setReject, refetch }) => {
     formState: { errors },
     handleSubmit,
   } = useForm();
- 
+
   const onSubmit = (data, id) => {
-    const approveInfo={
-      status:"Reject",
-      remark:data.rejectMsg
+    const approveInfo = {
+      status: "Reject",
+      remark: data.rejectMsg
     }
-    console.log(id)
-    axiosSecure.put(`/pgRunList/${_id}`,approveInfo)
+    //console.log(id)
+    axiosSecure.put(`/pgRunList/${_id}`, approveInfo)
       .then((approveData) => {
-       // console.log(approveData);
+        // console.log(approveData);
         if (approveData.data.modifiedCount > 0) {
           toast.info(" Data has been Rejected");
+          reset();
+          setReject(null);
+          refetch();
         }
       });
 
-    reset();
-    setReject(null);
-    refetch();
+
   };
 
   return (

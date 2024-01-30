@@ -42,7 +42,7 @@ const PgRunUpdate = () => {
   /* today & previous date calculation */
 
   let pre = new Date();
-  pre.setDate(pre.getDate() - 2);
+  pre.setDate(pre.getDate() - 20);
   let preYear = pre.getFullYear();
   let preMonth = pre.getMonth() + 1;
   if (preMonth < 10) {

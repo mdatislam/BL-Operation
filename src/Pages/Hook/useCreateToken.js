@@ -9,7 +9,7 @@ const useCreateToken=(user)=>{
         if(user){
             //console.log( 'fromtoken',user.user.email)
             const email = user?.user?.email
-            const url = `https://backend.bloperation.com/user`
+            const url = `https://bl-operation-server-8udwslvjt-mdatislam.vercel.app/user`
             const createToken= async()=>{
                 const {data}= await axios.post(url,email)
                 const token= data.accessToken 
