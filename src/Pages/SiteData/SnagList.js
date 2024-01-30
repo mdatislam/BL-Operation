@@ -29,7 +29,7 @@ const SnagList = () => {
     refetch,
   } = useQuery(["siteInfo", [page, size]], () =>
     fetch(
-      `https://bl-operation-server-8udwslvjt-mdatislam.vercel.app/siteData?page=${page}&size=${size}`,
+      `https://backend.bloperation.com/siteData?page=${page}&size=${size}`,
       {
         method: "GET",
         headers: {

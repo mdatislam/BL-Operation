@@ -41,7 +41,7 @@ const PgStatus = () => {
       date: today,
     };
 
-    fetch(`https://bl-operation-server-8udwslvjt-mdatislam.vercel.app/pgList/${data.pgno}`, {
+    fetch(`https://backend.bloperation.com/pgList/${data.pgno}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -71,7 +71,7 @@ const PgStatus = () => {
 
 
   useEffect(() => {
-    fetch("https://bl-operation-server-8udwslvjt-mdatislam.vercel.app/pgList", {
+    fetch("https://backend.bloperation.com/pgList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

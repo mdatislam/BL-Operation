@@ -6,7 +6,7 @@ const PgDel = ({ pgDel, setPgDel, refetch }) => {
   const handlePgDelete = (pgNo) => {
     //console.log(pgNo);
     fetch(
-      `https://bl-operation-server-8udwslvjt-mdatislam.vercel.app/
+      `https://backend.bloperation.com/
 
 pgList/${pgNo}`,
       {
