@@ -45,7 +45,7 @@ const PgRunRows = ({ pgRun, index, refetch, setDelPg }) => {
 
            
         </th>
-        <td className="font-bold">{remark}</td>
+        <td className="whitespace-pre-line text-red-500">{remark}</td>
       </tr>
     </>
   );

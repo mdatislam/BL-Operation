@@ -132,9 +132,9 @@ const PgRunList = () => {
               <th>SN</th>
               <th>Date</th>
               <th>Site ID</th>
-              <th>
-                <div>Rectifier</div>
-                <div>Module Capacity</div>
+              <th className="whitespace-pre-line">
+                <div>Rectifier Module Capacity</div>
+               
               </th>
               <th>PG No</th>
               <th>
@@ -146,11 +146,11 @@ const PgRunList = () => {
                 <div>Time</div>
               </th>
               <th>Duration</th>
-              <th>Consumption</th>
-              <th>
-                {" "}
-                <div>Approval</div>
-                <div>Responsible</div>
+              <th>Consume</th>
+              <th className="whitespace-pre-line">
+                
+                <div>Approval Responsible</div>
+                
               </th>
               <th>PG Runner</th>
               <th>
