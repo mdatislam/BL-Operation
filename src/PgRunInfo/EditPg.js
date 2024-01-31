@@ -30,7 +30,7 @@ const EditPg = ({ pgEdit, setPgEdit, refetch }) => {
       date: today,
     };
 
-    fetch(`https://bl-operation-server-mdatislam.vercel.app/pgList/${pgNo}`, {
+    fetch(`https://bl-operation-server.vercel.app/pgList/${pgNo}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

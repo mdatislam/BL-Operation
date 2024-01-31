@@ -7,7 +7,7 @@ const useDeleteItem = ({ del, refetch, setDel }) => {
     const handleDelete = (id) => {
         console.log(id);
         fetch(
-            `https://bl-operation-server-mdatislam.vercel.app/receivedFuel/${id}`,
+            `https://bl-operation-server.vercel.app/receivedFuel/${id}`,
             {
                 method: "DELETE",
                 headers: {

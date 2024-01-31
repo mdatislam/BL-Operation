@@ -15,7 +15,7 @@ const DgServicingPlan = () => {
   const [admin] = useAdmin(user);
   const navigate = useNavigate();
   const { data: dgServiceInfo, isLoading } = useQuery(["DgInfoList"], () =>
-    fetch("https://bl-operation-server-mdatislam.vercel.app/dgServiceInfo", {
+    fetch("https://bl-operation-server.vercel.app/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

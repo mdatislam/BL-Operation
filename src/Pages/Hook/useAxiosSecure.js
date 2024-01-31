@@ -8,7 +8,7 @@ import { signOut } from "firebase/auth"
 
 
 const axiosSecure = axios.create({
-    baseURL:'https://bl-operation-server-mdatislam.vercel.app',
+    baseURL:'https://bl-operation-server.vercel.app',
 })
 
 const useAxiosSecure = () => {

@@ -16,7 +16,7 @@ const useToken = (user) => {
         name: name,
         email: email,
       };
-      fetch(`https://bl-operation-server-mdatislam.vercel.app/user/${email}`, {
+      fetch(`https://bl-operation-server.vercel.app/user/${email}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json"

@@ -44,7 +44,7 @@ const AuthProvider = ({ children }) => {
             console.log('current user', currentUser)
             //jwt token save to loacal storage
             if (currentUser) {
-                axios.post('https://bl-operation-server-mdatislam.vercel.app/jwt', {
+                axios.post('https://bl-operation-server.vercel.app/jwt', {
                     email: currentUser.email
                 })
                     .then(data => {

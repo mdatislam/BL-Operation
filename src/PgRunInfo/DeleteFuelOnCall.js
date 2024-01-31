@@ -7,7 +7,7 @@ const DeleteFuelOnCall = ({ delFuel, refetch, setDelFuel }) => {
   const handleDelete = (id) => {
     //console.log(id);
     fetch(
-      `https://bl-operation-server-mdatislam.vercel.app/onCall/
+      `https://bl-operation-server.vercel.app/onCall/
 
 receivedFuel/${id}`,
       {
