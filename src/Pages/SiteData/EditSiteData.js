@@ -50,7 +50,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
       "Are you Check All Fields ?\n If YES press Ok otherwise Cancel"
     );
     if (confrmMsg) {
-      fetch(`https://bl-operation-server.vercel.app/siteInfo/${siteId}`, {
+      fetch(`http://serverbloperation.bl-operation.com/siteInfo/${siteId}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json",

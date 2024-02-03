@@ -71,7 +71,7 @@ const FetchExcelToJson = () => {
       mobileNo2: siteInfo.mobileNo2,
       address: siteInfo.address,
     };
-    fetch(`https://bl-operation-server.vercel.app/siteInfo/${siteID}`, {
+    fetch(`http://serverbloperation.bl-operation.com/siteInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
