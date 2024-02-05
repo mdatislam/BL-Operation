@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import useSiteList from "./../Pages/Hook/useSiteList";
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 import Swal from "sweetalert2";
 
+
 const EMDataUpdate = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
@@ -16,8 +17,10 @@ const EMDataUpdate = () => {
   const [axiosSecure] = useAxiosSecure()
   const [imgUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate=useNavigate()
-  
+  const [updateSite,setUpdatedSites] = useState([]);
+  const navigate = useNavigate()
+
+
 
   const {
     register,
@@ -25,6 +28,13 @@ const EMDataUpdate = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
+
+  useEffect(()=>{
+    fetch("http://localhost:5000/emInfo/all")
+    .then(res=>res.json())
+    .then(collectData=>setUpdatedSites(collectData))
+  },[])
+
 
   //console.log(preEmNo)
 
@@ -52,24 +62,23 @@ const EMDataUpdate = () => {
 
 
   const onSubmit = (data) => {
+
+
     //console.log(" click me");
     const siteID = search;
-    const presentSite = siteList.filter((site) => site.siteId === siteID);
-    //console.log(presentSite)
+    
 
-    const EmPreReading = presentSite.map((s) => s.EmReading);
-    const EmPreSerialNo = presentSite.map((s) => s.EmSerialNo);
-    const PreDate = presentSite.map((s) => s.date);
-    // console.log(EmPreReading[0])
+     const presentSite = updateSite?.filter((site) => site.siteId === siteID);
 
-    const EMData = {
+   //console.log(presentSite)
+     const EMData = {
       siteId: siteID,
       date: data.date2,
       EmSerialNo: data.emNo,
       EmReading: data.emReading,
-      preDate: PreDate[0],
-      EmPreSerialNo: EmPreSerialNo[0],
-      EmPreReading: EmPreReading[0],
+      preDate: presentSite[0].date,
+      EmPreSerialNo:presentSite[0].EmSerialNo,
+      EmPreReading:presentSite[0].EmReading,
       peakReading: data.peak,
       offPeakReading: data.offPeak,
       loadCurrent: data.loadCurrent,
@@ -78,7 +87,7 @@ const EMDataUpdate = () => {
       url: imgUrl || "",
       remark: data.remark,
     };
-
+   //console.log(EMData)
     const updateEm = async () => {
       const { data } = await axiosSecure.put(`/emInfo/${siteID}`, EMData)
       //console.log(data)

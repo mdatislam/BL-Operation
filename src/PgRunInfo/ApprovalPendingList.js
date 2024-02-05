@@ -12,7 +12,7 @@ import { ArrowDownTrayIcon,ChevronDoubleLeftIcon} from '@heroicons/react/24/soli
 const ApprovalPendingList = () => {
   const navigate = useNavigate();
   const { data: pgRunData, isLoading } = useQuery(["list"], () =>
-    fetch("http://serverbloperation.bl-operation.com/PendingAllPgRun", {
+    fetch("http://localhost:5000/PendingAllPgRun", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

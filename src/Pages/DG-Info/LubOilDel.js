@@ -6,7 +6,7 @@ const LubOilDel = ({ lubOilDel, setLubOilDel, refetch }) => {
   const handlelubOilDelete = (id) => {
     // console.log(id);
     fetch(
-      `http://serverbloperation.bl-operation.com/
+      `http://localhost:5000/
 
 lubOilList/${id}`,
       {

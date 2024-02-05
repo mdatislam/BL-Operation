@@ -23,27 +23,27 @@ const EmShortInfo = () => {
 
     useEffect(() => {
         const getLengthData = async () => {
-            const { data } = await axiosSecure.get("/emInfo/count")
-            const page = data.lengthOfData
-            setDataLength(page)
-            const pageCount = Math.ceil(page / pageSize)
-            setTotalPage(pageCount)
-            if (pageCount < selectPage) {
-                setSelectPage(1)
-            }
+          const { data } = await axiosSecure.get("/emInfo/count")
+          const page = data.lengthOfData
+          setDataLength(page)
+          const pageCount = Math.ceil(page / pageSize)
+          setTotalPage(pageCount)
+          if (pageCount < selectPage) {
+            setSelectPage(1)
+          }
         }
         getLengthData()
-
-    }, [pageSize, selectPage, totalPage, actualDataLength, axiosSecure])
-
-
-    const { isLoading, data: EmInfo = [] } = useQuery({
+    
+      }, [pageSize, selectPage, totalPage, actualDataLength, axiosSecure])
+    
+    
+      const { isLoading, data: EmInfo = [],refetch } = useQuery({
         queryKey: ["EmInfo", pageSize, selectPage],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/emInfo?size=${pageSize}&page=${selectPage}`)
-            return res.data
+          const res = await axiosSecure.get(`/emInfo?size=${pageSize}&page=${selectPage}`)
+          return res.data
         }
-    })
+      })
 
     if (isLoading) {
         return <Loading />;
