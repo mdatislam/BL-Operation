@@ -7,7 +7,7 @@ const DeleteFuelOnCall = ({ delFuel, refetch, setDelFuel }) => {
   const handleDelete = (id) => {
     //console.log(id);
     fetch(
-      `http://localhost:5000/onCall/
+      `https://omserver.bl-operation.com/onCall/
 
 receivedFuel/${id}`,
       {
