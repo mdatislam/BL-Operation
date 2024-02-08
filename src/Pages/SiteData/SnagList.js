@@ -29,7 +29,7 @@ const SnagList = () => {
     refetch,
   } = useQuery(["siteInfo", [page, size]], () =>
     fetch(
-      `https://omserver.bl-operation.com/siteData?page=${page}&size=${size}`,
+      `https://myserver.bl-operation.com/siteData?page=${page}&size=${size}`,
       {
         method: "GET",
         headers: {
