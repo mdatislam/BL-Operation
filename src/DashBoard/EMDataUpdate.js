@@ -30,7 +30,7 @@ const EMDataUpdate = () => {
   } = useForm();
 
   useEffect(()=>{
-    fetch("https://myserver.bl-operation.com/emInfo/all")
+    fetch("https://serverom.bl-operation.com/emInfo/all")
     .then(res=>res.json())
     .then(collectData=>setUpdatedSites(collectData))
   },[])

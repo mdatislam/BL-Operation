@@ -16,7 +16,7 @@ const useToken = (user) => {
         name: name,
         email: email,
       };
-      fetch(`https://myserver.bl-operation.com/user/${email}`, {
+      fetch(`https://serverom.bl-operation.com/user/${email}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json"

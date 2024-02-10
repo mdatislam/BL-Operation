@@ -15,7 +15,7 @@ const DgServicingPlan = () => {
   const [admin] = useAdmin(user);
   const navigate = useNavigate();
   const { data: dgServiceInfo, isLoading } = useQuery(["DgInfoList"], () =>
-    fetch("https://myserver.bl-operation.com/dgServiceInfo", {
+    fetch("https://serverom.bl-operation.com/dgServiceInfo", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

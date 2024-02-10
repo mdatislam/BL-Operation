@@ -6,7 +6,7 @@ const PgDel = ({ pgDel, setPgDel, refetch }) => {
   const handlePgDelete = (pgNo) => {
     //console.log(pgNo);
     fetch(
-      `https://myserver.bl-operation.com/
+      `https://serverom.bl-operation.com/
 
 pgList/${pgNo}`,
       {

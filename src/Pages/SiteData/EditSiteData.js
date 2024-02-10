@@ -50,7 +50,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
       "Are you Check All Fields ?\n If YES press Ok otherwise Cancel"
     );
     if (confrmMsg) {
-      fetch(`https://myserver.bl-operation.com/siteInfo/${siteId}`, {
+      fetch(`https://serverom.bl-operation.com/siteInfo/${siteId}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json",

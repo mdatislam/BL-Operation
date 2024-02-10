@@ -26,7 +26,7 @@ const SiteDataHome = () => {
   const handleSearch = (site) => {
     //console.log(site)
     if (search !== "") {
-      fetch(`https://myserver.bl-operation.com/searchSite?site=${site}`)
+      fetch(`https://serverom.bl-operation.com/searchSite?site=${site}`)
         .then((res) => res.json())
         .then((data) => {
           //console.log(data);
@@ -77,7 +77,7 @@ const SiteDataHome = () => {
       date: today,
     };
 
-    fetch(`https://myserver.bl-operation.com/siteInfo/${data.siteId}`, {
+    fetch(`https://serverom.bl-operation.com/siteInfo/${data.siteId}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
