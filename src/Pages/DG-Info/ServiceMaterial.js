@@ -9,11 +9,15 @@ import { toast } from "react-toastify";
 import { signOut } from "firebase/auth";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../SharedPage/Loading";
+import useAxiosSecure from "../Hook/useAxiosSecure";
+
+ 
 
 const ServiceMaterial = () => {
   const [user] = useAuthState(auth);
+  const [axiosSecure] = useAxiosSecure()
   const [visible, setVisible] = useState(false);
-  const [lubOilDel, setLubOilDel] = useState([]);
+  //const [lubOilDel, setLubOilDel] = useState([]);
   //const [admin] = useAdmin(user);
   const navigate = useNavigate();
 
@@ -40,7 +44,7 @@ const ServiceMaterial = () => {
       date: today,
     };
 
-    fetch(`https://serverom.bl-operation.com/lubOil`, {
+    fetch(`http://localhost:5000/lubOil`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -73,7 +77,7 @@ const ServiceMaterial = () => {
     isLoading,
     refetch,
   } = useQuery(["LubOilRecord"], () =>
-    fetch("https://serverom.bl-operation.com/lubOil", {
+    fetch("http://localhost:5000/lubOil", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -94,7 +98,7 @@ const ServiceMaterial = () => {
   const { data: dgAllServiceInfo, isLoading2 } = useQuery(
     ["DgAllInfoList"],
     () =>
-      fetch("https://serverom.bl-operation.com/dgAllServiceInfo", {
+      fetch("http://localhost:5000/dgAllServiceInfo", {
         method: "GET",
         headers: {
           authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -167,7 +171,8 @@ const ServiceMaterial = () => {
                   key={lubOil._id}
                   lubOil={lubOil}
                   index={index}
-                  setLubOilDel={setLubOilDel}
+                  refetch={refetch}
+                  axiosSecure={axiosSecure}
                 />
               ))}
             </tbody>

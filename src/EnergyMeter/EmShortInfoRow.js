@@ -18,7 +18,7 @@ const EmShortInfoRow = ({ emInfo, index }) => {
     //console.log(url)
 
     const handlePicView = (imgUrl) => {
-        console.log(url)
+        //console.log(url)
         if (imgUrl) {
             window.open(imgUrl, '_blank');
 

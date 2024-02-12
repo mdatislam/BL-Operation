@@ -8,6 +8,8 @@ import background from "../../src/images/bb.jpg";
 import useSiteList from "./../Pages/Hook/useSiteList";
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 import Swal from "sweetalert2";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../Pages/SharedPage/Loading";
 
 
 const EMDataUpdate = () => {
@@ -17,7 +19,6 @@ const EMDataUpdate = () => {
   const [axiosSecure] = useAxiosSecure()
   const [imgUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [updateSite,setUpdatedSites] = useState([]);
   const navigate = useNavigate()
 
 
@@ -29,14 +30,20 @@ const EMDataUpdate = () => {
     handleSubmit,
   } = useForm();
 
-  useEffect(()=>{
-    fetch("https://serverom.bl-operation.com/emInfo/all")
-    .then(res=>res.json())
-    .then(collectData=>setUpdatedSites(collectData))
-  },[])
+  const {isLoading, data: siteEmInfo = [], } = useQuery({
+    queryKey: ["siteEmInfo"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/emInfo/all")
+      return res.data
+    }
+  })
 
+  // console.log(sites)
+  if (isLoading ) {
+    return <Loading />;
+  }
 
-  //console.log(preEmNo)
+  
 
   const handleImageUpload = (event) => {
     setLoading(true);
@@ -61,14 +68,13 @@ const EMDataUpdate = () => {
   //console.log(imgUrl)
 
 
-  const onSubmit = (data) => {
-
-
+  const onSubmit = async (data) => {
+    
     //console.log(" click me");
     const siteID = search;
     
-
-     const presentSite = updateSite?.filter((site) => site.siteId === siteID);
+//console.log(siteEmInfo)
+     const presentSite = siteEmInfo?.filter((site) => site.siteId === siteID);
 
    //console.log(presentSite)
      const EMData = {
@@ -76,9 +82,9 @@ const EMDataUpdate = () => {
       date: data.date2,
       EmSerialNo: data.emNo,
       EmReading: data.emReading,
-      preDate: presentSite[0].date,
-      EmPreSerialNo:presentSite[0].EmSerialNo,
-      EmPreReading:presentSite[0].EmReading,
+      preDate: presentSite[0]?.date || "first update",
+      EmPreSerialNo:presentSite[0]?.EmSerialNo ||" first update",
+      EmPreReading:presentSite[0]?.EmReading || "first update",
       peakReading: data.peak,
       offPeakReading: data.offPeak,
       loadCurrent: data.loadCurrent,

@@ -67,6 +67,7 @@ const EmShortInfo = () => {
             setFilter(EmInfo);
         }
     };
+    //console.log(EmInfo.length)
     return (
         <div className="bg-slate-200 mt-[-20px]">
             <div className="mt-6 py-2 px-2 w-full md:w-3/4 mx-auto mb-4 card bg-base-100 shadow-xl">
