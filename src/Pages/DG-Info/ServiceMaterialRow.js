@@ -2,7 +2,7 @@ import React from 'react';
 import { PencilSquareIcon,XCircleIcon} from '@heroicons/react/24/solid'
 import Swal from 'sweetalert2';
 
-const ServiceMaterialRow = ({ lubOil, index ,axiosSecure,refetch}) => {
+const ServiceMaterialRow = ({ lubOil, index ,axiosSecure,refetch,setLubOilEdit}) => {
      //console.log(lubOil);
     const { receivingDate, receivingQuantity, requisitionDate, requisitionQuantity, remark } = lubOil
 
@@ -38,18 +38,19 @@ const ServiceMaterialRow = ({ lubOil, index ,axiosSecure,refetch}) => {
     }
    
     return (
-      <tr className="border-2 text-center border-[#aeb49e] hover">
-        <td>{index + 1}</td>
+      <tr className=" border-b-2 border-[#F0D786] hover divide-y divide-gray-400 text-center">
+        <td className=" border-b-2 border-[#F0D786] divide-y-4 divide-gray-400 text-center">{index + 1}</td>
         <td className="flex justify-items-center gap-x-2 text-center">
           {/* Edit button */}
           <label
-            htmlFor="pgEdit"
+            htmlFor="lubOilEdit"
             className=" text-red-500"
-            //onClick={() => setPgEdit(pg)}
-          >
-            <PencilSquareIcon className=" w-6 h-6 text-blue-500" />
-            
-          </label>
+            onClick={() => setLubOilEdit(lubOil)}
+          >  
+           <PencilSquareIcon className=" w-6 h-6 text-blue-500" />
+           </label>
+
+                      
           {/*  Or button */}
           <span className="font-bold">|</span>
 

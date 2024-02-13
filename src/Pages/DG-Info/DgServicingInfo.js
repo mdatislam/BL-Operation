@@ -11,6 +11,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
 import useAxiosSecure from "../Hook/useAxiosSecure";
 import TableCaption from '../../Pages/SharedPage/TableCaption';
+import LubOilBalance from "./LubOilBalance";
 
 
 
@@ -84,6 +85,7 @@ const DgServicingInfo = () => {
               Data UPDATE
             </Link>
           </div>
+          <LubOilBalance />
 
           <div className="flex flex-row justify-between items-center gap-x-3">
             <div>
@@ -120,6 +122,7 @@ const DgServicingInfo = () => {
             )}
           </div>
         </div>
+       
 
         <div className="overflow-x-auto  mt-4">
           <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">

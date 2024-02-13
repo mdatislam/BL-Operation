@@ -10,30 +10,39 @@ import { signOut } from "firebase/auth";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../SharedPage/Loading";
 import useAxiosSecure from "../Hook/useAxiosSecure";
+import LubOilEdit from "./LubOilEdit";
+import { PlusCircleIcon } from '@heroicons/react/24/solid'
+import LubOilBalance from "./LubOilBalance";
+import TableCaption from "../SharedPage/TableCaption";
 
- 
+
 
 const ServiceMaterial = () => {
   const [user] = useAuthState(auth);
   const [axiosSecure] = useAxiosSecure()
   const [visible, setVisible] = useState(false);
-  //const [lubOilDel, setLubOilDel] = useState([]);
-  //const [admin] = useAdmin(user);
-  const navigate = useNavigate();
+  const [lubOilEdit, setLubOilEdit] = useState([]);
 
-  const {
-    register,
-    reset,
+
+  const { register, reset,
     formState: { errors },
     handleSubmit,
   } = useForm();
+
+  const { isLoading, data: receiveLubOil = [], refetch } = useQuery({
+    queryKey: ["receiveLubOil"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/lubOil")
+      return res.data
+    }
+  })
 
   let date = new Date();
   date.setDate(date.getDate());
   let today = date.toLocaleDateString("en-CA");
 
   const onSubmit = (data) => {
-    const lubOil = {
+    const lubOilData = {
       receivingDate: data.receiveDate,
       receivingQuantity: data.receiveQuantity,
       requisitionDate: data.requiDate,
@@ -44,105 +53,38 @@ const ServiceMaterial = () => {
       date: today,
     };
 
-    fetch(`http://localhost:5000/lubOil`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(lubOil),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((lubOil) => {
-        //console.log(lubOil);
-        if (lubOil.insertedCount) {
-          toast.success("Data Successfully Update");
-        }
-        reset();
-        setVisible(null);
-        refetch();
-      });
+    const addNewLubOil = async () => {
+      const { data } = await axiosSecure.post("/lubOil", lubOilData)
+      //console.log(data)
+      if (data.acknowledged) {
+        toast.success("Successfully Lub-oil update ")
+        reset()
+        refetch()
+        setVisible(null)
+      }
+      else {
+        toast.error(`Warning: ${data.msg}`);
+      }
+
+    }
+    addNewLubOil()
+
   };
 
-  const {
-    data: LubOilRecord,
-    isLoading,
-    refetch,
-  } = useQuery(["LubOilRecord"], () =>
-    fetch("http://localhost:5000/lubOil", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
-  //console.log(LubOilRecord);
 
-  /*  All DG service record */
-  const { data: dgAllServiceInfo, isLoading2 } = useQuery(
-    ["DgAllInfoList"],
-    () =>
-      fetch("http://localhost:5000/dgAllServiceInfo", {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }).then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          //  toast.error("Unauthorize Access")
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-  );
-  if (isLoading || isLoading2) {
+  if (isLoading) {
     return <Loading />;
   }
 
-  const LubOil = LubOilRecord?.map((quantity) => quantity.receivingQuantity);
-  const totalLubOil = LubOil?.reduce(
-    (previous, current) => previous + parseFloat(current),
-    0
-  );
-
-  /*   const max = Math.max(...LubOilRecord);
- const index = LubOilRecord.indexOf(max);
- console.log(index); */
-
-  const totalServicing = dgAllServiceInfo?.length;
-  const totalConsumeLubOil = parseInt(totalServicing * 10);
-  const Balance = (totalLubOil - totalConsumeLubOil) / 5;
 
   return (
     <div className="px-2 lg:px-4 my-4">
       <div className="grid grid-cols-1  md:grid-cols-3 gap-x-4">
         <div className=" col-span-2 overflow-x-auto mt-8 px-2">
-          <div className="grid h-12 card bg-[#6495ED] rounded-box place-items-center mb-4">
-            <h2 className="text-[#FFFFFF] card-title font-bold ">
-              Lub-Oil Receiving Record.
-            </h2>
-          </div>
-          <table className="table table-compact w-full ">
-            <thead className="border-2 border-[#aef688]">
-              <tr className="divide-x divide-blue-400 text-center">
+          <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
+            <TableCaption tableHeading=" Lub-Oil Receiving Record" />
+            <thead className="border-2 border-[#FFCB24]">
+              <tr className="divide-x divide-blue-400">
                 <th>S/N</th>
                 <th>Action</th>
                 <th>
@@ -166,24 +108,27 @@ const ServiceMaterial = () => {
               </tr>
             </thead>
             <tbody>
-              {LubOilRecord.map((lubOil, index) => (
+              {receiveLubOil?.map((lubOil, index) => (
                 <ServiceMaterialRow
                   key={lubOil._id}
                   lubOil={lubOil}
                   index={index}
                   refetch={refetch}
                   axiosSecure={axiosSecure}
+                  setLubOilEdit={setLubOilEdit}
                 />
               ))}
             </tbody>
           </table>
-          {/* {lubOilDel && (
-            <LubOilDel
-              lubOilDel={lubOilDel}
-              setLubOilDel={setLubOilDel}
+          {
+            lubOilEdit && <LubOilEdit
+              lubOilEdit={lubOilEdit}
+              setLubOilEdit={setLubOilEdit}
               refetch={refetch}
-            />
-          )} */}
+            >
+
+            </LubOilEdit>
+          }
         </div>
         {/* 2nd Part */}
         <div className="mt-8 order-first md:order-last">
@@ -197,22 +142,11 @@ const ServiceMaterial = () => {
               className="btn btn-sm btn-outline btn-primary"
               onClick={() => setVisible(true)}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
+              <PlusCircleIcon className="w-6 h-6 text-green-600" />
               Lub-Oil
             </button>
+            {/* calculation part */}
+          <LubOilBalance />
           </div>
 
           {visible && (
@@ -332,29 +266,6 @@ const ServiceMaterial = () => {
               </div>
             </div>
           )}
-
-          {/* calculation part */}
-          <div className="text-center">
-            <div className=" mt-3 bg-primary text-primary-content stats stats-vertical lg:stats-horizontal shadow">
-              <div className="stat">
-                <div className="stat-title">Total Lub-Oil</div>
-                <div className="stat-value">{totalLubOil}</div>
-                <div className="stat-desc">Liter</div>
-              </div>
-
-              <div className="stat">
-                <div className="stat-title">Total Service</div>
-                <div className="stat-value">{totalServicing}</div>
-                <div className="stat-desc">sites</div>
-              </div>
-
-              <div className="stat">
-                <div className="stat-title">Balance</div>
-                <div className="stat-value">{Balance}</div>
-                <div className="stat-desc">Can</div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
