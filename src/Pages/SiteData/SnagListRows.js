@@ -20,7 +20,7 @@ const SnagListRows = ({ data, index, admin, setSiteDataEdit }) => {
         <td>{siteId}</td>
         <td>{lat}</td>
         <td>{long}</td>
-        <td>{snag}</td>
+        <td className='whitespace-pre-line'>{snag}</td>
         <td>{unUsed}</td>
         <td>{date}</td>
         <td>{updaterName}</td>

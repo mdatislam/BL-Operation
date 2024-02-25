@@ -1,10 +1,10 @@
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/solid";
 import React from "react";
+import Swal from "sweetalert2";
 
-const SiteDataInfoRows = ({ data, index, admin, setSiteDataEdit }) => {
+const SiteDataInfoRows = ({ siteData, index,refetch, admin, setSiteDataEdit, axiosSecure }) => {
   const {
     siteId,
-
     shareId,
     keyStatus,
     connectedSite,
@@ -12,29 +12,53 @@ const SiteDataInfoRows = ({ data, index, admin, setSiteDataEdit }) => {
     batteryBackup,
     rectifierInfo,
     mobileNo1,
-    mobileNo2,
+    loadCurrent,
     date,
     updaterName,
-  } = data;
+  } = siteData;
+
+  const handleDeleteSite = (id) => {
+    //console.log(id)
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const siteDel = async (id) => {
+          const { data } = await axiosSecure.delete(`/siteData/${id}`)
+          console.log(data);
+          if (data.deletedCount > 0) {
+            Swal.fire({
+              title: "Deleted!",
+              text: `Your site ${id} has been deleted.`,
+              icon: "success"
+            });
+            refetch()
+          }
+        }
+        siteDel(id)
+
+      }
+    });
+
+  }
 
   return (
     <>
-      <tr className=" hover text-start divide-y divide-slate-300 divide-x divide-slate-300 ">
+      <tr className=" hover text-start divide-y  divide-x divide-slate-300 ">
         <td className="border border-slate-300">{index + 1}</td>
         <td className="flex items-center text-start whitespace-pre-line ">
-          {/* Edit button */}
-          <label
-            htmlFor="siteEdit"
-            className="btn btn-link"
-            onClick={() => setSiteDataEdit(data)}
-          >
-            <PencilSquareIcon className="w-6 h-6 text-green-500" />
-          </label>
+
           {admin && (
             <label
               htmlFor="pgDel"
               className=" btn btn-link "
-            //onClick={() => setPgDel(pg)}
+              onClick={() => handleDeleteSite(siteId)}
             >
               <TrashIcon className="h-6 w-6 text-red-500" />
             </label>
@@ -48,7 +72,7 @@ const SiteDataInfoRows = ({ data, index, admin, setSiteDataEdit }) => {
         <td className='whitespace-pre-line '>{rectifierInfo}</td>
         <td className='whitespace-pre-line '>{keyStatus}</td>
         <td className='whitespace-pre-line '>{mobileNo1}</td>
-        <td className='whitespace-pre-line '>{mobileNo2}</td>
+        <td className='whitespace-pre-line '>{loadCurrent}</td>
         <td className='whitespace-pre-line '>{date}</td>
         <td className='whitespace-pre-line '>{updaterName}</td>
 

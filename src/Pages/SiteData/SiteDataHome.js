@@ -12,41 +12,44 @@ import useSiteList from "../Hook/useSiteList";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import newTower from "./../../images/newTower.png";
+import useAxiosSecure from "../Hook/useAxiosSecure";
+import { PlusCircleIcon } from "@heroicons/react/24/solid";
 
 const SiteDataHome = () => {
   const [user] = useAuthState(auth);
   const [siteList] = useSiteList();
+  const [axiosSecure] = useAxiosSecure()
   // const [siteName, setSiteName] = useState("");
   const [search, setSearch] = useState("");
   const [selectSite, setSelectSite] = useState([]);
   const [siteDataEdit, setSiteDataEdit] = useState([]);
   const [visible, setVisible] = useState(false);
-  const navigate = useNavigate();
+ 
 
-  const handleSearch = (site) => {
+
+  const handleSearchSite = (e) => {
+    setSearch(e.target.value);
+  };
+
+
+  const handleSearch = async (site) => {
     //console.log(site)
     if (search !== "") {
-      fetch(`http://localhost:5000/searchSite?site=${site}`)
-        .then((res) => res.json())
-        .then((data) => {
-          //console.log(data);
-          setSelectSite(data);
-        });
+      const res = await axiosSecure.get(`/searchSite?site=${site}`)
+      setSelectSite(res.data);
     } else {
       toast.error("Please enter valid site Id");
     }
   };
 
-  const handleSearchSite = (e) => {
-    setSearch(e.target.value);
-  };
+
 
   const handleSearchItem = (searchItem) => {
     setSearch(searchItem);
   };
 
   //console.log(selectSite);
-  // console.log(siteDataEdit);
+   //console.log(siteDataEdit);
 
   const {
     register,
@@ -60,48 +63,36 @@ const SiteDataHome = () => {
   let today = date.toLocaleDateString("en-CA");
 
   const onSubmit = (data) => {
-    const newSiteInfo = {
+    const siteNo= data.siteId
+      const newSiteInfo = {
       siteId: data.siteId,
-      shareId: data.shareId,
-      keyStatus: data.keyStatus,
-      address: data.address,
-      rectifierInfo: data.rectifierInfo,
-      batteryInfo: data.batteryInfo,
-      mobileNo1: data.mobileNo1,
-      lat: data.lat,
-      long: data.long,
-      snag: data.snag,
-      remark: data.remark,
+      shareId:  data.shareId !== ""?data.shareId:siteDataEdit.shareId,
+      keyStatus:  data.keyStatus !=="" ? data.keyStatus:siteDataEdit.keyStatus,
+      address: data.address !== ""?data.address:siteDataEdit.address,
+      rectifierInfo: data.rectifierInfo !== ""?data.rectifierInfo:siteDataEdit.rectifierInfo,
+      batteryInfo: data.batteryInfo !=="" ?data.batteryInfo : siteDataEdit.batteryInfo,
+      loadCurrent: data.loadCurrent || siteDataEdit.loadCurrent,
+      mobileNo1:  data.mobileNo1 !== ""?data.mobileNo1: siteDataEdit.mobileNo1,
+      lat: data.lat || siteDataEdit.lat,
+      long: data.long ||  siteDataEdit.long,
+      snag: data.snag !== "" ?data.snag : siteDataEdit.snag,
+      remark: data.remark !==""?data.remark:siteDataEdit.remark,
       updaterName: user.displayName,
       updaterEmail: user.email,
       date: today,
     };
 
-    fetch(`http://localhost:5000/siteInfo/${data.siteId}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(newSiteInfo),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((siteData) => {
+    const siteEdit= async()=>{
+      const {data}= await axiosSecure.put(`/siteInfo/${siteNo}`,newSiteInfo)
+  
         //console.log(pgData);
-        if (siteData.upsertedCount || siteData.modifiedCount) {
+        if (data.upsertedCount || data.modifiedCount) {
           toast.success(`Site ${data.siteId} update Successfully`);
         }
         reset();
         setVisible(null);
-      });
+      };
+    siteEdit()
   };
 
   return (
@@ -147,7 +138,7 @@ const SiteDataHome = () => {
             ))}
         </div>
         {search &&
-          selectSite?.map((site) => (
+          selectSite.map((site) => (
             <SearchSiteRows
               key={site._id}
               siteInfo={site}
@@ -158,6 +149,7 @@ const SiteDataHome = () => {
           <EditSiteData
             setSiteDataEdit={setSiteDataEdit}
             siteDataEdit={siteDataEdit}
+            axiosSecure={axiosSecure}
           />
         )}
 
@@ -176,20 +168,7 @@ const SiteDataHome = () => {
                 className="btn btn-sm btn-outline btn-primary"
                 onClick={() => setVisible(true)}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+                <PlusCircleIcon className="h-6 w-6 text-green-400" />
                 New Site
               </button>
             </div>
@@ -257,6 +236,16 @@ const SiteDataHome = () => {
                     autoFocus
                     className="input input-bordered w-full max-w-xs"
                     {...register("batteryInfo")}
+                  />
+                </label>
+              </div>
+              <div className="flex input-group mb-3">
+                <label className="input-group">
+                  <span className=" font-bold w-32">Site Load Current:</span>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full max-w-xs"
+                    {...register("loadCurrent")}
                   />
                 </label>
               </div>

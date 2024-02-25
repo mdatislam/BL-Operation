@@ -1,5 +1,5 @@
 //import NavBar from "./Pages/SharedPage/NavBar";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./Pages/HomePage/Home";
 import Footer from "./Pages/SharedPage/Footer";
 import Login from "./Pages/AuthPage/Login";
@@ -56,7 +56,6 @@ import FcuUpdate from "./DashBoard/FcuUpdate";
 import FcuServicePlanSites from "./DashboardOncall/FCU Service Plan/FcuServicePlanSites";
 import OnCallPlanSite from "./DashboardOncall/DgServiceIssue/OnCallPlanSite";
 import ViewIssues from "./DashboardOncall/siteIssues/ViewIssues";
-import FuelBalanceInfo from "./DashBoard/FuelBalanceInfo";
 import EmShortInfo from "./EnergyMeter/EmShortInfo";
 
 
@@ -65,10 +64,12 @@ import EmShortInfo from "./EnergyMeter/EmShortInfo";
 
 
 function App() {
+  const location = useLocation()
+  //console.log(location.pathname)
   return (
     <>
       {/*  <NavBar> */}
-      <Navbar2 />
+      { location.pathname.includes("Login") || <Navbar2 />}
       <Routes>
         {/*  <Route path="/Login" element={<Login />}></Route> */}
         <Route path="/Login" element={<Login2 />}></Route>

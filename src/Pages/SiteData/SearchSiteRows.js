@@ -13,7 +13,7 @@ const SearchSiteRows = ({ siteInfo, setSiteDataEdit }) => {
     connectedSite,
     rectifierInfo,
     mobileNo1,
-    mobileNo2,
+    loadCurrent,
     snag,
     unUsed,
     address,
@@ -126,9 +126,9 @@ const SearchSiteRows = ({ siteInfo, setSiteDataEdit }) => {
           <div className="col-start-1 col-span-6">
             <div className="stats stats-horizontal shadow-md mt-3">
               <div className="stat ">
-                <div className="stat-title">Mobile No2:</div>
+                <div className="stat-title">Site Load Current:</div>
                 <div className="stat-des text-start font-semibold text-[#e02acb]">
-                  {mobileNo2}
+                  {loadCurrent}
                 </div>
               </div>
             </div>

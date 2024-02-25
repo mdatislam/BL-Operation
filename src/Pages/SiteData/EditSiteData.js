@@ -1,13 +1,14 @@
-import { signOut } from "firebase/auth";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../../firebase.init";
 
-const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
+
+
+const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch, axiosSecure }) => {
   const [user] = useAuthState(auth);
+
   const {
     siteId,
     keyStatus,
@@ -15,14 +16,14 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
     batteryInfo,
     batteryBackup,
     mobileNo1,
-    mobileNo2,
+    loadCurrent,
     unUsed,
     snag,
     remark,
   } = siteDataEdit;
 
-  //console.log(siteDataEdit)
-  const navigate = useNavigate();
+ //console.log(siteDataEdit)
+
 
   const { register, handleSubmit, reset } = useForm();
 
@@ -32,15 +33,15 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
 
   const onSubmit = (data) => {
     const updateSiteData = {
-      keyStatus: data.keyStatus,
-      batteryBackup: data.batteryBackup,
-      rectifierInfo: data.rectifierInfo,
-      batteryInfo: data.batteryInfo,
-      mobileNo1: data.mobileNo1,
-      mobileNo2: data.mobileNo2,
-      unUsed: data.unUsed,
-      snag: data.snag,
-      remark: data.remark,
+      keyStatus: data.keyStatus || siteDataEdit.keyStatus,
+      batteryBackup: data.batteryBackup || siteDataEdit.batteryBackup,
+      rectifierInfo: data.rectifierInfo || siteDataEdit.rectifierInfo,
+      batteryInfo: data.batteryInfo || siteDataEdit.batteryInfo,
+      mobileNo1: data.mobileNo1 || siteDataEdit.mobileNo1,
+      loadCurrent: data.loadCurrent || siteDataEdit.loadCurrent,
+      unUsed: data.unUsed || siteDataEdit.unUsed,
+      snag: data.snag || siteDataEdit.snag,
+      remark: data.remark || siteDataEdit.remark,
       updaterName: user.displayName,
       updaterEmail: user.email,
       date: today,
@@ -50,34 +51,21 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
       "Are you Check All Fields ?\n If YES press Ok otherwise Cancel"
     );
     if (confrmMsg) {
-      fetch(`http://localhost:5000/siteInfo/${siteId}`, {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(updateSiteData),
-      })
-        .then((res) => {
-          if (res.status === 401 || res.status === 403) {
-            toast.error("Unauthorize access");
-            signOut(auth);
-            localStorage.removeItem("accessToken");
-            navigate("/Login");
-          }
-          return res.json();
-        })
-        .then((siteData) => {
-          //console.log(pgData);
-          if (siteData.upsertedCount || siteData.modifiedCount) {
-            toast.success("Data Successfully Update");
-          }
-          reset();
-          setSiteDataEdit(null);
 
-          refetch();
-        });
-    } else {
+      const siteEdit = async () => {
+        const { data } = await axiosSecure.put(`/siteInfo/${siteId}`, updateSiteData)
+
+        //console.log(data);
+        if (data.upsertedCount || data.modifiedCount) {
+          toast.success(`Site ${data.siteId} update Successfully`);
+        }
+        reset();
+        setSiteDataEdit(null);
+      };
+      siteEdit()
+
+    }
+    else {
       toast.warning("Not update, Please Click All Unchanged field");
     }
   };
@@ -95,10 +83,10 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
           <h3 className=" text-center font-bold text-pink-600 text-xl mb-4 ">
             Existing Info of {siteId}
           </h3>
-          <h5 className="text-red-500 font-bold text-xs mb-2">
+          {/* <h5 className="text-red-500 font-bold text-xs mb-2">
             NB:Where data already available & not need to change Please only "
             click" that fields before update.
-          </h5>
+          </h5> */}
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="mb-3 border-2 border-blue-200 rounded-lg p-3"
@@ -154,12 +142,12 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch }) => {
             </div>
             <div className="flex input-group mb-3">
               <label className="input-group">
-                <span className=" font-bold">Mobile No_2:</span>
+                <span className=" font-bold">Site Load Current:</span>
                 <input
                   type="text"
-                  defaultValue={mobileNo2}
+                  defaultValue={loadCurrent}
                   className="input input-bordered w-full max-w--xs"
-                  {...register("mobileNo2")}
+                  {...register("loadCurrent")}
                 />
               </label>
             </div>

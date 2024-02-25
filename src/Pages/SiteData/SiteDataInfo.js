@@ -123,7 +123,7 @@ const SiteDataInfo = () => {
                 </th>
                 <th>Key Status</th>
                 <th>MobileNo-1</th>
-                <th>MobileNo-2</th>
+                <th>Site Load Current</th>
                 <th>Date</th>
                 <th>Updater Name</th>
 
@@ -134,10 +134,12 @@ const SiteDataInfo = () => {
               {siteData.map((data, index) => (
                 <SiteDataInfoRows
                   key={index._id}
-                  data={data}
+                  siteData={data}
                   setSiteDataEdit={setSiteDataEdit}
+                  axiosSecure={axiosSecure}
                   admin={admin}
                   index={index}
+                  refetch={refetch}
                 />
               ))}
             </tbody>

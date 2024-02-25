@@ -41,7 +41,7 @@ const PgStatus = () => {
       date: today,
     };
 
-    fetch(`http://localhost:5000/pgList/${data.pgno}`, {
+    fetch(`https://serverom.bl-operation.com/pgList/${data.pgno}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -71,7 +71,7 @@ const PgStatus = () => {
 
 
   useEffect(() => {
-    fetch("http://localhost:5000/pgList", {
+    fetch("https://serverom.bl-operation.com/pgList", {
       method: "GET",
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,

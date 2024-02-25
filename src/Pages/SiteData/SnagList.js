@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { signOut } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
 import Loading from "../SharedPage/Loading";
@@ -9,43 +9,52 @@ import useAdmin from "./../Hook/useAdmin";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EditSiteData from "./EditSiteData";
 import "./SiteDataInfo.css";
+import useAxiosSecure from "../Hook/useAxiosSecure";
+import Pagination from "../SharedPage/Pagination";
 
 const SnagList = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
+  const [axiosSecure]=useAxiosSecure()
   const [searchSite, setSearchSite] = useState("");
   const [filter, setFilter] = useState([]);
   const [siteDataEdit, setSiteDataEdit] = useState([]);
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState(50);
+
   //const [count,setCount]= useState(0)
 
-  const navigate = useNavigate();
+
+
+   /* For Pagination code */
+   const [selectPage, setSelectPage] = useState("0")
+   const [pageSize, setPageSize] = useState("50");
+   const [totalPage, setTotalPage] = useState("1")
+   const [actualDataLength, setDataLength] = useState("10")
 
   // For Existing site upload
-  const {
-    data: siteData,
-    isLoading,
-    refetch,
-  } = useQuery(["siteInfo", [page, size]], () =>
-    fetch(
-      `http://localhost:5000/siteData?page=${page}&size=${size}`,
-      {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+  useEffect(() => {
+    const getLengthData = async () => {
+      const { data } = await axiosSecure.get("/siteData/count")
+      const page = data.lengthOfData
+      setDataLength(page)
+      const pageCount = Math.ceil(page / pageSize)
+      setTotalPage(pageCount)
+      if (pageCount < selectPage) {
+        setSelectPage(1)
       }
-    ).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
+    }
+    getLengthData()
+
+  }, [pageSize, selectPage, totalPage, actualDataLength, axiosSecure])
+
+
+  const { isLoading, data: siteData, refetch } = useQuery({
+    queryKey: ["siteData", pageSize, selectPage],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/siteData?size=${pageSize}&page=${selectPage}`)
+      return res.data
+    }
+  })
+
 
   if (isLoading) {
     return <Loading />;
@@ -58,7 +67,7 @@ const SnagList = () => {
     setSearchSite(search);
 
     if (search !== "") {
-      const filterData = siteData.result.filter((item) => {
+      const filterData = siteData.filter((item) => {
         return Object.values(item)
           .join("")
           .toLowerCase()
@@ -70,8 +79,8 @@ const SnagList = () => {
       setFilter(siteData.result);
     } */
   };
-  const pages = Math.ceil(siteData.count / size);
-  //console.log(siteDataEdit)
+
+  //console.log(siteData)
   return (
     <>
       <div className="px-3 mb-4">
@@ -87,7 +96,7 @@ const SnagList = () => {
               Back
             </NavLink>
           </div>
-          <div className="flex-1">
+          {/* <div className="flex-1">
             <input
               type="text"
               className="input input-bordered border-sky-400 w-full max-w-xs"
@@ -96,37 +105,13 @@ const SnagList = () => {
                 handleSearch(e);
               }}
             />
-          </div>
+          </div> */}
 
-          <div className="font-bold text-lg pagination  rounded-lg mt-2 px-2">
-            <div className="">
-              Pages: &nbsp;
-              {[...Array(pages).keys()]?.map((number) => (
-                <button
-                  key={number}
-                  onClick={() => setPage(number)}
-                  className={
-                    page === number
-                      ? " btn btn-active text-lg btn-accent text-white"
-                      : ""
-                  }
-                >
-                  {number + 1}
-                </button>
-              ))}
+          <Pagination pageSize={pageSize} setPageSize={setPageSize}
+          selectPage={selectPage} setSelectPage={setSelectPage}
+          totalPage={totalPage} actualDataLength={actualDataLength}
+        />
             </div>
-            <div>
-              <span className="text-pink-700">Size: &nbsp; </span>
-              {
-                <select onChange={(e) => setSize(e.target.value)}>
-                  <option value="50">50</option>
-                  <option value="80">80</option>
-                  <option value="100">100</option>
-                </select>
-              }
-            </div>
-          </div>
-        </div>
 
         <div className="overflow-x-auto  mt-2">
           <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
@@ -146,17 +131,7 @@ const SnagList = () => {
               </tr>
             </thead>
             <tbody>
-              {searchSite.length > 0
-                ? filter?.map((data, index) => (
-                    <SnagListRows
-                      key={data._id}
-                      data={data}
-                      index={index}
-                      setSiteDataEdit={setSiteDataEdit}
-                      admin={admin}
-                    ></SnagListRows>
-                  ))
-                : siteData.result?.map((data, index) => (
+              { siteData?.map((data, index) => (
                     <SnagListRows
                       key={index._id}
                       data={data}
