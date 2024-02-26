@@ -71,7 +71,7 @@ const FetchExcelToJson = () => {
       mobileNo2: siteInfo.mobileNo2,
       address: siteInfo.address,
     };
-    fetch(`https://serverom.bl-operation.com/siteInfo/${siteID}`, {
+    fetch(`http://localhost:5000/siteInfo/${siteID}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

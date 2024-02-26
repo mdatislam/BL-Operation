@@ -14,7 +14,7 @@ const EditPg = ({ pgEdit, setPgEdit, refetch }) => {
   const {
     register,
     formState: { errors },
-    handleSubmit,
+    handleSubmit,reset
   } = useForm();
 
   let date = new Date();
@@ -30,7 +30,7 @@ const EditPg = ({ pgEdit, setPgEdit, refetch }) => {
       date: today,
     };
 
-    fetch(`https://serverom.bl-operation.com/pgList/${pgNo}`, {
+    fetch(`http://localhost:5000/pgList/${pgNo}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -52,7 +52,7 @@ const EditPg = ({ pgEdit, setPgEdit, refetch }) => {
         if (pgData.upsertedCount || pgData.modifiedCount) {
           toast.success("Data Successfully Update");
         }
-        //reset();
+        reset();
         setPgEdit(null);
         refetch();
       });

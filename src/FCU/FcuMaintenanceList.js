@@ -29,9 +29,7 @@ const FcuMaintenanceList = () => {
     }
   })
 
-  if(loading || adminLoading ||isLoading){
-    <Loading />
-  }
+ 
 
   //console.log(del)
 
@@ -52,6 +50,10 @@ const FcuMaintenanceList = () => {
       setFilter(fcuFilterRecord);
     }
   };
+
+  if(loading || adminLoading ||isLoading){
+    <Loading />
+  }
 
   return (
     <div className="bg-teal-300 h-100 px-8">
@@ -118,7 +120,7 @@ const FcuMaintenanceList = () => {
 
         <div className="overflow-x-auto  mt-4">
           <table className=" table table-auto w-full  border border-3 border-slate-600 mt-2">
-            <TableCaption tableHeading="FCU Filter Changing Records" bgColor="#74992f"/>
+            <TableCaption tableHeading="FCU Filter Changing Records" bgColor="#73992f"/>
             <thead className="border-2 border-[#FFCB24]">
               <tr className="divide-x divide-blue-400 text-center">
                 <th className="">SN</th>

@@ -88,7 +88,7 @@ const Navbar2 = () => {
               </label>
             </li>}
 
-            {pathname.includes("Dashboard") && (
+          {pathname.includes("Dashboard") && (
             <label
               htmlFor="dashboard-drawer"
               className="drawer-button  lg:hidden btn-info rounded-lg p-2 "
@@ -102,7 +102,7 @@ const Navbar2 = () => {
               Home
             </NavLink>
           </li>
-          
+
         </ul>
 
       </div>
@@ -148,15 +148,16 @@ const Navbar2 = () => {
                 Login
               </NavLink>
             ) : (
-              <button className="btn btn-link rounded-lg"
+              <button className="btn  rounded-lg btn-outline btn-md "
                 onClick={logout}
               >
+                <span className=" text-red-500 font-bold">Log-Out</span>
                 <ArrowRightOnRectangleIcon className="h-6 w-6 text-blue-500" />
               </button>
 
             )}
           </li>
-          <li className="hidden md:block">
+          {/* <li className="hidden md:block">
             <div className="avatar">
               {user?.photoURL ? <div className="w-16 rounded">
                 <img src={user.photoURL} alt="pho" />
@@ -165,7 +166,7 @@ const Navbar2 = () => {
                 <h2 className="text-pink-400 ">{user?.displayName}</h2>
               }
             </div>
-          </li>
+          </li> */}
         </ul>
       </div>
       {/*  <ProfilePic/> */}

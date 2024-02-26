@@ -35,6 +35,17 @@ const DashboardOncall = () => {
                 <label htmlFor="dashboardOnCall-drawer" className="drawer-overlay "></label>
                 <ul className="menu p-4  overflow-y-auto w-70  bg-[#106d3f] text-[#ffba24]">
                     {/* Sidebar content here */}
+                    <li className="flex justify-end">
+                        <div className="avatar">
+                            {user?.photoURL ? <div className="w-24 rounded ring ring-primary ring-offset-base-100 ring-offset-2">
+                                <img src={user.photoURL} alt="pho" />
+                            </div>
+                                :
+                                <h2 className="text-pink-400 ">{user?.displayName}</h2>
+                            }
+                        </div>
+                    </li>
+                    <div className="divider divider-secondary "></div>
                     <li>
                         <NavLink to="/OnCall/PendingIssues">Pending Issues</NavLink >
                     </li>

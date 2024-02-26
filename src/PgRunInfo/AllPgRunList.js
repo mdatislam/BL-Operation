@@ -10,19 +10,21 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 import Pagination from "../Pages/SharedPage/Pagination";
+import EditPgRunData from "./EditPgRunData";
 
 const AllPgRunList = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
   const [axiosSecure] = useAxiosSecure()
-  const [selectPage, setSelectPage] = useState("0")
-  const [pageSize, setPageSize] = useState("30");
-  const [totalPage, setTotalPage] = useState("1")
-  const [actualDataLength, setDataLength] = useState("10")
+  const [editPgRun,setEditPgRun]= useState("")
   const [searchPgRun, setSearchPgRun] = useState("");
   const [filter, setFilter] = useState([]);
 
   /* For Pagination code */
+  const [selectPage, setSelectPage] = useState("0")
+  const [pageSize, setPageSize] = useState("30");
+  const [totalPage, setTotalPage] = useState("1")
+  const [actualDataLength, setDataLength] = useState("10")
 
   useEffect(() => {
     const getLengthData = async () => {
@@ -42,7 +44,7 @@ const AllPgRunList = () => {
   //console.log(selectPage,pageSize,actualDataLength,totalPage)
 
 
-  const { isLoading, data: pgRunData = [] } = useQuery({
+  const { isLoading, data: pgRunData = [],refetch } = useQuery({
     queryKey: ["pgRunData", pageSize, selectPage],
     // enabled: !adminLoading,
     queryFn: async () => {
@@ -72,6 +74,8 @@ const AllPgRunList = () => {
       setFilter(pgRunData);
     }
   };
+
+ // console.log(editPgRun)
 
   return (
     <div className=" card w-full bg-base-100 shadow-xl px-2 lg:px-16 py-4 mt-4 mb-8">
@@ -138,6 +142,7 @@ const AllPgRunList = () => {
                 <div>Responsible</div>
               </th>
               <th>PG Runner</th>
+              {admin && <th>Action</th>}
             </tr>
           </thead>
           <tbody>
@@ -147,6 +152,8 @@ const AllPgRunList = () => {
                   key={pgRun._id}
                   pgRun={pgRun}
                   index={index}
+                  admin={admin}
+                  setEditPgRun={setEditPgRun}
                 ></AllPgRunRows>
               ))
               : pgRunData?.map((pgRun, index) => (
@@ -154,10 +161,20 @@ const AllPgRunList = () => {
                   key={pgRun._id}
                   pgRun={pgRun}
                   index={index}
+                  admin={admin}
+                  setEditPgRun={setEditPgRun}
                 ></AllPgRunRows>
               ))}
           </tbody>
         </table>
+        {
+          editPgRun && 
+          <EditPgRunData 
+          editPgRun ={editPgRun}
+          setEditPgRun={setEditPgRun}
+          refetch={refetch}
+          />
+        }
 
         {/* show pages nos */}
         <div className="text-end">

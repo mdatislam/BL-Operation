@@ -32,6 +32,16 @@ const DashBoard = () => {
         <label htmlFor="dashboard-drawer" className="drawer-overlay "></label>
         <ul className="menu p-4  overflow-y-auto w-70  bg-[#020203] text-[#FFCB24] ">
           {/*  <!-- Sidebar content here --> */}
+          <li className="flex justify-end">
+            <div className="avatar">
+              {user?.photoURL ? <div className="w-24 rounded ring ring-primary ring-offset-base-100 ring-offset-2">
+                <img src={user.photoURL} alt="pho" />
+              </div>
+                :
+                <h2 className="text-pink-400 ">{user?.displayName}</h2>
+              }
+            </div>
+          </li>
           {
             <li>
               <Link to="/Dashboard" onClick={handleSidebar}>
