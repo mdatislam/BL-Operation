@@ -19,6 +19,7 @@ const useToken = (user) => {
 
       const tokenCreate = async () => {
         const { data } = await axiosSecure.put(`/user/${email}`, userInfo)
+        console.log(data)
         const accessToken = data.accessToken;
         localStorage.setItem("accessToken", accessToken);
         setToken(accessToken);
@@ -28,7 +29,7 @@ const useToken = (user) => {
 
       
     }
-  }, [user,axiosSecure]);
+  }, [user]);
 
   return [token];
 };
