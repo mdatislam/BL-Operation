@@ -4,10 +4,13 @@ import * as XLSX from "xlsx";
 import { signOut } from "firebase/auth";
 import auth from "../../firebase.init";
 import { Link, useNavigate } from "react-router-dom";
+import useAxiosSecure from "../Hook/useAxiosSecure";
+import { toast } from "react-toastify";
 
 const FetchExcelToJson = () => {
   // const [admin]=useAdmin()
   // on change states
+  const [axiosSecure]=useAxiosSecure()
   const [excelFile, setExcelFile] = useState(null);
   const [excelFileError, setExcelFileError] = useState(null);
 
@@ -71,29 +74,17 @@ const FetchExcelToJson = () => {
       mobileNo2: siteInfo.mobileNo2,
       address: siteInfo.address,
     };
-    fetch(`http://localhost:5000/siteInfo/${siteID}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(siteData),
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        // toast.error("Unauthorize access");
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    });
-    /*  .then((dgData) => {
-        //console.log(dgData);
-        if (dgData.upsertedCount || dgData.modifiedCount) {
-          toast.success("Data Successfully Update");
-        }
-       
-      }); */
+const siteInfoUpdate= async()=>{
+  const {data}= await axiosSecure.put(`/siteInfo/${siteID}`,siteData)
+  if (data.upsertedCount || data.modifiedCount) {
+    toast.success("Data Successfully Update");
+
+}
+
+}
+siteInfoUpdate()
+
+    
     return siteData;
   });
 

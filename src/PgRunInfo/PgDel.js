@@ -1,29 +1,24 @@
 import React from "react";
 import { toast } from "react-toastify";
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 
 const PgDel = ({ pgDel, setPgDel, refetch }) => {
+  const [axiosSecure] = useAxiosSecure()
   const { pgNo } = pgDel;
+
   const handlePgDelete = (pgNo) => {
     //console.log(pgNo);
-    fetch(
-      `http://localhost:5000/
-
-pgList/${pgNo}`,
-      {
-        method: "DELETE",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+    const delExecutePg = async () => {
+      const { data } = await axiosSecure.delete(`/pgList/${pgNo}`)
+      if (data.deletedCount > 0) {
+        toast.success(` ${pgNo} Delete done`);
       }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.deletedCount > 0) {
-          toast.success(` ${pgNo} Delete done`);
-        }
-        refetch();
-        setPgDel(null);
-      });
+      setPgDel(null);
+      refetch();
+
+    }
+
+    delExecutePg()
   };
   return (
     <div>
@@ -36,22 +31,27 @@ pgList/${pgNo}`,
           >
             ✕
           </label>
-          <h3 className=" text-center font-bold text-red-600 text-2xl ">
-            Warning!
-          </h3>
-          <p className="font-semibold text-xl text-blue-500 mt-4 px-12">
-            {" "}
-            Are You Sure to Remove This PG ?
+          <div className="rounded-full-lg mb-4">
+          <h3 className="font-bold text-center text-warning text-2xl">Warning!</h3>
+          </div>
+          
+          <p className="py-4 text-center font-bold text-xl text-red-500">
+            Are You Sure?
+          </p>
+          <p className=" text-center text-lg">
+          You won't be able to revert this!
           </p>
 
           <div className="modal-action">
             <button
-              className="btn btn-outline btn-error"
+              className="btn btn-outline btn-info"
               onClick={() => handlePgDelete(pgNo)}
             >
-              {" "}
-              Confirm
+             Yes,delete it!
             </button>
+            <label htmlFor="pgDel" className="btn btn-error">
+              Cancel
+            </label>
           </div>
         </div>
       </div>

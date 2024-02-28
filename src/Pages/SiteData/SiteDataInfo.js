@@ -133,7 +133,7 @@ const SiteDataInfo = () => {
             <tbody>
               {siteData.map((data, index) => (
                 <SiteDataInfoRows
-                  key={index._id}
+                  key={data._id}
                   siteData={data}
                   setSiteDataEdit={setSiteDataEdit}
                   axiosSecure={axiosSecure}

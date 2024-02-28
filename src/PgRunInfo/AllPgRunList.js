@@ -11,12 +11,14 @@ import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 import Pagination from "../Pages/SharedPage/Pagination";
 import EditPgRunData from "./EditPgRunData";
+import DeletePgRun from "../DashBoard/DeletePgRun";
 
 const AllPgRunList = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
   const [axiosSecure] = useAxiosSecure()
   const [editPgRun,setEditPgRun]= useState("")
+  const [pgRunInfo,setDelPg]= useState("")
   const [searchPgRun, setSearchPgRun] = useState("");
   const [filter, setFilter] = useState([]);
 
@@ -163,6 +165,7 @@ const AllPgRunList = () => {
                   index={index}
                   admin={admin}
                   setEditPgRun={setEditPgRun}
+                  setDelPg={setDelPg}
                 ></AllPgRunRows>
               ))}
           </tbody>
@@ -172,6 +175,14 @@ const AllPgRunList = () => {
           <EditPgRunData 
           editPgRun ={editPgRun}
           setEditPgRun={setEditPgRun}
+          refetch={refetch}
+          />
+        }
+
+        {
+          pgRunInfo && <DeletePgRun 
+          delPg={pgRunInfo}
+          setDelPg={setDelPg}
           refetch={refetch}
           />
         }
@@ -189,6 +200,7 @@ const AllPgRunList = () => {
               {
                 [...Array(totalPage).keys()].map(number => (<button
                   onClick={() => setSelectPage(number)}
+                  key={number}
                   className={+selectPage === number ? "btn btn-xs btn-secondary" : " btn btn-xs btn-outline"}
                 >{number + 1}</button>))
               }

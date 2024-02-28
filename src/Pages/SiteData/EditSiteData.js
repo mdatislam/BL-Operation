@@ -69,6 +69,10 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch, axiosSecure }) =
       toast.warning("Not update, Please Click All Unchanged field");
     }
   };
+
+  const handleClose=()=>{
+    reset()
+  }
   return (
     <div>
       <input type="checkbox" id="siteEdit" className="modal-toggle" />
@@ -76,6 +80,7 @@ const EditSiteData = ({ siteDataEdit, setSiteDataEdit, refetch, axiosSecure }) =
         <div className="modal-box relative">
           <label
             htmlFor="siteEdit"
+            onClick={handleClose}
             className="btn btn-sm btn-circle btn-error absolute right-2 top-2"
           >
             ✕

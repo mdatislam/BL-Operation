@@ -1,16 +1,13 @@
-import { signOut } from "firebase/auth";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
 
-const EditPg = ({ pgEdit, setPgEdit, refetch }) => {
+const EditPg = ({ pgEdit, setPgEdit, refetch,axiosSecure }) => {
   const [user] = useAuthState(auth);
   const { pgNo } = pgEdit;
-  const navigate = useNavigate();
-
+ 
   const {
     register,
     formState: { errors },
@@ -30,32 +27,17 @@ const EditPg = ({ pgEdit, setPgEdit, refetch }) => {
       date: today,
     };
 
-    fetch(`http://localhost:5000/pgList/${pgNo}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(PgData),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((pgData) => {
-        //console.log(pgData);
-        if (pgData.upsertedCount || pgData.modifiedCount) {
-          toast.success("Data Successfully Update");
-        }
-        reset();
-        setPgEdit(null);
-        refetch();
-      });
+    const pgAdd= async()=>{
+      const {data}=await axiosSecure.put(`/pgList/${pgNo}`,PgData)
+      if (data.upsertedCount || data.modifiedCount) {
+        toast.success("Data Successfully Update");
+      }
+      reset();
+      setPgEdit(null);
+      refetch();
+    }
+
+    pgAdd()
   };
   return (
     <div>

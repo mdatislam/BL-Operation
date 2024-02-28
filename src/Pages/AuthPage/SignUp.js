@@ -4,10 +4,13 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Loading from "../SharedPage/Loading";
 import { AuthContext } from "../Provider/AuthProvider";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../Hook/useAxiosSecure";
+import { toast } from "react-toastify";
 
 
 const SignUp = () => {
   const { createUser, updateUser, loading } = useContext(AuthContext)
+  const [axiosSecure]=useAxiosSecure()
   const {
     register,
     reset,
@@ -65,32 +68,16 @@ const SignUp = () => {
                   name, email, password,
                   url: imageUrl || "https://i.ibb.co/kmXfZgh/profile.png" , role: "general"
                 }
-                fetch('http://localhost:5000/user', {
-                  method: 'PUT',
-                  headers: {
-                    'content-type': 'application/json'
-                  },
-                  body: JSON.stringify(userInfo)
-                })
-                  .then(res => res.json())
-                  .then(data => {
-                    if (data.insertedId) {
-                      Swal.fire({
-                        title: ` user ${user.displayName}  create successfully `,
-                        width: 500,
-                        padding: '3em',
-                        color: '#FFCB24',
-                        background: '#fff url(/images/trees.png)',
-                        backdrop: `
-                        rgba(0,0,123,0.4)
-                      url("/images/nyan-cat.gif")
-                      left top
-                      no-repeat
-                    `
-                      })
-                    }
-                  })
-                reset()
+                const userUpdate= async()=>{
+                  const {data}= await axiosSecure.put(`/user`,userInfo)
+                  if (data.insertedId){
+                    toast.success(` user ${user.displayName}  create successfully `)
+                    reset()
+                  }
+                }
+
+               userUpdate()
+               
               })
           }
           navigate(from, { replace: true })

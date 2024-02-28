@@ -133,7 +133,7 @@ const SnagList = () => {
             <tbody>
               { siteData?.map((data, index) => (
                     <SnagListRows
-                      key={index._id}
+                      key={data._id}
                       data={data}
                       setSiteDataEdit={setSiteDataEdit}
                       admin={admin}

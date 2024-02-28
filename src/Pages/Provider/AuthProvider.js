@@ -7,6 +7,7 @@ import auth from '../../firebase.init';
 import axios from 'axios';
 
 
+
 export const AuthContext = createContext(null)
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState()
@@ -41,14 +42,15 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unSubsCriber = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser)
-            console.log('current user', currentUser)
+            //console.log('current user', currentUser)
             //jwt token save to loacal storage
             if (currentUser) {
+
                 axios.post('http://localhost:5000/jwt', {
                     email: currentUser.email
                 })
                     .then(data => {
-                        console.log(data)
+                        //console.log(data)
                         const token = data.data.token
                         localStorage.setItem('accessToken', token)
                         setLoading(false)

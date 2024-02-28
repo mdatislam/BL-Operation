@@ -1,7 +1,7 @@
 import React from 'react';
-import { PencilSquareIcon } from '@heroicons/react/24/solid'
+import { PencilSquareIcon, XCircleIcon } from '@heroicons/react/24/solid'
 
-const AllPgRunRows = ({ pgRun, index, admin, setEditPgRun }) => {
+const AllPgRunRows = ({ pgRun, index, admin, setEditPgRun,setDelPg }) => {
   const {
     date,
     site,
@@ -27,18 +27,25 @@ const AllPgRunRows = ({ pgRun, index, admin, setEditPgRun }) => {
         <td>{fuelConsume}</td>
         <td>{onCallName}</td>
         <td>{pgRunnerName}</td>
-        <td className='flex justify-center'>{
+        <td className=''>{
           admin &&
-          <label htmlFor="editPgRun_modal" className="btn btn-link"
-            onClick={()=> setEditPgRun(pgRun)}
+          <label htmlFor="editPgRun_modal" className="btn btn-xs btn-link"
+            onClick={() => setEditPgRun(pgRun)}
           >
             <PencilSquareIcon className='w-6 h-6 text-green-500 '
-
             />
           </label>
+        }
 
+          {admin && <label
+            htmlFor="deletePgRun"
+            className="btn btn-xs btn-link text-red-500"
+            onClick={() => setDelPg(pgRun)}
+          >
+            <XCircleIcon className="h-6 w-6 text-red-500" />
 
-        }</td>
+          </label>}
+        </td>
       </tr>
     </>
   );

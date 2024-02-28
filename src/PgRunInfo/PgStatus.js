@@ -1,25 +1,27 @@
 
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import PgStatusRows from "./PgStatusRows";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
-import { signOut } from "firebase/auth";
 import PgDel from "./PgDel";
 import EditPg from "./EditPg";
 import useAdmin from "../Pages/Hook/useAdmin";
 import { PlusCircleIcon } from '@heroicons/react/24/solid'
+import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../Pages/SharedPage/Loading";
 
 const PgStatus = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
-  const [pgList, setPgList] = useState([])
+  //const [pgList, setPgList] = useState([])
+  const [axiosSecure] = useAxiosSecure()
   const [visible, setVisible] = useState(false);
   const [pgDel, setPgDel] = useState("");
   const [pgEdit, setPgEdit] = useState("");
-  const navigate = useNavigate();
+  
   const {
     register,
     reset,
@@ -31,7 +33,16 @@ const PgStatus = () => {
   date.setDate(date.getDate());
   let today = date.toLocaleDateString("en-CA");
 
+  const { isLoading, data: pgList = [],refetch } = useQuery({
+    queryKey: ["pgList"],
+    queryFn: async () => {
+      const pgData = await axiosSecure.get("/pgList")
+      return pgData.data
+    }
+  })
+
   const onSubmit = (data) => {
+    const pgNo = data.pgno
     const PgData = {
       pgNo: data.pgno,
       pgStatus: data.pgCondition,
@@ -41,58 +52,27 @@ const PgStatus = () => {
       date: today,
     };
 
-    fetch(`http://localhost:5000/pgList/${data.pgno}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify(PgData),
-    })
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          toast.error("Unauthorize access");
-          signOut(auth);
-          localStorage.removeItem("accessToken");
-          navigate("/Login");
-        }
-        return res.json();
-      })
-      .then((pgData) => {
-        //console.log(pgData);
-        if (pgData.upsertedCount || pgData.modifiedCount) {
-          toast.success("Data Successfully Update");
-        }
-        reset();
-        setVisible(null);
-        //refetch();
-      });
-  };
-
-
-  useEffect(() => {
-    fetch("http://localhost:5000/pgList", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
+    const pgInfo = async () => {
+      const { data } = await axiosSecure.put(`/pgList/${pgNo}`, PgData)
+      if (data.upsertedCount || data.modifiedCount) {
+        toast.success("Data Successfully Update");
       }
-      return res.json();
-    })
-      .then(data => setPgList(data))
+      reset();
+      setVisible(null);
+      refetch()
+    }
+    pgInfo()
 
 
-  }, [])
+  };
 
   const goodCondition = pgList?.filter((good) => good.pgStatus === "Good");
   const goodPg = goodCondition?.length;
   const faultyPg = pgList?.length - goodPg;
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   return (
     <div className="mt-2 mb-4 w-full px-2 md:w-3/4 mx-auto">
@@ -238,9 +218,11 @@ const PgStatus = () => {
           </tbody>
         </table>
       </div>
-      {pgDel && <PgDel pgDel={pgDel} setPgDel={setPgDel} /* refetch={refetch}  */ />}
+      {pgDel && <PgDel pgDel={pgDel} setPgDel={setPgDel}  refetch={refetch} />}
       {pgEdit && (
-        <EditPg pgEdit={pgEdit} setPgEdit={setPgEdit} /* refetch={refetch} */ />
+        <EditPg pgEdit={pgEdit} setPgEdit={setPgEdit} 
+         refetch={refetch} axiosSecure={axiosSecure}
+          />
       )}
     </div>
   );

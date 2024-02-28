@@ -6,38 +6,41 @@ import PgRunRows from "./PgRunRows";
 import { useState, } from "react";
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 import DeletePgRun from "./DeletePgRun";
+import TableCaption from '../Pages/SharedPage/TableCaption'
+import EditPgRunData from "../PgRunInfo/EditPgRunData";
 
 
 const PgRunList = () => {
   const [user] = useAuthState(auth);
-  const [axiosSecure]=useAxiosSecure()
+  const [axiosSecure] = useAxiosSecure()
   const [searchPgRun, setSearchPgRun] = useState("");
   const [filter, setFilter] = useState([]);
   const [delPg, setDelPg] = useState("");
-   
+  const [editPgRun, setEditPgRun] = useState("")
 
-  const {isLoading2,
-    data: receiveFuel,
+
+  const { isLoading2,
+    data: receiveFuel
   } = useQuery({
-    queryKey:["receiveFuel",user?.email],
-    queryFn:async()=>{
-      const res= await axiosSecure.get(`/fuelList?email=${user.email}`)
+    queryKey: ["receiveFuel", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/fuelList?email=${user.email}`)
       return res.data
     }
   })
 
 
-  const {isLoading,
+  const { isLoading,
     data: pgRunData,
-        refetch,
+    refetch,
   } = useQuery({
-    queryKey:["pgRunData",user?.email],
-    queryFn:async()=>{
-      const res= await axiosSecure.get(`/pgRunAllList?email=${user.email}`)
+    queryKey: ["pgRunData", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/pgRunAllList?email=${user.email}`)
       return res.data
     }
   })
-    
+
   if (isLoading || isLoading2) {
     return <Loading />;
   }
@@ -111,9 +114,9 @@ const PgRunList = () => {
             <div className="stat-desc"> Liter</div>
           </div>
         </div>
-        <div className="grid h-12 card bg-[#34aaef] rounded-box place-items-center mt-12">
+        {/* <div className="grid h-12 card bg-[#c334ef] rounded-box place-items-center mt-12">
           <h2 className="text-white font-bold ">Your All PG Run Record</h2>
-        </div>
+        </div>  */}
       </div>
       <div className="flex  justify-between flex-wrap mb-4 px-2">
         <input
@@ -127,14 +130,16 @@ const PgRunList = () => {
       </div>
       <div className="overflow-x-auto px-2">
         <table className="table table-compact w-full">
+          <TableCaption tableHeading="Your All PG Run Record" bgColor="#c334ef " />
           <thead className="border-2 border-[#FFCB24]">
             <tr className="divide-x divide-blue-400 text-center">
               <th>SN</th>
+              <th>Action</th>
               <th>Date</th>
               <th>Site ID</th>
               <th className="whitespace-pre-line">
                 <div>Rectifier Module Capacity</div>
-               
+
               </th>
               <th>PG No</th>
               <th>
@@ -148,39 +153,42 @@ const PgRunList = () => {
               <th>Duration</th>
               <th>Consume</th>
               <th className="whitespace-pre-line">
-                
+
                 <div>Approval Responsible</div>
-                
+
               </th>
               <th>PG Runner</th>
               <th>
                 <div>Approval</div>
                 <div>Status</div>
               </th>
-              <th>Action</th>
               <th>Remarks</th>
             </tr>
           </thead>
           <tbody>
             {searchPgRun.length > 0
               ? filter?.map((pgRun, index) => (
-                  <PgRunRows
-                    key={pgRun._id}
-                    pgRun={pgRun}
-                    index={index}
-                    setDelPg={setDelPg}
-                    //fuelConsume={fuelConsume}
-                  ></PgRunRows>
-                ))
+                <PgRunRows
+                  key={pgRun._id}
+                  pgRun={pgRun}
+                  index={index}
+                  refetch={refetch}
+                  setDelPg={setDelPg}
+                 setEditPgRun={setEditPgRun}
+                //fuelConsume={fuelConsume}
+                ></PgRunRows>
+              ))
               : pgRunData?.map((pgRun, index) => (
-                  <PgRunRows
-                    key={pgRun._id}
-                    pgRun={pgRun}
-                    index={index}
-                    setDelPg={setDelPg}
-                    //fuelConsume={fuelConsume}
-                  ></PgRunRows>
-                ))}
+                <PgRunRows
+                  key={pgRun._id}
+                  pgRun={pgRun}
+                  index={index}
+                  refetch={refetch}
+                  setDelPg={setDelPg}
+                  setEditPgRun={setEditPgRun}
+                //fuelConsume={fuelConsume}
+                ></PgRunRows>
+              ))}
           </tbody>
         </table>
       </div>
@@ -191,6 +199,14 @@ const PgRunList = () => {
           refetch={refetch}
         ></DeletePgRun>
       )}
+
+      {
+        editPgRun &&
+        <EditPgRunData editPgRun={editPgRun} setEditPgRun={setEditPgRun}
+        refetch={refetch}
+
+        />
+      }
     </div>
   );
 };

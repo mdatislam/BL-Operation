@@ -42,7 +42,7 @@ const PgRunUpdate = () => {
   /* today & previous date calculation */
 
   let pre = new Date();
-  pre.setDate(pre.getDate() - 20);
+  pre.setDate(pre.getDate() - 4);
   let preYear = pre.getFullYear();
   let preMonth = pre.getMonth() + 1;
   if (preMonth < 10) {
@@ -115,13 +115,7 @@ const PgRunUpdate = () => {
     const updatePgRun = async () => {
       const { data } = await axiosSecure.post("/pgRunData", PgRunData)
       if (data.insertedId) {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'PgRun Data has been saved',
-          showConfirmButton: false,
-          timer: 1500
-        })
+       toast.success("Data update successfully")
         reset()
         setSearch("");
       }
@@ -206,7 +200,7 @@ const PgRunUpdate = () => {
                     <ul
                       className="menu p-2 w-52"
                       onClick={() => handleSearchItem(item.siteId)}
-                      key={index}
+                     
                     >
                       <li className="text-blue-500 hover"> {item.siteId}</li>
                     </ul>
@@ -235,7 +229,9 @@ const PgRunUpdate = () => {
                   --------Rectifier's Per Module capacity-------{" "}
                 </option>
                 {rectifiers?.map((recti) => (
-                  <option value={recti.capacity}>{recti.capacity} </option>
+                  <option value={recti.capacity}
+                  
+                  >{recti.capacity} </option>
                 ))}
               </select>
               <label className="label">

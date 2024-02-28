@@ -1,29 +1,21 @@
 import React from "react";
 import { toast } from "react-toastify";
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 const LubOilDel = ({ lubOilDel, setLubOilDel, refetch }) => {
+  const [axiosSecure] = useAxiosSecure()
   const { _id } = lubOilDel;
   const handlelubOilDelete = (id) => {
     // console.log(id);
-    fetch(
-      `http://localhost:5000/
-
-lubOilList/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+    const lubOilDelete = async () => {
+      const { data } = await axiosSecure.delete(`/lubOilList/${id}`)
+      if (data.deletedCount > 0) {
+        toast.success(` ${id} Delete done`);
       }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.deletedCount > 0) {
-          toast.success(` ${id} Delete done`);
-        }
-        refetch();
-        setLubOilDel(null);
-      });
+      refetch();
+      setLubOilDel(null);
+    }
+lubOilDelete()
   };
   return (
     <div>
@@ -36,22 +28,27 @@ lubOilList/${id}`,
           >
             ✕
           </label>
-          <h3 className=" text-center font-bold text-red-600 text-2xl ">
-            Warning!
-          </h3>
-          <p className="font-semibold text-xl text-blue-500 mt-4 px-12">
-            {" "}
-            Are You Sure to Remove this record of LubOil?
+          <div className="rounded-full-lg mb-4">
+            <h3 className="font-bold text-center text-warning text-2xl">Warning!</h3>
+          </div>
+
+          <p className="py-4 text-center font-bold text-xl text-red-500">
+            Are You Sure?
+          </p>
+          <p className=" text-center text-lg">
+            You won't be able to revert this!
           </p>
 
           <div className="modal-action">
             <button
-              className="btn btn-outline btn-error"
+              className="btn btn-outline btn-info"
               onClick={() => handlelubOilDelete(_id)}
             >
-              {" "}
-              Confirm
+              Yes,delete it!
             </button>
+            <label htmlFor="lubOilDel" className="btn btn-error">
+              Cancel
+            </label>
           </div>
         </div>
       </div>

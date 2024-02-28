@@ -47,13 +47,7 @@ const FuelUpdateOncall = () => {
     const updateFuel = async () => {
       const { data } = await axiosSecure.post("/fuelDataOncall", fuelData)
       if (data.insertedId) {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Fuel Data has been saved',
-          showConfirmButton: false,
-          timer: 1500
-        })
+        toast.success(" Fuel Update successfully")
         reset()
     
       }
@@ -160,7 +154,9 @@ const FuelUpdateOncall = () => {
                   -------- Select Fuel Receiver Name-------{" "}
                 </option>
                 {availableUser?.map((user) => (
-                  <option value={user.name}>{user.name} </option>
+                  <option value={user.name}
+                  key={user.name}
+                  >{user.name} </option>
                 ))}
               </select>
               <label className="label">

@@ -268,7 +268,9 @@ const FuelUpdate = () => {
                   -------- Select On Caller Name-------{" "}
                 </option>
                 {availableUser.map((user) => (
-                  <option value={user.name}>{user.name} </option>
+                  <option value={user.name}
+                  key={user.name}
+                  >{user.name} </option>
                 ))}
               </select>
               <label className="label">

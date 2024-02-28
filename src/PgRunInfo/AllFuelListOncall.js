@@ -170,6 +170,7 @@ const AllFuelListOncall = () => {
           delFuel={delFuel}
           setDelFuel={setDelFuel}
           refetch={refetch}
+          axiosSecure={axiosSecure}
         />
       )}
     </div>

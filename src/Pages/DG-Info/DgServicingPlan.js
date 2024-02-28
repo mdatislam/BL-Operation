@@ -8,33 +8,28 @@ import auth from "../../firebase.init";
 import DgServicePlanRows from "./DgServicePlanRows";
 import useAdmin from "../Hook/useAdmin";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { ArrowDownTrayIcon,ChevronDoubleLeftIcon } from '@heroicons/react/24/solid'
+import { ArrowDownTrayIcon, ChevronDoubleLeftIcon } from '@heroicons/react/24/solid'
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 const DgServicingPlan = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
-  const navigate = useNavigate();
-  const { data: dgServiceInfo, isLoading } = useQuery(["DgInfoList"], () =>
-    fetch("http://localhost:5000/dgServiceInfo", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
-      if (res.status === 401 || res.status === 403) {
-        //  toast.error("Unauthorize Access")
-        signOut(auth);
-        localStorage.removeItem("accessToken");
-        navigate("/Login");
-      }
-      return res.json();
-    })
-  );
-  // console.log(services)
+  const [axiosSecure] = useAxiosSecure()
+
+
+  const { isLoading, data: dgServiceInfo = [] } = useQuery({
+    queryKey: ["dgServiceInfo"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/dgServiceInfo")
+      return res.data
+    }
+  })
+
+
   if (isLoading) {
     return <Loading />;
   }
-  // console.log(dgServiceInfo);
+
   return (
     <div className="mt-8 px-4 mb-4 lg:w-3/4 mx-auto">
       <h2 className="flex rounded-lg  text-white bg-[#78e33f] mb-4 h-12 justify-center items-center">
@@ -47,7 +42,7 @@ const DgServicingPlan = () => {
           className="flex btn btn-outline btn-primary btn-sm"
         >
           <ChevronDoubleLeftIcon className="h-6 w-6 text-blue-500" />
-          
+
         </Link>
 
         <Link
@@ -64,8 +59,8 @@ const DgServicingPlan = () => {
               filename="dgServiceInfo"
               className="flex btn btn-outline btn-primary btn-sm"
             >
-              <ArrowDownTrayIcon  className="h-6 w-6 text-blue-500" />
-              
+              <ArrowDownTrayIcon className="h-6 w-6 text-blue-500" />
+
             </CSVLink>
           </div>
         )}

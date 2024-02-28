@@ -6,25 +6,7 @@ const useDeleteItem = ({ del, refetch, setDel }) => {
 
     const handleDelete = (id) => {
         console.log(id);
-        fetch(
-            `http://localhost:5000/receivedFuel/${id}`,
-            {
-                method: "DELETE",
-                headers: {
-                    authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                },
-            }
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.deletedCount > 0) {
-                    toast.success(" Delete successfully done ");
-                }
-                refetch();
-                setDel(null);
-
-                // console.log(data)
-            });
+       
     };
     return (
         <div>

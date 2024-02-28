@@ -30,16 +30,23 @@ const DeleteReceiveFuel = ({ delFuel, refetch, setDelFuel }) => {
           >
             ✕
           </label>
-          <h3 className="font-bold text-warning text-lg  text-center">
-            Warning!
-          </h3>
-          <p className="py-4 font-bold text-2xl text-red-500">
-            Are You Sure to Delete it ?
+          <div className="rounded-full-lg mb-4">
+          <h3 className="font-bold text-center text-warning text-2xl">Warning!</h3>
+          </div>
+          
+          <p className="py-4 text-center font-bold text-xl text-red-500">
+            Are You Sure?
+          </p>
+          <p className=" text-center text-lg">
+          You won't be able to revert this!
           </p>
           <div className="modal-action">
-            <button onClick={() => handleDelete(_id)} className="btn btn-error">
-              Confirm!
+            <button onClick={() => handleDelete(_id)} className="btn btn-info">
+            Yes,delete it!
             </button>
+            <label htmlFor="deleteFuel" className="btn btn-error">
+              Cancel
+            </label>
           </div>
         </div>
       </div>
