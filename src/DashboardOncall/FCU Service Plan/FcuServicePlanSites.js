@@ -23,7 +23,7 @@ const FcuServicePlanSites = () => {
     let date = new Date()
     const targetDate = addDays(date, futureDay)
     const formattedTargetDate = format(targetDate, "dd-MMM-yy")
- //console.log(formattedTargetDate)
+    //console.log(formattedTargetDate)
     
     const {isLoading, data: planFcuServiceSite=[] } = useQuery({
         queryKey: ["planFcuServiceSite",formattedTargetDate],
@@ -32,7 +32,7 @@ const FcuServicePlanSites = () => {
             return res.data
         }
     })
-   // console.log(planFcuServiceSite)
+    //console.log(planFcuServiceSite)
 if (isLoading) {
   return <Loading />;
 }
@@ -85,7 +85,7 @@ if (isLoading) {
                                     <th className='border-b-2 border-orange-300 '>{index + 1}</th>
                                     <td>{fcuService.siteId}</td>
                                     <td>{fcuService.latestServiceDate}</td>
-                                    <td>{fcuService.nextPlanDate}</td>
+                                    <td className="text-[#e41fe4f6] font-bold">{fcuService.nextPlanDate}</td>
 
                                 </tr>
                             )}
