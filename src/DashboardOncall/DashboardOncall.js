@@ -47,7 +47,7 @@ const DashboardOncall = () => {
                     </li>
                     <div className="divider divider-secondary "></div>
                     <li>
-                        <NavLink to="/OnCall/PendingIssues">Pending Issues</NavLink >
+                        <NavLink to="/OnCall/PendingIssues" onClick={handleSidebar} >Pending Issues</NavLink >
                     </li>
                     {/* <li>
                         <NavLink to="/OnCall" onClick={handleSidebar}>OnCall Dashboard</NavLink >

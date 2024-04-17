@@ -12,6 +12,30 @@ const DgServicePlanRows = ({dgInfo,index }) => {
   const dayDifference = todayMsec - serviceDateMsec;
   const day = (dayDifference / (1000 * 3600 * 24)).toFixed(0);
    // console.log(day);
+
+   // Function to get the abbreviation of the month
+  function getMonthAbbreviation(monthIndex) {
+    const months = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+    return months[monthIndex];
+  }
+
+  function addDaysToDate(dateString, days) {
+    let date = new Date(dateString);
+    date.setDate(date.getDate() + days);
+    return date;
+  } 
+   
+  
+  let resultDate = addDaysToDate(date, 180); //Date format: YYYY-mm-dd
+
+  // Format the result date to your desired format (DD-Mon-YYYY)
+  let formattedResultDate = `${resultDate.getDate()}-${getMonthAbbreviation(resultDate.getMonth())}-${resultDate.getFullYear()}`;
+
+
+   
     
   return (
     <tr className="border-2 border-[#F0D786]  hover divide-x divide-gray-300 text-center">
@@ -22,7 +46,7 @@ const DgServicePlanRows = ({dgInfo,index }) => {
       <td className=" ">{rhReading} </td>
       <td className=" ">{airFilter}</td>
       <td className=" ">{day}</td>
-      <td className="text-[#e41fe4f6] font-bold">{nextPlanDate}</td>
+      <td className="text-[#e41fe4f6] font-bold">{formattedResultDate}</td>
       <td>{remark}</td>
     </tr>
   );

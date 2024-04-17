@@ -23,7 +23,7 @@ const FcuServicePlanSites = () => {
     let date = new Date()
     const targetDate = addDays(date, futureDay)
     const formattedTargetDate = format(targetDate, "dd-MMM-yy")
- console.log(formattedTargetDate)
+ //console.log(formattedTargetDate)
     
     const {isLoading, data: planFcuServiceSite=[] } = useQuery({
         queryKey: ["planFcuServiceSite",formattedTargetDate],
@@ -67,7 +67,7 @@ if (isLoading) {
                         </div>
                     </caption>
                     <thead>
-                        <tr className=' text-center text-xl font-bold border-2 border-green-500 divide-x-2 divide-green-700'>
+                        <tr className=' text-center text-lg font-bold border-2 border-green-500 text-green-700'>
                             <th>
                                 <label>
                                     <input type="checkbox" className="checkbox" />

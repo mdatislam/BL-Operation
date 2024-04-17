@@ -3,6 +3,7 @@ import useAxiosSecure from '../../Pages/Hook/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import { addDays, format } from 'date-fns';
 import Loading from '../../Pages/SharedPage/Loading';
+import DgServicePlanSitesRow from './DgServicePlanSitesRow';
 
 const OnCallPlanSite = () => {
     const [axiosSecure] = useAxiosSecure()
@@ -35,6 +36,22 @@ const OnCallPlanSite = () => {
     if (isLoading) {
         return <Loading />;
     }
+  // Function to get the abbreviation of the month
+  function getMonthAbbreviation(monthIndex) {
+    const months = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+    return months[monthIndex];
+  }
+
+  function addDaysToDate(dateString, days) {
+    let date = new Date(dateString);
+    date.setDate(date.getDate() + days);
+    return date;
+  } 
+   
+  
     return (
         <div className="card w-full px-2 md:w-3/4 md:px-6 mx-auto bg-base-100 shadow-xl mt-4 py-2">
             <div className='py-4 mb-2'>
@@ -65,8 +82,8 @@ const OnCallPlanSite = () => {
                             <h2 className='text-xl'>DG Servicing Required Sites </h2>
                         </div>
                     </caption>
-                    <thead>
-                        <tr className=' text-center text-xl font-bold border-b-2 border-orange-300 divide-x-2 divide-green-700'>
+                    <thead className='bg-blue-500 text-2xl'>
+                        <tr className=' text-center text-3xl font-bold border-b-2 border-orange-300 text-green-700'>
                             <th>
                                 <label>
                                     <input type="checkbox" className="checkbox" />
@@ -80,13 +97,11 @@ const OnCallPlanSite = () => {
                     <tbody>
                         {
                             planDgServiceSite?.map((dgService, index) =>
-                                <tr className='divide-y-2 divide-orange-300 text-center'>
-                                    <td className='border-b-2 border-orange-300 '>{index + 1}</td>
-                                    <td>{dgService.siteId}</td>
-                                    <td>{dgService.date}</td>
-                                    <td>{dgService.nextPlanDate}</td>
-
-                                </tr>
+                                <DgServicePlanSitesRow 
+                                key={dgService._id}
+                                dgService={dgService}
+                                index={index}
+                                />
                             )}
                     </tbody>
                 </table>

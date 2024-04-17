@@ -38,10 +38,10 @@ const FcuUpdate = () => {
     const onSubmit = (data) => {
 
         const serviceDate = new Date(data.date2)
-        const formattedServiceDate = format(serviceDate, "dd-MM-yyyy")
-        const nextServiceDate = addDays(serviceDate, 120)
-        const formattedNextServiceDate = format(nextServiceDate, 'dd-MM-yyyy');
-        const formattedNextServiceViewDate = format(nextServiceDate, 'dd-MMM-yyyy');
+        const formattedServiceDate = format(serviceDate, "yyyy-MM-dd")
+        // const nextServiceDate = addDays(serviceDate, 120)
+        // const formattedNextServiceDate = format(nextServiceDate, 'dd-MM-yyyy');
+        // const formattedNextServiceViewDate = format(nextServiceDate, 'dd-MMM-yyyy');
 
         const presentServiceDate = FcuRecord?.find(fcu => fcu.siteId === search)
         //console.log(presentServiceDate)
@@ -53,8 +53,8 @@ const FcuUpdate = () => {
             fcuStatus: data.fcuCtrl,
             preServiceDate: presentServiceDate?.latestServiceDate || null,
             latestServiceDate: formattedServiceDate,
-            nextPlanDate: formattedNextServiceDate,
-            nextPlanViewDate: formattedNextServiceViewDate,
+            // nextPlanDate: formattedNextServiceDate,
+            // nextPlanViewDate: formattedNextServiceViewDate,
             updaterName: user.displayName,
             onCallerName: data.onCallerName,
             remark: data.remark,

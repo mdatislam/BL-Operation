@@ -94,7 +94,7 @@ const FcuMaintenanceList = () => {
           {/* For Data upload button */}
           {admin && (
             <Link
-              to="/FcuDataUpload"
+              to="/FcuDataFetch"
               className="flex btn btn-outline btn-primary btn-sm"
             >
               Data Import
