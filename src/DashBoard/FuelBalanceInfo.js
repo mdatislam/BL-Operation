@@ -17,7 +17,7 @@ const FuelBalanceInfo = () => {
       return res.data
     }
   })
-  // console.log(receiveFuelOnCall)
+   //console.log(receiveFuelOnCall)
   const totalFuelOnCall = receiveFuelOnCall?.reduce((pre, item) => pre + item.receiveOnCall, 0)
   const { isLoading, data: balanceInfo } = useQuery({
     queryKey: ['balanceInfo'],

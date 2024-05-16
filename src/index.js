@@ -6,10 +6,13 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AuthProvider from './Pages/Provider/AuthProvider';
+import { Provider } from 'react-redux';
+import { store } from './app/store/store';
 
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <Provider store={store}>
   <AuthProvider>
     < React.StrictMode >
       <QueryClientProvider client={queryClient}>
@@ -19,6 +22,7 @@ root.render(
       </QueryClientProvider>
     </React.StrictMode >
   </AuthProvider>
+  </Provider>
 
 );
 

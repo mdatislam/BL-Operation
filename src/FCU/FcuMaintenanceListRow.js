@@ -55,7 +55,7 @@ const FcuMaintenanceListRow = ({ fcuInfo, index, setDel, admin }) => {
       <td className=" ">{fcuStatus} </td>
       <td className=" ">{preServiceDate}</td>
       <td className=" ">{latestServiceDate}</td>
-      <td className="text-[#e41fe4f6] font-bold">{formattedResultDate}</td>
+      <td className="text-[#e41fe4f6] font-bold w-1">{formattedResultDate}</td>
       <td className=" ">{updaterName}</td>
       <td className='whitespace-pre-line border border-slate-300 '>{remark}</td>
     </tr>

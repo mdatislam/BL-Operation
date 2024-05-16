@@ -3,6 +3,7 @@ import useAxiosSecure from '../../Pages/Hook/useAxiosSecure';
 import { addDays, format } from 'date-fns';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '../../Pages/SharedPage/Loading';
+//import { useGetFcuServiceUpdateQuery } from '../../app/features/api/fcu/fcuApi';
 
 const FcuServicePlanSites = () => {
 
@@ -33,6 +34,8 @@ const FcuServicePlanSites = () => {
         }
     })
     //console.log(planFcuServiceSite)
+//const {data:planFcuServiceSite=[] ,isLoading}= useGetFcuServiceUpdateQuery()
+
 if (isLoading) {
   return <Loading />;
 }
