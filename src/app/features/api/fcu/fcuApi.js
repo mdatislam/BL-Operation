@@ -5,7 +5,8 @@ const fcuApi= apiSlice.injectEndpoints({
         getFcuServiceUpdate:builder.query({
             query:()=>({
                 url:"/fcuFilterChangeLatestRecord"
-            })
+            }),
+            
         })
     })
 })

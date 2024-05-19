@@ -33,9 +33,9 @@ const FcuServicePlanSites = () => {
             return res.data
         }
     })
-    //console.log(planFcuServiceSite)
-//const {data:planFcuServiceSite=[] ,isLoading}= useGetFcuServiceUpdateQuery()
-
+    
+/* const {data:planFcuServiceSite=[] ,isLoading}= useGetFcuServiceUpdateQuery() */
+console.log(planFcuServiceSite)
 if (isLoading) {
   return <Loading />;
 }
