@@ -1,5 +1,5 @@
 import { BackwardIcon } from '@heroicons/react/24/solid';
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
 import auth from '../firebase.init';
@@ -56,6 +56,7 @@ const FcuUpdate = () => {
              nextPlanDate: formattedNextServiceDate,
             // nextPlanViewDate: formattedNextServiceViewDate,
             updaterName: user.displayName,
+            updaterEmail: user.email,
             onCallerName: data.onCallerName,
             remark: data.remark,
         }

@@ -2,8 +2,15 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import Loading from '../Pages/SharedPage/Loading';
 import FuelBalanceRow from './FuelBalanceRow';
-import { PieChart, Pie, Cell, Legend } from 'recharts';
+import {
+  PieChart, Pie, Cell, Legend, CartesianGrid,
+  XAxis, YAxis, Tooltip, Bar, BarChart, Label, LabelList,
+  ComposedChart,
+  ResponsiveContainer
+} from 'recharts';
 import useAxiosSecure from '../Pages/Hook/useAxiosSecure';
+
+
 
 
 
@@ -17,7 +24,7 @@ const FuelBalanceInfo = () => {
       return res.data
     }
   })
-   //console.log(receiveFuelOnCall)
+  //console.log(receiveFuelOnCall)
   const totalFuelOnCall = receiveFuelOnCall?.reduce((pre, item) => pre + item.receiveOnCall, 0)
   const { isLoading, data: balanceInfo } = useQuery({
     queryKey: ['balanceInfo'],
@@ -26,6 +33,13 @@ const FuelBalanceInfo = () => {
       return res.data
     }
   })
+
+  /*  const balanceData= balanceInfo?.map(item=> {
+     return {...item,
+     balance:item.fuelQuantity-item.fuelConsume.toFixed(1)}
+   })
+   console.log(balanceData) */
+
 
   if (isLoading2 || isLoading) {
     return <Loading />;
@@ -45,7 +59,23 @@ const FuelBalanceInfo = () => {
   });
 
   //console.log(combinedArray);
+  // balance calculation consider both receive fuel of self & own update
+  const combineBalanceInfo = combinedArray?.map((item) => {
+    if (item.fuelQuantity > item.receiveOnCall) {
+      return {
+        ...item,
+        balance: (item.fuelQuantity - item.fuelConsume).toFixed(2)
+      }
+    }
+    else {
+      return {
+        ...item,
+        balance: (item.receiveOnCall - item.fuelConsume).toFixed(2)
+      }
+    }
+  })
 
+  //console.log(combineBalanceInfo)
   /* pie chart */
 
 
@@ -68,12 +98,6 @@ const FuelBalanceInfo = () => {
 
   return (
     <div>
-      {/* <Link
-        className="btn btn-sm btn-outline btn-secondary mb-3"
-        to="/Dashboard/fuelUpdateOnCall"
-      >
-        Fuel Update_OnCall
-      </Link> */}
 
       <div className='grid grid-cols-1 md:grid-cols-2 gap-x-2'>
         {/* Left side start */}
@@ -103,9 +127,11 @@ const FuelBalanceInfo = () => {
               </tr>
             </thead>
             <tbody>
-              {combinedArray?.map((u, index) => (
-                <FuelBalanceRow key={u._id} index={index} u={u}></FuelBalanceRow>
-              ))}
+              {
+                combineBalanceInfo?.sort((a, b) => b.balance.localeCompare(a.balance))
+                  .map((u, index) => (
+                    <FuelBalanceRow key={u._id} index={index} u={u}></FuelBalanceRow>
+                  ))}
 
 
             </tbody>
@@ -132,10 +158,10 @@ const FuelBalanceInfo = () => {
         <div className='border-2 hidden lg:block border-slate-300 rounded-lg w-full'>
           <div>
             <div className='text-2xl font-semibold py-2 bg-slate-500 text-center rounded-t-lg'>
-              <h2 className='text-white' > % of Receive Fuel </h2>
+              <h2 className='text-white' >Graphical Presentation </h2>
             </div>
 
-            <PieChart width={600} height={600}>
+            {/* <PieChart width={600} height={600}>
               <Pie
                 data={balanceInfo}
                 cx="50%"
@@ -152,7 +178,64 @@ const FuelBalanceInfo = () => {
                 ))}
 
               </Pie>
-            </PieChart>
+            </PieChart> */}
+
+            {/* Bar chart */}
+            <BarChart
+              width={600}
+              height={550}
+              data={combineBalanceInfo}
+              margin={{
+                top: 50,
+                right: 5,
+                left: 5,
+                bottom: 120,
+              }}
+            >
+              {/* <CartesianGrid strokeDasharray="1 1" /> */}
+              <Legend layout='horizontal' verticalAlign='top' align='center' />
+              <XAxis dataKey="name" angle="-90" textAnchor="end" style={{ fontWeight: 'bold' }} interval={0} />
+              <Label value="X Axis Label" offset={20} position="outsideBottom" />
+
+              <Bar dataKey="fuelQuantity" stackId="a" fill="#8884d8" barSize={30} />
+              <Bar dataKey="fuelConsume" stackId="a" fill="red" barSize={30} />
+              <Bar dataKey="balance" stackId="a" fill="#82ca9d" barSize={30} />
+              {/*  <Tooltip /> */}
+              <LabelList dataKey="balance" position="top" />
+              <text x="50%" y={20} fill="blue" textAnchor="middle" dominantBaseline="central"
+                style={{ fontWeight: 'bold', fontSize: "20", color: "#8884d8" }} >
+                Fuel Balance Info
+              </text>
+            </BarChart>
+
+            {/* Horizontal bar Chart */}
+            {/* <ResponsiveContainer width="100%" height="100%"> */}
+            {/* <ComposedChart
+              layout="vertical"
+              width={500}
+              height={750}
+              data={combineBalanceInfo}
+              margin={{
+                top: 20,
+                right: 20,
+                bottom: 20,
+                left: 60,
+              }}
+            >
+              <CartesianGrid stroke="#f5f5f5" />
+              <XAxis type="number" />
+              <YAxis dataKey="name" type="category" offset={20} scale="band" 
+              textAnchor="end" style={{ fontWeight: 'bold' }} interval={0} />
+              <Legend layout='horizontal' verticalAlign='bottom' align='center' />
+
+              <Bar dataKey="fuelQuantity" stackId="a" fill="#8884d8" barSize={30} />
+              <Bar dataKey="fuelConsume" stackId="a" fill="red" barSize={30} />
+              <Bar dataKey="balance" stackId="a" fill="#82ca9d" barSize={30} />
+              <LabelList dataKey="balance" position="top" />
+
+            </ComposedChart> */}
+            {/* </ResponsiveContainer> */}
+
           </div>
         </div>
 

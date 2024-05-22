@@ -58,6 +58,7 @@ import OnCallPlanSite from "./DashboardOncall/DgServiceIssue/OnCallPlanSite";
 import ViewIssues from "./DashboardOncall/siteIssues/ViewIssues";
 import EmShortInfo from "./EnergyMeter/EmShortInfo";
 import FcuDataFetchFromExcelFile from "./FCU/FcuDataFetchFromExcelFile";
+import PerformanceInfo from "./DashboardOncall/perfomanceInfo/PerformanceInfo";
 
 
 
@@ -90,9 +91,10 @@ function App() {
             <Route path="DgServicingUpdate" element={<DGServicingUpdate />} />
             <Route path="DgRefuelingUpdate" element={<DgRefuelingUpdate />} />
             <Route path="DgUseMaterial" element={<DgUseMaterial />} />
-            <Route element={<RequireAdmin />}>
+            {/* <Route element={<RequireAdmin />}>
               <Route path="UserList" element={<UserList />} />
-            </Route>
+              <Route path="PerformanceInfo" element={<PerformanceInfo/>} />
+            </Route> */}
           </Route>
           {/* on call Dashboard components start */}
           <Route path="OnCall" element={<DashboardOncall />}>
@@ -107,6 +109,10 @@ function App() {
             <Route path="PendingIssues" element={<ViewIssues />} />
             <Route path="siteAllIssues" element={<ViewAllIssue />} />
             <Route path="pgStatus" element={<PgStatus />} />
+            <Route element={<RequireAdmin />}>
+              <Route path="UserList" element={<UserList />} />
+              <Route path="PerformanceInfo" element={<PerformanceInfo/>} />
+            </Route>
 
           </Route>
           {/* on call Dashboard components End */}
