@@ -51,7 +51,7 @@ const FcuMaintenanceList = () => {
     }
   };
 
-  if(loading || adminLoading ||isLoading){
+  if(isLoading ||loading || adminLoading){
     <Loading />
   }
 

@@ -26,7 +26,7 @@ const apiSlice = createApi({
             return response.ok; // Default behavior for other status codes
         }, */
     }),
-    tagTypes:["performance"],
+    tagTypes:["performance","powerShut"],
     endpoints: (builder) => ({})
 
 })

@@ -74,7 +74,7 @@ const FcuDataFetchFromExcelFile = () => {
             const nextPlan = addDaysToDate(formattedLatestDate, 120);
             const formattedNextPlan = dateFormat(nextPlan)
 
-           
+
 
 
             const fcuData = {
@@ -144,29 +144,13 @@ const FcuDataFetchFromExcelFile = () => {
                             required
                             className="input input-bordered w-full max-w-xs py-2"
                         />
-                        {/* <button className="btn btn-md btn-info"
-                          onClick={handleFileUpload}
-                        >View</button> */}
+
                     </div>
 
                     <button type="submit" className="btn btn-primary mt-2">
                         Submit
                     </button>
                 </div>
-                {/* <label className="label">
-            <span className="label-text font-bold text-warning">
-              **File Type Should (.xls)**
-            </span>
-          </label>
-          <label className="label"></label>
-          {excelFileError && (
-            <div
-              className="font-bold text-red-600"
-              style={{ marginTop: 5 + "px" }}
-            >
-              {excelFileError}
-            </div>
-          )} */}
             </form>
 
 

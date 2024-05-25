@@ -59,6 +59,8 @@ import ViewIssues from "./DashboardOncall/siteIssues/ViewIssues";
 import EmShortInfo from "./EnergyMeter/EmShortInfo";
 import FcuDataFetchFromExcelFile from "./FCU/FcuDataFetchFromExcelFile";
 import PerformanceInfo from "./DashboardOncall/perfomanceInfo/PerformanceInfo";
+import PowerShutDown from "./DashboardOncall/powerShutDown/PowerShutDown";
+import PowerShutDownDashBoard from "./DashboardOncall/powerShutDown/PowerShutDownDashBoard";
 
 
 
@@ -112,6 +114,8 @@ function App() {
             <Route element={<RequireAdmin />}>
               <Route path="UserList" element={<UserList />} />
               <Route path="PerformanceInfo" element={<PerformanceInfo/>} />
+              <Route path="PowerShutDown" element={<PowerShutDown/>} />
+              <Route path="dashboardPowerShutDown" element={<PowerShutDownDashBoard/>} />
             </Route>
 
           </Route>

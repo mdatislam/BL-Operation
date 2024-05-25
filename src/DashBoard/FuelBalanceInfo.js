@@ -200,7 +200,7 @@ const FuelBalanceInfo = () => {
               <Bar dataKey="fuelQuantity" stackId="a" fill="#8884d8" barSize={30} />
               <Bar dataKey="fuelConsume" stackId="a" fill="red" barSize={30} />
               <Bar dataKey="balance" stackId="a" fill="#82ca9d" barSize={30} />
-              {/*  <Tooltip /> */}
+               <Tooltip />
               <LabelList dataKey="balance" position="top" />
               <text x="50%" y={20} fill="blue" textAnchor="middle" dominantBaseline="central"
                 style={{ fontWeight: 'bold', fontSize: "20", color: "#8884d8" }} >
