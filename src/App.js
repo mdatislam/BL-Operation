@@ -111,11 +111,11 @@ function App() {
             <Route path="PendingIssues" element={<ViewIssues />} />
             <Route path="siteAllIssues" element={<ViewAllIssue />} />
             <Route path="pgStatus" element={<PgStatus />} />
+              <Route path="PowerShutDown" element={<PowerShutDown/>} />
+              <Route path="dashboardPowerShutDown" element={<PowerShutDownDashBoard/>} />
             <Route element={<RequireAdmin />}>
               <Route path="UserList" element={<UserList />} />
               <Route path="PerformanceInfo" element={<PerformanceInfo/>} />
-              <Route path="PowerShutDown" element={<PowerShutDown/>} />
-              <Route path="dashboardPowerShutDown" element={<PowerShutDownDashBoard/>} />
             </Route>
 
           </Route>

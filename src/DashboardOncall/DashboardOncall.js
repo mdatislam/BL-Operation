@@ -64,6 +64,14 @@ const DashboardOncall = () => {
                     </li>
                     <li>
                         <NavLink to="/OnCall/pgStatus" onClick={handleSidebar}>All PG Status</NavLink >
+                    
+                        <li>
+                            <NavLink to="/OnCall/PowerShutDown" onClick={handleSidebar}>
+                                <BoltIcon className="h-6 w-6 text-[#106d3f]-500" />
+                               Update ShutDown
+                            </NavLink>
+                        </li>
+                    
                     </li>
 
                     {admin && (
@@ -74,22 +82,14 @@ const DashboardOncall = () => {
                             </NavLink>
                         </li>
                     )}
-                    {admin && (
-                        <li>
-                            <NavLink to="/OnCall/PowerShutDown" onClick={handleSidebar}>
-                                <BoltIcon className="h-6 w-6 text-[#106d3f]-500" />
-                                Power Shut Down
-                            </NavLink>
-                        </li>
-                    )}
-                    {admin && (
+                    
                         <li>
                             <NavLink to="/OnCall/dashboardPowerShutDown" onClick={handleSidebar}>
                                 <PowerIcon className="h-6 w-6 text-[#106d3f]-500" />
-                                Dashboard_Power
+                                ShutDown Dashboard
                             </NavLink>
                         </li>
-                    )}
+                  
                     {admin && (
                         <li>
                             <NavLink to="/OnCall/PerformanceInfo" onClick={handleSidebar}>
