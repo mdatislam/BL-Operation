@@ -267,7 +267,7 @@ const PowerShutDownDashBoard = () => {
           </BarChart>
         </div>
         {/* PG utilization chart */}
-        <div className="card mb-2 mx-auto bg-base-100 shadow-xl my-1">
+        <div className="card mb-2 mx-auto bg-base-100 shadow-xl my-1 pr-5">
           <div className="flex flex-row gap-2  my-1">
             <div className="">
               <ComposedChart
@@ -297,7 +297,7 @@ const PowerShutDownDashBoard = () => {
               </ComposedChart>
             </div>
             <PieChart width={200} height={170}
-              margin={{ top: 40 }}
+              margin={{ top: 50,right:5 }}
             >
               <Pie
                 data={progressData}
@@ -325,8 +325,8 @@ const PowerShutDownDashBoard = () => {
                   }}
                 />
               </Pie>
-              <Legend layout='vertical' verticalAlign="top" align='right' height={36} />
-              <text x="50%" y={20} fill="blue" textAnchor="middle" dominantBaseline="central"
+              <Legend  verticalAlign="bottom" height={36} />
+              <text x="40%" y={20} fill="blue" textAnchor="middle" dominantBaseline="central"
                 style={{ fontWeight: 'bold', fontSize: "17px", fill: "#ff00bf" }} >
                 % Of PG Utilization
               </text>

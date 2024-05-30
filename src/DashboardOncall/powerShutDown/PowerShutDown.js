@@ -65,6 +65,8 @@ const PowerShutDown = () => {
         || item.Alarm_Slogan === "LOW VOLTAGE"
         || item.Alarm_Slogan === "Genset On"
         || item.Alarm_Slogan === "CSL Fault"
+        || item.Alarm_Slogan === "Alarm_Raised_Date"
+        || item.Alarm_Slogan === "Alarm_Raised_Time"
     )
 
     // console.log(requiredData)
