@@ -61,6 +61,8 @@ import FcuDataFetchFromExcelFile from "./FCU/FcuDataFetchFromExcelFile";
 import PerformanceInfo from "./DashboardOncall/perfomanceInfo/PerformanceInfo";
 import PowerShutDown from "./DashboardOncall/powerShutDown/PowerShutDown";
 import PowerShutDownDashBoard from "./DashboardOncall/powerShutDown/PowerShutDownDashBoard";
+import BTSLockFileUploaded from "./DashboardOncall/powerShutDown/BTSLockFIleUploaded";
+import ThanaWisePowerAlarm from "./DashboardOncall/powerShutDown/ThanaWisePowerAlarm";
 
 
 
@@ -93,6 +95,7 @@ function App() {
             <Route path="DgServicingUpdate" element={<DGServicingUpdate />} />
             <Route path="DgRefuelingUpdate" element={<DgRefuelingUpdate />} />
             <Route path="DgUseMaterial" element={<DgUseMaterial />} />
+            
             {/* <Route element={<RequireAdmin />}>
               <Route path="UserList" element={<UserList />} />
               <Route path="PerformanceInfo" element={<PerformanceInfo/>} />
@@ -112,7 +115,8 @@ function App() {
             <Route path="siteAllIssues" element={<ViewAllIssue />} />
             <Route path="pgStatus" element={<PgStatus />} />
               <Route path="PowerShutDown" element={<PowerShutDown/>} />
-              <Route path="dashboardPowerShutDown" element={<PowerShutDownDashBoard/>} />
+              <Route path="LockRequest" element={<BTSLockFileUploaded/>} />
+             
             <Route element={<RequireAdmin />}>
               <Route path="UserList" element={<UserList />} />
               <Route path="PerformanceInfo" element={<PerformanceInfo/>} />
@@ -141,7 +145,8 @@ function App() {
           <Route path="/siteDataHome" element={<SiteDataHome />} />
           <Route path="/siteDataInfo" element={<SiteDataInfo />} />
           <Route path="/snagList" element={<SnagList />} />
-
+          <Route path="/dashboardPowerShutDown" element={<PowerShutDownDashBoard/>} />
+          <Route path="/thanaWisePowerAlarm" element={<ThanaWisePowerAlarm/>} />
 
         </Route>
 

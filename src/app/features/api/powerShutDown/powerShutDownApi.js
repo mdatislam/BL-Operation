@@ -1,35 +1,49 @@
 import apiSlice from "../apiSlice";
 
- const powerShutDownApi= apiSlice.injectEndpoints({
-    endpoints:(builder)=>({
-        postData:builder.mutation({
-            query:(data)=>({
-                url:"/powerShutDown",
+const powerShutDownApi = apiSlice.injectEndpoints({
+    endpoints: (builder) => ({
+        postData: builder.mutation({
+            query: (data) => ({
+                url: "/powerShutDown",
                 method: "POST",
-                body:data
+                body: data
 
             }),
-            invalidatesTags:["powerShut"]
+            invalidatesTags: ["powerShut"]
         }),
 
-        getShutDownData:builder.query({
-            query:()=>({
-                url:"/powerShutDown"
+        getShutDownData: builder.query({
+            query: () => ({
+                url: "/powerShutDown"
             }),
-            providesTags:["powerShut"]
+            providesTags: ["powerShut"]
         }),
-        deleteShutDownData:builder.mutation({
-            query:()=>({
-                url:"/powerShutDown",
-                method:"DELETE"
+        deleteShutDownData: builder.mutation({
+            query: () => ({
+                url: "/powerShutDown",
+                method: "DELETE"
             }),
-            invalidatesTags:["powerShut"]
+            invalidatesTags: ["powerShut"]
+        }),
+        getLockRequestData: builder.query({
+            query: (delayTime) => ({
+                url:`/lockRequest/${delayTime}`,
+               
+            }),
+            providesTags: ["powerShut"]
+        }),
+        getThanaWiseAlarm:builder.query({
+            query:(delayTime)=>({
+                url:`/thanaWisePowerAlarm/${delayTime}`
+            })
         })
-        
+
     })
 })
 
-export const {usePostDataMutation,
+export const { usePostDataMutation,
     useGetShutDownDataQuery,
-    useDeleteShutDownDataMutation
-}=powerShutDownApi
+    useDeleteShutDownDataMutation,
+    useGetLockRequestDataQuery,
+    useGetThanaWiseAlarmQuery
+} = powerShutDownApi

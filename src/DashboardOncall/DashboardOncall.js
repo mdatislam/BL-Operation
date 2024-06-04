@@ -3,7 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import auth from "../firebase.init";
 import useAdmin from "./../Pages/Hook/useAdmin";
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { UserCircleIcon,HandThumbUpIcon,  BoltIcon,PowerIcon} from '@heroicons/react/24/solid';
+import { UserCircleIcon, HandThumbUpIcon, BoltIcon, PowerIcon,LockClosedIcon } from '@heroicons/react/24/solid';
 
 
 const DashboardOncall = () => {
@@ -34,7 +34,7 @@ const DashboardOncall = () => {
             </div>
             <div className="drawer-side">
                 <label htmlFor="dashboardOnCall-drawer" className="drawer-overlay "></label>
-                <ul className="menu p-4  overflow-y-auto w-70  bg-[#106d3f] text-[#ffba24]">
+                <ul className="menu p-2  overflow-y-auto w-56  bg-[#106d3f] text-[#ffba24]">
                     {/* Sidebar content here */}
                     <li className="flex justify-end">
                         <div className="avatar">
@@ -64,16 +64,27 @@ const DashboardOncall = () => {
                     </li>
                     <li>
                         <NavLink to="/OnCall/pgStatus" onClick={handleSidebar}>All PG Status</NavLink >
-                    
-                        <li>
-                            <NavLink to="/OnCall/PowerShutDown" onClick={handleSidebar}>
-                                <BoltIcon className="h-6 w-6 text-[#106d3f]-500" />
-                               Update ShutDown
-                            </NavLink>
-                        </li>
-                    
+
                     </li>
 
+                    <li>
+                        <NavLink to="/OnCall/PowerShutDown" onClick={handleSidebar}>
+                             <BoltIcon className="h-6 w-6 text-[#106d3f]-500" />
+                            Update Shutdown
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/dashboardPowerShutDown" onClick={handleSidebar}>
+                             <PowerIcon className="h-6 w-6 text-[#106d3f]-500" />
+                            View Dashboard
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/OnCall/LockRequest" onClick={handleSidebar}>
+                             <LockClosedIcon className="h-6 w-6 text-[#106d3f]-500" />
+                            Lock Request
+                        </NavLink>
+                    </li>
                     {admin && (
                         <li>
                             <NavLink to="/OnCall/UserList" onClick={handleSidebar}>
@@ -82,18 +93,12 @@ const DashboardOncall = () => {
                             </NavLink>
                         </li>
                     )}
-                    
-                        <li>
-                            <NavLink to="/OnCall/dashboardPowerShutDown" onClick={handleSidebar}>
-                                <PowerIcon className="h-6 w-6 text-[#106d3f]-500" />
-                                ShutDown Dashboard
-                            </NavLink>
-                        </li>
-                  
+
+
                     {admin && (
                         <li>
                             <NavLink to="/OnCall/PerformanceInfo" onClick={handleSidebar}>
-                            < HandThumbUpIcon className="h-6 w-6 text-[#106d3f]-500" />
+                                < HandThumbUpIcon className="h-6 w-6 text-[#106d3f]-500" />
                                 PerformanceInfo
                             </NavLink>
                         </li>
