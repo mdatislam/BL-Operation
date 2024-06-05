@@ -13,6 +13,7 @@ const PowerShutDown = () => {
     const [pgInfoVisible, setPgInfoVisible] = useState(false)
     const [loadingData, setLoadingData] = useState(false)
     const [excelData, setData] = useState([]);
+    const [pgRunInfo, setPgRunInfo] = useState({});
     const { register, formState: { errors }, handleSubmit, } = useForm();
 
     const [deletePreData, { isLoading }] = useDeleteShutDownDataMutation()
@@ -85,6 +86,7 @@ const PowerShutDown = () => {
 
     const onSubmit = (data) => {
         //console.log({ ...data })
+        setPgRunInfo(data)
          requiredData?.map((rawData, index) => {
 
             const alarmData = {
@@ -113,7 +115,7 @@ const PowerShutDown = () => {
         })
 
     }
-
+//console.log(pgRunInfo)
     if (isLoading || isLoading2) {
         return (
             <div>

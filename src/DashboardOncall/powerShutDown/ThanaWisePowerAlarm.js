@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGetThanaWiseAlarmQuery } from '../../app/features/api/powerShutDown/powerShutDownApi';
-import { Bar, BarChart, XAxis } from 'recharts';
+import { Bar, BarChart, Label, XAxis, ResponsiveContainer } from 'recharts';
+import Loading from '../../Pages/SharedPage/Loading';
 
 const ThanaWisePowerAlarm = () => {
     const [delay, setDelay] = useState("1")
@@ -10,58 +11,77 @@ const ThanaWisePowerAlarm = () => {
         event.preventDefault()
         setDelay(event.target.delayTime.value)
     }
+    const totalPowerAlarm= thanaWiseAlarm.reduce((pre,item)=>{
+        return pre+item.count
+    },0)
+if(isLoading){
+    return <Loading />
+}
 
-    const data=[]
     return (
-        <div className='bg-slate-300 py-3'>
+        <div className='bg-base-300 py-3'>
             <div>
-                <div className='card mx-auto w-3/4  shadow-xl bg-slate-100 py-4 my-3'>
-                    <form className='px-2' autoComplete='off' onSubmit={handleDelayTime}>
-                        <div className="flex flex-row gap-x-4 justify-start items-center">
-                            <label className="form-control w-full max-w-xs my-2">
-                                <div className="label">
-                                    <span className="label-text text-pink-400 font-bold">আপনি কত মিনিট পাওয়ার অ্যালার্ম এর পর থেকে সাইট গুলো লক করতে চাচ্ছেন ? </span>
+                <div className='card mx-auto w-1/2  shadow-xl bg-base-100 '>
+                    <div className='card-body'>
+                        <form className='' autoComplete='off' onSubmit={handleDelayTime}>
+                            <div>
+                                <h2 className="lebel-text text-blue-400 font-bold">
+                                    আপনি যত ঘন্টা ধরে পাওয়ার এলার্মের সংখ্যা থানা অনুসারে দেখতে চান সেটি নিচের ঘরে লিখে পাশের বাটন এ ক্লিক করেন !!
+                                </h2>
+                                <div className='flex flex-row w-full gap-x-2 justify-start items-center'>
+                                    <div className='mt-2'>
+                                        <input type="number"
+                                            required
+                                            name='delayTime'
+                                            placeholder='Default have 1 hr'
+                                            className="input input-bordered w-full  max-w-xs" />
+                                    </div>
+                                    <div className=''>
+                                        <button className=" btn btn-outline btn-info max-w-xs mt-2"
+                                            type="submit"
+                                        >View Thana Wise Dashboard</button>
+                                    </div>
                                 </div>
-                                <input type="number"
-                                    required
-                                    name='delayTime'
-                                    placeholder='Enter delay Minutes, default have 60 mints'
-                                    className="input input-bordered w-full max-w-xs" />
-                            </label>
-                            <div className='mt-8'>
-                                <button className=" btn btn-outline btn-secondary max-w-xs mt-6"
-                                    type="submit"
-                                >View Thana Wise Dashboard</button>
                             </div>
-                        </div>
 
-                    </form>
+                        </form>
+                    </div>
                 </div>
                 {/* chart part */}
-                <div>
-                    <div className='border-r-2 border-emerald-400 my-1 '>
-                        <BarChart
-                            width={1500}
-                            height={300}
-                            data={thanaWiseAlarm}
-                            margin={{
-                                top: 40,
-                                right: 30,
-                                left: 20,
-                                bottom: 5,
-                            }}
-                        >
+                <div className='card bg-base-100 shadow-xl mt-2 mx-2 py-2'>
+                    <div className='card w-3/4 mt-2 mx-auto py-3 shadow-xl bg-base-200'>
+                        <div className=''>
+                            <h2 className='text-center text-xl text-pink-400 font-bold font-serif'> Thana Wise Power alarm for 
+                            <span className='font-extrabold font-sans'> {delay} Hrs, </span> Total thana {thanaWiseAlarm.length} &
+                            Total power Alarm= {totalPowerAlarm}.
+                            </h2>
+                        </div>
+                    </div>
 
-                            <XAxis dataKey="Thana" style={{ fontWeight: 'bold', fill: "blue" }} />
-                            <Bar dataKey="count" stackId="a" fill="#ffbf28" label={{
-                                position: 'center',
-                                fill: "red", fontWeight: 'bold', fontSize: "20px"
-                            }} barSize={20} />
-                            <text x="50%" y={20} fill="blue" textAnchor="middle" dominantBaseline="central"
-                                style={{ fontWeight: 'bold', fontSize: "17px", fill: "#ff00bf" }} >
-                                Down_Priority
-                            </text>
-                        </BarChart>
+                    <div className='card-body' style={{ width: '100%', height: '500px' }}>
+                        <ResponsiveContainer>
+                            <BarChart
+                                data={thanaWiseAlarm}
+                                margin={{
+                                    top: 10,
+                                    right: 10,
+                                    left: 10,
+                                    bottom: 100,
+                                }}
+                            >
+
+                                <XAxis dataKey="Thana" angle="-60" textAnchor="end" style={{ fontWeight: 'bold' }} interval={0} />
+                                <Label value="X Axis Label" offset={20} position="outsideBottom" />
+                                <Bar dataKey="count" stackId="a" fill="#ffbf28" label={{
+                                    position: 'center',
+                                    fill: "red", fontWeight: 'bold', fontSize: "20px"
+                                }} barSize={30} />
+                                {/* <text x="50%" y={10} fill="blue" textAnchor="middle" dominantBaseline="central"
+                                    style={{ fontWeight: 'bold', fontSize: "25px", fill: "#7ca6d2",  }} >
+                                    Thana Wise Power Alarm for {delay} Hrs
+                                </text> */}
+                            </BarChart>
+                        </ResponsiveContainer>
                     </div>
                 </div>
             </div>

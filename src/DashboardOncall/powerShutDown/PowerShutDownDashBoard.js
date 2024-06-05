@@ -81,19 +81,19 @@ const PowerShutDownDashBoard = () => {
   const blPg = [
     {
       pgType: "BL_PG",
-      active: powerShutDownData.pgUtilization[0]?.blActivePg || 0,
-      run: powerShutDownData.pgUtilization[0]?.blPgRun || 0,
-      move: powerShutDownData.pgUtilization[0]?.blPgMove || 0,
+      active: powerShutDownData.pgUtilization?.blActivePg || 0,
+      run: powerShutDownData.pgUtilization?.blPgRun || 0,
+      move: powerShutDownData.pgUtilization?.blPgMove || 0,
     },
     {
       pgType: "Sup_PG",
-      active: powerShutDownData.pgUtilization[0]?.supActivePg || 0,
-      run: powerShutDownData.pgUtilization[0]?.supPgRun || 0,
-      move: powerShutDownData?.pgUtilization[0]?.supPgMove || 0,
+      active: powerShutDownData.pgUtilization?.supActivePg || 0,
+      run: powerShutDownData.pgUtilization?.supPgRun || 0,
+      move: powerShutDownData?.pgUtilization?.supPgMove || 0,
     }
   ]
-  const pgRunPercentage = (((parseInt(powerShutDownData.pgUtilization[0]?.blPgRun) + parseInt(powerShutDownData.pgUtilization[0]?.supPgRun)) /
-    (parseInt(powerShutDownData.pgUtilization[0]?.blActivePg) + parseInt(powerShutDownData.pgUtilization[0]?.supActivePg)
+  const pgRunPercentage = (((parseInt(powerShutDownData.pgUtilization?.blPgRun) + parseInt(powerShutDownData.pgUtilization?.supPgRun)) /
+    (parseInt(powerShutDownData.pgUtilization?.blActivePg) + parseInt(powerShutDownData.pgUtilization?.supActivePg)
     )) * 100)
   const remainPgRun = (100 - pgRunPercentage)
   const progressData = [
@@ -370,7 +370,7 @@ const PowerShutDownDashBoard = () => {
           <div className='w-96 card bg-base-100 shadow-xl my-1 mr-2'>
             <h2 className='text-pink-400 underline text-center text-xl font-bold'> Remarks</h2>
             <p className='text-left font-semibold px-2 text-lg text-red-700'>
-              {powerShutDownData.pgUtilization[0]?.remarks}
+              {powerShutDownData.pgUtilization?.remarks}
             </p>
 
           </div>
