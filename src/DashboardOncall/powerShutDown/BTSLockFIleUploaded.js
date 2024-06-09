@@ -14,14 +14,20 @@ const BTSLockFileUploaded = () => {
     const [visible, setVisible] = useState(false)
     const [deleteVisible, setDeleteVisible] = useState(true)
     const [btnVisible, setBtnVisible] = useState(true)
+    const [inputVisible, setInputVisible] = useState(false)
     const [loadingData, setLoadingData] = useState(false)
     const [excelData, setData] = useState([]);
-    const [delay, setDelay] = useState("60")
+    const [lowDelay, setLowDelay] = useState("10")
+    const [highDelay, setHighDelay] = useState("30")
+    const [powerAlarm, setPowerAlarm] = useState("")
     /*  const [delayInputVisible, setDelayInputVisible] = useState(false) */
     /*  const { register, formState: { errors }, handleSubmit, } = useForm(); */
 
     const [deletePreData, { isLoading }] = useDeleteShutDownDataMutation()
-    const { data: alarmQuery = [], isSuccess } = useGetLockRequestDataQuery(delay)
+    
+    const delayDuration= {lowTime:lowDelay,highTime:highDelay}
+   // console.log(lowDelay,highDelay)
+    const { data: alarmQuery = [], } = useGetLockRequestDataQuery(delayDuration)
 
     const handleDataDelete = () => {
 
@@ -69,7 +75,7 @@ const BTSLockFileUploaded = () => {
         setBtnVisible(false)
         if (excelData) {
 
-            toast.success(" CSV file loaded, now click data upload button")
+            toast.success(" Ok, Now click data upload button")
         }
 
     }
@@ -80,7 +86,7 @@ const BTSLockFileUploaded = () => {
     const requiredData = excelData?.filter((item) =>
         item.Alarm_Slogan === "MAINS FAIL DELAY CKT ON"
         || item.Alarm_Slogan === "MAINS FAIL"
-       
+
     )
 
     // console.log(requiredData)
@@ -123,16 +129,21 @@ const BTSLockFileUploaded = () => {
             return rawData
         })
         setVisible(false)
-        // setDelayInputVisible(true)
+         setInputVisible(true)
     }
 
     const handleDelayTime = (event) => {
         event.preventDefault()
-        const delayTime = event.target.delayTime.value
-        //console.log(delayTime)
-        setDelay(delayTime)
+        setLowDelay(event.target.lowDelayTime.value)
+        setHighDelay(event.target.highDelayTime.value)
+       
+       event.target.lowDelayTime.value=""
+       event.target.highDelayTime.value=""
     }
 
+    const handlePowerAlarm = (e) => {
+        setPowerAlarm(e.target.value)
+    }
 
 
     if (isLoading || isLoading2) {
@@ -143,10 +154,14 @@ const BTSLockFileUploaded = () => {
             </div>
         )
     }
-    console.log(alarmQuery)
-    /*  if (alarmQuery && isSuccess) {
-         setDelayInputVisible(false)
-     } */
+   // console.log(alarmQuery)
+    let alarmSlogan
+    if (powerAlarm !== "") {
+        alarmSlogan = alarmQuery?.filter((item) => item.Alarm_Slogan === powerAlarm)
+    }
+    else {
+        alarmSlogan = alarmQuery
+    }
     return (
         <div >
             <div className="card px-4 mx-5 my-4  bg-base-100 shadow-xl">
@@ -166,6 +181,7 @@ const BTSLockFileUploaded = () => {
                         </div>
                     </div>}
                     <div>
+                        {/* .csv file data uploaded part */}
                         {visible && <div >
                             <form className="px-2" autoComplete="off" onSubmit={handleSubmit}>
                                 <div className="flex flex-row gap-x-4 justify-start items-center">
@@ -191,32 +207,63 @@ const BTSLockFileUploaded = () => {
 
 
                         {/* delay time input */}
-                        <div>
-                            <form className='px-2' autoComplete='off' onSubmit={handleDelayTime}>
-                                <div className="flex flex-row gap-x-4 justify-start items-center">
-                                    <label className="form-control w-full max-w-xs my-2">
-                                        <div className="label">
-                                            <span className="label-text text-pink-400 font-bold">আপনি কত মিনিট পাওয়ার অ্যালার্ম এর পর থেকে সাইট গুলো লক করতে চাচ্ছেন ? </span>
+                        {inputVisible && <div>
+                            <div className="flex flex-col w-full lg:flex-row">
+                                <div className="grid flex-grow w-1/2 card bg-gray-700 px-2 py-4 rounded-box place-items-center">
+                                    <form className='px-2' autoComplete='off' onSubmit={handleDelayTime}>
+                                        <div className="flex flex-row gap-x-4 justify-start items-center">
+                                            <label className="form-control w-full max-w-xs my-2">
+                                                <div className="label">
+                                                    <span className="label-text text-white font-bold"> Please enter Min & Max power alarm duration in minutes !! (**Default have 10 & 30**) </span>
+                                                </div>
+                                                <div className='flex flex-row gap-2'>
+                                                    <input type="number"
+                                                        required
+                                                        name='lowDelayTime'
+                                                        placeholder=' Minimum minutes'
+                                                        className="input input-bordered w-full max-w-xs" />
+                                                    <input type="number"
+                                                        required
+                                                        name='highDelayTime'
+                                                        placeholder='Max Minutes'
+                                                        className="input input-bordered w-full max-w-xs" />
+                                                </div>
+                                            </label>
+                                            <div className='mt-8'>
+                                                <button className=" btn btn-outline btn-secondary max-w-xs mt-6"
+                                                    /* disabled={bVisible ? true : false} */
+                                                    type="submit"
+                                                /*  value="Data Submit" */
+                                                >View Lock List</button>
+                                            </div>
                                         </div>
-                                        <input type="number"
-                                            required
-                                            name='delayTime'
-                                            placeholder='Enter delay Minutes, default have 60 mints'
-                                            className="input input-bordered w-full max-w-xs" />
-                                    </label>
-                                    <div className='mt-8'>
-                                        <button className=" btn btn-outline btn-secondary max-w-xs mt-6"
-                                            /* disabled={bVisible ? true : false} */
-                                            type="submit"
-                                        /*  value="Data Submit" */
-                                        >View Lock List</button>
+
+                                    </form>
+                                </div>
+                                <div className="divider lg:divider-horizontal"></div>
+                                <div className="grid flex-grow w-1/2 py-4 card bg-gray-700 rounded-box place-items-center px-2">
+                                    <div>
+                                        <div className=''>
+                                            <label className="label">
+                                                <span className="label-text font-serif font-bold text-xl text-white"> Filter Power Status:</span>
+                                            </label>
+                                            <select
+                                                value={powerAlarm}
+                                                onChange={handlePowerAlarm}
+                                                className="input input-bordered w-full  max-w-xs"
+                                            >
+                                                <option value=""> .......Choose alarm........</option>
+                                                <option value="MAINS FAIL">"MAINS FAIL"</option>
+                                                <option value="MAINS FAIL DELAY CKT ON">"MAINS FAIL DELAY CKT ON"</option>
+
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>}
 
-                            </form>
-                        </div>
-
-                        <p className='bg-orange-300 h-1 w-full mt-2 rounded-lg'></p>
+                        <p className='bg-gray-300 h-1 w-full mt-4 rounded-lg'></p>
 
                     </div>
                 </div>
@@ -231,12 +278,18 @@ const BTSLockFileUploaded = () => {
                         <div className='flex justify-around'>
                             <h1 className='text-pink-700 text-lg font-serif flex justify-center'>
                                 <ArrowRightCircleIcon className="h-6 w-6 text-[#106d3f]-500" /> &nbsp; &nbsp;
-                                <span> ইতিমধ্যে {delay} মিনিট অথবা {(delay/60).toFixed(2)} ঘন্টা এর বেশি সময় ধরে পাওয়ার নাই মোট {alarmQuery.length} সাইটে !!</span>
+                                <span> আপনার দেওয়া 
+                                <span className='font-extrabold font-serif text-blue-700 text-2xl'> {lowDelay} & {highDelay}  </span>
+                                   এর মর্ধ্বর্তী পাওয়ার অ্যালার্ম সম্বলিত সাইট এর 
+                                    মোট সংখ্যা হলো 
+                                    <span className='font-extrabold font-serif text-blue-700 text-2xl'> {alarmSlogan.length} </span>
+                                     !!
+                                    </span>
                             </h1>
                             {/* For Data export */}
                             <div>
                                 <CSVLink
-                                    data={alarmQuery}
+                                    data={alarmSlogan}
                                     filename="Lock_Request_Site_List"
                                     className="btn btn-primary btn-outline btn-sm mb-2"
                                 >
@@ -258,7 +311,7 @@ const BTSLockFileUploaded = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {alarmQuery.map((row, index) => (
+                                    {alarmSlogan.map((row, index) => (
                                         <tr className="border-2 border-blue-500  hover divide-y-2 divide-x-2 divide-gray-500 text-center"
                                             key={index}>
                                             <td className="border-2 border-gray-500" >{index + 1}</td>
