@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGetThanaWiseAlarmQuery } from '../../app/features/api/powerShutDown/powerShutDownApi';
 import { Bar, BarChart, Label, XAxis, ResponsiveContainer } from 'recharts';
 import Loading from '../../Pages/SharedPage/Loading';
@@ -7,9 +7,16 @@ import { PaperAirplaneIcon } from '@heroicons/react/24/solid'
 const ThanaWisePowerAlarm = () => {
     const [delay, setDelay] = useState("1")
     const [dist, setDist] = useState("")
+    const [office, setOffice] = useState("")
+    const [filteredData, setFilteredData] = useState([])
     const { data: thanaWiseAlarm = [], isLoading } = useGetThanaWiseAlarmQuery(delay)
-    //console.log(thanaWiseAlarm)
+    console.log(thanaWiseAlarm)
     //console.log(dist)
+
+    // Extract unique district names
+     const uniqueOffice = [...new Set(thanaWiseAlarm.map(item => item.Office))];
+    const uniqueDistricts = [...new Set(filteredData.map(item => item.District))];
+    //console.log(uniqueDistricts)
     const handleDelayTime = (event) => {
         event.preventDefault()
         setDelay(event.target.delayTime.value)
@@ -19,13 +26,29 @@ const ThanaWisePowerAlarm = () => {
         setDist(event.target.value)
     }
 
-    let selectData
-    if (dist !== "") {
-        selectData = thanaWiseAlarm?.filter((item) => item.District === dist)
-        //return selectData
+    const handleOffice = (event) => {
+        setOffice(event.target.value)
     }
-    else { selectData = thanaWiseAlarm }
-    const totalPowerAlarm = selectData.reduce((pre, item) => {
+
+    useEffect(() => {
+        let selectData = thanaWiseAlarm
+        if(dist !== "" && office !== ""){
+            selectData = selectData?.filter((item) => item.District === dist && item.Office === office ) 
+        }
+        if (dist !== "") {
+            selectData = selectData?.filter((item) => item.District === dist)
+
+        }
+        if (office !== "") {
+            selectData = selectData?.filter((item) => item.Office === office)
+
+        }
+        setFilteredData(selectData)
+    }, [thanaWiseAlarm, dist, office])
+
+    
+
+    const totalPowerAlarm = filteredData?.reduce((pre, item) => {
         return pre + item.thanaCount
     }, 0)
 
@@ -67,15 +90,14 @@ const ThanaWisePowerAlarm = () => {
                                         </div>
                                     </div>
                                 </div>
-
                             </form>
                         </div>
                         <div className="divider lg:divider-horizontal"></div>
                         <div className="grid flex-grow w-1/2 py-4 card bg-gray-700 rounded-box place-items-center px-2">
-                            <div>
+                            <div className='flex flex-row gap-2'>
                                 <div className=''>
                                     <label className="label">
-                                        <span className="label-text font-serif font-bold text-xl text-white"> Filter With District :</span>
+                                        <span className="label-text font-serif font-bold text-xl text-white">District :</span>
                                     </label>
                                     <select
                                         value={dist}
@@ -84,8 +106,26 @@ const ThanaWisePowerAlarm = () => {
                                     >
                                         <option value=""> .......Select District........</option>
                                         {
-                                            thanaWiseAlarm?.map((item, index) =>
-                                                <option value={item.District} key={index + "a"}>{item.District}</option>)
+                                            uniqueDistricts?.map((district, index) =>
+                                                <option value={district} key={index + "a"}>{district}</option>)
+                                        }
+
+
+                                    </select>
+                                </div>
+                                <div className=''>
+                                    <label className="label">
+                                        <span className="label-text font-serif font-bold text-xl text-white">  Office :</span>
+                                    </label>
+                                    <select
+                                        value={office}
+                                        onChange={handleOffice}
+                                        className="input input-bordered w-full  max-w-xs"
+                                    >
+                                        <option value=""> .......Select office........</option>
+                                        {
+                                            uniqueOffice?.map((office, index) =>
+                                                <option value={office} key={index + "o"}>{office}</option>)
                                         }
 
 
@@ -106,7 +146,7 @@ const ThanaWisePowerAlarm = () => {
                                 <h2 className='text-center text-xl text-pink-400 font-bold font-serif'>
                                     Thana Wise Power alarm More than
                                     <span className='font-extrabold font-serif text-blue-700 text-2xl'>  {delay}  </span> hrs,
-                                    Affected Thana <span className='font-extrabold font-serif text-blue-700 text-2xl'>  {selectData.length}  </span> &
+                                    Affected Thana <span className='font-extrabold font-serif text-blue-700 text-2xl'>  {filteredData.length}  </span> &
                                     Power Alarm <span className='font-extrabold font-serif text-blue-700 text-2xl'>{totalPowerAlarm}</span>.
                                 </h2>
                                 :
@@ -116,7 +156,7 @@ const ThanaWisePowerAlarm = () => {
                                     of &nbsp;
                                     <span className='font-extrabold font-serif text-blue-700 text-2xl'>{dist} &nbsp;</span>
                                     District is &nbsp;<span className='font-extrabold font-serif text-blue-700 text-2xl'>{totalPowerAlarm} </span>
-                                    & &nbsp;Affected Thana <span className='font-extrabold font-serif text-blue-700 text-2xl'>&nbsp;{selectData.length}.  </span>
+                                    & &nbsp;Affected Thana <span className='font-extrabold font-serif text-blue-700 text-2xl'>&nbsp;{filteredData.length}.  </span>
                                 </h2>
                             }
                         </div>
@@ -126,7 +166,7 @@ const ThanaWisePowerAlarm = () => {
                     <div className='card-body' style={{ width: '100%', height: '500px' }}>
                         <ResponsiveContainer>
                             <BarChart
-                                data={selectData}
+                                data={filteredData}
                                 margin={{
                                     top: 10,
                                     right: 10,

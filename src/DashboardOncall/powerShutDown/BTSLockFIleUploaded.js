@@ -18,15 +18,15 @@ const BTSLockFileUploaded = () => {
     const [loadingData, setLoadingData] = useState(false)
     const [excelData, setData] = useState([]);
     const [lowDelay, setLowDelay] = useState("10")
-    const [highDelay, setHighDelay] = useState("30")
+    const [highDelay, setHighDelay] = useState("800")
     const [powerAlarm, setPowerAlarm] = useState("")
     /*  const [delayInputVisible, setDelayInputVisible] = useState(false) */
     /*  const { register, formState: { errors }, handleSubmit, } = useForm(); */
 
     const [deletePreData, { isLoading }] = useDeleteShutDownDataMutation()
-    
-    const delayDuration= {lowTime:lowDelay,highTime:highDelay}
-   // console.log(lowDelay,highDelay)
+
+    const delayDuration = { lowTime: lowDelay, highTime: highDelay }
+    // console.log(lowDelay,highDelay)
     const { data: alarmQuery = [], } = useGetLockRequestDataQuery(delayDuration)
 
     const handleDataDelete = () => {
@@ -129,16 +129,16 @@ const BTSLockFileUploaded = () => {
             return rawData
         })
         setVisible(false)
-         setInputVisible(true)
+        setInputVisible(true)
     }
 
     const handleDelayTime = (event) => {
         event.preventDefault()
         setLowDelay(event.target.lowDelayTime.value)
         setHighDelay(event.target.highDelayTime.value)
-       
-       event.target.lowDelayTime.value=""
-       event.target.highDelayTime.value=""
+
+        event.target.lowDelayTime.value = ""
+        event.target.highDelayTime.value = ""
     }
 
     const handlePowerAlarm = (e) => {
@@ -154,7 +154,7 @@ const BTSLockFileUploaded = () => {
             </div>
         )
     }
-   // console.log(alarmQuery)
+    // console.log(alarmQuery)
     let alarmSlogan
     if (powerAlarm !== "") {
         alarmSlogan = alarmQuery?.filter((item) => item.Alarm_Slogan === powerAlarm)
@@ -218,12 +218,10 @@ const BTSLockFileUploaded = () => {
                                                 </div>
                                                 <div className='flex flex-row gap-2'>
                                                     <input type="number"
-                                                        required
                                                         name='lowDelayTime'
                                                         placeholder=' Minimum minutes'
                                                         className="input input-bordered w-full max-w-xs" />
                                                     <input type="number"
-                                                        required
                                                         name='highDelayTime'
                                                         placeholder='Max Minutes'
                                                         className="input input-bordered w-full max-w-xs" />
@@ -278,13 +276,13 @@ const BTSLockFileUploaded = () => {
                         <div className='flex justify-around'>
                             <h1 className='text-pink-700 text-lg font-serif flex justify-center'>
                                 <ArrowRightCircleIcon className="h-6 w-6 text-[#106d3f]-500" /> &nbsp; &nbsp;
-                                <span> আপনার দেওয়া 
-                                <span className='font-extrabold font-serif text-blue-700 text-2xl'> {lowDelay} & {highDelay}  </span>
-                                   এর মর্ধ্বর্তী পাওয়ার অ্যালার্ম সম্বলিত সাইট এর 
-                                    মোট সংখ্যা হলো 
+                                <span> আপনার দেওয়া
+                                    <span className='font-extrabold font-serif text-blue-700 text-2xl'> {lowDelay} & {highDelay}  </span>
+                                    এর মর্ধ্বর্তী পাওয়ার অ্যালার্ম সম্বলিত সাইট এর
+                                    মোট সংখ্যা হলো
                                     <span className='font-extrabold font-serif text-blue-700 text-2xl'> {alarmSlogan.length} </span>
-                                     !!
-                                    </span>
+                                    !!
+                                </span>
                             </h1>
                             {/* For Data export */}
                             <div>

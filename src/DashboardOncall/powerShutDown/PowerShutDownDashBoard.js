@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 
 const PowerShutDownDashBoard = () => {
-  const navigate= useNavigate()
+  const navigate = useNavigate()
   const { data: powerShutDownData = [], isLoading } = useGetShutDownDataQuery()
   if (isLoading) {
     return <Loading />
@@ -102,6 +102,7 @@ const PowerShutDownDashBoard = () => {
   ];
 
   const COLORS = ['#00C49F', '#D8D8D8']; // Colors for the pie segments
+  const officeList = ["Bogura", "Thakurgaon", "Rajshahi", "Pabna"]
 
   //console.log(pgRunPercentage,remainPgRun);
   return (
@@ -109,13 +110,33 @@ const PowerShutDownDashBoard = () => {
       <div className='mx-5'>
         {/*  power shutdown title */}
         <div className='card my-2 bg-base-100 shadow-xl  '>
-          <div className='flex justify-between px-4 text-center pt-1'>
-            <div>
-              <button  className='btn btn-xs btn-outline btn-warning'
-              onClick={()=>navigate("/thanaWisePowerAlarm")}
+          <div className='flex justify-items-center justify-between px-4 text-center pt-1'>
+            <div className=''>
+              <button className='btn btn-xs btn-outline btn-warning'
+                onClick={() => navigate("/thanaWisePowerAlarm")}
               >Thana Wise Power Alarm</button>
             </div>
-            <h1 className='text-xl font-bold text-pink-900'>"Resource & Power Shutdown Update, Rangpur" </h1>
+            <h1 className='flex flex-row  item-center text-xl font-bold
+             text-pink-900'>
+              <span className='mt-2'>"Resource & Power Shutdown Update,</span>
+
+              <select
+                /*   value={dist}
+                  onChange={handleDist} */
+                className="input text-xl text-start block appearance-none"
+              >
+                <option value="">Rangpur</option>
+                {
+                  officeList.map((office, index) =>
+                    <option value={office} key={index + "aa"}>{office}</option>)
+                }
+              </select>
+            </h1>
+            <div className=''>
+              <button className='btn btn-xs btn-outline btn-accent'
+                onClick={() => navigate("/thanaWiseDown")}
+              >Thana Wise_Down</button>
+            </div>
             <div></div>
           </div>
 

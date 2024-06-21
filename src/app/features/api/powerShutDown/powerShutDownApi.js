@@ -37,6 +37,11 @@ const powerShutDownApi = apiSlice.injectEndpoints({
             query: (delayTime) => ({
                 url: `/thanaWisePowerAlarm/${delayTime}`
             })
+        }),
+        getThanaWiseDown:builder.query({
+            query:()=>({
+                url:"/thanaWiseDown"
+            })
         })
 
     })
@@ -46,5 +51,6 @@ export const { usePostDataMutation,
     useGetShutDownDataQuery,
     useDeleteShutDownDataMutation,
     useGetLockRequestDataQuery,
-    useGetThanaWiseAlarmQuery
+    useGetThanaWiseAlarmQuery,
+    useGetThanaWiseDownQuery
 } = powerShutDownApi

@@ -63,6 +63,7 @@ import PowerShutDown from "./DashboardOncall/powerShutDown/PowerShutDown";
 import PowerShutDownDashBoard from "./DashboardOncall/powerShutDown/PowerShutDownDashBoard";
 import BTSLockFileUploaded from "./DashboardOncall/powerShutDown/BTSLockFIleUploaded";
 import ThanaWisePowerAlarm from "./DashboardOncall/powerShutDown/ThanaWisePowerAlarm";
+import ThanaWiseDown from "./DashboardOncall/powerShutDown/ThanaWiseDown";
 
 
 
@@ -147,6 +148,7 @@ function App() {
           <Route path="/snagList" element={<SnagList />} />
           <Route path="/dashboardPowerShutDown" element={<PowerShutDownDashBoard/>} />
           <Route path="/thanaWisePowerAlarm" element={<ThanaWisePowerAlarm/>} />
+          <Route path="/thanaWiseDown" element={<ThanaWiseDown/>} />
 
         </Route>
 
