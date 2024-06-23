@@ -3,20 +3,22 @@ import React from 'react';
 import Loading from '../Pages/SharedPage/Loading';
 import FuelBalanceRow from './FuelBalanceRow';
 import {
-  PieChart, Pie, Cell, Legend, CartesianGrid,
-  XAxis, YAxis, Tooltip, Bar, BarChart, Label, LabelList,
-  ComposedChart,
+ 
+  XAxis, Bar, BarChart, Label, 
+  
   ResponsiveContainer
 } from 'recharts';
 import useAxiosSecure from '../Pages/Hook/useAxiosSecure';
-
-
-
+import { useGetApprovalPendingQuery } from '../app/features/api/user/pgRunData/pgRunApi.js';
+//import { useGetApprovalPendingQuery } from '../app/features/api/powerShutDown/powerShutDownApi';
 
 
 const FuelBalanceInfo = () => {
   const [axiosSecure] = useAxiosSecure()
 
+  const { data: approvalPendingPgRun = [], isLoading: isLoading3 } = useGetApprovalPendingQuery()
+
+  //console.log(approvalPendingPgRun)
   const { isLoading2, data: receiveFuelOnCall = [] } = useQuery({
     queryKey: ['receiveFuelOnCall'],
     queryFn: async () => {
@@ -34,6 +36,7 @@ const FuelBalanceInfo = () => {
     }
   })
 
+
   /*  const balanceData= balanceInfo?.map(item=> {
      return {...item,
      balance:item.fuelQuantity-item.fuelConsume.toFixed(1)}
@@ -41,7 +44,7 @@ const FuelBalanceInfo = () => {
    console.log(balanceData) */
 
 
-  if (isLoading2 || isLoading) {
+  if (isLoading2 || isLoading || isLoading3) {
     return <Loading />;
   }
 
@@ -95,6 +98,12 @@ const FuelBalanceInfo = () => {
       </text>
     );
   }
+  const CustomBar = (props) => {
+    const { x, y, width, height, fill } = props;
+    return (
+      <rect x={x} y={y} width={width} height={height} fill={fill} rx={10} ry={10} />
+    );
+  };
 
   return (
     <div>
@@ -151,37 +160,12 @@ const FuelBalanceInfo = () => {
               </tr>
             </tfoot>
           </table>
-        </div>
-        {/* Left side  End  */}
 
-        {/* Right side / Pie Chart start */}
-        <div className='border-2 hidden lg:block border-slate-300 rounded-lg w-full'>
-          <div>
-            <div className='text-2xl font-semibold py-2 bg-slate-500 text-center rounded-t-lg'>
-              <h2 className='text-white' >Graphical Presentation </h2>
-            </div>
-
-            {/* <PieChart width={600} height={600}>
-              <Pie
-                data={balanceInfo}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={renderCustomizedLabel}
-                outerRadius={250}
-                fill="#8884d8"
-                dataKey="fuelQuantity"
-              >
-                {balanceInfo?.map((entry, index) => (
-                  <Cell key={`cell-${index} `} fill={COLORS[index % COLORS.length]} />
-
-                ))}
-
-              </Pie>
-            </PieChart> */}
-
-            {/* Bar chart */}
-            <BarChart
+          {/* Fuel Balance info Graphical presentation */}
+          {/* <div className='text-2xl font-semibold py-2 bg-slate-500 text-center rounded-t-lg'>
+            <h2 className='text-white' >Graphical Presentation </h2>
+          </div> */}
+          {/* <BarChart
               width={600}
               height={550}
               data={combineBalanceInfo}
@@ -192,7 +176,7 @@ const FuelBalanceInfo = () => {
                 bottom: 120,
               }}
             >
-              {/* <CartesianGrid strokeDasharray="1 1" /> */}
+           
               <Legend layout='horizontal' verticalAlign='top' align='center' />
               <XAxis dataKey="name" angle="-90" textAnchor="end" style={{ fontWeight: 'bold' }} interval={0} />
               <Label value="X Axis Label" offset={20} position="outsideBottom" />
@@ -200,13 +184,62 @@ const FuelBalanceInfo = () => {
               <Bar dataKey="fuelQuantity" stackId="a" fill="#8884d8" barSize={30} />
               <Bar dataKey="fuelConsume" stackId="a" fill="red" barSize={30} />
               <Bar dataKey="balance" stackId="a" fill="#82ca9d" barSize={30} />
-               <Tooltip />
+              <Tooltip />
               <LabelList dataKey="balance" position="top" />
               <text x="50%" y={20} fill="blue" textAnchor="middle" dominantBaseline="central"
                 style={{ fontWeight: 'bold', fontSize: "20", color: "#8884d8" }} >
                 Fuel Balance Info
               </text>
-            </BarChart>
+            </BarChart> 
+            */}
+        </div>
+
+
+        {/* Left side  End  */}
+
+        {/* Right side / Pie Chart start */}
+        <div className='border-2 hidden lg:block border-slate-300 rounded-lg w-full'>
+          <div>
+            <div className='text-xl font-semibold py-2 bg-slate-500 text-center rounded-t-lg'>
+              <h2 className='text-white' >PG Run Approval Pending Info </h2>
+            </div>
+            <div className='card-body  m-4 rounded-md' style={{ width: '98%', height: '500px' }}>
+              <ResponsiveContainer>
+                <BarChart
+                  data={approvalPendingPgRun}
+                  margin={{
+                    top: 10,
+                    right: 10,
+                    left: 10,
+                    bottom: 120,
+                  }}
+                >
+
+                  <XAxis dataKey="name" angle="-60" textAnchor="end" style={{ fontWeight: 'bold' }} interval={0} />
+                  <Label value="X Axis Label" offset={20} position="outsideBottom" />
+
+                  <defs>
+                    <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#2884d8" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="#2884d8" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <Bar dataKey="pendingCount" stackId="a" label={{
+                    position: 'center',
+                    fill: "red", fontWeight: 'bold', fontSize: "20px"
+                  }}
+                    shape={<CustomBar />} fill="url(#colorUv)"
+
+                    barSize={30} />
+                  {/*  <text x="50%" y={10} fill="blue" textAnchor="middle" dominantBaseline="central"
+                    style={{ fontWeight: 'bold', fontSize: "20px", fill: "#7a4564", }} >
+                    Thana Wise Site Down
+                  </text> */}
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+
+
 
             {/* Horizontal bar Chart */}
             {/* <ResponsiveContainer width="100%" height="100%"> */}

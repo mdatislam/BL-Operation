@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useGetThanaWiseAlarmQuery } from '../../app/features/api/powerShutDown/powerShutDownApi';
 import { Bar, BarChart, Label, XAxis, ResponsiveContainer } from 'recharts';
 import Loading from '../../Pages/SharedPage/Loading';
-import { PaperAirplaneIcon } from '@heroicons/react/24/solid'
+import { ChevronDoubleLeftIcon } from '@heroicons/react/24/solid'
+import { Link } from 'react-router-dom';
 
 const ThanaWisePowerAlarm = () => {
     const [delay, setDelay] = useState("1")
@@ -14,7 +15,7 @@ const ThanaWisePowerAlarm = () => {
     //console.log(dist)
 
     // Extract unique district names
-     const uniqueOffice = [...new Set(thanaWiseAlarm.map(item => item.Office))];
+    const uniqueOffice = [...new Set(thanaWiseAlarm.map(item => item.Office))];
     const uniqueDistricts = [...new Set(filteredData.map(item => item.District))];
     //console.log(uniqueDistricts)
     const handleDelayTime = (event) => {
@@ -32,8 +33,8 @@ const ThanaWisePowerAlarm = () => {
 
     useEffect(() => {
         let selectData = thanaWiseAlarm
-        if(dist !== "" && office !== ""){
-            selectData = selectData?.filter((item) => item.District === dist && item.Office === office ) 
+        if (dist !== "" && office !== "") {
+            selectData = selectData?.filter((item) => item.District === dist && item.Office === office)
         }
         if (dist !== "") {
             selectData = selectData?.filter((item) => item.District === dist)
@@ -46,7 +47,7 @@ const ThanaWisePowerAlarm = () => {
         setFilteredData(selectData)
     }, [thanaWiseAlarm, dist, office])
 
-    
+
 
     const totalPowerAlarm = filteredData?.reduce((pre, item) => {
         return pre + item.thanaCount
@@ -67,7 +68,6 @@ const ThanaWisePowerAlarm = () => {
         <div className='bg-base-300 py-3'>
             <div>
                 <div className='card  w-3/4 py-5 px-5 mx-auto shadow-xl bg-base-100 '>
-
                     <div className="flex flex-col w-full lg:flex-row">
                         <div className="grid flex-grow w-1/2 py-4 card bg-gray-700 rounded-box place-items-center px-2">
                             <form className='' autoComplete='off' onSubmit={handleDelayTime}>
@@ -141,7 +141,11 @@ const ThanaWisePowerAlarm = () => {
                 {/* chart part */}
                 <div className='card bg-base-100 shadow-xl mt-2 mx-2 py-2'>
                     <div className='card w-3/4 mt-2 mx-auto py-3 shadow-xl bg-base-200'>
-                        <div className='flex justify-center'>
+                        <div className='flex'>
+                        <Link to="/dashboardPowerShutDown" className='px-5 text-bold text-2xl'>
+                        <ChevronDoubleLeftIcon className="h-6 w-6 text-pink-500" />
+                        </Link>
+                            <div className='text-center w-99% mx-auto'>
                             {dist === "" ?
                                 <h2 className='text-center text-xl text-pink-400 font-bold font-serif'>
                                     Thana Wise Power alarm More than
@@ -159,6 +163,7 @@ const ThanaWisePowerAlarm = () => {
                                     & &nbsp;Affected Thana <span className='font-extrabold font-serif text-blue-700 text-2xl'>&nbsp;{filteredData.length}.  </span>
                                 </h2>
                             }
+                            </div>
                         </div>
                     </div>
 

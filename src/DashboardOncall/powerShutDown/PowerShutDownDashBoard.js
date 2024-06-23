@@ -7,6 +7,7 @@ import {
 } from 'recharts';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import { PaperAirplaneIcon, RocketLaunchIcon } from '@heroicons/react/24/solid'
 
 const PowerShutDownDashBoard = () => {
   const navigate = useNavigate()
@@ -93,7 +94,7 @@ const PowerShutDownDashBoard = () => {
     }
   ]
   const pgRunPercentage = (((parseInt(powerShutDownData.pgUtilization?.blPgRun) + parseInt(powerShutDownData.pgUtilization?.supPgRun)) /
-    (parseInt(powerShutDownData.pgUtilization?.blActivePg) + parseInt(powerShutDownData.pgUtilization?.supActivePg)
+    (parseInt(powerShutDownData.pgUtilization?.blActivePg)
     )) * 100)
   const remainPgRun = (100 - pgRunPercentage)
   const progressData = [
@@ -110,20 +111,38 @@ const PowerShutDownDashBoard = () => {
       <div className='mx-5'>
         {/*  power shutdown title */}
         <div className='card my-2 bg-base-100 shadow-xl  '>
-          <div className='flex justify-items-center justify-between px-4 text-center pt-1'>
-            <div className=''>
-              <button className='btn btn-xs btn-outline btn-warning'
-                onClick={() => navigate("/thanaWisePowerAlarm")}
-              >Thana Wise Power Alarm</button>
+          <div className='ml-16 px-4 mt-2'>
+            <div className='flex  gap-x-5 justify-start'>
+              <div className='flex items-center space-x-2'>
+                <button className="relative group "
+                  onClick={() => navigate("/thanaWisePowerAlarm")}>
+                  <RocketLaunchIcon className="h-6 w-6 text-pink-500" />
+                  <div className="absolute bottom-0 left-1/2 
+                transform -translate-x-1/2 translate-y-full
+                 bg-base-300 text-blue-700 text-sm px-2 py-1 rounded hidden 
+                 group-hover:block">
+                    Thana_Wise_Power_Alarm
+                  </div>
+                </button>
+              </div>
+              <div className='flex items-center space-x-2'>
+                <button className="relative group "
+                  onClick={() => navigate("/thanaWiseDown")}>
+                  <PaperAirplaneIcon className="h-6 w-6 text-blue-500" />
+                  <div className="absolute bottom-0 left-1/2 
+                transform -translate-x-1/2 translate-y-full
+                 bg-base-300 text-pink-700 text-sm px-2 py-1 rounded hidden 
+                 group-hover:block">
+                    Thana_Wise_Down
+                  </div>
+                </button>
+              </div>
             </div>
-            <h1 className='flex flex-row  item-center text-xl font-bold
+            <h1 className='flex flex-row mt-[-20px] justify-center item-center text-xl font-bold
              text-pink-900'>
-              <span className='mt-2'>"Resource & Power Shutdown Update,</span>
-
+              <span className='mt-1'>"Resource & Power Shutdown Update,</span>
               <select
-                /*   value={dist}
-                  onChange={handleDist} */
-                className="input text-xl text-start block appearance-none"
+                className="input text-xl mt-[-5px] text-start block appearance-none"
               >
                 <option value="">Rangpur</option>
                 {
@@ -132,12 +151,7 @@ const PowerShutDownDashBoard = () => {
                 }
               </select>
             </h1>
-            <div className=''>
-              <button className='btn btn-xs btn-outline btn-accent'
-                onClick={() => navigate("/thanaWiseDown")}
-              >Thana Wise_Down</button>
-            </div>
-            <div></div>
+
           </div>
 
           <div className='flex flex-row gap-2 '>

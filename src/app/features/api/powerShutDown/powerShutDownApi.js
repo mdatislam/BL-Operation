@@ -26,7 +26,7 @@ const powerShutDownApi = apiSlice.injectEndpoints({
             invalidatesTags: ["powerShut"]
         }),
         getLockRequestData: builder.query({
-            query: ({lowTime, highTime}) => ({
+            query: ({ lowTime, highTime }) => ({
                 url: `/lockRequest?lowTime=${lowTime}&highTime=${highTime}`,
 
 
@@ -38,12 +38,11 @@ const powerShutDownApi = apiSlice.injectEndpoints({
                 url: `/thanaWisePowerAlarm/${delayTime}`
             })
         }),
-        getThanaWiseDown:builder.query({
-            query:()=>({
-                url:"/thanaWiseDown"
+        getThanaWiseDown: builder.query({
+            query: () => ({
+                url: "/thanaWiseDown"
             })
-        })
-
+        }),
     })
 })
 
@@ -52,5 +51,6 @@ export const { usePostDataMutation,
     useDeleteShutDownDataMutation,
     useGetLockRequestDataQuery,
     useGetThanaWiseAlarmQuery,
-    useGetThanaWiseDownQuery
+    useGetThanaWiseDownQuery,
+
 } = powerShutDownApi
