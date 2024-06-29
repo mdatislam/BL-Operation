@@ -12,13 +12,14 @@ import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 import Pagination from "../Pages/SharedPage/Pagination";
 import EditPgRunData from "./EditPgRunData";
 import DeletePgRun from "../DashBoard/DeletePgRun";
+import { toast } from "react-toastify";
 
 const AllPgRunList = () => {
   const [user] = useAuthState(auth);
   const [admin] = useAdmin(user);
   const [axiosSecure] = useAxiosSecure()
-  const [editPgRun,setEditPgRun]= useState("")
-  const [pgRunInfo,setDelPg]= useState("")
+  const [editPgRun, setEditPgRun] = useState("")
+  const [pgRunInfo, setDelPg] = useState("")
   const [searchPgRun, setSearchPgRun] = useState("");
   const [filter, setFilter] = useState([]);
 
@@ -27,10 +28,18 @@ const AllPgRunList = () => {
   const [pageSize, setPageSize] = useState("30");
   const [totalPage, setTotalPage] = useState("1")
   const [actualDataLength, setDataLength] = useState("10")
+  const [firstDay, setFirstDay] = useState("")
+  const [lastDay, setLastDay] = useState("")
+
+  useEffect(() => {
+if(firstDay >lastDay){
+   toast.error("Last date is less then first date,Please correct")
+}
+  }, [firstDay, lastDay])
 
   useEffect(() => {
     const getLengthData = async () => {
-      const { data } = await axiosSecure.get("/ApprovedAllPgRun/pageCount")
+      const { data } = await axiosSecure.get(`/ApprovedAllPgRun/pageCount?firstDay=${firstDay}&lastDay=${lastDay}`)
       const page = data.lengthPgRunData
       setDataLength(page)
       const pageCount = Math.ceil(page / pageSize)
@@ -41,20 +50,58 @@ const AllPgRunList = () => {
     }
     getLengthData()
 
-  }, [pageSize, selectPage, totalPage, actualDataLength, axiosSecure])
+  }, [pageSize, selectPage, totalPage, actualDataLength, axiosSecure, firstDay, lastDay])
 
   //console.log(selectPage,pageSize,actualDataLength,totalPage)
 
+  useEffect(() => {
+    const now = new Date();
+    //console.log(now);
+    // Calculate the first day of the current month
+    const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    //console.log(firstDayOfMonth);
+    // Calculate the last day of the current month
+    const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    //console.log(lastDayOfMonth);
 
-  const { isLoading, data: pgRunData = [],refetch } = useQuery({
-    queryKey: ["pgRunData", pageSize, selectPage],
+    // Format the dates to YYYY-MM-DD
+    const formatDate = (date) => date.toLocaleDateString("en-CA");
+
+    setFirstDay(formatDate(firstDayOfMonth));
+    setLastDay(formatDate(lastDayOfMonth));
+  }, []);
+  //console.log({ firstDay, lastDay })
+
+  const { isLoading, data: pgRunData = [], refetch } = useQuery({
+    queryKey: ["pgRunData", pageSize, selectPage, firstDay, lastDay],
     // enabled: !adminLoading,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/ApprovedAllPgRun?size=${pageSize}&page=${selectPage}`)
+      const res = await axiosSecure.get(`/ApprovedAllPgRun?size=${pageSize}
+        &page=${selectPage}&firstDay=${firstDay}&lastDay=${lastDay}`)
       return res.data
     }
   })
+//console.log(pgRunData);
 
+function timeToDecimal(time) {
+  // Split the time string into hours and minutes
+  const [hours, minutes] = time.split(':').map(Number);
+
+  // Convert the minutes to a decimal fraction of an hour
+  const decimalMinutes = minutes / 60;
+
+  // Add the decimal minutes to the hours to get the total decimal hours
+  const decimalTime = hours + decimalMinutes;
+
+  return decimalTime;
+}
+
+const pgRunTime= pgRunData?.map(item=> timeToDecimal(item.pgRunDuration))
+//console.log(pgRunTime);
+const totalPgRunTime= pgRunTime?.reduce((pre,item)=>{
+  return pre+item
+},0)
+//console.log(totalPgRunTime);
   if (isLoading) {
     return <Loading />;
   }
@@ -77,7 +124,9 @@ const AllPgRunList = () => {
     }
   };
 
- // console.log(editPgRun)
+
+
+  // console.log(editPgRun)
 
   return (
     <div className=" card w-full bg-base-100 shadow-xl px-2 lg:px-16 py-4 mt-4 mb-8">
@@ -93,6 +142,31 @@ const AllPgRunList = () => {
               handleSearch(e);
             }}
           />
+
+          <label className="input input-bordered flex items-center font-semibold gap-2">
+            First-Date:
+            <input
+              type="date"
+              defaultValue={firstDay}
+              className="grow"
+              placeholder="start date"
+              onChange={(e) => {
+                setFirstDay(e.target.value);
+              }}
+            />
+          </label>
+          <label className="input input-bordered flex items-center font-semibold gap-2">
+            Last-Date:
+            <input
+              type="date"
+              defaultValue={lastDay}
+              className="grow"
+              onChange={(e) => {
+                setLastDay(e.target.value);
+              }}
+            />
+          </label>
+
 
           {admin && (
             <div>
@@ -118,7 +192,7 @@ const AllPgRunList = () => {
       <div className="overflow-x-auto  mt-4 py-2">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
           <caption className=" caption-top bg-[#7e4f9ef5]  rounded-t-lg py-4">
-            <h2 className='text-center text-xl font-bold  text-white'>All Approved PG Run Record</h2>
+            <h2 className='text-center text-xl font-bold  text-white'>All Approved PG Run Record : {totalPgRunTime.toFixed(2)} Hrs</h2>
 
           </caption>
           <thead className="border-2 border-[#FFCB24]">
@@ -171,19 +245,19 @@ const AllPgRunList = () => {
           </tbody>
         </table>
         {
-          editPgRun && 
-          <EditPgRunData 
-          editPgRun ={editPgRun}
-          setEditPgRun={setEditPgRun}
-          refetch={refetch}
+          editPgRun &&
+          <EditPgRunData
+            editPgRun={editPgRun}
+            setEditPgRun={setEditPgRun}
+            refetch={refetch}
           />
         }
 
         {
-          pgRunInfo && <DeletePgRun 
-          delPg={pgRunInfo}
-          setDelPg={setDelPg}
-          refetch={refetch}
+          pgRunInfo && <DeletePgRun
+            delPg={pgRunInfo}
+            setDelPg={setDelPg}
+            refetch={refetch}
           />
         }
 

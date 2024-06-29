@@ -13,6 +13,7 @@ import { ArrowDownTrayIcon} from '@heroicons/react/24/solid'
 import Pagination from "../Pages/SharedPage/Pagination";
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 import TableCaption from '../Pages/SharedPage/TableCaption'
+import { toast } from "react-toastify";
 
 const AllFuelList = () => {
   const [axiosSecure] = useAxiosSecure()
@@ -27,11 +28,19 @@ const AllFuelList = () => {
   const [pageSize, setPageSize] = useState("50");
   const [totalPage, setTotalPage] = useState("1")
   const [actualDataLength, setDataLength] = useState("10")
+  const [firstDay, setFirstDay] = useState("")
+  const [lastDay, setLastDay] = useState("")
+
+  useEffect(() => {
+if(firstDay >lastDay){
+   toast.error("Last date is less then first date,Please correct")
+}
+  }, [firstDay, lastDay])
 
 
   useEffect(() => {
     const getLengthData = async () => {
-      const { data } = await axiosSecure.get("/fuelListAll/count")
+      const { data } = await axiosSecure.get(`/fuelListAll/count?firstDay=${firstDay}&lastDay=${lastDay}`)
       const page = data.lengthOfData
       setDataLength(page)
       const pageCount = Math.ceil(page / pageSize)
@@ -42,16 +51,37 @@ const AllFuelList = () => {
     }
     getLengthData()
 
-  }, [pageSize, selectPage, totalPage, actualDataLength, axiosSecure])
+  }, [pageSize, selectPage, totalPage, actualDataLength, axiosSecure,firstDay,lastDay])
 
+  useEffect(() => {
+    const now = new Date();
+    //console.log(now);
+    // Calculate the first day of the current month
+    const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    //console.log(firstDayOfMonth);
+    // Calculate the last day of the current month
+    const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    //console.log(lastDayOfMonth);
+
+    // Format the dates to YYYY-MM-DD
+    const formatDate = (date) => date.toLocaleDateString("en-CA");
+
+    setFirstDay(formatDate(firstDayOfMonth));
+    setLastDay(formatDate(lastDayOfMonth));
+  }, []);
 
   const { isLoading, data: receiveFuel = [], refetch } = useQuery({
-    queryKey: ["receiveFuel", pageSize, selectPage],
+    queryKey: ["receiveFuel", pageSize, selectPage,firstDay,lastDay],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/fuelListAll?size=${pageSize}&page=${selectPage}`)
+      const res = await axiosSecure.get(`/fuelListAll?size=${pageSize}&page=${selectPage}
+        &firstDay=${firstDay}&lastDay=${lastDay}`)
       return res.data
     }
   })
+  //console.log(receiveFuel)
+  const totalFuel= receiveFuel.reduce((pre,item)=>{
+    return pre+parseInt(item.fuelQuantity)
+  },0)
 
   if (isLoading) {
     return <Loading />;
@@ -76,17 +106,7 @@ const AllFuelList = () => {
   };
   return (
     <div className="px-2 lg:px-16 mt-5 mb-8">
-      {/* <div className="grid gap-x-2 grid-cols-4 lg:grid-cols-8 h-12 card bg-[#5a23d9] rounded-lg justify-self-start mb-8">
-        <Link to="/PgFuel" className="btn btn-secondary">
-          Go BACK
-        </Link>
-        <h2 className="text-white lg:card-title font-bold col-start-2 col-span-2 lg:col-span-6 justify-self-center self-center">
-          All Issued <p>Fuel Record</p>
-        </h2>
-        <Link to="/Dashboard/FuelUpdate" className="btn btn-secondary">
-          GO FUEL UPDATE
-        </Link>
-      </div> */}
+      
       <div className="flex justify-between border border-slate-400 p-4 rounded-lg">
         <input
           type="text"
@@ -96,6 +116,30 @@ const AllFuelList = () => {
             handlesearch(e);
           }}
         />
+
+<label className="input input-bordered flex items-center font-semibold gap-2">
+            First-Date:
+            <input
+              type="date"
+              defaultValue={firstDay}
+              className="grow"
+              placeholder="start date"
+              onChange={(e) => {
+                setFirstDay(e.target.value);
+              }}
+            />
+          </label>
+          <label className="input input-bordered flex items-center font-semibold gap-2">
+            Last-Date:
+            <input
+              type="date"
+              defaultValue={lastDay}
+              className="grow"
+              onChange={(e) => {
+                setLastDay(e.target.value);
+              }}
+            />
+          </label>
         <div>
           <CSVLink
             data={receiveFuel}
@@ -113,10 +157,11 @@ const AllFuelList = () => {
         selectPage={selectPage} setSelectPage={setSelectPage}
         totalPage={totalPage} actualDataLength={actualDataLength}
       />
+      {/* <p className="text-center font-bold text-blue-500">Total Fuel Issued:{totalFuel}</p> */}
       
       <div className="overflow-x-auto  mt-4">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
-          <TableCaption tableHeading="Issued Fuel Record" bgColor=''/>
+          <TableCaption tableHeading={`Issued Fuel : ${totalFuel} Liter`} bgColor={"bg-blue-500"}/>
           <thead className="border-2 border-[#FFCB24]">
             <tr className="divide-x divide-blue-400 text-center">
               <th>SN</th>

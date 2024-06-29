@@ -18,7 +18,7 @@ const FuelBalanceInfo = () => {
 
   const { data: approvalPendingPgRun = [], isLoading: isLoading3 } = useGetApprovalPendingQuery()
 
-  //console.log(approvalPendingPgRun)
+  console.log(approvalPendingPgRun)
   const { isLoading2, data: receiveFuelOnCall = [] } = useQuery({
     queryKey: ['receiveFuelOnCall'],
     queryFn: async () => {
