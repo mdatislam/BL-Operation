@@ -9,7 +9,7 @@ import useAdmin from "../Pages/Hook/useAdmin";
 import Loading from "../Pages/SharedPage/Loading";
 import AllFuelListRow from "./AllFuelListRow";
 import { CSVLink } from "react-csv";
-import { ArrowDownTrayIcon} from '@heroicons/react/24/solid'
+import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
 import Pagination from "../Pages/SharedPage/Pagination";
 import useAxiosSecure from "../Pages/Hook/useAxiosSecure";
 import TableCaption from '../Pages/SharedPage/TableCaption'
@@ -32,9 +32,9 @@ const AllFuelList = () => {
   const [lastDay, setLastDay] = useState("")
 
   useEffect(() => {
-if(firstDay >lastDay){
-   toast.error("Last date is less then first date,Please correct")
-}
+    if (firstDay > lastDay) {
+      toast.error("Last date is less then first date,Please correct")
+    }
   }, [firstDay, lastDay])
 
 
@@ -51,7 +51,7 @@ if(firstDay >lastDay){
     }
     getLengthData()
 
-  }, [pageSize, selectPage, totalPage, actualDataLength, axiosSecure,firstDay,lastDay])
+  }, [pageSize, selectPage, totalPage, actualDataLength, axiosSecure, firstDay, lastDay])
 
   useEffect(() => {
     const now = new Date();
@@ -71,7 +71,7 @@ if(firstDay >lastDay){
   }, []);
 
   const { isLoading, data: receiveFuel = [], refetch } = useQuery({
-    queryKey: ["receiveFuel", pageSize, selectPage,firstDay,lastDay],
+    queryKey: ["receiveFuel", pageSize, selectPage, firstDay, lastDay],
     queryFn: async () => {
       const res = await axiosSecure.get(`/fuelListAll?size=${pageSize}&page=${selectPage}
         &firstDay=${firstDay}&lastDay=${lastDay}`)
@@ -79,9 +79,9 @@ if(firstDay >lastDay){
     }
   })
   //console.log(receiveFuel)
-  const totalFuel= receiveFuel.reduce((pre,item)=>{
-    return pre+parseInt(item.fuelQuantity)
-  },0)
+  const totalFuel = receiveFuel.reduce((pre, item) => {
+    return pre + parseInt(item.fuelQuantity)
+  }, 0)
 
   if (isLoading) {
     return <Loading />;
@@ -106,7 +106,7 @@ if(firstDay >lastDay){
   };
   return (
     <div className="px-2 lg:px-16 mt-5 mb-8">
-      
+
       <div className="flex justify-between border border-slate-400 p-4 rounded-lg">
         <input
           type="text"
@@ -117,29 +117,29 @@ if(firstDay >lastDay){
           }}
         />
 
-<label className="input input-bordered flex items-center font-semibold gap-2">
-            First-Date:
-            <input
-              type="date"
-              defaultValue={firstDay}
-              className="grow"
-              placeholder="start date"
-              onChange={(e) => {
-                setFirstDay(e.target.value);
-              }}
-            />
-          </label>
-          <label className="input input-bordered flex items-center font-semibold gap-2">
-            Last-Date:
-            <input
-              type="date"
-              defaultValue={lastDay}
-              className="grow"
-              onChange={(e) => {
-                setLastDay(e.target.value);
-              }}
-            />
-          </label>
+        <label className="input input-bordered flex items-center font-semibold gap-2">
+          First-Date:
+          <input
+            type="date"
+            defaultValue={firstDay}
+            className="grow"
+            placeholder="start date"
+            onChange={(e) => {
+              setFirstDay(e.target.value);
+            }}
+          />
+        </label>
+        <label className="input input-bordered flex items-center font-semibold gap-2">
+          Last-Date:
+          <input
+            type="date"
+            defaultValue={lastDay}
+            className="grow"
+            onChange={(e) => {
+              setLastDay(e.target.value);
+            }}
+          />
+        </label>
         <div>
           <CSVLink
             data={receiveFuel}
@@ -152,16 +152,16 @@ if(firstDay >lastDay){
           </CSVLink>
         </div>
       </div>
-          {/* Pagination part */}
+      {/* Pagination part */}
       <Pagination pageSize={pageSize} setPageSize={setPageSize}
         selectPage={selectPage} setSelectPage={setSelectPage}
         totalPage={totalPage} actualDataLength={actualDataLength}
       />
       {/* <p className="text-center font-bold text-blue-500">Total Fuel Issued:{totalFuel}</p> */}
-      
+
       <div className="overflow-x-auto  mt-4">
         <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600">
-          <TableCaption tableHeading={`Issued Fuel : ${totalFuel} Liter`} bgColor={"bg-blue-500"}/>
+          <TableCaption tableHeading={`Issued Fuel : ${totalFuel} Liter`} bgColor={"bg-blue-500"} />
           <thead className="border-2 border-[#FFCB24]">
             <tr className="divide-x divide-blue-400 text-center">
               <th>SN</th>

@@ -3,7 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import auth from "../firebase.init";
 import useAdmin from "./../Pages/Hook/useAdmin";
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { UserCircleIcon, HandThumbUpIcon, BoltIcon, PowerIcon,LockClosedIcon } from '@heroicons/react/24/solid';
+import { UserCircleIcon, WrenchScrewdriverIcon,HandThumbUpIcon, BoltIcon, PowerIcon,LockClosedIcon } from '@heroicons/react/24/solid';
 
 
 const DashboardOncall = () => {
@@ -66,6 +66,12 @@ const DashboardOncall = () => {
                         <NavLink to="/OnCall/pgStatus" onClick={handleSidebar}>All PG Status</NavLink >
 
                     </li>
+                    { admin && <li>
+                        <NavLink to="/OnCall/Spare" onClick={handleSidebar}>
+                             <WrenchScrewdriverIcon className="h-6 w-6 text-[#106d3f]-500" />
+                            Spare
+                        </NavLink>
+                    </li>}
 
                     <li>
                         <NavLink to="/OnCall/PowerShutDown" onClick={handleSidebar}>
