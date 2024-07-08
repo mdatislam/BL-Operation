@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useSiteList from "./../../Pages/Hook/useSiteList";
 import useUserList from "../../Pages/Hook/useUserList";
@@ -7,13 +7,15 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import { usePostNewSpareMutation } from "../../app/features/api/sparePart/spareApi";
 import Loading from "../../Pages/SharedPage/Loading";
+import { toast } from "react-toastify";
 
-const SpareAdd = () => {
-    const [user]= useAuthState(auth)
+
+const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
+    const [user] = useAuthState(auth)
     const [siteList] = useSiteList()
     const [userList] = useUserList()
     const [search, setSearch] = useState("");
-    const [spareAdd,{isLoading,data}]= usePostNewSpareMutation()
+    const [spareAdd, { isLoading, data, isError, error }] = usePostNewSpareMutation()
     const {
         register,
         reset,
@@ -21,9 +23,19 @@ const SpareAdd = () => {
         handleSubmit,
     } = useForm();
 
-    const spareNameList = ["MRFU-900", "MRFU-1800", "ISV3", "ISM6", "ISM8", "RTN-950-controller"]
+    const spareNameList = ["Rectifier", "MRFU-900", "MRFU-1800", "ISV3", "ISM6", "ISM8", "RTN-950-controller"]
     const spareTypeList = ["RAN", "BTS", "MW", "Power", "CIVIL"]
 
+    useEffect(() => {
+        if (data) {
+            toast.success("Data save successfully")
+            reset()
+            setSpareAddVisible(false)
+        }
+        else if (isError) {
+            toast.error(error)
+        }
+    }, [data, isError, error, reset])
     /* Today calculate code */
     let date = new Date()
     date.setDate(date.getDate())
@@ -37,12 +49,17 @@ const SpareAdd = () => {
     const handleSearchItem = (searchItem) => {
         setSearch(searchItem);
     };
-    const onSubmit = (data) => {    
-        console.log({...data,updatedBy:user.displayName});
-        spareAdd({...data,updatedBy:user.displayName})
+    const onSubmit = (data) => {
+        console.log({ ...data, updatedBy: user.displayName });
+        spareAdd({ ...data, updatedBy: user.displayName, siteId: search 
+            ,replacement:[]
+        })
+
+
+
     }
 
-    if(isLoading){
+    if (isLoading) {
         return <Loading />
     }
 
@@ -99,6 +116,15 @@ const SpareAdd = () => {
                                     </label>
                                 </label>
 
+                                <label className="input input-bordered font-semibold flex items-center gap-2">
+                                    Serial_No:
+                                    <input
+                                        type="text"
+                                        className="grow"
+                                        {...register("serialNo")}
+                                    />
+                                </label>
+
                                 <label className="input input-bordered flex items-center font-semibold gap-2">
                                     Spare_Type:
                                     <select
@@ -137,9 +163,10 @@ const SpareAdd = () => {
                                             },
                                         })}
                                     >
-                                        <option value=""> -------Select Spare Name-----</option>
+                                        <option value=""> ---Spare Name---</option>
                                         {
-                                            spareNameList.map(item => (<option value={item}> {item}</option>))
+                                            spareNameList.sort((a, b) => a.localeCompare(b))
+                                                .map(item => (<option value={item}> {item}</option>))
                                         }
 
                                     </select>
@@ -156,16 +183,17 @@ const SpareAdd = () => {
                                     <select
                                         type="text"
                                         className="grow"
-                                        {...register("status", {
+                                        {...register("source", {
                                             required: {
                                                 value: true,
-                                                message: " Status is required",
+                                                message: " Collecting Source is required",
                                             },
                                         })}
                                     >
-                                        <option value=""> -------Select Status-----</option>
-                                        <option value="good"> Good</option>
-                                        <option value="faulty"> Faulty</option>
+                                        <option value=""> -------Select Source-----</option>
+                                        <option value="SPMS-Huawei"> SPMS-Huawei</option>
+                                        <option value="SPMS-ZTE">SPMS-ZTE</option>
+                                        <option value="BL"> BL</option>
                                     </select>
                                     <label className="label">
                                         {errors.status?.type === "required" && (
@@ -177,11 +205,11 @@ const SpareAdd = () => {
                                 </label>
 
                                 <label className="input input-bordered font-semibold flex items-center gap-2">
-                                    Quantity:
+                                    Good_Quantity:
                                     <input
                                         type="number"
                                         className="grow"
-                                        {...register("quantity", {
+                                        {...register("goodQuantity", {
                                             required: {
                                                 value: true,
                                                 message: " Quantity is required",
@@ -269,9 +297,10 @@ const SpareAdd = () => {
                                             },
                                         })}
                                     >
-                                        <option value=""> -------Select Requester Name-----</option>
+                                        <option value=""> ---Requester Name---</option>
                                         {
-                                            userList.map(user => (<option value={user.name}> {user.name}</option>))
+                                            userList.sort((a, b) => a?.name.localeCompare(b?.name))
+                                                .map(user => (<option value={user.name}> {user.name}</option>))
                                         }
 
                                     </select>
@@ -284,12 +313,12 @@ const SpareAdd = () => {
                                     </label>
                                 </label>
                                 <label className="input input-bordered font-semibold flex items-center gap-2">
-                                    Requision_ID:
+                                    Challan_No:
                                     <input
                                         type="text"
-                                        placeholder=" Type ID provided by SPMS"
+                                        placeholder="Provided by SPMS"
                                         className="grow"
-                                        {...register("requisitionId", {
+                                        {...register("challanNo", {
                                             required: {
                                                 value: true,
                                                 message: " RequisitionId is required",
@@ -314,13 +343,17 @@ const SpareAdd = () => {
 
 
                             </div>
-                            <input
-                                type="submit"
-                                className="btn btn-success btn-wide max-w-xs m-2"
-                                /*  disabled={isLoading ? true:false} */
-                                value="Save_Spare"
+                            <div className="flex items-center justify-center gap-x-4 ">
+                                <input
+                                    type="submit"
+                                    className="btn btn-success max-w-xs m-2 hover:btn-info"
+                                    /*  disabled={isLoading ? true:false} */
+                                    value="Save_Spare"
 
-                            />
+                                />
+                                <button onClick={() => setSpareAddVisible(false)}
+                                    className="btn btn-warning hover:btn-error">Cancel</button>
+                            </div>
                         </div>
                     </form>
                 </div>

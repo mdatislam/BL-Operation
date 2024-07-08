@@ -67,7 +67,7 @@ const DashboardOncall = () => {
 
                     </li>
                     { admin && <li>
-                        <NavLink to="/OnCall/Spare" onClick={handleSidebar}>
+                        <NavLink to="/OnCall/SpareHome" onClick={handleSidebar}>
                              <WrenchScrewdriverIcon className="h-6 w-6 text-[#106d3f]-500" />
                             Spare
                         </NavLink>

@@ -64,8 +64,13 @@ import PowerShutDownDashBoard from "./DashboardOncall/powerShutDown/PowerShutDow
 import BTSLockFileUploaded from "./DashboardOncall/powerShutDown/BTSLockFIleUploaded";
 import ThanaWisePowerAlarm from "./DashboardOncall/powerShutDown/ThanaWisePowerAlarm";
 import ThanaWiseDown from "./DashboardOncall/powerShutDown/ThanaWiseDown";
-import SpareHome from "./DashboardOncall/sparePart/SpareHome";
 import SpareAdd from "./DashboardOncall/sparePart/SpareAdd";
+import NewSpareRecord from "./DashboardOncall/sparePart/NewSpareRecord";
+import AddOwnSpare from "./DashboardOncall/sparePart/AddOwnSpare";
+import SpareHome from "./DashboardOncall/sparePart/SpareHome";
+import OwnSpareRecord from "./DashboardOncall/sparePart/OwnSpareRecord";
+import ReturnSpareRecord from "./DashboardOncall/sparePart/ReturnSpareRecord";
+
 
 
 
@@ -152,8 +157,12 @@ function App() {
           <Route path="/dashboardPowerShutDown" element={<PowerShutDownDashBoard/>} />
           <Route path="/thanaWisePowerAlarm" element={<ThanaWisePowerAlarm/>} />
           <Route path="/thanaWiseDown" element={<ThanaWiseDown/>} />
-          <Route path="/onCall/Spare" element={<SpareHome/>} />
+          <Route path="/NewSpareCollectRecord" element={<NewSpareRecord/>} />
           <Route path="/OnCall/NewSpareAdd" element={<SpareAdd/>} />
+          <Route path="/OnCall/AddOwnSpare" element={<AddOwnSpare/>} />
+          <Route path="/OnCall/SpareHome" element={<SpareHome/>} />
+          <Route path="/OwnSpareRecord" element={<OwnSpareRecord/>} />
+          <Route path="/ReturnSpareRecord" element={<ReturnSpareRecord/>} />
 
         </Route>
 
