@@ -1,23 +1,30 @@
 import React from 'react';
-import { PencilSquareIcon, XCircleIcon, EyeIcon} from '@heroicons/react/24/solid';
+import { PencilSquareIcon, XCircleIcon, EyeIcon } from '@heroicons/react/24/solid';
 
-const SpareRecordRow = ({ spare, index, admin, setSpareEdit, setReplacementView }) => {
-    const { _id, bomNo, serialNo, date, spareName, source, goodQuantity, siteId,
-        challanNo,ownGoodStock, requisitionDate, requisitionBy, updatedBy, remark } = spare
-         //const totalQuantity =  parseInt(goodQuantity)+ parseInt(ownGoodStock)
+const SpareRecordRow = ({ spare, index, admin, setSpareEdit, setReplacementView, setOwnSpareEdit }) => {
+    const { _id, bomNo, serialNo, date, spareName, source, spmsGoodQuantity, siteId,
+        challanNo, ownGoodStock, requisitionDate, requisitionBy, updatedBy, remark } = spare
+    //const totalQuantity =  parseInt(goodQuantity)+ parseInt(ownGoodStock)
     return (
 
         <tr className="border-2 border-[#F0D786]  hover divide-x divide-gray-300 text-center">
             <td className='border-2 border-gray-300 '>{index + 1}</td>
             <td >
                 <div className='flex gap-2'>
-                    {goodQuantity>0 ?
+                    {spmsGoodQuantity > 0 &&
                         <label htmlFor="spareEdit" className='btn btn-xs'
-                        onClick={() => setSpareEdit(spare)}>
-                        <PencilSquareIcon className="h-6 w-6 text-green-300" />
+                            onClick={() => setSpareEdit(spare)}>
+                            <PencilSquareIcon className="h-6 w-6 text-green-300" />
+                        </label>
+                    }
+                    {ownGoodStock > 0 && spmsGoodQuantity === 0 && <label htmlFor="ownSpareEditt" className='btn btn-xs'
+                        onClick={() => setOwnSpareEdit(spare)}>
+                        <PencilSquareIcon className="h-6 w-6 text-pink-500" />
                     </label>
-                    :
-                    <p className='btn btn-xs text-red-500'>No Stock</p>
+                    }
+                    {
+                        ownGoodStock === 0 && spmsGoodQuantity === 0 &&
+                        <p className='btn btn-xs text-red-500'>No_Stock</p>
                     }
 
                     {
@@ -29,11 +36,8 @@ const SpareRecordRow = ({ spare, index, admin, setSpareEdit, setReplacementView 
             <td >{spareName}</td>
             <td >{bomNo}</td>
             <td >{serialNo}</td>
-            <td >{goodQuantity}</td>
+            <td >{spmsGoodQuantity}</td>
             <td >{ownGoodStock}</td>
-             <td >
-               {parseInt(goodQuantity)+parseInt(ownGoodStock)}
-                </td>
             <td >{source}</td>
             <td >{challanNo}</td>
             <td >{siteId}</td>

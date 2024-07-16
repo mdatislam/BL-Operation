@@ -4,11 +4,11 @@ import useSiteList from '../../Pages/Hook/useSiteList';
 import useUserList from '../../Pages/Hook/useUserList';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
-import { useGetSpareListQuery, useReplaceMentSpareMutation } from '../../app/features/api/sparePart/spareApi';
+import { useGetSpareListQuery, useReplaceMentOwnSpareMutation, useReplaceMentSpareMutation } from '../../app/features/api/sparePart/spareApi';
 import Loading from '../../Pages/SharedPage/Loading';
 import { toast } from 'react-toastify';
 
-const EditSpare = ({ setSpareEdit, spareEdit }) => {
+const EditOwnSpare = ({ setOwnSpareEdit, ownSpareEdit }) => {
     const [user] = useAuthState(auth)
     const [siteList] = useSiteList()
     const [userList] = useUserList()
@@ -19,10 +19,9 @@ const EditSpare = ({ setSpareEdit, spareEdit }) => {
         formState: { errors },
         handleSubmit,
     } = useForm();
-    //const {isLoading:isLoading1, data:spareRecord=[]}= useGetSpareListQuery()
-    //console.log(spareEdit);
-    const [replacementDataInfo, { isLoading, isError, error, isSuccess }] = useReplaceMentSpareMutation()
 
+    const [replacementOwnSpare,{isLoading,isSuccess,isError,error}]= useReplaceMentOwnSpareMutation()
+    
     /* Today calculate code */
     let date = new Date()
     date.setDate(date.getDate())
@@ -38,7 +37,7 @@ const EditSpare = ({ setSpareEdit, spareEdit }) => {
     };
 
     /* Total faulty quantity calculation */
-    const totalFaulty = spareEdit?.replacement?.reduce((pre, item) => {
+    const totalFaulty = ownSpareEdit?.replacement?.reduce((pre, item) => {
         return pre + parseInt(item.replacementQuantity)
     }, 0)
 
@@ -47,44 +46,43 @@ const EditSpare = ({ setSpareEdit, spareEdit }) => {
     useEffect(() => {
 
         if (isSuccess) {
-            toast.success("Spare update successfully")
-            setSpareEdit(null)
+            toast.success(" Own_Spare update successfully")
+            setOwnSpareEdit(null)
         }
         if (isError) {
             toast.error(error)
         }
-    }, [isLoading, isSuccess, isError, error, setSpareEdit])
+    }, [isLoading, isSuccess, isError, error, setOwnSpareEdit])
     const onSubmit = (data) => {
         console.log({
             ...data, replacementSiteId: search,
-            spareName: spareEdit.spareName,
+            spareName: ownSpareEdit.spareName,
             replacementUpdatedBy: user.displayName
         });
-        const finalGoodQuantity = parseInt(spareEdit.spmsGoodQuantity) - parseInt(data.replacementQuantity)
-        const finalFaultyQuantity = parseInt(spareEdit.spmsFaultyQuantity) + parseInt(data.replacementQuantity)
-        replacementDataInfo({
-            ...data, replacementSiteId: search,
-            spareName: spareEdit.spareName, goodQuantity: finalGoodQuantity,
-            faultyQuantity:finalFaultyQuantity,
-            replacementUpdatedBy: user.displayName, id: spareEdit._id
+        const finalGoodStock = parseFloat(ownSpareEdit.ownGoodStock) - parseInt(data.replacementQuantity)
+        const finalFaultyStock = parseFloat(ownSpareEdit.ownFaultyStock) + parseInt(data.replacementQuantity)
+        replacementOwnSpare({
+            ...data, replacementSiteId: search,bomNo: ownSpareEdit.bomNo,
+            spareName: ownSpareEdit.spareName, goodStock:finalGoodStock ,faultyStock:finalFaultyStock,
+            replacementUpdatedBy: user.displayName, id: ownSpareEdit._id
         })
     }
 
-    if (isLoading) {
+   /*  if (isLoading) {
         return <Loading />
-    }
+    } */
 
     return (
         <div>
-            <input type="checkbox" id="spareEdit" className="modal-toggle" />
+            <input type="checkbox" id="ownSpareEditt" className="modal-toggle" />
             <div className="modal" role="dialog">
                 <div className="modal-box relative">
                     <div className="card-body">
                         <h2 className="text-center text-secondary-focus mb-1 text-2xl font-bold">
-                            Replacement New_Spare Info!
+                            Replacement Own_Spare Info!
                         </h2>
                         <label
-                            htmlFor="spareEdit"
+                            htmlFor="ownSpareEditt"
                             className="btn btn-sm btn-circle absolute right-4 top-2"
                         >
                             ✕
@@ -118,7 +116,7 @@ const EditSpare = ({ setSpareEdit, spareEdit }) => {
                                         Spare_Name:
                                         <input
                                             type="text"
-                                            value={spareEdit.spareName}
+                                            value={ownSpareEdit.spareName}
                                             readOnly
                                             disabled
                                             className="grow"
@@ -259,11 +257,12 @@ const EditSpare = ({ setSpareEdit, spareEdit }) => {
 
                                 </div>
                                 <div className="flex items-center justify-center gap-x-4 ">
+                                    
                                     <input
                                         type="submit"
                                         className="btn btn-success max-w-xs m-2 hover:btn-info"
                                         /*  disabled={isLoading ? true:false} */
-                                        value="Save_SPMS_Faulty"
+                                        value="save_Own_Faulty"
                                     />
                                 </div>
                             </div>
@@ -275,4 +274,4 @@ const EditSpare = ({ setSpareEdit, spareEdit }) => {
     );
 };
 
-export default EditSpare;
+export default EditOwnSpare;

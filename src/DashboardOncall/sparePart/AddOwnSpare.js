@@ -40,7 +40,7 @@ const AddOwnSpare = ({ OwnSpareAddVisible, setOwnSpareAddVisible }) => {
     const onSubmit = (data) => {
         console.log({ ...data, updatedBy: user.displayName });
         ownSpareAdd({
-            ...data, updatedBy: user.displayName,
+            ...data, updatedBy: user.displayName,replacement:[]
 
         })
 

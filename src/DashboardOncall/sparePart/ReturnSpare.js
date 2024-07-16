@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { TrashIcon, PencilSquareIcon, XCircleIcon, EyeIcon } from '@heroicons/react/24/solid';
+import { TrashIcon, PlusCircleIcon, XCircleIcon, EyeIcon } from '@heroicons/react/24/solid';
+import { usePostReturnSpareMutation } from '../../app/features/api/sparePart/spareApi';
+import userEvent from '@testing-library/user-event';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from '../../firebase.init';
+import Swal from 'sweetalert2';
+import Loading from '../../Pages/SharedPage/Loading';
+import { toast } from 'react-toastify';
 
 const ReturnSpare = ({ setReturnSpareVisible, returnSpare }) => {
+    const [user] = useAuthState(auth)
     const { handleSubmit, register, control, reset, errors } = useForm();
     const spareNameList = ["Rectifier", "MRFU-900", "MRFU-1800", "ISV3", "ISM6", "ISM8", "RTN-950-controller"]
     const {
@@ -11,120 +19,91 @@ const ReturnSpare = ({ setReturnSpareVisible, returnSpare }) => {
         remove: spareRemove,
     } = useFieldArray({ control, name: "bomNo" });
 
+    const [postReturnSpare, { data, error, isError, isLoading }] = usePostReturnSpareMutation()
 
-    const onSubmit = (data) => {
-        console.log(data);
-        /* postJob({...data,applicant:[],askQuestion:[]}) */
-        /* if (res?.postRes?.acknowledged) {
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Your work has been saved",
-                showConfirmButton: false,
-                timer: 1500
-            });
+    useEffect(() => {
+        if (data) {
+            toast.success("Data save successfully")
             reset()
-        } */
-    }
+            setReturnSpareVisible(null)
+
+        }
+        else if (isError) {
+            toast.error(error)
+        }
+    }, [data, isError, error, reset])
 
     /* Today calculate code */
     let date = new Date()
     date.setDate(date.getDate())
     const today = date.toLocaleDateString("en-CA")
 
+    const onSubmit = (data) => {
+        //console.log(data);
+        const combineArray = data?.bomNo?.map((item, index) => {
+            const returnData = {
+                bomNo: item,
+                spareName: data.spareName[index],
+                spareStatus: data.spareStatus[index],
+                returnQuantity: data.returnQuantity[index]
+
+            }
+            //console.log(returnData);
+            postReturnSpare({date:data.date, ...returnData, remark:data.remark, updatedBy: user.displayName,replacement:[] })
+            
+        })
+       
+    }
+
+
+    if (isLoading) {
+        return <Loading />
+    }
+
     return (
         <div>
             <div className="flex  justify-center justify-items-center mt-8 mb-3">
                 <div className="card w-full bg-base-100 shadow-2xl">
                     <div className="card-body">
-                        <h2 className="text-center text-Pink-700 mb-3 text-2xl font-bold">
+                        <h2 className="text-center text-Pink-500 mb-3 text-2xl font-bold">
                             Provide Return Spare Info!
                         </h2>
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="flex flex-col w-full  gap-3">
-                                <div className=" grid grid-cols-1 justify-center items-center gap-4">
-                                    <label className="input input-bordered w-1/4 justify-start flex items-center font-semibold gap-2">
-                                        Date:
-                                        <input
-                                            type="date"
-                                            defaultValue={today}
-                                            className="grow "
-                                            {...register("date", {
-                                                required: {
-                                                    value: true,
-                                                    message: " Date is required",
-                                                },
-                                            })}
-                                        />
-
-                                    </label>
-
-                                    {/* <div className='card shadow-lg bg-red-100 py-3 px-2 pr-2'>
-                                        <div className='flex flex-row gap-2 '>
-                                            <label className="input input-bordered flex items-center font-semibold gap-2">
-                                                BOM_No:
-                                                <input
-                                                    type="text"
-                                                    defaultValue={today}
-                                                    className="grow"
-                                                    {...register("bomNo")}
-                                                />
-                                            </label>
-                                            <label className="input input-bordered flex items-center font-semibold gap-2">
-                                                Name:
-                                                <select
-                                                    type="text"
-                                                    className="grow"
-                                                    {...register("spareName")}
-                                                >
-                                                    <option value=""> ---Spare Name---</option>
-                                                    {
-                                                        spareNameList.sort((a, b) => a.localeCompare(b))
-                                                            .map((item, index) => (<option value={item} key={item + "aff"}> {item}</option>))
-                                                    }
-                                                </select>
-                                            </label>
-
-                                            <label className="input input-bordered flex items-center font-semibold gap-2">
-                                                Status:
-                                                <select
-                                                    type="text"
-                                                    className="grow"
-                                                    {...register("spareStatus")}
-                                                >
-                                                    <option value="Faulty"> Faulty</option>
-                                                    <option value="Good_Return"> Good_Return</option>
-
-                                                </select>
-                                            </label>
-
-                                            <label className="input input-bordered flex items-center font-semibold gap-2">
-                                                Quantity:
-                                                <input
-                                                    type="number"
-                                                    defaultValue={today}
-                                                    className="grow"
-                                                    {...register("returnQuantity")}
-                                                />
-                                            </label>
-                                            <div>
-                                                <button
-                                                    type='button'
-                                                    onClick={() => spareAppend("")}
-                                                    className='btn btn-outline btn-info'
-                                                >
-                                                    More_Return
-                                                </button>
-                                            </div>
+                                <div className=" grid grid-cols-1 justify-center items-center gap-10">
+                                    <div className='flex flex-row gap-x-4 w-3/4 ml-28 items-center'>
+                                        <label className="input input-bordered flex items-center font-semibold gap-2">
+                                            Date:
+                                            <input
+                                                type="date"
+                                                defaultValue={today}
+                                                className="grow "
+                                                {...register("date", {
+                                                    required: {
+                                                        value: true,
+                                                        message: " Date is required",
+                                                    },
+                                                })}
+                                            />
+                                        </label>
+                                        <div className='mt-2'>
+                                            <button
+                                                type='button'
+                                                onClick={() => spareAppend("")}
+                                                className='btn btn-outline '
+                                            >
+                                                <PlusCircleIcon className="h-8 w-8 text-green-400" />
+                                                Add-Row
+                                            </button>
                                         </div>
-                                    </div> */}
+                                    </div>
 
-                                    <div className='flex flex-col w-full'>
+                                    <div className='flex flex-col w-full md:w-5/6 mx-auto'>
                                         <div>
                                             <div className='card shadow-lg bg-red-100 py-2 px-2 gap-y-2'>
                                                 {spareFields.map((item, index) => {
                                                     return (
-                                                        <div className='flex flex-row gap-2 ' key={item.key}>
+                                                        <div className='flex flex-row gap-2 ' key={item.id}>
                                                             <label className="input input-bordered flex items-center font-semibold gap-2">
                                                                 BOM_No:
                                                                 <input
@@ -184,15 +163,7 @@ const ReturnSpare = ({ setReturnSpareVisible, returnSpare }) => {
                                                     );
                                                 })}
                                             </div>
-                                            <div className='mt-2'>
-                                                <button
-                                                    type='button'
-                                                    onClick={() => spareAppend("")}
-                                                    className='btn btn-outline btn-info'
-                                                >
-                                                    More_Return
-                                                </button>
-                                            </div>
+
                                         </div>
                                     </div>
 
@@ -200,7 +171,7 @@ const ReturnSpare = ({ setReturnSpareVisible, returnSpare }) => {
                                     <textarea
                                         type="text"
                                         placeholder="Type issue if have"
-                                        className="input input-bordered w-full max-w-xs"
+                                        className="input input-bordered w-5/6 mx-auto "
                                         {...register("remark")}
                                     />
 

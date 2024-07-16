@@ -4,26 +4,29 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import useAdmin from '../../Pages/Hook/useAdmin';
 import { CSVLink } from 'react-csv';
-import { ArrowDownTrayIcon, PlusCircleIcon } from '@heroicons/react/24/solid';
+import { ArrowDownTrayIcon, PlusCircleIcon, HomeIcon } from '@heroicons/react/24/solid';
 import { useGetOwnSpareStockQuery, useGetSpareListQuery } from '../../app/features/api/sparePart/spareApi';
 import Loading from '../../Pages/SharedPage/Loading';
 import SpareAdd from './SpareAdd'
 import SpareRecordRow from './SpareRecordRow';
 import EditSpare from './EditSpare';
 import ViewReplacement from './ViewReplacement';
+import EditOwnSpare from './EditOwnSpare';
+import { NavLink } from 'react-router-dom';
 
 const NewSpareRecord = () => {
     const [user] = useAuthState(auth);
     const [admin] = useAdmin(user);
     const [spareAddVisible, setSpareAddVisible] = useState(false)
     const [spareEdit, setSpareEdit] = useState("")
+    const [ownSpareEdit, setOwnSpareEdit] = useState("")
     const [replacementRecord, setReplacementView] = useState("")
 
     const { data: spareList, isLoading, isSuccess, } = useGetSpareListQuery()
-    //console.log(spareList)
+    console.log(spareList)
     const { data: ownSpareStock, isLoading: loading2 } = useGetOwnSpareStockQuery()
-    // console.log(ownSpareStock);
-    
+     console.log(ownSpareStock);
+
     useEffect(() => {
         if (isSuccess) {
 
@@ -33,20 +36,24 @@ const NewSpareRecord = () => {
         return <Loading />
     }
 
-    const combineSpare= spareList.map((item)=>{
-        const matchSpare= ownSpareStock.find((matchBom)=>matchBom.BOM_No===item.bomNo)
-               return {
+    const combineSpare = spareList.map((item) => {
+        const matchSpare = ownSpareStock.find((matchBom) => matchBom.BOM_No === item.bomNo)
+        return {
             ...item,
-            ownGoodStock:matchSpare ? matchSpare.goodQuantity : 0,
-            ownFaultyStock:matchSpare ? matchSpare.faultyQuantity : 0,
+            ownGoodStock: matchSpare ? matchSpare.ownGoodQuantity : 0,
+            ownFaultyStock: matchSpare ? matchSpare.ownFaultyQuantity : 0,
         }
     })
-   // console.log(combineSpare)
+    // console.log(combineSpare)
+    console.log(ownSpareEdit);
 
     return (
         <div className="px-2 lg:px-16 py-4 bg-cyan-100">
             <div className='card bg-base-100 shadow-lg p-3'>
                 <div className="flex justify-between  rounded-lg" >
+                    <NavLink to="/OnCall/SpareHome">
+                        < HomeIcon className="h-8 w-8 text-red-500 font-bold" />
+                    </NavLink>
                     <div className='flex gap-1 btn btn-sm btn-outline btn-secondary'
                         onClick={() => setSpareAddVisible(!spareAddVisible)}>
                         < PlusCircleIcon className="h-6 w-6 text-slate-500" />
@@ -122,15 +129,11 @@ const NewSpareRecord = () => {
                             <th>BOM No</th>
                             <th>Serial No</th>
                             <th>
-                                <div>New_Good</div>
+                                <div>SPMS_Good</div>
                                 <div>Quantity</div>
                             </th>
                             <th>
                                 <div>Own_Good</div>
-                                <div>Quantity</div>
-                            </th>
-                            <th>
-                                <div>Total_Good</div>
                                 <div>Quantity</div>
                             </th>
                             <th>Source</th>
@@ -158,6 +161,7 @@ const NewSpareRecord = () => {
                             combineSpare.map((spare, index) => (
                                 <SpareRecordRow spare={spare} setSpareEdit={setSpareEdit}
                                     setReplacementView={setReplacementView}
+                                    setOwnSpareEdit={setOwnSpareEdit}
                                     admin={admin} index={index} key={spare._id} />
 
                             ))
@@ -167,6 +171,9 @@ const NewSpareRecord = () => {
             </div>
             {
                 spareEdit && <EditSpare setSpareEdit={setSpareEdit} spareEdit={spareEdit} />
+            }
+            {
+                ownSpareEdit && <EditOwnSpare setOwnSpareEdit={setOwnSpareEdit} ownSpareEdit={ownSpareEdit} />
             }
             {
                 replacementRecord && <ViewReplacement replacementRecord={replacementRecord}

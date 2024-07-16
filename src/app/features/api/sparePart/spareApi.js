@@ -19,6 +19,15 @@ const spareApi = apiSlice.injectEndpoints({
             invalidatesTags: ["spare"],
         }),
 
+        postReturnSpare: builder.mutation({
+            query: (data) => ({
+                url: "/returnSpare",
+                method: "POST",
+                body: data
+            }),
+            invalidatesTags: ["spare"],
+        }),
+
         replaceMentSpare:builder.mutation({
             query:(data)=>({
                 url:"/spare",
@@ -27,7 +36,14 @@ const spareApi = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["spare"],
         }),
-
+        replaceMentOwnSpare:builder.mutation({
+            query:(data)=>({
+                url:"/ownSpare",
+                method:"PUT",
+                body:data
+            }),
+            invalidatesTags: ["spare"],
+        }),
         getSpareList: builder.query({
             query: () => ({
                 url: "/spare"
@@ -48,6 +64,27 @@ const spareApi = apiSlice.injectEndpoints({
             providesTags: ["spare"]
         }),
 
+        getNewSpareStock: builder.query({
+            query: () => ({
+                url: "/newSpare/stock"
+            }),
+            providesTags: ["spare"]
+        }),
+
+        getReturnSpare: builder.query({
+            query: () => ({
+                url: "/returnSpare"
+            }),
+            providesTags: ["spare"]
+        }),
+
+        getReturnSparePending: builder.query({
+            query: () => ({
+                url: "/returnSpare/pending"
+            }),
+            providesTags: ["spare"]
+        }),
+
         getSingleReplacement:builder.query({
             query:(id)=>({
                 url:`/replacement/${id}`
@@ -59,6 +96,8 @@ const spareApi = apiSlice.injectEndpoints({
 
 export const { usePostNewSpareMutation, useGetSpareListQuery,
     useReplaceMentSpareMutation, useGetSingleReplacementQuery,
-    usePostOwnSpareMutation,useGetOwnSpareListQuery,useGetOwnSpareStockQuery
+    usePostOwnSpareMutation,useGetOwnSpareListQuery,useGetOwnSpareStockQuery,
+    usePostReturnSpareMutation,useGetReturnSpareQuery,useReplaceMentOwnSpareMutation,
+    useGetNewSpareStockQuery,useGetReturnSparePendingQuery
 
  } = spareApi

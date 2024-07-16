@@ -51,8 +51,8 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
     };
     const onSubmit = (data) => {
         console.log({ ...data, updatedBy: user.displayName });
-        spareAdd({ ...data, updatedBy: user.displayName, siteId: search 
-            ,replacement:[]
+        spareAdd({ ...data, updatedBy: user.displayName, siteId: search, 
+           spmsFaultyQuantity:0 ,replacement:[]
         })
 
 
@@ -209,7 +209,7 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
                                     <input
                                         type="number"
                                         className="grow"
-                                        {...register("goodQuantity", {
+                                        {...register("spmsGoodQuantity", {
                                             required: {
                                                 value: true,
                                                 message: " Quantity is required",
@@ -217,9 +217,9 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
                                         })}
                                     />
                                     <label className="label">
-                                        {errors.quantity?.type === "required" && (
+                                        {errors.spmsGoodQuantity?.type === "required" && (
                                             <span className="label-text-alt text-red-500">
-                                                {errors.quantity.message}
+                                                {errors.spmsGoodQuantity.message}
                                             </span>
                                         )}
                                     </label>
