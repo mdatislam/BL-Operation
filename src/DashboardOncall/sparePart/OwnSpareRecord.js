@@ -18,7 +18,7 @@ const OwnSpareRecord = () => {
 
     const { data: ownSpareList, isLoading, isSuccess, } = useGetOwnSpareListQuery()
     const filteredOwnSpareList = ownSpareList?.map(({ replacement, ...rest }) => rest)
-    console.log(filteredOwnSpareList)
+    //console.log(filteredOwnSpareList)
 
     useEffect(() => {
         if (isSuccess) {

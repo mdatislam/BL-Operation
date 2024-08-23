@@ -23,9 +23,9 @@ const NewSpareRecord = () => {
     const [replacementRecord, setReplacementView] = useState("")
 
     const { data: spareList, isLoading, isSuccess, } = useGetSpareListQuery()
-    console.log(spareList)
+    //console.log(spareList)
     const { data: ownSpareStock, isLoading: loading2 } = useGetOwnSpareStockQuery()
-     console.log(ownSpareStock);
+     //console.log(ownSpareStock);
 
     useEffect(() => {
         if (isSuccess) {
@@ -45,7 +45,7 @@ const NewSpareRecord = () => {
         }
     })
     // console.log(combineSpare)
-    console.log(ownSpareEdit);
+    //console.log(ownSpareEdit);
 
     return (
         <div className="px-2 lg:px-16 py-4 bg-cyan-100">

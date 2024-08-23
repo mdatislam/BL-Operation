@@ -233,8 +233,7 @@ const EditOwnSpare = ({ setOwnSpareEdit, ownSpareEdit }) => {
                                         >
                                             <option value=""> ---Replaced By Name---</option>
                                             {
-                                                userList.sort((a, b) => a?.name.localeCompare(b?.name))
-                                                    .map((user, index) => (<option value={user.name} key={index + "user"}> {user.name}</option>))
+                                                userList?.map((user, index) => (<option value={user.name} key={index + "user"}> {user.name}</option>))
                                             }
 
                                         </select>

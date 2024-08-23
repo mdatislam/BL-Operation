@@ -143,8 +143,7 @@ const AddOwnSpare = ({ OwnSpareAddVisible, setOwnSpareAddVisible }) => {
                                     >
                                         <option value=""> ---Spare Name---</option>
                                         {
-                                            spareNameList.sort((a, b) => a.localeCompare(b))
-                                                .map((item, index) => (<option value={item} key={item + "aff"}> {item}</option>))
+                                            spareNameList?.map((item, index) => (<option value={item} key={item + "aff"}> {item}</option>))
                                         }
 
                                     </select>

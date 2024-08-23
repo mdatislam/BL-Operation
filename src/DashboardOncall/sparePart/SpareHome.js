@@ -4,56 +4,38 @@ import { ListBulletIcon } from '@heroicons/react/24/solid';
 import {
     useGetNewSpareStockQuery, useGetOwnSpareStockQuery,
     useGetReturnSparePendingQuery,
-    
+    useGetSummarySpareQuery,
+
 } from '../../app/features/api/sparePart/spareApi';
 import TableCaption from '../../Pages/SharedPage/TableCaption';
 import Loading from '../../Pages/SharedPage/Loading';
-import SpareHomeBalanceRow from './SpareHomeBalanceRow';
 import SpareHomeReturnRow from './SpareHomeReturnRow';
+import SpareHomeBalanceRow from './SpareHomeBalanceRow';
+
 
 const SpareHome = () => {
-    const { data: newSpareStock = [], isLoading } = useGetNewSpareStockQuery()
-   // console.log(newSpareStock)
+    //const { data: newSpareStock = [], isLoading } = useGetNewSpareStockQuery()
+    //const { data: returnSparePending = [], isLoading: returnLoading } = useGetReturnSparePendingQuery()
     const { data: ownSpareStock = [], isLoading: loading2 } = useGetOwnSpareStockQuery()
     //console.log(ownSpareStock);
-    const { data: returnSparePending = [], isLoading: returnLoading } = useGetReturnSparePendingQuery()
-    console.log(returnSparePending);
+    const { data: spareSummary = [], isLoading: loading3 } = useGetSummarySpareQuery()
+    //console.log(spareSummary);
+    
+ 
+
+       /*  ownSpareStock & SpareSummary er comibne array of object making */
 
     const ownSpareLookup = ownSpareStock.reduce((acc, ownSpare) => {
         acc[ownSpare.BOM_No] = ownSpare;
         return acc;
     }, {});
     //console.log(ownSpareLookup)
-    let pendingSpare = []
-    const returnPending = newSpareStock?.map((newSpare) => {
-        const pending = returnSparePending?.find(returnSpare => {
-            if (returnSpare.bomNo === newSpare.BOM_No) {
-                const pendingQuantity = ((parseInt(newSpare.newGoodQuantity)) + (parseInt(newSpare.newFaultyQuantity)))
-                    - (parseInt(returnSpare.returnQuantity))
-                //console.log(pendingQuantity);
-                /* console.log({
-                    quantity: pendingQuantity,
-                    bomNO: returnSpare.bomNo
-                }); */
-                pendingSpare.push({
-                    quantity: pendingQuantity,
-                    bomNO: returnSpare.bomNo
-                })
-            }
-         
-        })
 
-        return pending
-    })
-
-    //console.log(pendingSpare);
-    
-
-    const combined = newSpareStock.map((newStock) => {
-        const matchingSpare = ownSpareLookup[newStock.BOM_No] ||
+    const combined = spareSummary?.map((summary) => {
+        const matchingSpare = ownSpareLookup[summary.bomNo] ||
             { ownGoodQuantity: 0, ownFaultyQuantity: 0 }
         return ({
-            ...newStock,
+            ...summary,
             ownGoodQuantity: matchingSpare.ownGoodQuantity,
             ownFaultyQuantity: matchingSpare.ownFaultyQuantity,
         })
@@ -61,50 +43,24 @@ const SpareHome = () => {
 
     // console.log(combined);
 
-    const unmatchedOwnSpare = ownSpareStock.filter(ownSpare => !newSpareStock.some(newSpare => newSpare.BOM_No === ownSpare.BOM_No))
+    const unmatchedOwnSpare = ownSpareStock.filter(ownSpare => !spareSummary.some(newSpare => newSpare.bomNo === ownSpare.BOM_No))
         .map(ownSpare => ({
-            BOM_No: ownSpare.BOM_No,
+            bomNo: ownSpare.BOM_No,
             ownGoodQuantity: ownSpare.ownGoodQuantity,
             ownFaultyQuantity: ownSpare.ownFaultyQuantity,
-            newGoodQuantity: ownSpare.newGoodQuantity || 0,
-            newFaultyQuantity: ownSpare.newFaultyQuantity || 0,
+            totalSpmsGood: ownSpare.totalSpmsGood || 0,
+            totalSpmsFaulty: ownSpare.totalSpmsFaulty || 0,
+            totalGoodReturn: ownSpare.totalGoodReturn || 0,
+            totalFaultyReturn: ownSpare.totalFaultyReturn || 0,
+            totalReturn: ownSpare.totalReturn|| 0,
         }))
 
     // console.log(unmatchedOwnSpare);
 
     const combineArray = [...combined, ...unmatchedOwnSpare]
-    // console.log(combineArray);
-    /*
-    // Create a lookup map for teachers based on the roll property
-    const teacherLookup = teachers.reduce((acc, teacher) => {
-      acc[teacher.roll] = teacher;
-      return acc;
-    }, {});
-    
-    // Combine student and teacher data
-    const combined = student.map(student => {
-      const matchingTeacher = teacherLookup[student.roll] || { age: "0" };
-      return {
-        ...student,
-        age: matchingTeacher.age || "0"
-      };
-    });
-    
-    // Add unmatched teachers to the combined array
-    const unmatchedTeachers = teachers.filter(teacher => !student.some(student => student.roll === teacher.roll))
-      .map(teacher => ({
-        name: teacher.name || "nepa", // default name for unmatched teachers if not present
-        roll: teacher.roll,
-        age: teacher.age || "0"
-      }));
-    
-    // Combine the arrays and remove duplicates
-    const people = [...combined, ...unmatchedTeachers];
-    
-    console.log(people); */
+    //console.log(combineArray);
 
-
-    if (isLoading || loading2 || returnLoading) {
+      if (loading2|| loading3) {
         return <Loading />
     }
     return (
@@ -142,10 +98,10 @@ const SpareHome = () => {
                             </thead>
                             <tbody>
                                 {
-                                    pendingSpare &&
-                                    pendingSpare?.map((spareReturn, index) => (
-                                        <SpareHomeReturnRow spareReturn={spareReturn} index={index}
-                                            key={index + "balance"}
+                                    spareSummary &&
+                                    spareSummary?.map((stock, index) => (
+                                        <SpareHomeReturnRow spareReturn={stock} index={index}
+                                            key={index + "stock"}
                                         />
                                     ))
                                 }
@@ -191,13 +147,19 @@ const SpareHome = () => {
                                 </tr>
                             </thead>
                             <tbody>
+
                                 {
                                     combineArray &&
-                                    combineArray?.map((stock, index) => (
-                                        <SpareHomeBalanceRow spareBalanceStock={stock} index={index}
+                                    combineArray?.map((stock, index) =>
+                                    (
+                                        <SpareHomeBalanceRow
+                                            spareBalanceStock={stock}
+                                            index={index}
                                             key={index + "balance"}
                                         />
-                                    ))
+                                    )
+
+                                    )
                                 }
 
                             </tbody>

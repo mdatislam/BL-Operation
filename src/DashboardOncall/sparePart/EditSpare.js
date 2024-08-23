@@ -55,11 +55,11 @@ const EditSpare = ({ setSpareEdit, spareEdit }) => {
         }
     }, [isLoading, isSuccess, isError, error, setSpareEdit])
     const onSubmit = (data) => {
-        console.log({
+        /* console.log({
             ...data, replacementSiteId: search,
             spareName: spareEdit.spareName,
             replacementUpdatedBy: user.displayName
-        });
+        }); */
         const finalGoodQuantity = parseInt(spareEdit.spmsGoodQuantity) - parseInt(data.replacementQuantity)
         const finalFaultyQuantity = parseInt(spareEdit.spmsFaultyQuantity) + parseInt(data.replacementQuantity)
         replacementDataInfo({
@@ -235,8 +235,7 @@ const EditSpare = ({ setSpareEdit, spareEdit }) => {
                                         >
                                             <option value=""> ---Replaced By Name---</option>
                                             {
-                                                userList.sort((a, b) => a?.name.localeCompare(b?.name))
-                                                    .map((user, index) => (<option value={user.name} key={index + "user"}> {user.name}</option>))
+                                                userList?.map((user, index) => (<option value={user.name} key={index + "user"}> {user.name}</option>))
                                             }
 
                                         </select>

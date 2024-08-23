@@ -84,6 +84,12 @@ const spareApi = apiSlice.injectEndpoints({
             }),
             providesTags: ["spare"]
         }),
+        getSummarySpare: builder.query({
+            query: () => ({
+                url: "/spare/spareSummary"
+            }),
+            providesTags: ["spare"]
+        }),
 
         getSingleReplacement:builder.query({
             query:(id)=>({
@@ -98,6 +104,6 @@ export const { usePostNewSpareMutation, useGetSpareListQuery,
     useReplaceMentSpareMutation, useGetSingleReplacementQuery,
     usePostOwnSpareMutation,useGetOwnSpareListQuery,useGetOwnSpareStockQuery,
     usePostReturnSpareMutation,useGetReturnSpareQuery,useReplaceMentOwnSpareMutation,
-    useGetNewSpareStockQuery,useGetReturnSparePendingQuery
+    useGetNewSpareStockQuery,useGetReturnSparePendingQuery,useGetSummarySpareQuery
 
  } = spareApi

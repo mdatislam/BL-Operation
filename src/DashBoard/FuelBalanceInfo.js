@@ -18,7 +18,7 @@ const FuelBalanceInfo = () => {
 
   const { data: approvalPendingPgRun = [], isLoading: isLoading3 } = useGetApprovalPendingQuery()
 
-  console.log(approvalPendingPgRun)
+  //console.log(approvalPendingPgRun)
   const { isLoading2, data: receiveFuelOnCall = [] } = useQuery({
     queryKey: ['receiveFuelOnCall'],
     queryFn: async () => {
@@ -137,8 +137,7 @@ const FuelBalanceInfo = () => {
             </thead>
             <tbody>
               {
-                combineBalanceInfo?.sort((a, b) => b.balance.localeCompare(a.balance))
-                  .map((u, index) => (
+                combineBalanceInfo?.map((u, index) => (
                     <FuelBalanceRow key={u._id} index={index} u={u}></FuelBalanceRow>
                   ))}
 

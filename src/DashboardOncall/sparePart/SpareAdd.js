@@ -165,8 +165,7 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
                                     >
                                         <option value=""> ---Spare Name---</option>
                                         {
-                                            spareNameList.sort((a, b) => a.localeCompare(b))
-                                                .map(item => (<option value={item}> {item}</option>))
+                                            spareNameList?.map(item => (<option value={item}> {item}</option>))
                                         }
 
                                     </select>
@@ -299,8 +298,7 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
                                     >
                                         <option value=""> ---Requester Name---</option>
                                         {
-                                            userList.sort((a, b) => a?.name.localeCompare(b?.name))
-                                                .map(user => (<option value={user.name}> {user.name}</option>))
+                                            userList?.map(user => (<option value={user.name}> {user.name}</option>))
                                         }
 
                                     </select>

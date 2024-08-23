@@ -49,7 +49,7 @@ const ReturnSpare = ({ setReturnSpareVisible, returnSpare }) => {
 
             }
             //console.log(returnData);
-            postReturnSpare({date:data.date, ...returnData, remark:data.remark, updatedBy: user.displayName,replacement:[] })
+            postReturnSpare({date:data.date, ...returnData, remark:data.remark, updatedBy: user.displayName})
             
         })
        
@@ -121,8 +121,7 @@ const ReturnSpare = ({ setReturnSpareVisible, returnSpare }) => {
                                                                 >
                                                                     <option value=""> ---Spare Name---</option>
                                                                     {
-                                                                        spareNameList.sort((a, b) => a.localeCompare(b))
-                                                                            .map((item, index) => (<option value={item} key={item + "aff"}> {item}</option>))
+                                                                        spareNameList?.map((item, index) => (<option value={item} key={item + "aff"}> {item}</option>))
                                                                     }
                                                                 </select>
                                                             </label>
