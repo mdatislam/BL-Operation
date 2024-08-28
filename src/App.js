@@ -70,6 +70,7 @@ import AddOwnSpare from "./DashboardOncall/sparePart/AddOwnSpare";
 import SpareHome from "./DashboardOncall/sparePart/SpareHome";
 import OwnSpareRecord from "./DashboardOncall/sparePart/OwnSpareRecord";
 import ReturnSpareRecord from "./DashboardOncall/sparePart/ReturnSpareRecord";
+import SpareListExcellUpdate from "./DashboardOncall/sparePart/SpareListExcellUpdate";
 
 
 
@@ -163,6 +164,7 @@ function App() {
           <Route path="/OnCall/SpareHome" element={<SpareHome/>} />
           <Route path="/OwnSpareRecord" element={<OwnSpareRecord/>} />
           <Route path="/ReturnSpareRecord" element={<ReturnSpareRecord/>} />
+          <Route path="/SpareListUpdate" element={<SpareListExcellUpdate/>} />
 
         </Route>
 

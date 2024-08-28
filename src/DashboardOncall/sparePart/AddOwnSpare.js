@@ -3,13 +3,15 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import useSiteList from '../../Pages/Hook/useSiteList';
 import useUserList from '../../Pages/Hook/useUserList';
-import { usePostOwnSpareMutation } from '../../app/features/api/sparePart/spareApi';
+import { useGetSpareBomListQuery, usePostOwnSpareMutation } from '../../app/features/api/sparePart/spareApi';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Loading from '../../Pages/SharedPage/Loading';
 
 const AddOwnSpare = ({ OwnSpareAddVisible, setOwnSpareAddVisible }) => {
     const [user] = useAuthState(auth)
+    const [selectSpare, setSelectSpare] = useState("")
+    const [spareBomNo, setSpareBomNo] = useState("")
     const [ownSpareAdd, { isLoading, data, isError, error }] = usePostOwnSpareMutation()
     const {
         register,
@@ -18,8 +20,20 @@ const AddOwnSpare = ({ OwnSpareAddVisible, setOwnSpareAddVisible }) => {
         handleSubmit,
     } = useForm();
 
-    const spareNameList = ["Rectifier", "MRFU-900", "MRFU-1800", "ISV3", "ISM6", "ISM8", "RTN-950-controller"]
-    const spareTypeList = ["RAN", "BTS", "MW", "Power", "CIVIL"]
+    const { data: spareBomList = [], isLoading: loading } = useGetSpareBomListQuery()
+    //console.log(spareBomList);
+
+    /* const spareTypeList = ["RAN", "BTS", "MW", "Power", "CIVIL"] */
+
+    const handleSpareName = (e) => {
+        const name = e.target.value
+        setSelectSpare(name)
+        const spareInfo = spareBomList?.find(item => item.spareName === name)
+        if (spareInfo) {
+            setSpareBomNo(spareInfo.bomNo)
+        }
+
+    }
 
     useEffect(() => {
         if (data) {
@@ -30,7 +44,7 @@ const AddOwnSpare = ({ OwnSpareAddVisible, setOwnSpareAddVisible }) => {
         else if (isError) {
             toast.error(error)
         }
-    }, [data, isError, error, reset])
+    }, [data, isError, error, reset, selectSpare])
     /* Today calculate code */
     let date = new Date()
     date.setDate(date.getDate())
@@ -38,15 +52,18 @@ const AddOwnSpare = ({ OwnSpareAddVisible, setOwnSpareAddVisible }) => {
 
 
     const onSubmit = (data) => {
-        console.log({ ...data, updatedBy: user.displayName });
+        //console.log({ ...data, spareName: selectSpare, bomNo: spareBomNo, updatedBy: user.displayName });
         ownSpareAdd({
-            ...data, updatedBy: user.displayName,replacement:[]
+            spareName: selectSpare, bomNo: spareBomNo,
+            ...data, updatedBy: user.displayName, replacement: []
 
         })
 
     }
+    // console.log(spareBomNo);
+    // console.log(selectSpare);
 
-    if (isLoading) {
+    if (isLoading || loading) {
         return <Loading />
     }
 
@@ -60,50 +77,38 @@ const AddOwnSpare = ({ OwnSpareAddVisible, setOwnSpareAddVisible }) => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="flex flex-col  gap-3">
                             <div className=" grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-4">
+
                                 <label className="input input-bordered flex items-center font-semibold gap-2">
-                                    Date:
-                                    <input
-                                        type="date"
-                                        defaultValue={today}
-                                        className="grow"
-                                        {...register("date", {
-                                            required: {
-                                                value: true,
-                                                message: " Date is required",
-                                            },
-                                        })}
-                                    />
-                                    <label className="label">
-                                        {errors.date?.type === "required" && (
-                                            <span className="label-text-alt text-red-500">
-                                                {errors.date.message}
-                                            </span>
-                                        )}
-                                    </label>
+                                    Spare_Name:
+                                    <select
+                                        type="text"
+                                        value={selectSpare}
+                                        onChange={handleSpareName}
+                                        className="w-64 max-w-sm"
+
+                                    >
+                                        <option value=""> ---Spare Name---</option>
+                                        {
+                                            spareBomList?.map((item, index) =>
+                                                (<option value={item.spareName} key={item._id}> {item.spareName}</option>))
+                                        }
+
+                                    </select>
                                 </label>
 
                                 <label className="input input-bordered font-semibold flex items-center gap-2">
                                     BOM_No:
                                     <input
                                         type="text"
+                                        value={spareBomNo}
+                                        readOnly
                                         className="grow"
-                                        {...register("bomNo", {
-                                            required: {
-                                                value: true,
-                                                message: " BomNo is required",
-                                            },
-                                        })}
+
                                     />
-                                    <label className="label">
-                                        {errors.bomNo?.type === "required" && (
-                                            <span className="label-text-alt text-red-500">
-                                                {errors.bomNo.message}
-                                            </span>
-                                        )}
-                                    </label>
+
                                 </label>
 
-                                <label className="input input-bordered flex items-center font-semibold gap-2">
+                                {/* <label className="input input-bordered flex items-center font-semibold gap-2">
                                     Spare_Type:
                                     <select
                                         type="text"
@@ -128,33 +133,7 @@ const AddOwnSpare = ({ OwnSpareAddVisible, setOwnSpareAddVisible }) => {
                                             </span>
                                         )}
                                     </label>
-                                </label>
-                                <label className="input input-bordered flex items-center font-semibold gap-2">
-                                    Spare_Name:
-                                    <select
-                                        type="text"
-                                        className="grow"
-                                        {...register("spareName", {
-                                            required: {
-                                                value: true,
-                                                message: " Spare Name is required",
-                                            },
-                                        })}
-                                    >
-                                        <option value=""> ---Spare Name---</option>
-                                        {
-                                            spareNameList?.map((item, index) => (<option value={item} key={item + "aff"}> {item}</option>))
-                                        }
-
-                                    </select>
-                                    <label className="label">
-                                        {errors.spareName?.type === "required" && (
-                                            <span className="label-text-alt text-red-500">
-                                                {errors.spareName.message}
-                                            </span>
-                                        )}
-                                    </label>
-                                </label>
+                                </label> */}
 
                                 <label className="input input-bordered font-semibold flex items-center gap-2">
                                     Good_Quantity:
@@ -196,7 +175,27 @@ const AddOwnSpare = ({ OwnSpareAddVisible, setOwnSpareAddVisible }) => {
                                         )}
                                     </label>
                                 </label>
-
+                                <label className="input input-bordered flex items-center font-semibold gap-2">
+                                    Date:
+                                    <input
+                                        type="date"
+                                        defaultValue={today}
+                                        className="grow"
+                                        {...register("date", {
+                                            required: {
+                                                value: true,
+                                                message: " Date is required",
+                                            },
+                                        })}
+                                    />
+                                    <label className="label">
+                                        {errors.date?.type === "required" && (
+                                            <span className="label-text-alt text-red-500">
+                                                {errors.date.message}
+                                            </span>
+                                        )}
+                                    </label>
+                                </label>
 
                                 <textarea
                                     type="text"

@@ -25,7 +25,7 @@ const NewSpareRecord = () => {
     const { data: spareList, isLoading, isSuccess, } = useGetSpareListQuery()
     //console.log(spareList)
     const { data: ownSpareStock, isLoading: loading2 } = useGetOwnSpareStockQuery()
-     //console.log(ownSpareStock);
+    //console.log(ownSpareStock);
 
     useEffect(() => {
         if (isSuccess) {
@@ -121,13 +121,9 @@ const NewSpareRecord = () => {
                         <tr className="divide-x divide-blue-400 text-center">
                             <th>SN</th>
                             <th>Action</th>
-                            <th>
-                                <div>Requisition</div>
-                                <div>Date</div>
-                            </th>
                             <th>Spare_Name</th>
                             <th>BOM No</th>
-                            <th>Serial No</th>
+
                             <th>
                                 <div>SPMS_Good</div>
                                 <div>Quantity</div>
@@ -136,9 +132,8 @@ const NewSpareRecord = () => {
                                 <div>Own_Good</div>
                                 <div>Quantity</div>
                             </th>
-                            <th>Source</th>
                             <th>Challan No</th>
-                            <th>siteId</th>
+                            <th>Serial No</th>
                             <th>
                                 <div>Requisition</div>
                                 <div>By</div>
@@ -147,7 +142,7 @@ const NewSpareRecord = () => {
                                 <div>Record_Faulty</div>
                                 <div>Replacement</div>
                             </th>
-                            <th>Input Date</th>
+
                             <th>
                                 <div>Updated</div>
                                 <div>By</div>

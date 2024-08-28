@@ -4,6 +4,7 @@ import { ListBulletIcon } from '@heroicons/react/24/solid';
 import {
     useGetNewSpareStockQuery, useGetOwnSpareStockQuery,
     useGetReturnSparePendingQuery,
+    useGetSpareBomListQuery,
     useGetSummarySpareQuery,
 
 } from '../../app/features/api/sparePart/spareApi';
@@ -19,11 +20,11 @@ const SpareHome = () => {
     const { data: ownSpareStock = [], isLoading: loading2 } = useGetOwnSpareStockQuery()
     //console.log(ownSpareStock);
     const { data: spareSummary = [], isLoading: loading3 } = useGetSummarySpareQuery()
-    //console.log(spareSummary);
-    
- 
+    console.log(spareSummary);
 
-       /*  ownSpareStock & SpareSummary er comibne array of object making */
+
+
+    /*  ownSpareStock & SpareSummary er comibne array of object making */
 
     const ownSpareLookup = ownSpareStock.reduce((acc, ownSpare) => {
         acc[ownSpare.BOM_No] = ownSpare;
@@ -52,7 +53,7 @@ const SpareHome = () => {
             totalSpmsFaulty: ownSpare.totalSpmsFaulty || 0,
             totalGoodReturn: ownSpare.totalGoodReturn || 0,
             totalFaultyReturn: ownSpare.totalFaultyReturn || 0,
-            totalReturn: ownSpare.totalReturn|| 0,
+            totalReturn: ownSpare.totalReturn || 0,
         }))
 
     // console.log(unmatchedOwnSpare);
@@ -60,7 +61,7 @@ const SpareHome = () => {
     const combineArray = [...combined, ...unmatchedOwnSpare]
     //console.log(combineArray);
 
-      if (loading2|| loading3) {
+    if (loading2 || loading3) {
         return <Loading />
     }
     return (
@@ -76,6 +77,9 @@ const SpareHome = () => {
                     <NavLink to="/ReturnSpareRecord" className=" btn btn-link">
                         < ListBulletIcon className="h-6 w-6 text-amber-600" />
                         &nbsp;  Return Spare_Record</NavLink>
+                    <NavLink to="/SpareListUpdate" className=" btn btn-link">
+                        < ListBulletIcon className="h-6 w-6 text-amber-600" />
+                        &nbsp;  Update_Spare_List</NavLink>
                 </div>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-6 max-h-screen gap-x-4 px-10'>
@@ -87,8 +91,8 @@ const SpareHome = () => {
                             <thead className="border-2 border-[#FFCB24]">
                                 <tr className="divide-x divide-blue-400 text-center">
                                     <th>SN</th>
-                                    <th>Spare_Name</th>
                                     <th>BOM No</th>
+                                    <th>Spare_Name</th>
 
                                     <th>
                                         <div>Pending</div>
@@ -120,9 +124,8 @@ const SpareHome = () => {
                             <thead className="border-2 border-[#FFCB24]">
                                 <tr className="divide-x divide-blue-400 text-center">
                                     <th>SN</th>
-                                    <th>Spare_Name</th>
                                     <th>BOM No</th>
-
+                                    <th>Spare_Name</th>
                                     <th>
                                         <div>Total_Good</div>
                                         <div>Stock</div>

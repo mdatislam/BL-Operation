@@ -2,6 +2,14 @@ import apiSlice from "../apiSlice";
 
 const spareApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
+        updateSpareList: builder.mutation({
+            query: (data) => ({
+                url: "/spare/spareList",
+                method: "PUT",
+                body: data
+            }),
+            invalidatesTags: ["spareList"],
+        }),
         postNewSpare: builder.mutation({
             query: (data) => ({
                 url: "/spare",
@@ -90,6 +98,12 @@ const spareApi = apiSlice.injectEndpoints({
             }),
             providesTags: ["spare"]
         }),
+        getSpareBomList: builder.query({
+            query: () => ({
+                url: "/spare/spareBomList"
+            }),
+            providesTags: ["spareList"]
+        }),
 
         getSingleReplacement:builder.query({
             query:(id)=>({
@@ -104,6 +118,7 @@ export const { usePostNewSpareMutation, useGetSpareListQuery,
     useReplaceMentSpareMutation, useGetSingleReplacementQuery,
     usePostOwnSpareMutation,useGetOwnSpareListQuery,useGetOwnSpareStockQuery,
     usePostReturnSpareMutation,useGetReturnSpareQuery,useReplaceMentOwnSpareMutation,
-    useGetNewSpareStockQuery,useGetReturnSparePendingQuery,useGetSummarySpareQuery
+    useGetNewSpareStockQuery,useGetReturnSparePendingQuery,useGetSummarySpareQuery,
+    useUpdateSpareListMutation,useGetSpareBomListQuery
 
  } = spareApi

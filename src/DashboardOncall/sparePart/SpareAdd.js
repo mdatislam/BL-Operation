@@ -1,20 +1,19 @@
 
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import useSiteList from "./../../Pages/Hook/useSiteList";
 import useUserList from "../../Pages/Hook/useUserList";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
-import { usePostNewSpareMutation } from "../../app/features/api/sparePart/spareApi";
+import { useGetSpareBomListQuery, usePostNewSpareMutation } from "../../app/features/api/sparePart/spareApi";
 import Loading from "../../Pages/SharedPage/Loading";
 import { toast } from "react-toastify";
 
 
 const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
     const [user] = useAuthState(auth)
-    const [siteList] = useSiteList()
     const [userList] = useUserList()
-    const [search, setSearch] = useState("");
+    const [selectSpare, setSelectSpare] = useState("")
+    const [spareBomNo, setSpareBomNo] = useState("")
     const [spareAdd, { isLoading, data, isError, error }] = usePostNewSpareMutation()
     const {
         register,
@@ -22,9 +21,20 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
         formState: { errors },
         handleSubmit,
     } = useForm();
+    const { data: spareBomList = [], isLoading: loading } = useGetSpareBomListQuery()
+    //console.log(spareBomList);
 
-    const spareNameList = ["Rectifier", "MRFU-900", "MRFU-1800", "ISV3", "ISM6", "ISM8", "RTN-950-controller"]
-    const spareTypeList = ["RAN", "BTS", "MW", "Power", "CIVIL"]
+    const handleSpareName = (e) => {
+        const name = e.target.value
+        setSelectSpare(name)
+        const spareInfo = spareBomList?.find(item => item.spareName === name)
+        if (spareInfo) {
+            setSpareBomNo(spareInfo.bomNo)
+        }
+
+    }
+
+    /* const spareTypeList = ["RAN", "BTS", "MW", "Power", "CIVIL"] */
 
     useEffect(() => {
         if (data) {
@@ -36,30 +46,20 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
             toast.error(error)
         }
     }, [data, isError, error, reset])
-    /* Today calculate code */
-    let date = new Date()
-    date.setDate(date.getDate())
-    const today = date.toLocaleDateString("en-CA")
 
-    /*  For site list auto suggestion */
-    const handleSiteSearch = (e) => {
-        setSearch(e.target.value);
-    };
-
-    const handleSearchItem = (searchItem) => {
-        setSearch(searchItem);
-    };
     const onSubmit = (data) => {
-        console.log({ ...data, updatedBy: user.displayName });
-        spareAdd({ ...data, updatedBy: user.displayName, siteId: search, 
-           spmsFaultyQuantity:0 ,replacement:[]
+        //console.log({ ...data, updatedBy: user.displayName });
+        spareAdd({
+            spareName: selectSpare, bomNo: spareBomNo,
+            ...data, updatedBy: user.displayName,
+            spmsFaultyQuantity: 0, replacement: []
         })
 
 
 
     }
 
-    if (isLoading) {
+    if (isLoading || loading) {
         return <Loading />
     }
 
@@ -74,110 +74,54 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
                         <div className="flex flex-col  gap-3">
                             <div className=" grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-4">
                                 <label className="input input-bordered flex items-center font-semibold gap-2">
-                                    Date:
-                                    <input
-                                        type="date"
-                                        defaultValue={today}
-                                        className="grow"
-                                        {...register("date", {
-                                            required: {
-                                                value: true,
-                                                message: " Date is required",
-                                            },
-                                        })}
-                                    />
-                                    <label className="label">
-                                        {errors.date?.type === "required" && (
-                                            <span className="label-text-alt text-red-500">
-                                                {errors.date.message}
-                                            </span>
-                                        )}
-                                    </label>
-                                </label>
-
-                                <label className="input input-bordered font-semibold flex items-center gap-2">
-                                    BOM_No:
-                                    <input
-                                        type="text"
-                                        className="grow"
-                                        {...register("bomNo", {
-                                            required: {
-                                                value: true,
-                                                message: " BomNo is required",
-                                            },
-                                        })}
-                                    />
-                                    <label className="label">
-                                        {errors.bomNo?.type === "required" && (
-                                            <span className="label-text-alt text-red-500">
-                                                {errors.bomNo.message}
-                                            </span>
-                                        )}
-                                    </label>
-                                </label>
-
-                                <label className="input input-bordered font-semibold flex items-center gap-2">
-                                    Serial_No:
-                                    <input
-                                        type="text"
-                                        className="grow"
-                                        {...register("serialNo")}
-                                    />
-                                </label>
-
-                                <label className="input input-bordered flex items-center font-semibold gap-2">
-                                    Spare_Type:
+                                    **Spare_Name:
                                     <select
                                         type="text"
-                                        className="grow"
-                                        {...register("spareType", {
-                                            required: {
-                                                value: true,
-                                                message: " Spare Type is required",
-                                            },
-                                        })}
+                                        value={selectSpare}
+                                        onChange={handleSpareName}
+                                        className="w-64 max-w-sm"
                                     >
-                                        <option value=""> -------Select Spare Type-----</option>
+                                        <option value=""> -------Select Spare Name-----</option>
                                         {
-                                            spareTypeList.map(item => (<option value={item}> {item}</option>))
+                                            spareBomList.map(item =>
+                                                (<option value={item.spareName} key={item._id}> {item.spareName}</option>))
                                         }
 
                                     </select>
-                                    <label className="label">
-                                        {errors.spareType?.type === "required" && (
-                                            <span className="label-text-alt text-red-500">
-                                                {errors.spareType.message}
-                                            </span>
-                                        )}
-                                    </label>
                                 </label>
-                                <label className="input input-bordered flex items-center font-semibold gap-2">
-                                    Spare_Name:
-                                    <select
+
+                                <label className="input input-bordered font-semibold flex items-center gap-2">
+                                    ** BOM_No:
+                                    <input
                                         type="text"
+                                        value={spareBomNo}
+                                        readOnly
                                         className="grow"
-                                        {...register("spareName", {
+                                    />
+                                </label>
+                                <label className="input input-bordered font-semibold flex items-center gap-2">
+                                    ** Challan_No:
+                                    <input
+                                        type="text"
+                                        placeholder="Provided by SPMS"
+                                        className="grow"
+                                        {...register("challanNo", {
                                             required: {
                                                 value: true,
-                                                message: " Spare Name is required",
+                                                message: " Challan no is required",
                                             },
                                         })}
-                                    >
-                                        <option value=""> ---Spare Name---</option>
-                                        {
-                                            spareNameList?.map(item => (<option value={item}> {item}</option>))
-                                        }
-
-                                    </select>
+                                    />
                                     <label className="label">
-                                        {errors.spareName?.type === "required" && (
+                                        {errors.challanNo?.type === "required" && (
                                             <span className="label-text-alt text-red-500">
-                                                {errors.spareName.message}
+                                                {errors.challanNo.message}
                                             </span>
                                         )}
                                     </label>
                                 </label>
-                                <label className="input input-bordered flex items-center font-semibold gap-2">
+
+                                {/*  <label className="input input-bordered flex items-center font-semibold gap-2">
                                     Status:
                                     <select
                                         type="text"
@@ -201,10 +145,10 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
                                             </span>
                                         )}
                                     </label>
-                                </label>
+                                </label> */}
 
                                 <label className="input input-bordered font-semibold flex items-center gap-2">
-                                    Good_Quantity:
+                                    ** Quantity:
                                     <input
                                         type="number"
                                         className="grow"
@@ -223,7 +167,7 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
                                         )}
                                     </label>
                                 </label>
-                                <div className="text-blue-400">
+                                {/*  <div className="text-blue-400">
                                     <label className="input input-bordered font-semibold flex items-center gap-2">
                                         Site_ID:
                                         <input
@@ -237,7 +181,7 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
                                         />
 
                                     </label>
-                                    {/*  For site list auto suggestion */}
+                                      
 
                                     <div className=" border-0 rounded-lg w-3/4 max-w-xs mt-2">
                                         {siteList
@@ -261,8 +205,8 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
                                                 </ul>
                                             ))}
                                     </div>
-                                </div>
-                                <label className="input input-bordered flex items-center font-semibold gap-2">
+                                </div> */}
+                                {/* <label className="input input-bordered flex items-center font-semibold gap-2">
                                     Requisition_Date:
                                     <input
                                         type="date"
@@ -282,6 +226,15 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
                                             </span>
                                         )}
                                     </label>
+                                </label> */}
+
+                                <label className="input input-bordered font-semibold flex items-center gap-2">
+                                    Serial_No:
+                                    <input
+                                        type="text"
+                                        className="grow"
+                                        {...register("serialNo")}
+                                    />
                                 </label>
 
                                 <label className="input input-bordered flex items-center font-semibold gap-2">
@@ -310,27 +263,7 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
                                         )}
                                     </label>
                                 </label>
-                                <label className="input input-bordered font-semibold flex items-center gap-2">
-                                    Challan_No:
-                                    <input
-                                        type="text"
-                                        placeholder="Provided by SPMS"
-                                        className="grow"
-                                        {...register("challanNo", {
-                                            required: {
-                                                value: true,
-                                                message: " RequisitionId is required",
-                                            },
-                                        })}
-                                    />
-                                    <label className="label">
-                                        {errors.requisitionId?.type === "required" && (
-                                            <span className="label-text-alt text-red-500">
-                                                {errors.requisitionId.message}
-                                            </span>
-                                        )}
-                                    </label>
-                                </label>
+
 
                                 <textarea
                                     type="text"

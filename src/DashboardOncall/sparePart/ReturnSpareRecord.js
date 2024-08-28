@@ -13,6 +13,7 @@ const ReturnSpareRecord = () => {
     const [user] = useAuthState(auth)
     const [returnSpare, setReturnSpareVisible] = useState(false)
     const { data: returnSpareList = [], isLoading } = useGetReturnSpareQuery()
+    //console.log(returnSpareList);
     if (isLoading) {
         return <Loading />
     }
@@ -53,7 +54,7 @@ const ReturnSpareRecord = () => {
                 )
             }
 
-            {returnSpareList.length > 0 && (
+            {returnSpareList?.length > 0 && (
                 <div className='card bg-base-100 w-3/4 mx-auto shadow-lg py-2 mt-4'>
                     <div className="overflow-x-auto">
                         <table className="table table-xs table-pin-rows table-pin-cols mt-5 mx-auto">
@@ -73,7 +74,7 @@ const ReturnSpareRecord = () => {
                                         <td className="border-2 border-gray-500" >{index + 1}</td>
                                         {Object.values(row).map((value, index) => (
 
-                                            <td className="border-2 border-gray-500" key={index}>{value}</td>
+                                            <td className="border-2 border-gray-500" key={index+"jh"}>{value}</td>
                                         ))}
                                     </tr>
                                 ))}
