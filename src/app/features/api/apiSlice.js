@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 const apiSlice = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery({
-        baseUrl: process.env.REACT_APP_BASE_URL_DEV,
+        baseUrl: process.env.REACT_APP_BASE_URL_PRODUCTION,
         headers: {
             authorization: ` Bearer ${localStorage.getItem('accessToken')}`
         },

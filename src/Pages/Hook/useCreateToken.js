@@ -9,7 +9,7 @@ const useCreateToken=(user)=>{
         if(user){
             //console.log( 'fromtoken',user.user.email)
             const email = user?.user?.email
-            const url = `http://localhost:5000/user`
+            const url = `https://serverom.bl-operation.com/user`
             const createToken= async()=>{
                 const {data}= await axios.post(url,email)
                 const token= data.accessToken 
