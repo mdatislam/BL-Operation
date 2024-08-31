@@ -9,16 +9,19 @@ import TableCaption from '../../Pages/SharedPage/TableCaption';
 import AddOwnSpare from './AddOwnSpare';
 import { useGetOwnSpareListQuery } from '../../app/features/api/sparePart/spareApi';
 import { NavLink } from 'react-router-dom';
+import OwnSpareRecordRow from './OwnSpareRecordRow';
 
 const OwnSpareRecord = () => {
     const [user] = useAuthState(auth);
-    const [admin] = useAdmin(user);
+    //const [admin] = useAdmin(user);
     const [OwnSpareAddVisible, setOwnSpareAddVisible] = useState(false)
-
+    const admin=true
     const { data: ownSpareList, isLoading, isSuccess, } = useGetOwnSpareListQuery()
+    //console.log(ownSpareList);
     const filteredOwnSpareList = ownSpareList?.map(({ replacement, ...rest }) => rest)
     //console.log(filteredOwnSpareList)
 
+   
     useEffect(() => {
         if (isSuccess) {
 
@@ -63,37 +66,55 @@ const OwnSpareRecord = () => {
                 )
             }
 
+            <div className="overflow-x-auto mt-4">
+                <table className="table table-compact w-full border-spacing-2 border border-3 border-slate-600 ">
+                    <TableCaption tableHeading=" Own Spare  Records" bgColor="bg-[#fret347]" />
+                    <thead className="border-2 border-[#FFCB24]">
+                        <tr className="divide-x divide-blue-400 text-center">
+                            <th>SN</th>
+                            {admin && <th className='w-24'>Action</th>}
+                            <th>Date</th>
+                            <th>Spare_Name</th>
+                            <th>BOM No</th>
+                            <th>
+                                <div>Own Good</div>
+                                <div>Quantity</div>
+                            </th>
+                            <th>
+                                <div>Own Faulty</div>
+                                <div>Quantity</div>
+                            </th>
+                            <th>
+                                <div>Updated</div>
+                                <div>BY</div>
+                            </th>
+                            <th>
+                                Remarks
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-            {filteredOwnSpareList.length > 0 && (
-                <div className='card bg-base-100 shadow-lg py-2 mt-4'>
-                    <div className="overflow-x-auto">
-                        <table className="table table-xs table-pin-rows table-pin-cols mt-5 mx-auto">
-                            <TableCaption tableHeading="Own Spare Record " />
-                            <thead>
-                                <tr className="border-2 border-blue-500 divide-x-2 px-4 divide-blue-400 text-start">
-                                    <th >SN</th>
-                                    {Object.keys(filteredOwnSpareList[0]).map((key) => (
-                                        <th key={key}>{key}</th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredOwnSpareList?.map((row, index) => (
-                                    <tr className="border-2 border-blue-500  hover divide-y-2 divide-x-2 divide-gray-500 text-center"
-                                        key={index}>
-                                        <td className="border-2 border-gray-500" >{index + 1}</td>
-                                        {Object.values(row).map((value, index) => (
+                        {
+                            ownSpareList &&
+                            ownSpareList?.map((spare, index) =>
+                            (
+                                <OwnSpareRecordRow
+                                    spareOwnList={spare}
+                                    index={index}
+                                    key={spare._id}
+                                    admin={admin}
+                                />
+                            )
 
-                                            <td className="border-2 border-gray-500" key={index}>{value}</td>
-                                        ))}
-                                    </tr>
-                                ))
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            )}
+                            )
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+
         </div>
     );
 };

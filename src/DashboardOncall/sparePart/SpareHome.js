@@ -12,9 +12,14 @@ import TableCaption from '../../Pages/SharedPage/TableCaption';
 import Loading from '../../Pages/SharedPage/Loading';
 import SpareHomeReturnRow from './SpareHomeReturnRow';
 import SpareHomeBalanceRow from './SpareHomeBalanceRow';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from '../../firebase.init';
+import useAdmin from '../../Pages/Hook/useAdmin';
 
 
 const SpareHome = () => {
+    const [user] = useAuthState(auth);
+    const [admin] = useAdmin(user);
     //const { data: newSpareStock = [], isLoading } = useGetNewSpareStockQuery()
     //const { data: returnSparePending = [], isLoading: returnLoading } = useGetReturnSparePendingQuery()
     const { data: ownSpareStock = [], isLoading: loading2 } = useGetOwnSpareStockQuery()
@@ -59,7 +64,7 @@ const SpareHome = () => {
     // console.log(unmatchedOwnSpare);
 
     const combineArray = [...combined, ...unmatchedOwnSpare]
-    //console.log(combineArray);
+    console.log(combineArray);
 
     if (loading2 || loading3) {
         return <Loading />
@@ -77,9 +82,9 @@ const SpareHome = () => {
                     <NavLink to="/ReturnSpareRecord" className=" btn btn-link">
                         < ListBulletIcon className="h-6 w-6 text-amber-600" />
                         &nbsp;  Return Spare_Record</NavLink>
-                    <NavLink to="/SpareListUpdate" className=" btn btn-link">
+                   { admin && <NavLink to="/SpareListUpdate" className=" btn btn-link">
                         < ListBulletIcon className="h-6 w-6 text-amber-600" />
-                        &nbsp;  Update_Spare_List</NavLink>
+                        &nbsp;  Update_Spare_List</NavLink>}
                 </div>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-6 max-h-screen gap-x-4 px-10'>

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import useUserList from "../../Pages/Hook/useUserList";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
-import { useGetSpareBomListQuery, usePostNewSpareMutation } from "../../app/features/api/sparePart/spareApi";
+import { useGetReturnSpareQuery, useGetSpareBomListQuery, usePostNewSpareMutation, usePostReturnSpareMutation } from "../../app/features/api/sparePart/spareApi";
 import Loading from "../../Pages/SharedPage/Loading";
 import { toast } from "react-toastify";
 
@@ -23,7 +23,9 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
     } = useForm();
     const { data: spareBomList = [], isLoading: loading } = useGetSpareBomListQuery()
     //console.log(spareBomList);
-
+    const { data: returnSpareList = [], isLoading:returnLoading } = useGetReturnSpareQuery()
+    // console.log(returnSpareList);
+    const [postReturnSpare] = usePostReturnSpareMutation();
     const handleSpareName = (e) => {
         const name = e.target.value
         setSelectSpare(name)
@@ -55,11 +57,16 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
             spmsFaultyQuantity: 0, replacement: []
         })
 
-
+        const checkReturnSpareList= returnSpareList?.find(returnSpare=>returnSpare.bomNo===spareBomNo )
+        console.log(checkReturnSpareList);
+        if(!checkReturnSpareList){
+            postReturnSpare({date: "", spareName: selectSpare, bomNo: spareBomNo,
+                spareStatus:"",returnQuantity:"0", remark: "yet not return", updatedBy: user.displayName})
+        }
 
     }
 
-    if (isLoading || loading) {
+    if (isLoading || loading || returnLoading) {
         return <Loading />
     }
 
@@ -206,7 +213,7 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
                                             ))}
                                     </div>
                                 </div> */}
-                                {/* <label className="input input-bordered flex items-center font-semibold gap-2">
+                                <label className="input input-bordered flex items-center font-semibold gap-2">
                                     Requisition_Date:
                                     <input
                                         type="date"
@@ -226,7 +233,7 @@ const SpareAdd = ({ spareAddVisible, setSpareAddVisible }) => {
                                             </span>
                                         )}
                                     </label>
-                                </label> */}
+                                </label>
 
                                 <label className="input input-bordered font-semibold flex items-center gap-2">
                                     Serial_No:

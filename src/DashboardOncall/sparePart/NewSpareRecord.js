@@ -16,12 +16,12 @@ import { NavLink } from 'react-router-dom';
 
 const NewSpareRecord = () => {
     const [user] = useAuthState(auth);
-    const [admin] = useAdmin(user);
+    //const [admin] = useAdmin(user);
     const [spareAddVisible, setSpareAddVisible] = useState(false)
     const [spareEdit, setSpareEdit] = useState("")
     const [ownSpareEdit, setOwnSpareEdit] = useState("")
     const [replacementRecord, setReplacementView] = useState("")
-
+const admin=true
     const { data: spareList, isLoading, isSuccess, } = useGetSpareListQuery()
     //console.log(spareList)
     const { data: ownSpareStock, isLoading: loading2 } = useGetOwnSpareStockQuery()
@@ -142,7 +142,7 @@ const NewSpareRecord = () => {
                                 <div>Record_Faulty</div>
                                 <div>Replacement</div>
                             </th>
-
+                            <th>Requisition Date</th>
                             <th>
                                 <div>Updated</div>
                                 <div>By</div>

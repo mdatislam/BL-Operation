@@ -110,6 +110,33 @@ const spareApi = apiSlice.injectEndpoints({
                 url:`/replacement/${id}`
             }),
             providesTags: ["spare"]
+        }),
+
+        deleteSingleReturnSpare:builder.mutation({
+            query:(id)=>({
+              url:`/spare/returnSpare/${id}`,
+                method:"DELETE",
+               
+            }),
+            invalidatesTags: ["spare"],
+        }),
+
+        deleteNewSpare:builder.mutation({
+            query:(id)=>({
+              url:`/spare/newSpare/${id}`,
+                method:"DELETE",
+               
+            }),
+            invalidatesTags: ["spare"],
+        }),
+
+        deleteOwnSpare:builder.mutation({
+            query:(id)=>({
+              url:`/spare/ownSpare/${id}`,
+                method:"DELETE",
+               
+            }),
+            invalidatesTags: ["spare"],
         })
     })
 })
@@ -119,6 +146,6 @@ export const { usePostNewSpareMutation, useGetSpareListQuery,
     usePostOwnSpareMutation,useGetOwnSpareListQuery,useGetOwnSpareStockQuery,
     usePostReturnSpareMutation,useGetReturnSpareQuery,useReplaceMentOwnSpareMutation,
     useGetNewSpareStockQuery,useGetReturnSparePendingQuery,useGetSummarySpareQuery,
-    useUpdateSpareListMutation,useGetSpareBomListQuery
-
+    useUpdateSpareListMutation,useGetSpareBomListQuery,useDeleteSingleReturnSpareMutation
+,useDeleteNewSpareMutation,useDeleteOwnSpareMutation
  } = spareApi

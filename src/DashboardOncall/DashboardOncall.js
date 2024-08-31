@@ -66,12 +66,12 @@ const DashboardOncall = () => {
                         <NavLink to="/OnCall/pgStatus" onClick={handleSidebar}>All PG Status</NavLink >
 
                     </li>
-                    { admin && <li>
+                    <li>
                         <NavLink to="/OnCall/SpareHome" onClick={handleSidebar}>
                              <WrenchScrewdriverIcon className="h-6 w-6 text-[#106d3f]-500" />
                             Spare
                         </NavLink>
-                    </li>}
+                    </li>
 
                     <li>
                         <NavLink to="/OnCall/PowerShutDown" onClick={handleSidebar}>

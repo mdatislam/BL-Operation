@@ -37,8 +37,6 @@ const ReturnSpare = ({ setReturnSpareVisible, returnSpare }) => {
     date.setDate(date.getDate());
     const today = date.toLocaleDateString("en-CA");
 
-
-
     const onSubmit = (data) => {
         //console.log(data)
         data?.spareName.map((item, index) => {
@@ -117,16 +115,17 @@ const ReturnSpare = ({ setReturnSpareVisible, returnSpare }) => {
                                                                     ))}
                                                                 </select>
                                                             </label>
-                                                           {/*  <label className="input input-bordered flex items-center font-semibold gap-2">
+                                                            {/* <label className="input input-bordered flex items-center font-semibold gap-2">
                                                                 BOM_No:
                                                                 <input
                                                                     type="text"
                                                                     value={selectedBom}
-                                                                    readOnly
+                                                                    onChange={handleBom}
+                                                                    
                                                                     className="w-52 max-w-sm"
                                                                   {...register(`spareBom[${index}]`)}
                                                                 />
-                                                            </label> */}
+                                                            </label>  */}
                                                             <label className="input input-bordered flex items-center font-semibold gap-2">
                                                                 Status:
                                                                 <select

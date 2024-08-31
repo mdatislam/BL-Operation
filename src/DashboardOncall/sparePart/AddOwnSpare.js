@@ -3,7 +3,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import useSiteList from '../../Pages/Hook/useSiteList';
 import useUserList from '../../Pages/Hook/useUserList';
-import { useGetSpareBomListQuery, usePostOwnSpareMutation } from '../../app/features/api/sparePart/spareApi';
+import { useGetReturnSpareQuery, useGetSpareBomListQuery, usePostOwnSpareMutation, usePostReturnSpareMutation } from '../../app/features/api/sparePart/spareApi';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Loading from '../../Pages/SharedPage/Loading';
@@ -12,6 +12,8 @@ const AddOwnSpare = ({ OwnSpareAddVisible, setOwnSpareAddVisible }) => {
     const [user] = useAuthState(auth)
     const [selectSpare, setSelectSpare] = useState("")
     const [spareBomNo, setSpareBomNo] = useState("")
+    const { data: returnSpareList = [], isLoading:returnLoading } = useGetReturnSpareQuery()
+    // console.log(returnSpareList);
     const [ownSpareAdd, { isLoading, data, isError, error }] = usePostOwnSpareMutation()
     const {
         register,
@@ -23,6 +25,7 @@ const AddOwnSpare = ({ OwnSpareAddVisible, setOwnSpareAddVisible }) => {
     const { data: spareBomList = [], isLoading: loading } = useGetSpareBomListQuery()
     //console.log(spareBomList);
 
+    const [postReturnSpare] = usePostReturnSpareMutation();
     /* const spareTypeList = ["RAN", "BTS", "MW", "Power", "CIVIL"] */
 
     const handleSpareName = (e) => {
@@ -58,12 +61,17 @@ const AddOwnSpare = ({ OwnSpareAddVisible, setOwnSpareAddVisible }) => {
             ...data, updatedBy: user.displayName, replacement: []
 
         })
+const checkReturnSpareList= returnSpareList?.find(returnSpare=>returnSpare.bomNo=== spareBomNo)
+if(!checkReturnSpareList){
+    postReturnSpare({date: data.date, spareName: selectSpare, bomNo: spareBomNo,
+        spareStatus:"",returnQuantity:"0", remark: "yet not return", updatedBy: user.displayName})
+}
 
     }
     // console.log(spareBomNo);
     // console.log(selectSpare);
 
-    if (isLoading || loading) {
+    if (isLoading || loading || returnLoading) {
         return <Loading />
     }
 
